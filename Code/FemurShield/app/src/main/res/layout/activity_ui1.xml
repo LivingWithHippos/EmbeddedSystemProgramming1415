@@ -48,4 +48,13 @@
         android:layout_alignTop="@+id/recbtnun1"
         android:layout_alignParentStart="true"
         android:onClick="onStopClick" />
+
+    <ListView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/listsessionui1"
+        android:layout_alignParentTop="true"
+        android:layout_toEndOf="@+id/stopbntui1"
+        android:layout_above="@+id/recbtnun1"
+        android:layout_alignParentStart="true" />
 </RelativeLayout>

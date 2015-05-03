@@ -5,7 +5,9 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.ListView;
 
 import org.tbw.FemurShield.View.ActivityObserver;
 
@@ -16,8 +18,10 @@ public class UI1 extends ActivityObserver {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ui1);
+
     }
 
+/* TODO: MENU SETTINGS (sotto qui il codice...da modificare)
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -40,18 +44,28 @@ public class UI1 extends ActivityObserver {
 
         return super.onOptionsItemSelected(item);
     }
-
+*/
 
     public void onRecClick(View view){
         //TODO: business logic
+        /*controller.CreateSession();
+        controller.StartSession();*/
+
+        //modifo le visibilità dei bottoni di controllo
         ((ImageView)findViewById(R.id.recbtnun1)).setVisibility(ImageView.INVISIBLE);
         ((ImageView)findViewById(R.id.pausebtnui1)).setVisibility(ImageView.VISIBLE);
         ((ImageView)findViewById(R.id.stopbntui1)).setVisibility(ImageView.VISIBLE);
         ((ImageView)findViewById(R.id.startbtnui1)).setVisibility(ImageView.INVISIBLE);
+
+        //aggiungo l'elemento della sessione attiva alla lista
+        
     }
 
     public void onPauseClick(View view){
         //TODO: business logic
+        //controller.PauseSession();
+
+        //modifo le visibilità dei bottoni di controllo
         ((ImageView)findViewById(R.id.recbtnun1)).setVisibility(ImageView.INVISIBLE);
         ((ImageView)findViewById(R.id.pausebtnui1)).setVisibility(ImageView.INVISIBLE);
         ((ImageView)findViewById(R.id.stopbntui1)).setVisibility(ImageView.VISIBLE);
@@ -61,6 +75,9 @@ public class UI1 extends ActivityObserver {
 
     public void onPlayClick(View view){
         //TODO: business logic
+        //controller.StartSession();
+
+        //modifo le visibilità dei bottoni di controllo
         ((ImageView)findViewById(R.id.recbtnun1)).setVisibility(ImageView.INVISIBLE);
         ((ImageView)findViewById(R.id.pausebtnui1)).setVisibility(ImageView.VISIBLE);
         ((ImageView)findViewById(R.id.stopbntui1)).setVisibility(ImageView.VISIBLE);
@@ -70,10 +87,12 @@ public class UI1 extends ActivityObserver {
 
     public void onStopClick(View view){
         //TODO: business logic
+        //controller.StopSession();
+
+        //modifo le visibilità dei bottoni di controllo
         ((ImageView)findViewById(R.id.recbtnun1)).setVisibility(ImageView.VISIBLE);
         ((ImageView)findViewById(R.id.pausebtnui1)).setVisibility(ImageView.INVISIBLE);
         ((ImageView)findViewById(R.id.stopbntui1)).setVisibility(ImageView.INVISIBLE);
         ((ImageView)findViewById(R.id.startbtnui1)).setVisibility(ImageView.INVISIBLE);
-
     }
 }

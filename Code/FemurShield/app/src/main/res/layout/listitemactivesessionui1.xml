@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content" android:layout_height="wrap_content">
+
+    <ImageView
+        android:layout_width="@dimen/signature_list"
+        android:layout_height="@dimen/signature_list"
+        android:id="@+id/activesessionsignatureui1" />
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Nome Sessione"
+            android:id="@+id/activesessionnameui1"
+            android:textStyle="bold"
+            android:textSize="@dimen/nome_sessione_lista" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Data e ora sessione"
+            android:id="@+id/activesessiondateui1"
+            android:textSize="@dimen/testo_lista" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Numero cadute"
+            android:id="@+id/activesessionfallsui1"
+            android:textSize="@dimen/testo_lista" />
+    </LinearLayout>
+
+    <ImageView
+        android:layout_width="@dimen/state_image_list"
+        android:layout_height="@dimen/state_image_list"
+        android:id="@+id/activesessionstateimgui1" />
+
+</LinearLayout>
