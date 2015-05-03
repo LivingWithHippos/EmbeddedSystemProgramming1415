@@ -6,6 +6,7 @@ import java.util.Observable;
 import java.util.Observer;
 
 import org.tbw.FemurShield.Model.ActiveSession;
+import org.tbw.FemurShield.Model.Session;
 import org.tbw.FemurShield.Model.SessionManager;
 
 /**
@@ -24,12 +25,19 @@ public class Controller implements Observer{
         SM=SessionManager.getInstance();
     }
 
-    public void CreateSession(){
+    public Session CreateSession(){
         ActiveSession active=SM.getActiveSession();
         if(active==null)
-            SM.createNewActiveSession();
+            return SM.createNewActiveSession();
         else
-            Log.e("FemurShield", "Tentativo creazione Sessione già attiva");
+<<<<<<< Updated upstrea       Log.e("FemurShield", "Tentativo creazione Sessione giï¿½ attiva");
+=======
+<<<<<<< HEAD
+            return null; //TODO: sollevare errore magari;
+=======
+            Log.e("FemurShield", "Tentativo creazione Sessione giï¿½ attiva");
+>>>>>>> origin/master
+>>>>>>> Stashed changes
     }
 
     public void StartSession(){

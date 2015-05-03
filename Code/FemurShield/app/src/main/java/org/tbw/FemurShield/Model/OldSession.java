@@ -3,5 +3,6 @@ package org.tbw.FemurShield.Model;
 /**
  * Created by Moro on 24/04/15.
  */
-public interface OldSession {
+public interface OldSession extends Session {
+    public String getDuration();
 }

@@ -13,4 +13,9 @@ class OldSessionImpl extends SessionImpl implements OldSession {
         //così è pericoloso perchè se aggiungo a SessionImpl un campo rischiodi non inizializzarlo...in C++ si fa nella lista di inizializzazione : SessionImpl(o)
         //TODO: end
     }
+
+    @Override
+    public String getDuration() {
+        return ""+secondduration;
+    }
 }

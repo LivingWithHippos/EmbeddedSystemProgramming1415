@@ -7,7 +7,7 @@ import java.util.ArrayList;
  */
 public class SessionManager {
     private static SessionManager instance; //identifica l'istanza unica di questa classe (singleton)
-    private ActiveSessionImpl sessioneattiva;
+    private ActiveSessionImpl sessioneattiva=null;
     private static ArrayList<OldSessionImpl> sessionivecchie=new ArrayList<>();
 
     /**
@@ -16,7 +16,7 @@ public class SessionManager {
      */
     public static SessionManager getInstance(){
         if(instance==null)
-            return new SessionManager();
+            return instance=new SessionManager();
         return instance;
     }
 
