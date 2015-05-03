@@ -7,7 +7,6 @@ import java.util.Observer;
 
 import org.tbw.FemurShield.Model.ActiveSession;
 import org.tbw.FemurShield.Model.SessionManager;
-import org.tbw.FemurShield.R;
 
 /**
  * Created by Moro on 02/05/15.
