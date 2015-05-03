@@ -1,11 +1,11 @@
-package View;
+package org.tbw.FemurShield.View;
 
 import android.app.Activity;
 
 import java.util.Observable;
 import java.util.Observer;
 
-import Controller.Controller;
+import org.tbw.FemurShield.Controller.Controller;
 
 /**
  * Created by Moro on 02/05/15.

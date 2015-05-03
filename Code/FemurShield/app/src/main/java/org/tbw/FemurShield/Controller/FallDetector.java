@@ -1,4 +1,4 @@
-package Controller;
+package org.tbw.FemurShield.Controller;
 
 import java.util.Observable;
 

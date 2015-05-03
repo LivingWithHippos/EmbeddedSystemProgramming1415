@@ -1,4 +1,4 @@
-package Model;
+package org.tbw.FemurShield.Model;
 
 import android.graphics.Bitmap;
 

@@ -1,10 +1,10 @@
-package Controller;
+package org.tbw.FemurShield.Controller;
 
 import java.util.Observable;
 import java.util.Observer;
 
-import Model.ActiveSession;
-import Model.SessionManager;
+import org.tbw.FemurShield.Model.ActiveSession;
+import org.tbw.FemurShield.Model.SessionManager;
 
 /**
  * Created by Moro on 02/05/15.
