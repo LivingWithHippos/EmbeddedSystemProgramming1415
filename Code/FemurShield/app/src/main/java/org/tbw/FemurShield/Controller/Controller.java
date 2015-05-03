@@ -1,10 +1,13 @@
 package org.tbw.FemurShield.Controller;
 
+import android.util.Log;
+
 import java.util.Observable;
 import java.util.Observer;
 
 import org.tbw.FemurShield.Model.ActiveSession;
 import org.tbw.FemurShield.Model.SessionManager;
+import org.tbw.FemurShield.R;
 
 /**
  * Created by Moro on 02/05/15.
@@ -27,7 +30,7 @@ public class Controller implements Observer{
         if(active==null)
             SM.createNewActiveSession();
         else
-            return; //TODO: errore;
+            Log.e("FemurShield", "Tentativo creazione Sessione già attiva");
     }
 
     public void StartSession(){
