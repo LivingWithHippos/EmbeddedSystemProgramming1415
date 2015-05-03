@@ -1,8 +1,11 @@
 package org.tbw.FemurShield;
 
+import android.media.Image;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
 
 import org.tbw.FemurShield.View.ActivityObserver;
 
@@ -36,5 +39,41 @@ public class UI1 extends ActivityObserver {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+
+    public void onRecClick(View view){
+        //TODO: business logic
+        ((ImageView)findViewById(R.id.recbtnun1)).setVisibility(ImageView.INVISIBLE);
+        ((ImageView)findViewById(R.id.pausebtnui1)).setVisibility(ImageView.VISIBLE);
+        ((ImageView)findViewById(R.id.stopbntui1)).setVisibility(ImageView.VISIBLE);
+        ((ImageView)findViewById(R.id.startbtnui1)).setVisibility(ImageView.INVISIBLE);
+    }
+
+    public void onPauseClick(View view){
+        //TODO: business logic
+        ((ImageView)findViewById(R.id.recbtnun1)).setVisibility(ImageView.INVISIBLE);
+        ((ImageView)findViewById(R.id.pausebtnui1)).setVisibility(ImageView.INVISIBLE);
+        ((ImageView)findViewById(R.id.stopbntui1)).setVisibility(ImageView.VISIBLE);
+        ((ImageView)findViewById(R.id.startbtnui1)).setVisibility(ImageView.VISIBLE);
+
+    }
+
+    public void onPlayClick(View view){
+        //TODO: business logic
+        ((ImageView)findViewById(R.id.recbtnun1)).setVisibility(ImageView.INVISIBLE);
+        ((ImageView)findViewById(R.id.pausebtnui1)).setVisibility(ImageView.VISIBLE);
+        ((ImageView)findViewById(R.id.stopbntui1)).setVisibility(ImageView.VISIBLE);
+        ((ImageView)findViewById(R.id.startbtnui1)).setVisibility(ImageView.INVISIBLE);
+
+    }
+
+    public void onStopClick(View view){
+        //TODO: business logic
+        ((ImageView)findViewById(R.id.recbtnun1)).setVisibility(ImageView.VISIBLE);
+        ((ImageView)findViewById(R.id.pausebtnui1)).setVisibility(ImageView.INVISIBLE);
+        ((ImageView)findViewById(R.id.stopbntui1)).setVisibility(ImageView.INVISIBLE);
+        ((ImageView)findViewById(R.id.startbtnui1)).setVisibility(ImageView.INVISIBLE);
+
     }
 }
