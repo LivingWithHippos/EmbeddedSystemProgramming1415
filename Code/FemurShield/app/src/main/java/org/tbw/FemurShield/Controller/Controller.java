@@ -30,14 +30,8 @@ public class Controller implements Observer{
         if(active==null)
             return SM.createNewActiveSession();
         else
-<<<<<<< Updated upstrea       Log.e("FemurShield", "Tentativo creazione Sessione gi� attiva");
-=======
-<<<<<<< HEAD
             return null; //TODO: sollevare errore magari;
-=======
-            Log.e("FemurShield", "Tentativo creazione Sessione gi� attiva");
->>>>>>> origin/master
->>>>>>> Stashed changes
+
     }
 
     public void StartSession(){
