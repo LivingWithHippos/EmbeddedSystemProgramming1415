@@ -2,4 +2,9 @@
     <string name="app_name">Femur Shield</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Impostazioni</string>
+    <string name="title_activity_ui1">UI1</string>
+    <string name="title_activity_ui2">UI2</string>
+    <string name="title_activity_ui3">UI3</string>
+    <string name="title_activity_ui4">UI4</string>
+    <string name="title_activity_ui5">UI5</string>
 </resources>

@@ -7,19 +7,19 @@ import android.view.MenuItem;
 import org.tbw.FemurShield.View.ActivityObserver;
 
 
-public class MainActivity extends ActivityObserver {
+public class UI5 extends ActivityObserver {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_ui5);
     }
 
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
+        getMenuInflater().inflate(R.menu.menu_ui5, menu);
         return true;
     }
 

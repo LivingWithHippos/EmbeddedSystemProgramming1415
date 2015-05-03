@@ -6,6 +6,7 @@ package org.tbw.FemurShield.Model;
 class ActiveSessionImpl extends SessionImpl implements ActiveSession{
     private boolean activestate; //identifica lo stato di "attività" della sessione;
 
+    //TODO: dovranno modificare la durata della sessione ... fare differenza ora attuale ora partenza sessione...e modificare activestate
     protected boolean Start() {//TODO
         return false;
     }
