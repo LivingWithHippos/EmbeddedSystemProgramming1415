@@ -24,7 +24,6 @@ import org.tbw.FemurShield.View.ActivityObserver;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 
 public class UI1 extends ActivityObserver {
@@ -72,26 +71,64 @@ public class UI1 extends ActivityObserver {
         ((ImageView)findViewById(R.id.stopbntui1)).setVisibility(ImageView.VISIBLE);
         ((ImageView)findViewById(R.id.startbtnui1)).setVisibility(ImageView.INVISIBLE);
 
-        //aggiungo l'elemento della sessione attiva alla lista
+        //aggiorno la listView
+        AggiornaLista();
+    }
 
+    public void onPauseClick(View view){
+        //TODO: business logic
+        controller.PauseSession();
 
+        //modifo le visibilità dei bottoni di controllo
+        ((ImageView)findViewById(R.id.recbtnun1)).setVisibility(ImageView.INVISIBLE);
+        ((ImageView)findViewById(R.id.pausebtnui1)).setVisibility(ImageView.INVISIBLE);
+        ((ImageView)findViewById(R.id.stopbntui1)).setVisibility(ImageView.VISIBLE);
+        ((ImageView)findViewById(R.id.startbtnui1)).setVisibility(ImageView.VISIBLE);
 
+    }
 
+    public void onPlayClick(View view){
+        //TODO: business logic
+        //controller.StartSession();
 
+        //modifo le visibilità dei bottoni di controllo
+        ((ImageView)findViewById(R.id.recbtnun1)).setVisibility(ImageView.INVISIBLE);
+        ((ImageView)findViewById(R.id.pausebtnui1)).setVisibility(ImageView.VISIBLE);
+        ((ImageView)findViewById(R.id.stopbntui1)).setVisibility(ImageView.VISIBLE);
+        ((ImageView)findViewById(R.id.startbtnui1)).setVisibility(ImageView.INVISIBLE);
 
+    }
 
+    public void onStopClick(View view){
+        //TODO: business logic
+        controller.StopSession();
 
+        //modifo le visibilità dei bottoni di controllo
+        ((ImageView)findViewById(R.id.recbtnun1)).setVisibility(ImageView.VISIBLE);
+        ((ImageView)findViewById(R.id.pausebtnui1)).setVisibility(ImageView.INVISIBLE);
+        ((ImageView)findViewById(R.id.stopbntui1)).setVisibility(ImageView.INVISIBLE);
+        ((ImageView)findViewById(R.id.startbtnui1)).setVisibility(ImageView.INVISIBLE);
 
+        //aggiorno la listView
+        AggiornaLista();
+    }
 
+    public void AggiornaLista(){
+        //costruisco la listview
 
-
-
-//lista delle sessioni che la listview visualizzerà
+        //lista delle sessioni che la listview visualizzerà
         ArrayList<Session> sessionsList=new ArrayList<>();
 
-        sessionsList.add(SessionManager.getInstance().getActiveSession());
+        //aggiungo la sessone attiva
+        ActiveSession a =SessionManager.getInstance().getActiveSession();
+        if(a!=null)
+            sessionsList.add(a);
 
-        //TODO da aggiungere anche quelle old
+        //aggiungo le sessioni vecchie
+        ArrayList<OldSession> old=SessionManager.getInstance().getOldSessions();
+        for(int i=0;i<old.size();i++){
+            sessionsList.add(old.get(i));
+        }
 
         //Questa è la lista che rappresenta la sorgente dei dati della listview
         //ogni elemento è una mappa(chiave->valore)
@@ -136,57 +173,5 @@ public class UI1 extends ActivityObserver {
 
         //utilizzo dell'adapter
         ((ListView)findViewById(R.id.listsessionui1)).setAdapter(adapter);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    }
-
-    public void onPauseClick(View view){
-        //TODO: business logic
-        //controller.PauseSession();
-
-        //modifo le visibilità dei bottoni di controllo
-        ((ImageView)findViewById(R.id.recbtnun1)).setVisibility(ImageView.INVISIBLE);
-        ((ImageView)findViewById(R.id.pausebtnui1)).setVisibility(ImageView.INVISIBLE);
-        ((ImageView)findViewById(R.id.stopbntui1)).setVisibility(ImageView.VISIBLE);
-        ((ImageView)findViewById(R.id.startbtnui1)).setVisibility(ImageView.VISIBLE);
-
-    }
-
-    public void onPlayClick(View view){
-        //TODO: business logic
-        //controller.StartSession();
-
-        //modifo le visibilità dei bottoni di controllo
-        ((ImageView)findViewById(R.id.recbtnun1)).setVisibility(ImageView.INVISIBLE);
-        ((ImageView)findViewById(R.id.pausebtnui1)).setVisibility(ImageView.VISIBLE);
-        ((ImageView)findViewById(R.id.stopbntui1)).setVisibility(ImageView.VISIBLE);
-        ((ImageView)findViewById(R.id.startbtnui1)).setVisibility(ImageView.INVISIBLE);
-
-    }
-
-    public void onStopClick(View view){
-        //TODO: business logic
-        //controller.StopSession();
-
-        //modifo le visibilità dei bottoni di controllo
-        ((ImageView)findViewById(R.id.recbtnun1)).setVisibility(ImageView.VISIBLE);
-        ((ImageView)findViewById(R.id.pausebtnui1)).setVisibility(ImageView.INVISIBLE);
-        ((ImageView)findViewById(R.id.stopbntui1)).setVisibility(ImageView.INVISIBLE);
-        ((ImageView)findViewById(R.id.startbtnui1)).setVisibility(ImageView.INVISIBLE);
     }
 }
