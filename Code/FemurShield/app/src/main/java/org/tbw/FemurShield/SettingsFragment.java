@@ -56,7 +56,12 @@ public class SettingsFragment extends ListFragment {
         //mi serve per ottenere le icone
         Resources resources = getResources();
         //aggiungo le voci alla lista
-        mItems.add(new SettingListItem(resources.getDrawable(R.drawable.soundwave), getString(R.string.title_sample_rate), getString(R.string.description_sample_rate)));
+        mItems.add(new SettingListItem(resources.getDrawable(R.drawable.soundwave),
+                getString(R.string.title_sample_rate),
+                getString(R.string.description_sample_rate)));
+        mItems.add(new SettingListItem(resources.getDrawable(R.drawable.time),
+                getString(R.string.title_sample_rate),
+                getString(R.string.description_sample_rate)));
         //imposto l'adapter
         setListAdapter(new SettingListAdapter(getActivity(), mItems));
     }

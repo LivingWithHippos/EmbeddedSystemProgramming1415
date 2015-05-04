@@ -1,6 +1,7 @@
 package org.tbw.FemurShield;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Canvas;
 import android.graphics.ColorFilter;
 import android.graphics.Path;
@@ -47,7 +48,7 @@ public class UI1 extends ActivityObserver {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle presses on the action bar items
-        switch (item.getItemId()) { 
+        switch (item.getItemId()) {
             case R.id.action_settings:
                 openSettings();
                 return true;
@@ -170,5 +171,12 @@ public class UI1 extends ActivityObserver {
 
         //utilizzo dell'adapter
         ((ListView)findViewById(R.id.listsessionui1)).setAdapter(adapter);
+    }
+
+    public void openSettings()
+    {
+        //lancio senza opzioni perchè la ui impostazioni non ne richiede
+        Intent intent=new Intent(this,UI5.class);
+        startActivity(intent);
     }
 }

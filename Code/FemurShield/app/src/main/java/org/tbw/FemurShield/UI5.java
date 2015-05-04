@@ -2,6 +2,7 @@ package org.tbw.FemurShield;
 
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -9,7 +10,7 @@ import android.view.MenuItem;
 import org.tbw.FemurShield.View.ActivityObserver;
 
 
-public class UI5 extends ActivityObserver {
+public class UI5 extends ActivityObserver implements SettingsFragment.OnFragmentInteractionListener{
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -17,7 +18,7 @@ public class UI5 extends ActivityObserver {
         setContentView(R.layout.activity_ui5);
 
         // controlla che il layout in uso abbia il posto per il fragment
-        if (findViewById(R.id.fragment_container) != null) {
+        if (findViewById(R.id.fragment_container_settings) != null) {
 
             /*Se stiamo tornando indietro non abbiamo bisogno di ricaricarlo
             * rischiamo di ritrovarci con un secondo fragment sovrapposto*/
@@ -34,8 +35,10 @@ public class UI5 extends ActivityObserver {
             FragmentManager fragmentManager = getFragmentManager();
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
-            fragmentTransaction.add(R.id.fragment_container, settFragment );
-            fragmentTransaction.commit();
+            fragmentTransaction.add(R.id.fragment_container_settings, settFragment );
+            try {
+                fragmentTransaction.commit();
+            }catch(Exception e){e.printStackTrace();}
         }
     }
 
@@ -60,5 +63,10 @@ public class UI5 extends ActivityObserver {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onFragmentInteraction(Uri uri) {
+        //TODO: implementa l'interazione con i fragment
     }
 }

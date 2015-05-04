@@ -51,10 +51,10 @@ public class SettingListAdapter extends ArrayAdapter {
     }
 
     /**
-     * Implementa il pattern VIew-Holder
+     * Implementa il pattern View-Holder
      * poco utile visto che abbiamo poche voci ma in futuro non si sa mai
      *
-     * @see http://developer.android.com/training/improving-layouts/smooth-scrolling.html#ViewHolder
+     * vedi http://developer.android.com/training/improving-layouts/smooth-scrolling.html#ViewHolder
      */
     private static class ViewHolder {
         ImageView ivIcon;

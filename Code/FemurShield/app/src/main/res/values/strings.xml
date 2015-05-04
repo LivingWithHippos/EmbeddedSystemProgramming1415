@@ -9,4 +9,6 @@
     <string name="title_activity_ui5">UI5</string>
     <string name="title_sample_rate">Frequenza di campionamento</string>
     <string name="description_sample_rate">Imposta la Frequenza di campionamento del sensore</string>
+    <string name="title_alarm">Orario Reminder</string>
+    <string name="description_reminder">Imposta una sveglia giornaliera</string>
 </resources>
