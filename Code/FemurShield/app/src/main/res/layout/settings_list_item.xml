@@ -12,11 +12,12 @@
 
         <!-- icona dell'opzione-->
         <ImageView android:id="@+id/ivSettingItemIcon"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="5dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:padding="10dp"
             android:scaleType="fitXY"
-            android:layout_alignParentLeft="true" />
+            android:layout_alignParentLeft="true"
+            android:adjustViewBounds="false" />
 
         <!-- the container per titolo e descrizione -->
         <RelativeLayout android:layout_width="wrap_content"
