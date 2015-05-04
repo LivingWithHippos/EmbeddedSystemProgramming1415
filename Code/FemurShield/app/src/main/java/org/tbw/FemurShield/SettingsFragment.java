@@ -2,6 +2,8 @@ package org.tbw.FemurShield;
 
 import android.app.Activity;
 import android.app.ListFragment;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.net.Uri;
 import android.os.Bundle;
@@ -24,7 +26,7 @@ import java.util.List;
 public class SettingsFragment extends ListFragment {
 
     private List<SettingListItem> mItems;
-
+    private SharedPreferences prefs;
     private OnFragmentInteractionListener mListener;
 
     /**
@@ -55,9 +57,11 @@ public class SettingsFragment extends ListFragment {
         mItems = new ArrayList<SettingListItem>();
         //mi serve per ottenere le icone
         Resources resources = getResources();
-        //aggiungo le voci alla lista
         //TODO: impostare icone di dimensioni diverse a seconda della dimensione dello schermo?
         //TODO: rinominare le descrizioni in modo che mostrino il valore impostato
+        // prefs serve a caricare le impostazioni salvate
+        prefs=getActivity().getPreferences(Context.MODE_PRIVATE);
+        //aggiungo le voci alla lista
         mItems.add(new SettingListItem(resources.getDrawable(R.drawable.frequency),
                 getString(R.string.title_sample_rate),
                 getString(R.string.description_sample_rate)));
@@ -67,9 +71,11 @@ public class SettingsFragment extends ListFragment {
         mItems.add(new SettingListItem(resources.getDrawable(R.drawable.email),
                 getString(R.string.title_email_recipient),
                 getString(R.string.description_email_recipient)));
+        int hour=prefs.getInt("alarm_hour",9);
+        int minute=prefs.getInt("alarm_minute", 0);
         mItems.add(new SettingListItem(resources.getDrawable(R.drawable.alarm),
                 getString(R.string.title_alarm),
-                getString(R.string.description_alarm)));
+                "Sveglia impostata per le "+hour+":"+minute));
         //imposto l'adapter
         setListAdapter(new SettingListAdapter(getActivity(), mItems));
     }
