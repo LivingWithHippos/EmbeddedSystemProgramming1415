@@ -1,5 +1,7 @@
 package org.tbw.FemurShield;
 
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -13,6 +15,28 @@ public class UI5 extends ActivityObserver {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ui5);
+
+        // controlla che il layout in uso abbia il posto per il fragment
+        if (findViewById(R.id.fragment_container) != null) {
+
+            /*Se stiamo tornando indietro non abbiamo bisogno di ricaricarlo
+            * rischiamo di ritrovarci con un secondo fragment sovrapposto*/
+            if (savedInstanceState != null) {
+                return;
+            }
+
+            // Creo il mio fragment
+            SettingsFragment settFragment = new SettingsFragment();
+
+            // passo gli eventuali argomenti al fragment
+            settFragment .setArguments(getIntent().getExtras());
+
+            FragmentManager fragmentManager = getFragmentManager();
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+
+            fragmentTransaction.add(R.id.fragment_container, settFragment );
+            fragmentTransaction.commit();
+        }
     }
 
 
