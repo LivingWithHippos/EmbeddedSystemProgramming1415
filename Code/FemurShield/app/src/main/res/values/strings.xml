@@ -7,4 +7,6 @@
     <string name="title_activity_ui3">UI3</string>
     <string name="title_activity_ui4">UI4</string>
     <string name="title_activity_ui5">UI5</string>
+    <string name="title_sample_rate">Frequenza di campionamento</string>
+    <string name="description_sample_rate">Imposta la Frequenza di campionamento del sensore</string>
 </resources>

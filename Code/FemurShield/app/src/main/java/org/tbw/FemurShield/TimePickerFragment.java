@@ -34,5 +34,6 @@ public class TimePickerFragment extends DialogFragment
         editor.putInt("alarm_hour", hourOfDay);
         editor.putInt("alarm_minute", minute);
         editor.commit();
+        // TODO: impostare la sveglia con l'orario salvato
     }
 }
