@@ -35,13 +35,13 @@ public class UI1 extends ActivityObserver {
 
     }
 
-/* TODO: MENU SETTINGS (sotto qui il codice...da modificare)
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_ui1, menu);
-        return true;
+        return super.onCreateOptionsMenu(menu);
     }
 
     @Override
@@ -58,7 +58,7 @@ public class UI1 extends ActivityObserver {
 
         return super.onOptionsItemSelected(item);
     }
-*/
+
 
     public void onRecClick(View view){
         //TODO: business logic
