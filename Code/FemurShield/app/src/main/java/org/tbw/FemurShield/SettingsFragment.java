@@ -60,8 +60,8 @@ public class SettingsFragment extends ListFragment {
                 getString(R.string.title_sample_rate),
                 getString(R.string.description_sample_rate)));
         mItems.add(new SettingListItem(resources.getDrawable(R.drawable.time),
-                getString(R.string.title_sample_rate),
-                getString(R.string.description_sample_rate)));
+                getString(R.string.title_alarm),
+                getString(R.string.description_alarm)));
         //imposto l'adapter
         setListAdapter(new SettingListAdapter(getActivity(), mItems));
     }
