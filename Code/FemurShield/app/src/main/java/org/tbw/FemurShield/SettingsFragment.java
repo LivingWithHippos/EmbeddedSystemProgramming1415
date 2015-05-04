@@ -56,10 +56,17 @@ public class SettingsFragment extends ListFragment {
         //mi serve per ottenere le icone
         Resources resources = getResources();
         //aggiungo le voci alla lista
-        mItems.add(new SettingListItem(resources.getDrawable(R.drawable.soundwave),
+        //TODO: impostare icone di dimensioni diverse a seconda della dimensione dello schermo?
+        mItems.add(new SettingListItem(resources.getDrawable(R.drawable.frequency),
                 getString(R.string.title_sample_rate),
                 getString(R.string.description_sample_rate)));
-        mItems.add(new SettingListItem(resources.getDrawable(R.drawable.time),
+        mItems.add(new SettingListItem(resources.getDrawable(R.drawable.duration),
+                getString(R.string.title_session_duration),
+                getString(R.string.description_session_duration)));
+        mItems.add(new SettingListItem(resources.getDrawable(R.drawable.email),
+                getString(R.string.title_email_recipient),
+                getString(R.string.description_email_recipient)));
+        mItems.add(new SettingListItem(resources.getDrawable(R.drawable.alarm),
                 getString(R.string.title_alarm),
                 getString(R.string.description_alarm)));
         //imposto l'adapter

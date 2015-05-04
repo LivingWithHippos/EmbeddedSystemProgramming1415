@@ -10,5 +10,9 @@
     <string name="title_sample_rate">Frequenza di campionamento</string>
     <string name="description_sample_rate">Imposta la Frequenza di campionamento del sensore</string>
     <string name="title_alarm">Orario Reminder</string>
-    <string name="description_alarm">Imposta una sveglia giornaliera</string>
+    <string name="description_alarm">A che ora vuoi farti ricordare di FemurShield?</string>
+    <string name="title_email_recipient">Lista Destinatari Email</string>
+    <string name="description_email_recipient">Tutti gli indirizzi che riceveranno una email in caso di emergenza</string>
+    <string name="title_session_duration">Durata Sessione</string>
+    <string name="description_session_duration">Decidi quanto deve durare una sessione</string>
 </resources>
