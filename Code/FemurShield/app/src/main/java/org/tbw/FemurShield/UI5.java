@@ -67,9 +67,14 @@ public class UI5 extends ActivityObserver implements SettingsFragment.OnFragment
     @Override
     public void onVoiceSelected(SettingListItem s) {
         if(s.title.equalsIgnoreCase(getString(R.string.title_alarm)))
-        { 
+        {
             TimePickerFragment timepick= new TimePickerFragment();
             timepick.show(getFragmentManager(), "TimePicker");
+        }
+        if(s.title.equalsIgnoreCase(getString(R.string.title_sample_rate)))
+        {
+            SliderFragment slider=new SliderFragment();
+            slider.show(getFragmentManager(),"SampleRatePicker");
         }
 
     }

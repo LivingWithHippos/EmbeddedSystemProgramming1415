@@ -16,6 +16,7 @@ public class TimePickerFragment extends DialogFragment
         implements TimePickerDialog.OnTimeSetListener {
 
     private SharedPreferences prefs;
+
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         // inizializzo l'oggetto per salvare e leggere i valori dell'orologio
@@ -34,6 +35,7 @@ public class TimePickerFragment extends DialogFragment
         editor.putInt("alarm_hour", hourOfDay);
         editor.putInt("alarm_minute", minute);
         editor.commit();
+        // TODO aggiornare la descrizione della sveglia
         // TODO: impostare la sveglia con l'orario salvato
     }
 }
