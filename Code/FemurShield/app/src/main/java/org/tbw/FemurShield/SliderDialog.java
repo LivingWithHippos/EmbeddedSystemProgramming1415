@@ -50,7 +50,7 @@ public class SliderDialog extends AlertDialog implements OnClickListener{
      * @param callBack How parent is notified.
      */
     public SliderDialog(Context context, int theme, OnProgressSetListener callBack, int actualProgress) {
-        super(context);
+        super(context,theme);
 
         mProgressSetCallback= callBack;
         mInitialProgress=actualProgress;

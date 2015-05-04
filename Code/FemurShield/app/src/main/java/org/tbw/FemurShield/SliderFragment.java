@@ -23,7 +23,7 @@ public class SliderFragment extends DialogFragment implements SliderDialog.OnPro
         //carico i valori precedenti o imposto a meta
         //TODO vedere quale e un valore di default adatto
         int progress=prefs.getInt("sample_rate",50);
-        return new SliderDialog(getActivity(),this,progress);
+        return new SliderDialog(getActivity(),R.style.AppDialogTheme,this,progress);
     }
 
     @Override

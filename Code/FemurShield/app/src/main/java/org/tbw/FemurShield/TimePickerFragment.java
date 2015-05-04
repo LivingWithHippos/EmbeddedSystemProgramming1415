@@ -25,7 +25,7 @@ public class TimePickerFragment extends DialogFragment
         int hour=prefs.getInt("alarm_hour",9);
         int minute=prefs.getInt("alarm_minute",0);
         // Create a new instance of TimePickerDialog and return it
-        return new TimePickerDialog(getActivity(),R.style.timePicker, this, hour, minute,
+        return new TimePickerDialog(getActivity(),R.style.AppDialogTheme, this, hour, minute,
                 DateFormat.is24HourFormat(getActivity()));
     }
 
