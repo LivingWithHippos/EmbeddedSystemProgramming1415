@@ -57,6 +57,7 @@ public class SettingsFragment extends ListFragment {
         Resources resources = getResources();
         //aggiungo le voci alla lista
         //TODO: impostare icone di dimensioni diverse a seconda della dimensione dello schermo?
+        //TODO: rinominare le descrizioni in modo che mostrino il valore impostato
         mItems.add(new SettingListItem(resources.getDrawable(R.drawable.frequency),
                 getString(R.string.title_sample_rate),
                 getString(R.string.description_sample_rate)));
@@ -78,13 +79,6 @@ public class SettingsFragment extends ListFragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_settings, container, false);
-    }
-
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
     }
 
     @Override
@@ -113,10 +107,11 @@ public class SettingsFragment extends ListFragment {
 
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
-        // retrieve theListView item
+        // recupera l'elemento cliccato
         SettingListItem item = mItems.get(position);
 
-        // do something
+        if(mListener!=null&item!=null)
+            mListener.onVoiceSelected(item);
     }
 
     /**
@@ -131,7 +126,7 @@ public class SettingsFragment extends ListFragment {
      */
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
-        public void onFragmentInteraction(Uri uri);
+        public void onVoiceSelected(SettingListItem s);
     }
 
 }

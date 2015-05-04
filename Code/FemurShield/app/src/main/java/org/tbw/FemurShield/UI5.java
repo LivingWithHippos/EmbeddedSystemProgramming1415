@@ -4,6 +4,7 @@ import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -36,9 +37,7 @@ public class UI5 extends ActivityObserver implements SettingsFragment.OnFragment
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
             fragmentTransaction.add(R.id.fragment_container_settings, settFragment );
-            try {
-                fragmentTransaction.commit();
-            }catch(Exception e){e.printStackTrace();}
+            fragmentTransaction.commit();
         }
     }
 
@@ -66,7 +65,12 @@ public class UI5 extends ActivityObserver implements SettingsFragment.OnFragment
     }
 
     @Override
-    public void onFragmentInteraction(Uri uri) {
-        //TODO: implementa l'interazione con i fragment
+    public void onVoiceSelected(SettingListItem s) {
+        if(s.title.equalsIgnoreCase(getString(R.string.title_alarm)))
+        { 
+            TimePickerFragment timepick= new TimePickerFragment();
+            timepick.show(getFragmentManager(), "TimePicker");
+        }
+
     }
 }
