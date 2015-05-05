@@ -2,12 +2,11 @@ package org.tbw.FemurShield;
 
 import android.app.AlertDialog;
 import android.content.Context;
-import android.util.TypedValue;
 import android.view.LayoutInflater;
-import android.view.View; 
+import android.view.View;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
-import android.widget.SeekBar; 
+import android.widget.SeekBar;
 
 /**
  * Created by Marco on 04/05/2015.
@@ -65,8 +64,6 @@ public class SliderDialog extends AlertDialog implements OnClickListener{
         mSeekBar = (SeekBar) view.findViewById(R.id.seekBar);
         mSeekBar.setMax(100);
         mSeekBar.setProgress(actualProgress);
-
-        //mTimePicker.setValidationCallback(mValidationCallback);
     }
 
     @Override

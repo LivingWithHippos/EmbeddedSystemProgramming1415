@@ -33,4 +33,6 @@ public class SliderFragment extends DialogFragment implements SliderDialog.OnPro
         editor.putInt("sample_rate", progress);
         editor.commit();
     }
+
+
 }

@@ -18,4 +18,6 @@
     <string name="title_session_duration">Durata Sessione</string>
     <string name="description_session_duration">Decidi quanto deve durare una sessione</string>
     <string name="description_alarm_set_to">Allarme impostato per le</string>
+    <string name="tv_set_duration">Imposta la durata della sessione</string>
+    <string name="et_duration_hint">Immetti un valore tra 1 e 24</string>
 </resources>

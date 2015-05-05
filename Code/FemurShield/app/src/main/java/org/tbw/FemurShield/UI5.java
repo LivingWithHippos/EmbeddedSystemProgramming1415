@@ -9,11 +9,12 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.EditText;
 
 import org.tbw.FemurShield.View.ActivityObserver;
 
 
-public class UI5 extends ActivityObserver implements SettingsFragment.OnFragmentInteractionListener,TimePickerFragment.OnAlarmChangedListener{
+public class UI5 extends ActivityObserver implements SettingsFragment.OnFragmentInteractionListener,TimePickerFragment.OnAlarmChangedListener,DurationFragment.OnDurationChangedListener{
 
     private SharedPreferences prefs;
 
@@ -80,6 +81,11 @@ public class UI5 extends ActivityObserver implements SettingsFragment.OnFragment
             SliderFragment slider=new SliderFragment();
             slider.show(getFragmentManager(),"SampleRatePicker");
         }
+        if(s.title.equalsIgnoreCase(getString(R.string.title_session_duration)))
+        {
+            DurationFragment duration=new DurationFragment();
+            duration.show(getFragmentManager(),"DurationPicker");
+        }
 
     }
 
@@ -96,5 +102,13 @@ public class UI5 extends ActivityObserver implements SettingsFragment.OnFragment
         if(articleFrag!=null)
             articleFrag.updateAlarmTime(hourOfDay,minute);
         // TODO: impostare la sveglia con l'orario salvato
+    }
+
+    @Override
+    public void onDurationChanged(int newDuration) {
+
+        prefs=getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putInt("session_duration", newDuration);
     }
 }
