@@ -17,4 +17,5 @@
     <string name="description_email_recipient">Tutti gli indirizzi che riceveranno una email in caso di emergenza</string>
     <string name="title_session_duration">Durata Sessione</string>
     <string name="description_session_duration">Decidi quanto deve durare una sessione</string>
+    <string name="description_alarm_set_to">Allarme impostato per le</string>
 </resources>

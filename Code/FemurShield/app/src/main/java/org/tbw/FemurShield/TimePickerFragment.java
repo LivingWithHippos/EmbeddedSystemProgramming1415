@@ -1,5 +1,6 @@
 package org.tbw.FemurShield;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.app.TimePickerDialog;
@@ -16,6 +17,7 @@ public class TimePickerFragment extends DialogFragment
         implements TimePickerDialog.OnTimeSetListener {
 
     private SharedPreferences prefs;
+    private OnAlarmChangedListener mCallback;
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -29,13 +31,27 @@ public class TimePickerFragment extends DialogFragment
                 DateFormat.is24HourFormat(getActivity()));
     }
 
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+
+        // This makes sure that the container activity has implemented
+        // the callback interface. If not, it throws an exception
+        try {
+            mCallback = (OnAlarmChangedListener) activity;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(activity.toString()
+                    + " must implement OnAlarmChangedListener");
+        }
+    }
+
     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-        prefs=getActivity().getPreferences(Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = prefs.edit();
-        editor.putInt("alarm_hour", hourOfDay);
-        editor.putInt("alarm_minute", minute);
-        editor.commit();
-        // TODO aggiornare la descrizione della sveglia
-        // TODO: impostare la sveglia con l'orario salvato
+
+        mCallback.OnAlarmChanged(hourOfDay, minute);
+    }
+
+    public interface OnAlarmChangedListener{
+
+        public void OnAlarmChanged(int hourOfDay, int minute);
     }
 }

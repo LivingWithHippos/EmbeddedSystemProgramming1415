@@ -2,6 +2,8 @@ package org.tbw.FemurShield;
 
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -11,7 +13,9 @@ import android.view.MenuItem;
 import org.tbw.FemurShield.View.ActivityObserver;
 
 
-public class UI5 extends ActivityObserver implements SettingsFragment.OnFragmentInteractionListener{
+public class UI5 extends ActivityObserver implements SettingsFragment.OnFragmentInteractionListener,TimePickerFragment.OnAlarmChangedListener{
+
+    private SharedPreferences prefs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,7 +40,7 @@ public class UI5 extends ActivityObserver implements SettingsFragment.OnFragment
             FragmentManager fragmentManager = getFragmentManager();
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
-            fragmentTransaction.add(R.id.fragment_container_settings, settFragment );
+            fragmentTransaction.add(R.id.fragment_container_settings, settFragment ,"mSettingsFragment");
             fragmentTransaction.commit();
         }
     }
@@ -77,5 +81,20 @@ public class UI5 extends ActivityObserver implements SettingsFragment.OnFragment
             slider.show(getFragmentManager(),"SampleRatePicker");
         }
 
+    }
+
+    @Override
+    public void OnAlarmChanged(int hourOfDay, int minute) {
+        // salva l'orario selezionato
+        prefs=getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putInt("alarm_hour", hourOfDay);
+        editor.putInt("alarm_minute", minute);
+        editor.commit();
+        //aggiorna l'orario mostrato nella descrizione
+        SettingsFragment articleFrag = (SettingsFragment)getFragmentManager().findFragmentById(R.id.fragment_container_settings);
+        if(articleFrag!=null)
+            articleFrag.updateAlarmTime(hourOfDay,minute);
+        // TODO: impostare la sveglia con l'orario salvato
     }
 }

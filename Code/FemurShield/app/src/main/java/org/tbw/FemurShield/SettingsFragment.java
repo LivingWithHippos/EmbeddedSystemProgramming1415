@@ -8,11 +8,13 @@ import android.content.res.Resources;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,6 +30,7 @@ public class SettingsFragment extends ListFragment {
     private List<SettingListItem> mItems;
     private SharedPreferences prefs;
     private OnFragmentInteractionListener mListener;
+    private SettingListAdapter mAdapter;
 
     /**
      * Use this factory method to create a new instance of
@@ -73,11 +76,14 @@ public class SettingsFragment extends ListFragment {
                 getString(R.string.description_email_recipient)));
         int hour=prefs.getInt("alarm_hour",9);
         int minute=prefs.getInt("alarm_minute", 0);
+        //per stampare i numeri nel formato 05:07 invece di 5:7
+        DecimalFormat formatter=new DecimalFormat("00");
         mItems.add(new SettingListItem(resources.getDrawable(R.drawable.alarm),
                 getString(R.string.title_alarm),
-                "Sveglia impostata per le "+hour+":"+minute));
+                "Sveglia impostata per le "+formatter.format(hour)+":"+formatter.format(minute)));
         //imposto l'adapter
-        setListAdapter(new SettingListAdapter(getActivity(), mItems));
+        mAdapter=new SettingListAdapter(getActivity(), mItems);
+        setListAdapter(mAdapter);
     }
 
     @Override
@@ -120,6 +126,22 @@ public class SettingsFragment extends ListFragment {
             mListener.onVoiceSelected(item);
     }
 
+    public void updateAlarmTime(int hour,int minute)
+    {
+        for(SettingListItem s:mItems)
+        {
+            if(s.title.equalsIgnoreCase(getString(R.string.title_alarm)))
+            {
+
+                //per stampare i numeri nel formato 05:07 invece di 5:7
+                DecimalFormat formatter=new DecimalFormat("00");
+                // aggiorna l'ora dell'allarme da mostrare nella descrizione
+                s.setDescription(getString(R.string.description_alarm_set_to)+" " + formatter.format(hour)+":"+formatter.format(minute));
+                // dice alla lista di aggiornarsi dopo il cambiamento
+                mAdapter.notifyDataSetChanged();
+            }
+        }
+    }
     /**
      * This interface must be implemented by activities that contain this
      * fragment to allow an interaction in this fragment to be communicated
