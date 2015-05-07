@@ -4,16 +4,17 @@ import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.EditText;
 
 import org.tbw.FemurShield.View.ActivityObserver;
 
-
+/*
+* UI5 e' l'activity che gestisce le impostazioni, contiene il fragment fragment_settings
+* e gestisce il callback dei vari fragment che rappresentano le voci del menu impostazioni
+* TODO: gestire la modalità landscape e tablet, gestire i vari stati (onPause(), etc), gestire lista email destinatari
+* */
 public class UI5 extends ActivityObserver implements SettingsFragment.OnFragmentInteractionListener,TimePickerFragment.OnAlarmChangedListener,DurationFragment.OnDurationChangedListener{
 
     private SharedPreferences prefs;
@@ -32,12 +33,13 @@ public class UI5 extends ActivityObserver implements SettingsFragment.OnFragment
                 return;
             }
 
-            // Creo il mio fragment
+            // Creo il mio fragment principale
             SettingsFragment settFragment = new SettingsFragment();
 
             // passo gli eventuali argomenti al fragment
             settFragment .setArguments(getIntent().getExtras());
 
+            // carico il gestore di fragment e mostro il fragment
             FragmentManager fragmentManager = getFragmentManager();
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
@@ -69,6 +71,11 @@ public class UI5 extends ActivityObserver implements SettingsFragment.OnFragment
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+    * @param s La voce del menu selezionata.
+    * Questa funzione attivata tramite callback identifica l'elemento selezionato
+    * nel menu principale delle impostazioni e lancia l'interfaccia corrispondente
+    */
     @Override
     public void onVoiceSelected(SettingListItem s) {
         if(s.title.equalsIgnoreCase(getString(R.string.title_alarm)))
@@ -89,6 +96,23 @@ public class UI5 extends ActivityObserver implements SettingsFragment.OnFragment
 
     }
 
+    /**
+     * @param newDuration indica la nuova durata massima della sessione scelta.
+     * Questa è l'implementazione dell'interfaccia di callback dichirata nel DurationFragment
+     */
+    @Override
+    public void onDurationChanged(int newDuration) {
+
+        prefs=getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putInt("session_duration", newDuration);
+    }
+
+    /**
+    *  @param hourOfDay indica l'ora selezionata nel Time Picker per l'allarme
+    *  @param minute indica il minuto selezionata nel Time Picker per l'allarme
+    *  Implementazione dell'interfaccia di callback dichiarata in TimePickerFragment
+    */
     @Override
     public void OnAlarmChanged(int hourOfDay, int minute) {
         // salva l'orario selezionato
@@ -102,13 +126,5 @@ public class UI5 extends ActivityObserver implements SettingsFragment.OnFragment
         if(articleFrag!=null)
             articleFrag.updateAlarmTime(hourOfDay,minute);
         // TODO: impostare la sveglia con l'orario salvato
-    }
-
-    @Override
-    public void onDurationChanged(int newDuration) {
-
-        prefs=getPreferences(Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = prefs.edit();
-        editor.putInt("session_duration", newDuration);
     }
 }

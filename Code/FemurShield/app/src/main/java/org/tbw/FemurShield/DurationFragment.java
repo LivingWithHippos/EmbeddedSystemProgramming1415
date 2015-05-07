@@ -18,19 +18,24 @@ import android.text.InputType;
 
 /**
  * Created by Marco on 05/05/2015.
+ * Questa classe gestisce l'interfaccia in cui l'utente immette la durata massima della sessione
  */
 public class DurationFragment extends DialogFragment implements DialogInterface.OnClickListener{
 
+    //per salvare e caricare i dati
     private SharedPreferences prefs;
+    //L'EditText su cui verra' inserita la durata
     private EditText mEditText;
+    // oggetto per il meccanismo di calback
     private OnDurationChangedListener mCallback;
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 
+        //classe per creare ALert Dialog, ci applico il tema di sistema
         AlertDialog.Builder alert = new AlertDialog.Builder(getActivity(),R.style.AppDialogTheme);
         alert.setTitle("Durata Sessione");
-        //alert.setView(R.layout.duration_picker_dialog);
+        // modifico le proprieta' dell'EditText
         mEditText = new EditText(getActivity());
         mEditText.setInputType(InputType.TYPE_CLASS_NUMBER);
         mEditText.setMaxLines(1);
@@ -43,7 +48,9 @@ public class DurationFragment extends DialogFragment implements DialogInterface.
         return alert.create();
     }
 
-    //Callback
+    /**
+     * @param which il tasto premuto (ok o cancella)
+     * con onClick comunico tramite callback all'attivita' che l'utente ha premuto ok*/
     @Override
     public void onClick(DialogInterface dialog, int which) {
         switch (which) {
@@ -69,12 +76,11 @@ public class DurationFragment extends DialogFragment implements DialogInterface.
         }
     }
 
+    /* Questo metodo controlla che l'attivita' abbia implementato l'interfaccia per il callback*/
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
 
-        // This makes sure that the container activity has implemented
-        // the callback interface. If not, it throws an exception
         try {
             mCallback = (OnDurationChangedListener) activity;
         } catch (ClassCastException e) {
@@ -83,6 +89,7 @@ public class DurationFragment extends DialogFragment implements DialogInterface.
         }
     }
 
+    //metodo che converte da pixel a dp
     private int convertDpToPx(int dp, View view) {
         DisplayMetrics dm = view.getResources().getDisplayMetrics();
         float pixels = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, dm);
@@ -95,7 +102,7 @@ public class DurationFragment extends DialogFragment implements DialogInterface.
     public interface OnDurationChangedListener {
 
         /**
-         * @param newDuration The view associated with this listener.
+         * @param newDuration la durata massima delle sessioni scelta.
          */
         void onDurationChanged(int newDuration);
     }

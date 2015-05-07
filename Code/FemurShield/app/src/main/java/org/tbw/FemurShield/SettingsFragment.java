@@ -20,10 +20,9 @@ import java.util.List;
 
 
 /**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link SettingsFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
+ * Classe Fragment che implementa l'interfaccia
+ * {@link SettingsFragment.OnFragmentInteractionListener}
+ * che gestisce l'interazione con le voci della lista.
  */
 public class SettingsFragment extends ListFragment {
 
@@ -56,7 +55,8 @@ public class SettingsFragment extends ListFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // inizializzo la lista di elementi
+
+
         mItems = new ArrayList<SettingListItem>();
         //mi serve per ottenere le icone
         Resources resources = getResources();
@@ -152,8 +152,7 @@ public class SettingsFragment extends ListFragment {
      * "http://developer.android.com/training/basics/fragments/communicating.html"
      * >Communicating with Other Fragments</a> for more information.
      */
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
+    public interface OnFragmentInteractionListener { 
         public void onVoiceSelected(SettingListItem s);
     }
 
