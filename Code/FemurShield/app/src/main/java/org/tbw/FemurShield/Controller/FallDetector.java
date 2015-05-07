@@ -29,8 +29,8 @@ public class FallDetector extends IntentService /*Observable*/ {
         //notifico il controller che è stata rilevata una caduta e la gestirà.
 
         float[][] beforefall=null;//TODO assign
-        float[][] beforefall=null;//TODO assign
-        float[][] beforefall=null;//TODO assign
+        float[][] falldata=null;//TODO assign
+        float[][] afterfall=null;//TODO assign
         controller.handleFallEvent(new Fall(beforefall,falldata,afterfall));
     }
 }
