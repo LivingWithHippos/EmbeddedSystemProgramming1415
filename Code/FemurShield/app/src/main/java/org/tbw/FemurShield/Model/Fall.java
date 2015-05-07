@@ -5,6 +5,7 @@ import java.util.Map;
 
 /**
  * Created by Moro on 30/04/15.
+ * Edited by Vianello 
  */
 public class Fall {
     private static int i=0;
@@ -23,6 +24,7 @@ public class Fall {
     private float[][] valuesAfterFall= new float[3][];
 
     public Fall(float[][] beforeValues, float[][] FallValues, float[][] afterValues){
+
         id=i++;
 
         valuesBeforeFall=beforeValues;
