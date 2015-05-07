@@ -25,6 +25,8 @@ class ActiveSessionImpl extends SessionImpl implements ActiveSession{
     @Override
     public boolean AddFall(Fall fall) {
         //TODO
+        cadute.add(fall);
+        super.notifyObservers();
         return false;
     }
 

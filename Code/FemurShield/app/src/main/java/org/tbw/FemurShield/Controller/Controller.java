@@ -6,6 +6,7 @@ import java.util.Observable;
 import java.util.Observer;
 
 import org.tbw.FemurShield.Model.ActiveSession;
+import org.tbw.FemurShield.Model.Fall;
 import org.tbw.FemurShield.Model.Session;
 import org.tbw.FemurShield.Model.SessionManager;
 
@@ -48,5 +49,9 @@ public class Controller implements Observer{
 
     public FallDetector getDetector(){
         return detector;
+    }
+
+    protected void handleFallEvent(Fall fall){
+        SM.getActiveSession().AddFall(fall);
     }
 }

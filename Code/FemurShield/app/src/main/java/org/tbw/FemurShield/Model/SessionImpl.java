@@ -5,11 +5,12 @@ import android.util.Log;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Observable;
 
 /**
  * Created by Moro on 30/04/15.
  */
-public class SessionImpl implements Session{
+public class SessionImpl extends Observable implements Session{
     protected ArrayList<Fall> cadute;
     protected int secondduration=0;
     protected SignatureImpl signature;
