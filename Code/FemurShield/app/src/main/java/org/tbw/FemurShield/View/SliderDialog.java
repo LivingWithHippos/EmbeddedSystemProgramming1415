@@ -1,4 +1,4 @@
-package org.tbw.FemurShield;
+package org.tbw.FemurShield.View;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -7,6 +7,8 @@ import android.view.View;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.widget.SeekBar;
+
+import org.tbw.FemurShield.R;
 
 /**
  * Created by Marco on 04/05/2015.

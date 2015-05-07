@@ -1,18 +1,17 @@
-package org.tbw.FemurShield;
+package org.tbw.FemurShield.View;
 
 import android.app.Activity;
 import android.app.ListFragment;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
-import android.net.Uri;
 import android.os.Bundle;
-import android.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+
+import org.tbw.FemurShield.R;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;

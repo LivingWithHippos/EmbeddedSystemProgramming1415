@@ -1,4 +1,4 @@
-package org.tbw.FemurShield;
+package org.tbw.FemurShield.View;
 
 import android.app.Activity;
 import android.app.Dialog;
@@ -9,6 +9,8 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.format.DateFormat;
 import android.widget.TimePicker;
+
+import org.tbw.FemurShield.R;
 
 /**
  * Created by Marco on 03/05/2015.
@@ -27,7 +29,7 @@ public class TimePickerFragment extends DialogFragment
         int hour=prefs.getInt("alarm_hour",9);
         int minute=prefs.getInt("alarm_minute",0);
         // Create a new instance of TimePickerDialog and return it
-        return new TimePickerDialog(getActivity(),R.style.AppDialogTheme, this, hour, minute,
+        return new TimePickerDialog(getActivity(), R.style.AppDialogTheme, this, hour, minute,
                 DateFormat.is24HourFormat(getActivity()));
     }
 

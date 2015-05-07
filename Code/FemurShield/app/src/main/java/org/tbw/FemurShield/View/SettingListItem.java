@@ -1,4 +1,4 @@
-package org.tbw.FemurShield;
+package org.tbw.FemurShield.View;
 
 import android.graphics.drawable.Drawable;
 

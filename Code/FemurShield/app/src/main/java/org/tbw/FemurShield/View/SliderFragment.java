@@ -1,4 +1,4 @@
-package org.tbw.FemurShield;
+package org.tbw.FemurShield.View;
 
 import android.app.Dialog;
 import android.app.DialogFragment;
@@ -6,6 +6,8 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.SeekBar;
+
+import org.tbw.FemurShield.R;
 
 /**
  * Created by Marco on 04/05/2015.
@@ -23,7 +25,7 @@ public class SliderFragment extends DialogFragment implements SliderDialog.OnPro
         //carico i valori precedenti o imposto a meta
         //TODO vedere quale e un valore di default adatto
         int progress=prefs.getInt("sample_rate",50);
-        return new SliderDialog(getActivity(),R.style.AppDialogTheme,this,progress);
+        return new SliderDialog(getActivity(), R.style.AppDialogTheme,this,progress);
     }
 
     @Override

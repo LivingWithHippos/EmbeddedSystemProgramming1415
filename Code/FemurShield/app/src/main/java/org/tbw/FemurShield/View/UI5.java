@@ -1,4 +1,4 @@
-package org.tbw.FemurShield;
+package org.tbw.FemurShield.View;
 
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
@@ -8,12 +8,12 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import org.tbw.FemurShield.View.ActivityObserver;
+import org.tbw.FemurShield.R;
 
 /*
 * UI5 e' l'activity che gestisce le impostazioni, contiene il fragment fragment_settings
 * e gestisce il callback dei vari fragment che rappresentano le voci del menu impostazioni
-* TODO: gestire la modalità landscape e tablet, gestire i vari stati (onPause(), etc), gestire lista email destinatari
+* TODO: gestire la modalitï¿½ landscape e tablet, gestire i vari stati (onPause(), etc), gestire lista email destinatari
 * */
 public class UI5 extends ActivityObserver implements SettingsFragment.OnFragmentInteractionListener,TimePickerFragment.OnAlarmChangedListener,DurationFragment.OnDurationChangedListener{
 
@@ -98,7 +98,7 @@ public class UI5 extends ActivityObserver implements SettingsFragment.OnFragment
 
     /**
      * @param newDuration indica la nuova durata massima della sessione scelta.
-     * Questa è l'implementazione dell'interfaccia di callback dichirata nel DurationFragment
+     * Questa ï¿½ l'implementazione dell'interfaccia di callback dichirata nel DurationFragment
      */
     @Override
     public void onDurationChanged(int newDuration) {

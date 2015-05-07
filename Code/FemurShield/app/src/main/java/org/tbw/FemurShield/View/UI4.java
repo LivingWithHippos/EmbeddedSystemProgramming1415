@@ -1,9 +1,10 @@
-package org.tbw.FemurShield;
+package org.tbw.FemurShield.View;
 
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import org.tbw.FemurShield.R;
 import org.tbw.FemurShield.View.ActivityObserver;
 
 

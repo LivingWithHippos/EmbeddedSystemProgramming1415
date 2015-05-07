@@ -1,18 +1,10 @@
-package org.tbw.FemurShield;
+package org.tbw.FemurShield.View;
 
-import android.content.Context;
 import android.content.Intent;
-import android.graphics.Canvas;
-import android.graphics.ColorFilter;
-import android.graphics.Path;
-import android.graphics.drawable.Drawable;
-import android.media.Image;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
@@ -21,7 +13,7 @@ import org.tbw.FemurShield.Model.ActiveSession;
 import org.tbw.FemurShield.Model.OldSession;
 import org.tbw.FemurShield.Model.Session;
 import org.tbw.FemurShield.Model.SessionManager;
-import org.tbw.FemurShield.View.ActivityObserver;
+import org.tbw.FemurShield.R;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -33,7 +25,8 @@ public class UI1 extends ActivityObserver {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ui1);
-
+        //aggiorno la listView
+        AggiornaLista();
     }
 
 

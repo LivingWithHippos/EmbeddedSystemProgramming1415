@@ -1,4 +1,4 @@
-package org.tbw.FemurShield;
+package org.tbw.FemurShield.View;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -15,6 +15,8 @@ import android.util.TypedValue;
 import android.view.View;
 import android.widget.EditText;
 import android.text.InputType;
+
+import org.tbw.FemurShield.R;
 
 /**
  * Created by Marco on 05/05/2015.
@@ -33,7 +35,7 @@ public class DurationFragment extends DialogFragment implements DialogInterface.
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 
         //classe per creare ALert Dialog, ci applico il tema di sistema
-        AlertDialog.Builder alert = new AlertDialog.Builder(getActivity(),R.style.AppDialogTheme);
+        AlertDialog.Builder alert = new AlertDialog.Builder(getActivity(), R.style.AppDialogTheme);
         alert.setTitle("Durata Sessione");
         // modifico le proprieta' dell'EditText
         mEditText = new EditText(getActivity());
