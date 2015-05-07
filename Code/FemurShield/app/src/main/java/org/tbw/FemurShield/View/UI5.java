@@ -15,7 +15,7 @@ import org.tbw.FemurShield.R;
 * e gestisce il callback dei vari fragment che rappresentano le voci del menu impostazioni
 * TODO: gestire la modalit� landscape e tablet, gestire i vari stati (onPause(), etc), gestire lista email destinatari
 * */
-public class UI5 extends ActivityObserver implements SettingsFragment.OnFragmentInteractionListener,TimePickerFragment.OnAlarmChangedListener,DurationFragment.OnDurationChangedListener{
+public class UI5 extends BaseActivity implements SettingsFragment.OnFragmentInteractionListener,TimePickerFragment.OnAlarmChangedListener,DurationFragment.OnDurationChangedListener{
 
     private SharedPreferences prefs;
 
@@ -106,6 +106,7 @@ public class UI5 extends ActivityObserver implements SettingsFragment.OnFragment
         prefs=getPreferences(Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
         editor.putInt("session_duration", newDuration);
+        editor.commit();
     }
 
     /**

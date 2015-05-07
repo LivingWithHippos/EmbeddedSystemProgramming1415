@@ -36,6 +36,9 @@ public class SessionImpl implements Session{
     }
 
     @Override
+    public void setName(String sessionname) { name=sessionname;}
+
+    @Override
     public String getDataTime() {
         return datetime;
     }

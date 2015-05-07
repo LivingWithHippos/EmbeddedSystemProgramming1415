@@ -1,4 +1,4 @@
-package Controller;
+package org.tbw.FemurShield.Controller;
 
 /**
  * Created by Moro on 02/05/15.

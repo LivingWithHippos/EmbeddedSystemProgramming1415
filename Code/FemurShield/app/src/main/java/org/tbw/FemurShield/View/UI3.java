@@ -6,10 +6,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import org.tbw.FemurShield.R;
-import org.tbw.FemurShield.View.ActivityObserver;
+
+import java.util.Observable;
+import java.util.Observer;
 
 
-public class UI3 extends ActivityObserver {
+public class UI3 extends BaseActivity implements Observer {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,5 +40,10 @@ public class UI3 extends ActivityObserver {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void update(Observable observable, Object data) {
+        //aggiornare la UI in base ai vallori ricevuti TODO
     }
 }

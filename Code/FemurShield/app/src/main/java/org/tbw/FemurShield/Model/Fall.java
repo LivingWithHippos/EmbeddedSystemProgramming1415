@@ -7,21 +7,24 @@ import java.util.Map;
  * Created by Moro on 30/04/15.
  */
 public class Fall {
-
-    public final int FALL_LATITUDE=0;
-    public final int FALL_LONGITUDE=1;
-    public final int X_INDEX=0;
-    public final int Y_INDEX=1;
-    public final int Z_INDEX=2;
+    private static int i=0;
+    private int id;
+    public static final int FALL_LATITUDE=0;
+    public static final int FALL_LONGITUDE=1;
+    public static final int X_INDEX=0;
+    public static final int Y_INDEX=1;
+    public static final int Z_INDEX=2;
 
     private double[] position=new double[2];
 
-    private boolean segnalato=false;;
+    private boolean segnalato=false;
     private float[][] valuesBeforeFall= new float[3][];
     private float[][] valuesFall= new float[3][];
     private float[][] valuesAfterFall= new float[3][];
 
     public Fall(float[][] beforeValues, float[][] FallValues, float[][] afterValues){
+        id=i++;
+
         valuesBeforeFall=beforeValues;
         valuesFall=FallValues;
         valuesAfterFall=afterValues;

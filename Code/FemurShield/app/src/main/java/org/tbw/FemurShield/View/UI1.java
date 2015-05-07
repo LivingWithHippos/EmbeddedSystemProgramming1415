@@ -1,5 +1,6 @@
 package org.tbw.FemurShield.View;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -19,7 +20,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 
-public class UI1 extends ActivityObserver {
+public class UI1 extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

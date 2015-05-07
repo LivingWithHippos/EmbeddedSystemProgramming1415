@@ -5,10 +5,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import org.tbw.FemurShield.R;
-import org.tbw.FemurShield.View.ActivityObserver;
 
 
-public class UI2 extends ActivityObserver {
+public class UI2 extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
