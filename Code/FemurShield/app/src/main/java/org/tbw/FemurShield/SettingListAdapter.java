@@ -13,7 +13,7 @@ import java.util.List;
 
 /**
  * Created by Marco on 04/05/2015.
- * per gestire gli elementi della lista impostazioni
+ * adapter per gestire gli elementi della lista impostazioni
  */
 public class SettingListAdapter extends ArrayAdapter {
 
@@ -21,6 +21,7 @@ public class SettingListAdapter extends ArrayAdapter {
         super(context, R.layout.settings_list_item, items);
     }
 
+    // uso il pattern view holder che mi permette di evitare di richiamare spesso findViewById
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder viewHolder;
