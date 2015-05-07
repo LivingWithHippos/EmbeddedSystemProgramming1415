@@ -4,7 +4,9 @@ import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -15,7 +17,7 @@ import org.tbw.FemurShield.R;
 * e gestisce il callback dei vari fragment che rappresentano le voci del menu impostazioni
 * TODO: gestire la modalit� landscape e tablet, gestire i vari stati (onPause(), etc), gestire lista email destinatari
 * */
-public class UI5 extends BaseActivity implements SettingsFragment.OnFragmentInteractionListener,TimePickerFragment.OnAlarmChangedListener,DurationFragment.OnDurationChangedListener{
+public class UI5 extends BaseActivity implements SettingsFragment.OnFragmentInteractionListener,TimePickerFragment.OnAlarmChangedListener,DurationFragment.OnDurationChangedListener,EmailFragment.OnEmailItemClickedListener{
 
     private SharedPreferences prefs;
 
@@ -93,6 +95,19 @@ public class UI5 extends BaseActivity implements SettingsFragment.OnFragmentInte
             DurationFragment duration=new DurationFragment();
             duration.show(getFragmentManager(),"DurationPicker");
         }
+        if(s.title.equalsIgnoreCase(getString(R.string.title_email_recipient)))
+        {
+            EmailFragment emailFragment=new EmailFragment();
+            FragmentTransaction transaction = getFragmentManager().beginTransaction();
+
+            // Replace whatever is in the fragment_container view with this fragment,
+            // and add the transaction to the back stack so the user can navigate back
+            transaction.replace(R.id.fragment_container_settings, emailFragment);
+            transaction.addToBackStack(null);
+
+            // Commit the transaction
+            transaction.commit();
+        }
 
     }
 
@@ -127,5 +142,11 @@ public class UI5 extends BaseActivity implements SettingsFragment.OnFragmentInte
         if(articleFrag!=null)
             articleFrag.updateAlarmTime(hourOfDay,minute);
         // TODO: impostare la sveglia con l'orario salvato
+    }
+
+    @Override
+    public void onEmailItemClicked(EmailListItem e) {
+        Log.d("FemureShield","Cliccato su "+e.name+" "+e.address);
+
     }
 }

@@ -20,4 +20,8 @@
     <string name="description_alarm_set_to">Allarme impostato per le</string>
     <string name="tv_set_duration">Imposta la durata della sessione</string>
     <string name="et_duration_hint">Immetti un valore tra 1 e 24</string>
+
+<!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="email_list">email_users_list</string>
 </resources>

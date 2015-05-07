@@ -54,8 +54,6 @@ public class SettingsFragment extends ListFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-
-
         mItems = new ArrayList<SettingListItem>();
         //mi serve per ottenere le icone
         Resources resources = getResources();

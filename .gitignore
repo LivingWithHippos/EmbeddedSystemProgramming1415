@@ -13,3 +13,5 @@ Other/ESP Class Diagram.png.bak
 Code/FemurShield/.idea/*
 Code/FemurShield/app/src/androidTest/*
 *.iml
+Code/FemurShield/.idea/gradle.xml
+*.iml
