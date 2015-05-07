@@ -10,6 +10,5 @@ ehthumbs.db
 Thumbs.db
 Other/ESP Class Diagram.png.bak 
 
-Code/FemurShield/.idea/misc.xml
-
-Code/FemurShield/.idea/.name
+Code/FemurShield/.idea/*
+Code/FemurShield/app/src/androidTest/*
