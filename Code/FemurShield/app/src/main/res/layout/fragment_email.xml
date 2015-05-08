@@ -20,7 +20,8 @@
         android:layout_gravity="end|bottom"
         android:layout_marginBottom="@dimen/button_email_margin"
         android:layout_marginEnd="@dimen/button_email_margin"
-        android:elevation="4dp"
+        android:elevation="@dimen/email_button_height_normal"
+        android:stateListAnimator="@anim/email_button_pressing"
         android:background="@drawable/plus_round_button"/>
 
 
