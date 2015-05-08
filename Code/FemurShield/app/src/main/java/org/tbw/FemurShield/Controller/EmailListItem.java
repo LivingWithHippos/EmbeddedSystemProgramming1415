@@ -1,4 +1,4 @@
-package org.tbw.FemurShield.View;
+package org.tbw.FemurShield.Controller;
 
 /**
  * Created by Marco on 07/05/2015.

@@ -1,4 +1,4 @@
-package org.tbw.FemurShield.View;
+package org.tbw.FemurShield.Controller;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -13,12 +13,13 @@ import org.tbw.FemurShield.R;
 import java.util.List;
 
 /**
- * Created by Marco on 07/05/2015.
+ * Created by Marco on 04/05/2015.
+ * adapter per gestire gli elementi della lista impostazioni
  */
-public class EmailListAdapter extends ArrayAdapter {
+public class SettingListAdapter extends ArrayAdapter {
 
-    public EmailListAdapter(Context context, List<EmailListItem> items) {
-        super(context, R.layout.email_list_item, items);
+    public SettingListAdapter(Context context, List<SettingListItem> items) {
+        super(context, R.layout.settings_list_item, items);
     }
 
     // uso il pattern view holder che mi permette di evitare di richiamare spesso findViewById
@@ -29,12 +30,13 @@ public class EmailListAdapter extends ArrayAdapter {
         if(convertView == null) {
             // inflate the GridView item layout
             LayoutInflater inflater = LayoutInflater.from(getContext());
-            convertView = inflater.inflate(R.layout.email_list_item, parent, false);
+            convertView = inflater.inflate(R.layout.settings_list_item, parent, false);
 
             // initialize the view holder
             viewHolder = new ViewHolder();
-            viewHolder.tvName = (TextView) convertView.findViewById(R.id.tvEmailItemName);
-            viewHolder.tvAddress = (TextView) convertView.findViewById(R.id.tvEmailItemAddress);
+            viewHolder.ivIcon = (ImageView) convertView.findViewById(R.id.ivSettingItemIcon);
+            viewHolder.tvTitle = (TextView) convertView.findViewById(R.id.tvSettingItemTitle);
+            viewHolder.tvDescription = (TextView) convertView.findViewById(R.id.tvSettingItemDescription);
             convertView.setTag(viewHolder);
         } else {
             // recycle the already inflated view
@@ -42,9 +44,10 @@ public class EmailListAdapter extends ArrayAdapter {
         }
 
         // update the item view
-        EmailListItem item =(EmailListItem) getItem(position);
-        viewHolder.tvName.setText(item.name);
-        viewHolder.tvAddress.setText(item.address);
+        SettingListItem item =(SettingListItem) getItem(position);
+        viewHolder.ivIcon.setImageDrawable(item.icon);
+        viewHolder.tvTitle.setText(item.title);
+        viewHolder.tvDescription.setText(item.description);
 
         return convertView;
     }
@@ -56,7 +59,8 @@ public class EmailListAdapter extends ArrayAdapter {
      * vedi http://developer.android.com/training/improving-layouts/smooth-scrolling.html#ViewHolder
      */
     private static class ViewHolder {
-        TextView tvName;
-        TextView tvAddress;
+        ImageView ivIcon;
+        TextView tvTitle;
+        TextView tvDescription;
     }
 }

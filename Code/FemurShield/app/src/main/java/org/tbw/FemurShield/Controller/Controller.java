@@ -1,6 +1,7 @@
 package org.tbw.FemurShield.Controller;
 
-import android.util.Log;
+import android.app.Application;
+import android.content.Intent;
 
 import java.util.Observable;
 import java.util.Observer;
@@ -13,45 +14,30 @@ import org.tbw.FemurShield.Model.SessionManager;
 /**
  * Created by Moro on 02/05/15.
  */
-public class Controller implements Observer{
-    SessionManager SM;
-    FallDetector detector;
+class Controller {
 
-    @Override
-    public void update(Observable observable, Object data) {
-
-    }
-
-    public Controller(){
-        SM=SessionManager.getInstance();
-    }
-
-    public Session CreateSession(){
-        ActiveSession active=SM.getActiveSession();
+    protected static Session CreateSession(){
+        ActiveSession active=SessionManager.getInstance().getActiveSession();
         if(active==null)
-            return SM.createNewActiveSession();
+            return SessionManager.getInstance().createNewActiveSession();
         else
             return null; //TODO: sollevare errore magari;
 
     }
 
-    public void StartSession(){
-        SM.StartSession();
+    protected static void StartSession(/*Context c*/){ //avere il context ci permette di avere il contesto da passare all'intent del service
+        SessionManager.getInstance().StartSession();
     }
 
-    public void PauseSession(){
-        SM.PauseSession();
+    protected static void PauseSession(){
+        SessionManager.getInstance().PauseSession();
     }
 
-    public void StopSession(){
-        SM.StopSession();
+    protected static void StopSession(){
+        SessionManager.getInstance().StopSession();
     }
 
-    public FallDetector getDetector(){
-        return detector;
-    }
-
-    protected void handleFallEvent(Fall fall){
-        SM.getActiveSession().AddFall(fall);
+    protected static void handleFallEvent(Fall fall){
+        SessionManager.getInstance().getActiveSession().AddFall(fall);
     }
 }

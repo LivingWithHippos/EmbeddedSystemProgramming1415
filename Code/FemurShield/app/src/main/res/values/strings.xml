@@ -21,6 +21,6 @@
     <string name="tv_set_duration">Imposta la durata della sessione</string>
     <string name="et_duration_hint">Inserisci un valore tra 1 e 24</string>
     <string name="et_email_name_hint">Inserisci il nome del destinatario</string>
-    <string name="et_email_address_hint">Inserisci l'indirizzo del destinatario</string>
+    <string name="et_email_address_hint">Inserisci l\'indirizzo del destinatario</string>
     <string name="email_list">email_users_list</string>
 </resources>

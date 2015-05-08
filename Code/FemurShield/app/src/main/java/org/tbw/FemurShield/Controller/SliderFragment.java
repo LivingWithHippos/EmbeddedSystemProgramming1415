@@ -1,4 +1,4 @@
-package org.tbw.FemurShield.View;
+package org.tbw.FemurShield.Controller;
 
 import android.app.Dialog;
 import android.app.DialogFragment;

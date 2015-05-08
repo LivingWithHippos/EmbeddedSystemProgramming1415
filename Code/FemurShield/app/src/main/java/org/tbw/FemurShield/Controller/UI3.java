@@ -1,6 +1,7 @@
-package org.tbw.FemurShield.View;
+package org.tbw.FemurShield.Controller;
 
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -11,7 +12,7 @@ import java.util.Observable;
 import java.util.Observer;
 
 
-public class UI3 extends BaseActivity implements Observer {
+public class UI3 extends Activity implements Observer {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

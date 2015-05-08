@@ -1,4 +1,4 @@
-package org.tbw.FemurShield.View;
+package org.tbw.FemurShield.Controller;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -20,7 +20,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 
-public class UI1 extends BaseActivity {
+public class UI1 extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,14 +54,9 @@ public class UI1 extends BaseActivity {
 
     public void onRecClick(View view){
         //TODO: business logic
-        Session sessione=controller.CreateSession();
-        controller.StartSession();
+        Session sessione=Controller.CreateSession();
 
-        //modifo le visibilità dei bottoni di controllo
-        ((ImageView)findViewById(R.id.recbtnun1)).setVisibility(ImageView.INVISIBLE);
-        ((ImageView)findViewById(R.id.pausebtnui1)).setVisibility(ImageView.VISIBLE);
-        ((ImageView)findViewById(R.id.stopbntui1)).setVisibility(ImageView.VISIBLE);
-        ((ImageView)findViewById(R.id.startbtnui1)).setVisibility(ImageView.INVISIBLE);
+        onPlayClick(view);
 
         //aggiorno la listView
         AggiornaLista();
@@ -69,7 +64,7 @@ public class UI1 extends BaseActivity {
 
     public void onPauseClick(View view){
         //TODO: business logic
-        controller.PauseSession();
+        Controller.PauseSession();
 
         //modifo le visibilità dei bottoni di controllo
         ((ImageView)findViewById(R.id.recbtnun1)).setVisibility(ImageView.INVISIBLE);
@@ -77,11 +72,13 @@ public class UI1 extends BaseActivity {
         ((ImageView)findViewById(R.id.stopbntui1)).setVisibility(ImageView.VISIBLE);
         ((ImageView)findViewById(R.id.startbtnui1)).setVisibility(ImageView.VISIBLE);
 
+        Intent i=new Intent(getApplicationContext(), FallDetector.class);
+        stopService(i);
     }
 
     public void onPlayClick(View view){
         //TODO: business logic
-        //controller.StartSession();
+        Controller.StartSession();
 
         //modifo le visibilità dei bottoni di controllo
         ((ImageView)findViewById(R.id.recbtnun1)).setVisibility(ImageView.INVISIBLE);
@@ -89,17 +86,22 @@ public class UI1 extends BaseActivity {
         ((ImageView)findViewById(R.id.stopbntui1)).setVisibility(ImageView.VISIBLE);
         ((ImageView)findViewById(R.id.startbtnui1)).setVisibility(ImageView.INVISIBLE);
 
+        Intent i=new Intent(getApplicationContext(), FallDetector.class);
+        startService(i);
     }
 
     public void onStopClick(View view){
         //TODO: business logic
-        controller.StopSession();
+        Controller.StopSession();
 
         //modifo le visibilità dei bottoni di controllo
         ((ImageView)findViewById(R.id.recbtnun1)).setVisibility(ImageView.VISIBLE);
         ((ImageView)findViewById(R.id.pausebtnui1)).setVisibility(ImageView.INVISIBLE);
         ((ImageView)findViewById(R.id.stopbntui1)).setVisibility(ImageView.INVISIBLE);
         ((ImageView)findViewById(R.id.startbtnui1)).setVisibility(ImageView.INVISIBLE);
+
+        Intent i=new Intent(getBaseContext(), FallDetector.class);
+        stopService(i);
 
         //aggiorno la listView
         AggiornaLista();

@@ -1,5 +1,6 @@
-package org.tbw.FemurShield.View;
+package org.tbw.FemurShield.Controller;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -7,7 +8,7 @@ import android.view.MenuItem;
 import org.tbw.FemurShield.R;
 
 
-public class UI4 extends BaseActivity {
+public class UI4 extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
