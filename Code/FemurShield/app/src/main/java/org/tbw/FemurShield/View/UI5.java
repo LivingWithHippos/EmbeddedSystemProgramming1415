@@ -17,7 +17,7 @@ import org.tbw.FemurShield.R;
 * e gestisce il callback dei vari fragment che rappresentano le voci del menu impostazioni
 * TODO: gestire la modalit� landscape e tablet, gestire i vari stati (onPause(), etc), gestire lista email destinatari
 * */
-public class UI5 extends BaseActivity implements SettingsFragment.OnFragmentInteractionListener,TimePickerFragment.OnAlarmChangedListener,DurationFragment.OnDurationChangedListener,EmailFragment.OnEmailItemClickedListener{
+public class UI5 extends BaseActivity implements SettingsFragment.OnFragmentInteractionListener,TimePickerFragment.OnAlarmChangedListener,DurationFragment.OnDurationChangedListener,EmailFragment.OnEmailItemClickedListener,EmailFragment.OnAddEmailButtonClickListener{
 
     private SharedPreferences prefs;
 
@@ -146,7 +146,13 @@ public class UI5 extends BaseActivity implements SettingsFragment.OnFragmentInte
 
     @Override
     public void onEmailItemClicked(EmailListItem e) {
+        // TODO aggiungere rinomina e cancella email
         Log.d("FemureShield","Cliccato su "+e.name+" "+e.address);
+
+    }
+
+    @Override
+    public void OnAddEmailButtonClick() {
 
     }
 }

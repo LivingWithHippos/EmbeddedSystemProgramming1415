@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ListView;
 
 import org.tbw.FemurShield.R;
@@ -29,13 +30,15 @@ import java.util.Set;
  * Use the {@link EmailFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class EmailFragment extends ListFragment {
+public class EmailFragment extends ListFragment implements Button.OnClickListener {
 
 
     private List<EmailListItem> mItems;
     private OnEmailItemClickedListener mCallback;
+    private OnAddEmailButtonClickListener aEmailCallback;
     private SharedPreferences prefs;
     private EmailListAdapter mAdapter;
+    private Button addEmail;
 
 
     /**
@@ -78,7 +81,8 @@ public class EmailFragment extends ListFragment {
         //imposto l'adapter
         mAdapter=new EmailListAdapter(getActivity(), mItems);
         setListAdapter(mAdapter);
-
+        addEmail=(Button)getActivity().findViewById(R.id.add_email_button);
+        addEmail.setOnClickListener(this);
     }
 
 
@@ -99,12 +103,19 @@ public class EmailFragment extends ListFragment {
             throw new ClassCastException(activity.toString()
                     + " must implement onEmailItemClickedListener");
         }
+        try {
+            aEmailCallback = (OnAddEmailButtonClickListener) activity;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(activity.toString()
+                    + " must implement OnAddEmailButtonClickListener");
+        }
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
         mCallback = null;
+        aEmailCallback=null;
     }
 
     public String[] getEmailData()
@@ -134,6 +145,11 @@ public class EmailFragment extends ListFragment {
         mCallback.onEmailItemClicked(e);
     }
 
+    @Override
+    public void onClick(View v) {
+        aEmailCallback.OnAddEmailButtonClick();
+    }
+
     /**
      * This interface must be implemented by activities that contain this
      * fragment to allow an interaction in this fragment to be communicated
@@ -145,8 +161,13 @@ public class EmailFragment extends ListFragment {
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnEmailItemClickedListener {
-        // TODO: Update argument type and name
+
         public void onEmailItemClicked(EmailListItem e);
+    }
+
+    public interface OnAddEmailButtonClickListener {
+
+        public void OnAddEmailButtonClick();
     }
 
 

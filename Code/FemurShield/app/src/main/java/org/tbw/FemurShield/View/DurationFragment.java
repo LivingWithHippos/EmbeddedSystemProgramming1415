@@ -42,8 +42,9 @@ public class DurationFragment extends DialogFragment implements DialogInterface.
         mEditText.setInputType(InputType.TYPE_CLASS_NUMBER);
         mEditText.setMaxLines(1);
         mEditText.setHint(getString(R.string.et_duration_hint));
-        mEditText.setFilters(new InputFilter[] { new InputFilter.LengthFilter(2)});
-        mEditText.setPadding(convertDpToPx(10, mEditText), convertDpToPx(10, mEditText), convertDpToPx(10,mEditText), convertDpToPx(10,mEditText));
+        mEditText.setFilters(new InputFilter[]{new InputFilter.LengthFilter(2)});
+        int etPadding=convertDpToPx(10, mEditText);
+        mEditText.setPadding(etPadding,etPadding,etPadding,etPadding);
         alert.setView(mEditText);
         alert.setPositiveButton(getString(R.string.ok), this);
         alert.setNegativeButton(getString(R.string.cancel), this);
