@@ -14,7 +14,7 @@ import org.tbw.FemurShield.Model.SessionManager;
 /**
  * Created by Moro on 02/05/15.
  */
-class Controller {
+abstract class Controller {
 
     protected static Session CreateSession(){
         ActiveSession active=SessionManager.getInstance().getActiveSession();

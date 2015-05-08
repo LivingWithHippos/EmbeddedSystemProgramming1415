@@ -15,3 +15,6 @@ Code/FemurShield/app/src/androidTest/*
 *.iml
 Code/FemurShield/.idea/gradle.xml
 *.iml
+*.iml
+
+Code/FemurShield/.idea/gradle.xml
