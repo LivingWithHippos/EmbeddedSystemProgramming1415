@@ -13,6 +13,7 @@
         android:id="@+id/add_email_button"
         android:text="+"
         android:textSize="@dimen/email_button_text_size"
+        android:textStyle="bold"
         android:textColor="#fff"
         android:layout_width="@dimen/round_button_diameter"
         android:layout_height="@dimen/round_button_diameter"
