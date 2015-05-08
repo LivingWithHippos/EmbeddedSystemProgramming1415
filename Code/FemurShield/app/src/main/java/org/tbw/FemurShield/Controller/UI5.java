@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.EditText;
 
 import org.tbw.FemurShield.R;
 
@@ -17,7 +18,7 @@ import org.tbw.FemurShield.R;
 * e gestisce il callback dei vari fragment che rappresentano le voci del menu impostazioni
 * TODO: gestire la modalit� landscape e tablet, gestire i vari stati (onPause(), etc), gestire lista email destinatari
 * */
-public class UI5 extends Activity implements SettingsFragment.OnFragmentInteractionListener,TimePickerFragment.OnAlarmChangedListener,DurationFragment.OnDurationChangedListener,EmailFragment.OnEmailItemClickedListener,EmailFragment.OnAddEmailButtonClickListener{
+public class UI5 extends Activity implements SettingsFragment.OnFragmentInteractionListener,TimePickerFragment.OnAlarmChangedListener,DurationFragment.OnDurationChangedListener,EmailFragment.OnEmailItemClickedListener,EmailFragment.OnAddEmailButtonClickListener,AddEmailDialog.OnUserInsertedListener{
 
     private SharedPreferences prefs;
 
@@ -152,7 +153,16 @@ public class UI5 extends Activity implements SettingsFragment.OnFragmentInteract
     }
 
     @Override
-    public void OnAddEmailButtonClick() {
+    public void onAddEmailButtonClick() {
+        AddEmailFragment emailFragment=new AddEmailFragment();
+        emailFragment.show(getFragmentManager(),"Add User Dialog");
+    }
 
+    @Override
+    public void onUserInserted(EditText nome, EditText indirizzo) {
+
+        String n=nome.getText().toString();
+        String i=indirizzo.getText().toString();
+        Log.d("FemurShield","Roba salvata: "+n+i);
     }
 }

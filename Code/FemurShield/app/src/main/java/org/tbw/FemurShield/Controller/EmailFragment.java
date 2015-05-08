@@ -75,12 +75,10 @@ public class EmailFragment extends ListFragment implements Button.OnClickListene
                 Log.d("FemurShield", email[i]);
             }
         mItems.add(new EmailListItem("ciao@emiall.it","mama"));
-        mItems.add(new EmailListItem("asdsd@asd.it","papa"));
+        mItems.add(new EmailListItem("asdsd@asd.it", "papa"));
         //imposto l'adapter
         mAdapter=new EmailListAdapter(getActivity(), mItems);
         setListAdapter(mAdapter);
-        addEmail=(Button)getActivity().findViewById(R.id.add_email_button);
-        addEmail.setOnClickListener(this);
     }
 
 
@@ -88,7 +86,11 @@ public class EmailFragment extends ListFragment implements Button.OnClickListene
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_email, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_email, container,false);
+        addEmail=(Button)rootView.findViewById(R.id.add_email_button);
+        addEmail.setOnClickListener(this);
+
+        return rootView;
     }
 
 
@@ -145,7 +147,7 @@ public class EmailFragment extends ListFragment implements Button.OnClickListene
 
     @Override
     public void onClick(View v) {
-        aEmailCallback.OnAddEmailButtonClick();
+        aEmailCallback.onAddEmailButtonClick();
     }
 
     /**
@@ -165,7 +167,7 @@ public class EmailFragment extends ListFragment implements Button.OnClickListene
 
     public interface OnAddEmailButtonClickListener {
 
-        public void OnAddEmailButtonClick();
+        public void onAddEmailButtonClick();
     }
 
 
