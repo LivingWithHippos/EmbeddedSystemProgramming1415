@@ -9,4 +9,21 @@
         android:layout_weight="1" >
     </ListView>
 
+    <Button
+        android:id="@+id/add_email_button"
+        android:text="+"
+        android:textSize="@dimen/email_button_text_size"
+        android:textColor="#fff"
+        android:layout_width="@dimen/round_button_diameter"
+        android:layout_height="@dimen/round_button_diameter"
+        android:layout_gravity="end|bottom"
+        android:layout_marginBottom="@dimen/button_email_margin"
+        android:layout_marginEnd="@dimen/button_email_margin"
+        android:elevation="4dp"
+        android:background="@drawable/plus_round_button"/>
+
+
+
+
+
 </FrameLayout>
