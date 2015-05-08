@@ -12,6 +12,7 @@ import android.text.InputFilter;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.TypedValue;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 import android.text.InputType;
@@ -37,15 +38,10 @@ public class DurationFragment extends DialogFragment implements DialogInterface.
         //classe per creare ALert Dialog, ci applico il tema di sistema
         AlertDialog.Builder alert = new AlertDialog.Builder(getActivity(), R.style.AppDialogTheme);
         alert.setTitle("Durata Sessione");
-        // modifico le proprieta' dell'EditText
-        mEditText = new EditText(getActivity());
-        mEditText.setInputType(InputType.TYPE_CLASS_NUMBER);
-        mEditText.setMaxLines(1);
-        mEditText.setHint(getString(R.string.et_duration_hint));
-        mEditText.setFilters(new InputFilter[]{new InputFilter.LengthFilter(2)});
-        int etPadding=convertDpToPx(10, mEditText);
-        mEditText.setPadding(etPadding,etPadding,etPadding,etPadding);
-        alert.setView(mEditText);
+        final Context themeContext = getActivity();
+        final LayoutInflater inflater = LayoutInflater.from(themeContext);
+        final View view = inflater.inflate(R.layout.fragment_duration_picker, null);
+        alert.setView(view);
         alert.setPositiveButton(getString(R.string.ok), this);
         alert.setNegativeButton(getString(R.string.cancel), this);
         return alert.create();
@@ -59,6 +55,7 @@ public class DurationFragment extends DialogFragment implements DialogInterface.
         switch (which) {
             case DialogInterface.BUTTON_POSITIVE:
                 if (mCallback != null) {
+                    mEditText=(EditText)getDialog().findViewById(R.id.etDuration);
                     String temp=mEditText.getText().toString();
                     if(temp!=null) {
                         int duration=getActivity().getPreferences(Context.MODE_PRIVATE).getInt("session_duration",12);

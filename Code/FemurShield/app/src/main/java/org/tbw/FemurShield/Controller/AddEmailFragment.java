@@ -23,7 +23,7 @@ import org.tbw.FemurShield.R;
 /**
  * Created by Marco on 08/05/2015.
  */
-public class AddEmailFragment extends DialogFragment implements AddEmailDialog.OnClickListener{
+public class AddEmailFragment extends DialogFragment{
 
     private AddEmailDialog.OnUserInsertedListener mCallback;
 
@@ -33,10 +33,5 @@ public class AddEmailFragment extends DialogFragment implements AddEmailDialog.O
         return new AddEmailDialog(getActivity(),R.style.AppDialogTheme,mCallback);
     }
 
-
-    @Override
-    public void onClick(DialogInterface dialog, int which) {
-        //TODO aggiungi listener ok
-    }
 
 }
