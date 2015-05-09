@@ -5,7 +5,7 @@ import java.util.Map;
 
 /**
  * Created by Moro on 30/04/15.
- * Edited by Vianello 
+ * Edited by Vianello
  */
 public class Fall {
     private static int i=0;
@@ -58,4 +58,6 @@ public class Fall {
     public float[][] GetFallValues(){
         return valuesFall;
     }
+
+    public int getId() { return id; }
 }
