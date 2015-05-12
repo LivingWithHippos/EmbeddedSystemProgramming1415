@@ -102,8 +102,7 @@ public class UI5 extends Activity implements SettingsFragment.OnFragmentInteract
             EmailFragment emailFragment=new EmailFragment();
             FragmentTransaction transaction = getFragmentManager().beginTransaction();
 
-            // Replace whatever is in the fragment_container view with this fragment,
-            // and add the transaction to the back stack so the user can navigate back
+            // rimpiazza il fragment attuale e lo aggiunge allo stack in modo che premendo indietro ricompaia
             transaction.replace(R.id.fragment_container_settings, emailFragment);
             transaction.addToBackStack(null);
 
