@@ -1,5 +1,11 @@
 package org.tbw.FemurShield.Model;
 
+import android.content.Context;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
+import android.os.Bundle;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -23,7 +29,10 @@ public class Fall {
     private float[][] valuesFall= new float[3][];
     private float[][] valuesAfterFall= new float[3][];
 
-    public Fall(float[][] beforeValues, float[][] FallValues, float[][] afterValues){
+    private Context cont;
+
+    public Fall(float[][] beforeValues, float[][] FallValues, float[][] afterValues, Context contx)
+    {
 
         id=i++;
 
@@ -31,8 +40,9 @@ public class Fall {
         valuesFall=FallValues;
         valuesAfterFall=afterValues;
 
-        position[FALL_LATITUDE]= 0.00;      //TODO: usare LOCATEMANAGER (vedi Criteria) per inizializzare la posizione
-        position[FALL_LONGITUDE] = 0.00;    //TODO: usare LOCATEMANAGER (vedi Criteria) per inizializzare la posizione
+        cont = contx;
+
+        setPostion();
     }
 
     public double[] getPosition(){
@@ -60,4 +70,52 @@ public class Fall {
     }
 
     public int getId() { return id; }
+
+    private void setPostion()//serve per inizializzare i valori di position usando locationmanager
+    {
+        Location loc;
+        LocationManager lm = (LocationManager) cont.getSystemService(Context.LOCATION_SERVICE);
+
+        LocationListener ll = new LocationListener() // non mi interessa implementare i metodi in quanto mi serve solo location
+        {
+            @Override
+            public void onLocationChanged(Location location) {
+
+            }
+
+            @Override
+            public void onStatusChanged(String provider, int status, Bundle extras) {
+
+            }
+
+            @Override
+            public void onProviderEnabled(String provider) {
+
+            }
+
+            @Override
+            public void onProviderDisabled(String provider) {
+
+            }
+        };
+
+        String p = "";
+
+        if(lm.isProviderEnabled(LocationManager.GPS_PROVIDER)) //verifica se il GPS attivo e sceglie il provider
+        {
+            p = LocationManager.GPS_PROVIDER;
+        }
+        else if(lm.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) //idem con il network
+        {
+            p = LocationManager.NETWORK_PROVIDER;
+        }
+
+        lm.requestSingleUpdate(p, ll, null); // chiede una lettura dal listener
+        loc = lm.getLastKnownLocation(p); //chiede la location della ultima lettura
+
+        position[FALL_LATITUDE] = loc.getLatitude(); // leggo la latuditine e la metto in position
+        position[FALL_LONGITUDE] = loc.getLongitude(); // idem con la longitudine
+
+        lm.removeUpdates(ll);
+    }
 }
