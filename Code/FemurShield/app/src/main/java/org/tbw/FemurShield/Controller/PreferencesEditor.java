@@ -49,7 +49,8 @@ public class PreferencesEditor {
     {
         HashMap<String,String> mails=null;
         try {
-            FileInputStream fileInputStream = new FileInputStream("emails.dat");
+            File file=new File(activity.getFilesDir(),"emails.dat");
+            FileInputStream fileInputStream = new FileInputStream(file);
 
             ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
             mails = (HashMap) objectInputStream.readObject();
@@ -64,7 +65,7 @@ public class PreferencesEditor {
     {
         try{
 
-            File file=new File("emails.dat");
+            File file=new File(activity.getFilesDir(),"emails.dat");
             return file.delete();
         }catch (Exception e){
             Log.e("FemurShield","Errore Di cancellazione email: "+e.getMessage());}
@@ -83,17 +84,17 @@ public class PreferencesEditor {
             newEmail.putAll(oldEmail);
         }
         else
-        {
             newEmail=new HashMap<>(1);
-        }
+
 
         newEmail.put(indirizzo,nome);
-        File file=new File("emails.dat");
+        File file=new File(activity.getFilesDir(),"emails.dat");
         try {
             ObjectOutputStream outputStream = new ObjectOutputStream(new FileOutputStream(file));
             outputStream.writeObject(newEmail);
             outputStream.flush();
             outputStream.close();
+            Log.d("FemurShield","File email Scritto correttamente");
         }catch (Exception e){Log.e("FemurShield","Errore aggiunta contatto email : "+e.getMessage());result=false;}
         return result;
     }

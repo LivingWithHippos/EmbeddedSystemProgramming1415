@@ -140,9 +140,9 @@ public class UI5 extends Activity implements SettingsFragment.OnFragmentInteract
         editor.putInt("alarm_minute", minute);
         editor.commit();
         //aggiorna l'orario mostrato nella descrizione
-        SettingsFragment articleFrag = (SettingsFragment)getFragmentManager().findFragmentById(R.id.fragment_container_settings);
-        if(articleFrag!=null)
-            articleFrag.updateAlarmTime(hourOfDay,minute);
+        SettingsFragment alarmFrag = (SettingsFragment)getFragmentManager().findFragmentById(R.id.fragment_container_settings);
+        if(alarmFrag!=null)
+            alarmFrag.updateAlarmTime(hourOfDay,minute);
         // TODO: impostare la sveglia con l'orario salvato
     }
 
@@ -162,29 +162,17 @@ public class UI5 extends Activity implements SettingsFragment.OnFragmentInteract
     @Override
     public void onUserInserted(EditText nome, EditText indirizzo) {
 
-        String n=nome.getText().toString().trim().replaceAll("\n"," ");
-        String i=indirizzo.getText().toString().trim().replaceAll("\n", "");
-        String regex="[\\w]+@[\\w]+\\.(com|it|net)";
-        if(i.matches(regex))
+        if(nome!=null&indirizzo!=null)
         {
-            SharedPreferences prefs = getPreferences(MODE_PRIVATE);
-            SharedPreferences.Editor editor = prefs.edit();
-
-            Set<String> email = prefs.getStringSet("email_user_pairs", null);
-            HashSet<String> newEmail = new HashSet<>();
-            //modificare direttamente il set caricato dalle impostazioni da errori, vedi documentazione
-            //copio tutti gli elementi in un nuovo set
-            if (email != null) {
-                for (String temp : email)
-                    newEmail.add(temp);
+            String n=nome.getText().toString().trim();
+            String i=indirizzo.getText().toString().trim();
+            String regex="[\\w]+@[\\w]+\\.(com|it|net)";
+            if(i.matches(regex))
+            {
+                PreferencesEditor prefs=new PreferencesEditor(this);
+                prefs.addEmail(n,i);
             }
-            //copio la nuova email nel set
-            newEmail.add(i + "\n" + n);
-            //salvo il set
-            editor.putStringSet("email_user_pairs",newEmail);
-            editor.commit();
-
-            Log.d("FemurShield", "Roba salvata: " + n + i);
+            else{Log.d("FemurShield","Sintassi email errata");}
         }
     }
 }

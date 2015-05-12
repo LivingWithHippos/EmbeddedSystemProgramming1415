@@ -17,6 +17,8 @@ import android.widget.ListView;
 import org.tbw.FemurShield.R;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -37,6 +39,7 @@ public class EmailFragment extends ListFragment implements Button.OnClickListene
     private SharedPreferences prefs;
     private EmailListAdapter mAdapter;
     private Button addEmail;
+    private HashMap<String,String> emailContacts;
 
 
     /**
@@ -59,31 +62,31 @@ public class EmailFragment extends ListFragment implements Button.OnClickListene
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        initializeList();
+    }
 
-        mItems = new ArrayList<EmailListItem>();
-        // prefs serve a caricare le impostazioni salvate
-        prefs=getActivity().getPreferences(Context.MODE_PRIVATE);
-        //aggiungo le voci alla lista
-        String[] email=getEmailData();
-        if(email!=null)
-            for(int i=0;i<email.length;i++)
-            {
-                Log.d("FemurShield",email[i]);
-                mItems.add(new EmailListItem(email[i++], email[i]));
-                Log.d("FemurShield", email[i]);
-            }
-        mItems.add(new EmailListItem("ciao@emiall.it","mama"));
-        mItems.add(new EmailListItem("asdsd@asd.it", "papa"));
+    private void initializeList()
+    {
+        mItems=new ArrayList<>();
+        emailContacts=new PreferencesEditor(getActivity()).getEmail();
+        if (emailContacts!=null)
+        {
+            for(HashMap.Entry<String,String> pair:emailContacts.entrySet())
+                mItems.add(new EmailListItem(pair.getKey(),pair.getValue()));
+        }
+        else
+        {
+            mItems.add(new EmailListItem("dummy@email.it","dummy"));
+        }
         //imposto l'adapter
         mAdapter=new EmailListAdapter(getActivity(), mItems);
         setListAdapter(mAdapter);
     }
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+        // Mi serve per il findViewByID
         View rootView = inflater.inflate(R.layout.fragment_email, container,false);
         addEmail=(Button)rootView.findViewById(R.id.add_email_button);
         addEmail.setOnClickListener(this);
@@ -116,25 +119,15 @@ public class EmailFragment extends ListFragment implements Button.OnClickListene
         aEmailCallback=null;
     }
 
-    public String[] getEmailData()
+
+
+    public void updateEmailList()
     {
-        SharedPreferences prefs=getActivity().getPreferences(Context.MODE_PRIVATE);
-        Set<String> mySet=prefs.getStringSet(getString(R.string.email_list),null);
-        String[] emailData=null;
-        if(mySet!=null)
-        {
-            int index=0;
-            emailData=new String[mySet.size()*2];
-            for(String s:mySet)
-            {
-                String userData[]=s.split("\n",2);
-                Log.d("Femurshield","dimensione array: "+userData.length);
-                emailData[index++]=userData[0];
-                emailData[index++]=userData[1];
-            }
-        }
-        return emailData;
+        if(mAdapter!=null)
+            mAdapter.notifyDataSetChanged();
+
     }
+
 
 
     @Override
