@@ -10,8 +10,9 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
-
 import org.tbw.FemurShield.R;
+import java.util.HashSet;
+import java.util.Set;
 
 /*
 * UI5 e' l'activity che gestisce le impostazioni, contiene il fragment fragment_settings
@@ -161,8 +162,29 @@ public class UI5 extends Activity implements SettingsFragment.OnFragmentInteract
     @Override
     public void onUserInserted(EditText nome, EditText indirizzo) {
 
-        String n=nome.getText().toString();
-        String i=indirizzo.getText().toString();
-        Log.d("FemurShield","Roba salvata: "+n+i);
+        String n=nome.getText().toString().trim().replaceAll("\n"," ");
+        String i=indirizzo.getText().toString().trim().replaceAll("\n", "");
+        String regex="[\\w]+@[\\w]+\\.(com|it|net)";
+        if(i.matches(regex))
+        {
+            SharedPreferences prefs = getPreferences(MODE_PRIVATE);
+            SharedPreferences.Editor editor = prefs.edit();
+
+            Set<String> email = prefs.getStringSet("email_user_pairs", null);
+            HashSet<String> newEmail = new HashSet<>();
+            //modificare direttamente il set caricato dalle impostazioni da errori, vedi documentazione
+            //copio tutti gli elementi in un nuovo set
+            if (email != null) {
+                for (String temp : email)
+                    newEmail.add(temp);
+            }
+            //copio la nuova email nel set
+            newEmail.add(i + "\n" + n);
+            //salvo il set
+            editor.putStringSet("email_user_pairs",newEmail);
+            editor.commit();
+
+            Log.d("FemurShield", "Roba salvata: " + n + i);
+        }
     }
 }
