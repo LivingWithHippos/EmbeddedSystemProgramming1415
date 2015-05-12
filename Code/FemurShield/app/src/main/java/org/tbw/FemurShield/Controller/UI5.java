@@ -41,7 +41,7 @@ public class UI5 extends Activity implements SettingsFragment.OnFragmentInteract
             SettingsFragment settFragment = new SettingsFragment();
 
             // passo gli eventuali argomenti al fragment
-            settFragment .setArguments(getIntent().getExtras());
+            //settFragment .setArguments(getIntent().getExtras());
 
             // carico il gestore di fragment e mostro il fragment
             FragmentManager fragmentManager = getFragmentManager();
@@ -156,7 +156,7 @@ public class UI5 extends Activity implements SettingsFragment.OnFragmentInteract
     @Override
     public void onAddEmailButtonClick() {
         AddEmailFragment emailFragment=new AddEmailFragment();
-        emailFragment.show(getFragmentManager(),"Add User Dialog");
+        emailFragment.show(getFragmentManager(),"Add Contact Dialog");
     }
 
     @Override
@@ -170,7 +170,10 @@ public class UI5 extends Activity implements SettingsFragment.OnFragmentInteract
             if(i.matches(regex))
             {
                 PreferencesEditor prefs=new PreferencesEditor(this);
-                prefs.addEmail(n,i);
+                prefs.addEmail(n, i);
+                //aggiorna la lista email 
+                EmailFragment ef=(EmailFragment)getFragmentManager().findFragmentById(R.id.fragment_container_settings);
+                ef.addAndUpdateContact(n, i);
             }
             else{Log.d("FemurShield","Sintassi email errata");}
         }

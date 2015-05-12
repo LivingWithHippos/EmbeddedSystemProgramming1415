@@ -121,10 +121,11 @@ public class EmailFragment extends ListFragment implements Button.OnClickListene
 
 
 
-    public void updateEmailList()
+    public void addAndUpdateContact(String nome, String indirizzo)
     {
-        if(mAdapter!=null)
-            mAdapter.notifyDataSetChanged();
+        if(mAdapter!=null){
+            mAdapter.add(new EmailListItem(indirizzo,nome));
+            mAdapter.notifyDataSetChanged();}
 
     }
 
