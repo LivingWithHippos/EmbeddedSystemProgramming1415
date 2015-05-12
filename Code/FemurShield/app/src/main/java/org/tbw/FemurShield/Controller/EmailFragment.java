@@ -61,8 +61,6 @@ public class EmailFragment extends ListFragment implements Button.OnClickListene
 
 
         mItems = new ArrayList<EmailListItem>();
-        //mi serve per ottenere le icone
-        Resources resources = getResources();
         // prefs serve a caricare le impostazioni salvate
         prefs=getActivity().getPreferences(Context.MODE_PRIVATE);
         //aggiungo le voci alla lista
