@@ -4,11 +4,31 @@ package org.tbw.FemurShield.Controller;
  * Created by Vianello on 09/05/15. in Editing
  */
 
+import android.app.Service;
+import android.content.Intent;
+import android.os.IBinder;
+
 import org.tbw.FemurShield.Model.Fall;
 
-public class MultiEmailSender {
+public class MultiEmailSender extends Service {
 
-    public MultiEmailSender(){
+    private String[] adresses;
+
+    @Override
+    public void onCreate() 
+    {
+        adresses = null; // recupera gli indirizzi per la mail TODO
+    }
+
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId)  // per far partire il service e avvia metodo sendEmail TODO
+    {
+    }
+
+    @Override
+    public IBinder onBind(Intent intent)
+    {
+        return null;
     }
 
     public void sendEmail(Fall caduta){
@@ -20,27 +40,21 @@ public class MultiEmailSender {
         int num = caduta.getId();
         String nome = "nomeUtente"; // è il nome di chi cade, magari inserire una opzione nelle settings per impostarlo
 
-        // trasforma i valori in string
-        String latitudine = ""+lat;
-        String longitudine = ""+lon;
-        String numero = ""+num;
+        // crea il testo mail
+        String Testo = "avvenuta caduta di "+nome+", numero: "+num+",in latiudine: "+lat+",e in longitudine: "+lon+".";
 
-        // apre un template della mail e lo mette in una stringa per ediatrlo (da finire)
-        String Mail = "NUMERO DATA LATITUDINE LONGITUDINE";
-
-        // inserisco i valori nei campi del testo (cioè parole in maiuscolo del template)
-        Mail.replace("NOME","nome");
-        Mail.replace("NUMERO","numero");
-        Mail.replace("DATA","data");
-        Mail.replace("LATITUDINE","latitudine");
-        Mail.replace("LONGITUDINE","longitudine");
-
-        //compone la mail con destinatari, oggetto e testo
+        //compone la mail con oggetto, destinatari in CCn e testo
+        Intent email = new Intent(Intent.ACTION_SEND_MULTIPLE);
+        email.putExtra(Intent.EXTRA_SUBJECT, "(noreply) - FREMUR SHIELD Notification");
+        email.putExtra(Intent.EXTRA_BCC, adresses);
+        email.putExtra(Intent.EXTRA_TEXT, Testo);
+        email.setType("message/rfc822");
 
         //invia le mail
 
         // imposta come segnalata la caduta
         caduta.setReported();
     }
+
 
 }
