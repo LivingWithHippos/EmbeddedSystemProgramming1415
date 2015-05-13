@@ -1,8 +1,12 @@
 package org.tbw.FemurShield.Controller;
 
+
 import android.app.AlertDialog;
+import android.app.Dialog;
+import android.app.DialogFragment;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
@@ -12,34 +16,36 @@ import org.tbw.FemurShield.R;
 /**
  * Created by Marco on 08/05/2015.
  */
-public class AddEmailDialog extends AlertDialog implements DialogInterface.OnClickListener {
+public class AddContactFragment extends DialogFragment implements DialogInterface.OnClickListener{
 
     private OnUserInsertedListener mCallback;
 
-    protected AddEmailDialog(Context context,int theme,OnUserInsertedListener callback) {
-        super(context,theme);
-        mCallback=callback;
-        final Context themeContext = getContext();
+    @Override
+    public Dialog onCreateDialog(Bundle savedInstanceState) {
+        mCallback=(OnUserInsertedListener)getActivity();
+
+        AlertDialog.Builder alert = new AlertDialog.Builder(getActivity(), R.style.AppDialogTheme);
+        final Context themeContext = getActivity();
         final LayoutInflater inflater = LayoutInflater.from(themeContext);
-        final View view = inflater.inflate(R.layout.fragment_add_email, null);
-        setView(view);
-        setButton(BUTTON_POSITIVE, themeContext.getString(R.string.ok), this);
-        setButton(BUTTON_NEGATIVE, themeContext.getString(R.string.cancel), this);
+        final View view = inflater.inflate(R.layout.fragment_add_contact, null);
+        alert.setView(view);
+        alert.setPositiveButton(getString(R.string.ok), this);
+        alert.setNegativeButton(getString(R.string.cancel), this);
+        return alert.create();
     }
 
     @Override
     public void onClick(DialogInterface dialog, int which) {
         switch (which) {
-            case BUTTON_POSITIVE:
+            case AlertDialog.BUTTON_POSITIVE:
                 if (mCallback != null) {
-                    EditText nome=(EditText)findViewById(R.id.etEmailName);
+                    EditText nome=(EditText)getDialog().findViewById(R.id.etEmailName);
 
-                    EditText indirizzo=(EditText)findViewById(R.id.etEmailAddress);
+                    EditText indirizzo=(EditText)getDialog().findViewById(R.id.etEmailAddress);
                     mCallback.onUserInserted(nome,indirizzo);
                 }
                 break;
         }
-
     }
 
     /**
@@ -53,5 +59,4 @@ public class AddEmailDialog extends AlertDialog implements DialogInterface.OnCli
          */
         void onUserInserted(EditText nome,EditText indirizzo);
     }
-
 }

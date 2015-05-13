@@ -4,38 +4,48 @@
     android:gravity="center"
     android:layout_gravity="center"
     android:layout_width="wrap_content"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:padding="24dp">
+
+
 
     <TextView
+        android:layout_gravity="left"
+        android:paddingBottom="20dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/add_contact_dialog_title"
+        android:id="@+id/tvAddContactTitle"
+        style="@android:style/TextAppearance.Material.DialogWindowTitle" />
+
+    <TextView
+        android:layout_gravity="left"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Nome"
-        android:padding="5dp"
         android:id="@+id/textView2" />
 
     <EditText
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="textPersonName"
         android:maxLines="1"
         android:layout_marginBottom="10dp"
         android:ems="10"
-        android:width="300dp"
         android:id="@+id/etEmailName" />
 
     <TextView
-        android:padding="5dp"
+        android:layout_gravity="left"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Indirizzo"
         android:id="@+id/textView3" />
 
     <EditText
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:maxLines="1"
         android:inputType="textEmailAddress"
         android:ems="10"
-        android:width="300dp"
         android:id="@+id/etEmailAddress" />
 </LinearLayout>
