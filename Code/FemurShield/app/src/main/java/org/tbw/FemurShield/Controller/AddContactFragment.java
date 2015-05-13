@@ -1,6 +1,7 @@
 package org.tbw.FemurShield.Controller;
 
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
@@ -45,6 +46,19 @@ public class AddContactFragment extends DialogFragment implements DialogInterfac
                     mCallback.onUserInserted(nome,indirizzo);
                 }
                 break;
+        }
+    }
+
+    /* Questo metodo controlla che l'attivita' abbia implementato l'interfaccia per il callback*/
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+
+        try {
+            mCallback = (OnUserInsertedListener) activity;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(activity.toString()
+                    + " must implement OnUserInsertedListener");
         }
     }
 
