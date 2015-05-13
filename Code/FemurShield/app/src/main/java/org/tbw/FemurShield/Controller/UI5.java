@@ -11,15 +11,13 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
 import org.tbw.FemurShield.R;
-import java.util.HashSet;
-import java.util.Set;
 
 /*
 * UI5 e' l'activity che gestisce le impostazioni, contiene il fragment fragment_settings
 * e gestisce il callback dei vari fragment che rappresentano le voci del menu impostazioni
 * TODO: gestire la modalit� landscape e tablet, gestire i vari stati (onPause(), etc), gestire lista email destinatari
 * */
-public class UI5 extends Activity implements SettingsFragment.OnFragmentInteractionListener,TimePickerFragment.OnAlarmChangedListener,DurationFragment.OnDurationChangedListener,EmailFragment.OnEmailItemClickedListener,EmailFragment.OnAddEmailButtonClickListener,AddEmailDialog.OnUserInsertedListener{
+public class UI5 extends Activity implements SettingsFragment.OnFragmentInteractionListener,TimePickerFragment.OnAlarmChangedListener,DurationFragment.OnDurationChangedListener,EmailFragment.OnEmailItemClickedListener,EmailFragment.OnAddEmailButtonClickListener,AddContactFragment.OnUserInsertedListener{
 
     private SharedPreferences prefs;
 
@@ -154,7 +152,7 @@ public class UI5 extends Activity implements SettingsFragment.OnFragmentInteract
 
     @Override
     public void onAddEmailButtonClick() {
-        AddEmailFragment emailFragment=new AddEmailFragment();
+        AddContactFragment emailFragment=new AddContactFragment();
         emailFragment.show(getFragmentManager(),"Add Contact Dialog");
     }
 

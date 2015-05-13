@@ -3,22 +3,21 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_gravity="center">
+    android:layout_gravity="center"
+    android:padding="24dp">
 
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Imposta la frequenza di campionamento"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="15dp"
-        android:layout_marginBottom="15dp"
+        android:text="@string/set_sampling_rate_dialog_title"
+        android:paddingBottom="20dp"
+        style="@android:style/TextAppearance.Material.DialogWindowTitle"
         android:id="@+id/textView" />
 
     <SeekBar
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
         android:id="@+id/seekBar" />
 
 

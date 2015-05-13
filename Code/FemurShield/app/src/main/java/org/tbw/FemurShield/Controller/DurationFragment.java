@@ -37,7 +37,6 @@ public class DurationFragment extends DialogFragment implements DialogInterface.
 
         //classe per creare ALert Dialog, ci applico il tema di sistema
         AlertDialog.Builder alert = new AlertDialog.Builder(getActivity(), R.style.AppDialogTheme);
-        alert.setTitle("Durata Sessione");
         final Context themeContext = getActivity();
         final LayoutInflater inflater = LayoutInflater.from(themeContext);
         final View view = inflater.inflate(R.layout.fragment_duration_picker, null);

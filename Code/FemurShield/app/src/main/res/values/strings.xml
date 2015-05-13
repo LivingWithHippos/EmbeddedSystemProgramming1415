@@ -19,8 +19,12 @@
     <string name="description_session_duration">Decidi quanto deve durare una sessione</string>
     <string name="description_alarm_set_to">Allarme impostato per le</string>
     <string name="tv_set_duration">Imposta la durata della sessione</string>
-    <string name="et_duration_hint">Inserisci un valore tra 1 e 24</string>
+    <string name="et_duration_hint">Tra 1 e 24 h</string>
     <string name="et_email_name_hint">Inserisci il nome del destinatario</string>
     <string name="et_email_address_hint">Inserisci l\'indirizzo del destinatario</string>
     <string name="email_list">email_users_list</string>
+    <string name="add_contact_dialog_title">Nuovo Contatto</string>
+    <string name="set_sampling_rate_dialog_title">Frequenza Campionamento</string>
+    <string name="set_session_duration_dialog_title">Durata Sessione</string>
+
 </resources>
