@@ -26,5 +26,7 @@
     <string name="add_contact_dialog_title">Nuovo Contatto</string>
     <string name="set_sampling_rate_dialog_title">Frequenza Campionamento</string>
     <string name="set_session_duration_dialog_title">Durata Sessione</string>
+    <string name="all_sessions_settings">Sessioni</string>
+    <string name="active_session_settings">Sessione Attiva</string>
 
 </resources>

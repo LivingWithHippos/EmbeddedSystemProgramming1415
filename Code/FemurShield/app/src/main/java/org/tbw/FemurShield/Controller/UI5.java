@@ -65,11 +65,12 @@ public class UI5 extends Activity implements SettingsFragment.OnFragmentInteract
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        switch(id)
+        {
+            case R.id.action_all_sessions:return true;
+            case R.id.action_active_session: return true;
         }
-
+        
         return super.onOptionsItemSelected(item);
     }
 
