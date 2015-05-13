@@ -90,7 +90,7 @@ public class UI5 extends Activity implements SettingsFragment.OnFragmentInteract
         }
         if(s.title.equalsIgnoreCase(getString(R.string.title_sample_rate)))
         {
-            SliderFragment slider=new SliderFragment();
+            SampleRatePickerFragment slider=new SampleRatePickerFragment();
             slider.show(getFragmentManager(),"SampleRatePicker");
         }
         if(s.title.equalsIgnoreCase(getString(R.string.title_session_duration)))
