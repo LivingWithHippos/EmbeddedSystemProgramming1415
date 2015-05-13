@@ -2,12 +2,8 @@ package org.tbw.FemurShield.Controller;
 
 import android.app.Activity;
 import android.app.ListFragment;
-import android.content.Context;
-import android.content.SharedPreferences;
-import android.content.res.Resources;
 import android.os.Bundle;
 import android.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,9 +14,7 @@ import org.tbw.FemurShield.R;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -36,7 +30,6 @@ public class EmailFragment extends ListFragment implements Button.OnClickListene
     private List<EmailListItem> mItems;
     private OnEmailItemClickedListener mCallback;
     private OnAddEmailButtonClickListener aEmailCallback;
-    private SharedPreferences prefs;
     private EmailListAdapter mAdapter;
     private Button addEmail;
     private HashMap<String,String> emailContacts;

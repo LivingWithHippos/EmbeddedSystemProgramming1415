@@ -6,16 +6,13 @@ import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.text.InputFilter;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
-import android.text.InputType;
 
 import org.tbw.FemurShield.R;
 
@@ -26,7 +23,7 @@ import org.tbw.FemurShield.R;
 public class DurationFragment extends DialogFragment implements DialogInterface.OnClickListener{
 
     //per salvare e caricare i dati
-    private SharedPreferences prefs;
+    private PreferencesEditor prefs;
     //L'EditText su cui verra' inserita la durata
     private EditText mEditText;
     // oggetto per il meccanismo di calback
@@ -35,6 +32,7 @@ public class DurationFragment extends DialogFragment implements DialogInterface.
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 
+        prefs=new PreferencesEditor(getActivity());
         //classe per creare ALert Dialog, ci applico il tema di sistema
         AlertDialog.Builder alert = new AlertDialog.Builder(getActivity(), R.style.AppDialogTheme);
         final Context themeContext = getActivity();
@@ -57,7 +55,7 @@ public class DurationFragment extends DialogFragment implements DialogInterface.
                     mEditText=(EditText)getDialog().findViewById(R.id.etDuration);
                     String temp=mEditText.getText().toString();
                     if(temp!=null) {
-                        int duration=getActivity().getPreferences(Context.MODE_PRIVATE).getInt("session_duration",12);
+                        int duration=prefs.getSessionDuration();
                         try {
                             duration = Integer.parseInt(temp.trim());
                         }catch(NumberFormatException nfe){

@@ -2,8 +2,6 @@ package org.tbw.FemurShield.Controller;
 
 import android.app.Activity;
 import android.app.ListFragment;
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -26,7 +24,7 @@ import java.util.List;
 public class SettingsFragment extends ListFragment {
 
     private List<SettingListItem> mItems;
-    private SharedPreferences prefs;
+    private PreferencesEditor prefs;
     private OnFragmentInteractionListener mListener;
     private SettingListAdapter mAdapter;
 
@@ -60,7 +58,7 @@ public class SettingsFragment extends ListFragment {
         //TODO: impostare icone di dimensioni diverse a seconda della dimensione dello schermo?
         //TODO: rinominare le descrizioni in modo che mostrino il valore impostato
         // prefs serve a caricare le impostazioni salvate
-        prefs=getActivity().getPreferences(Context.MODE_PRIVATE);
+        prefs=new PreferencesEditor(getActivity());
         //aggiungo le voci alla lista
         mItems.add(new SettingListItem(resources.getDrawable(R.drawable.frequency),
                 getString(R.string.title_sample_rate),
@@ -71,8 +69,8 @@ public class SettingsFragment extends ListFragment {
         mItems.add(new SettingListItem(resources.getDrawable(R.drawable.email),
                 getString(R.string.title_email_recipient),
                 getString(R.string.description_email_recipient)));
-        int hour=prefs.getInt("alarm_hour",9);
-        int minute=prefs.getInt("alarm_minute", 0);
+        int hour=prefs.getAlarmHour();
+        int minute=prefs.getAlarmMinute();
         //per stampare i numeri nel formato 05:07 invece di 5:7
         DecimalFormat formatter=new DecimalFormat("00");
         mItems.add(new SettingListItem(resources.getDrawable(R.drawable.alarm),

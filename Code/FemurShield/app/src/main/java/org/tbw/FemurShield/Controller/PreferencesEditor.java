@@ -23,27 +23,47 @@ public class PreferencesEditor {
     private Activity activity;
 
     public PreferencesEditor(Activity a)
-    {activity=a;}
+    {
+        activity=a;
+        preferences=activity.getPreferences(Context.MODE_PRIVATE);
+        editor=preferences.edit();
+    }
 
     public int getAlarmHour()
     {
-        preferences= activity.getPreferences(Context.MODE_PRIVATE);
         return preferences.getInt("alarm_hour", 9);
     }
     public int getAlarmMinute()
     {
-        preferences= activity.getPreferences(Context.MODE_PRIVATE);
         return preferences.getInt("alarm_minute",0);
+    }
+    public void setAlarmHour(int newHour)
+    {
+        editor.putInt("alarm_hour",newHour);
+        editor.commit();
+    }
+    public void setAlarmMinute(int newMinute)
+    {
+        editor.putInt("alarm_minute",newMinute);
+        editor.commit();
     }
     public int getSessionDuration()
     {
-        preferences= activity.getPreferences(Context.MODE_PRIVATE);
         return preferences.getInt("session_duration",12);
+    }
+    public void setSessionDuration(int newDuration)
+    {
+        editor.putInt("session_duration",newDuration);
+        editor.commit();
     }
     public int getSamplingRate()
     {
-        preferences= activity.getPreferences(Context.MODE_PRIVATE);
         return preferences.getInt("sample_rate",50);
+    }
+    public void setSamplingRate(int newRate)
+    {
+        editor.putInt("sample_rate",newRate);
+        editor.commit();
     }
     public HashMap<String,String> getEmail()
     {
@@ -126,4 +146,7 @@ public class PreferencesEditor {
         }catch (Exception e){Log.e("FemurShield","Errore aggiunta contatto email : "+e.getMessage());result=false;}
         return result;
     }
+
+
+
 }

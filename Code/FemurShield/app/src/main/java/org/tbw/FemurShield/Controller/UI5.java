@@ -3,8 +3,6 @@ package org.tbw.FemurShield.Controller;
 import android.app.Activity;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -19,7 +17,7 @@ import org.tbw.FemurShield.R;
 * */
 public class UI5 extends Activity implements SettingsFragment.OnFragmentInteractionListener,TimePickerFragment.OnAlarmChangedListener,DurationFragment.OnDurationChangedListener,EmailFragment.OnEmailItemClickedListener,EmailFragment.OnAddEmailButtonClickListener,AddContactFragment.OnUserInsertedListener{
 
-    private SharedPreferences prefs;
+    private PreferencesEditor prefs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +26,8 @@ public class UI5 extends Activity implements SettingsFragment.OnFragmentInteract
 
         // controlla che il layout in uso abbia il posto per il fragment
         if (findViewById(R.id.fragment_container_settings) != null) {
+
+            prefs=new PreferencesEditor(this);
 
             /*Se stiamo tornando indietro non abbiamo bisogno di ricaricarlo
             * rischiamo di ritrovarci con un secondo fragment sovrapposto*/
@@ -70,7 +70,7 @@ public class UI5 extends Activity implements SettingsFragment.OnFragmentInteract
             case R.id.action_all_sessions:return true;
             case R.id.action_active_session: return true;
         }
-        
+
         return super.onOptionsItemSelected(item);
     }
 
@@ -118,10 +118,7 @@ public class UI5 extends Activity implements SettingsFragment.OnFragmentInteract
     @Override
     public void onDurationChanged(int newDuration) {
 
-        prefs=getPreferences(Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = prefs.edit();
-        editor.putInt("session_duration", newDuration);
-        editor.commit();
+        prefs.setSessionDuration(newDuration);
     }
 
     /**
@@ -132,11 +129,8 @@ public class UI5 extends Activity implements SettingsFragment.OnFragmentInteract
     @Override
     public void OnAlarmChanged(int hourOfDay, int minute) {
         // salva l'orario selezionato
-        prefs=getPreferences(Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = prefs.edit();
-        editor.putInt("alarm_hour", hourOfDay);
-        editor.putInt("alarm_minute", minute);
-        editor.commit();
+        prefs.setAlarmHour(hourOfDay);
+        prefs.setAlarmMinute(minute);
         //aggiorna l'orario mostrato nella descrizione
         SettingsFragment alarmFrag = (SettingsFragment)getFragmentManager().findFragmentById(R.id.fragment_container_settings);
         if(alarmFrag!=null)
@@ -167,7 +161,6 @@ public class UI5 extends Activity implements SettingsFragment.OnFragmentInteract
             String regex="[\\w]+@[\\w]+\\.(com|it|net)";
             if(i.matches(regex))
             {
-                PreferencesEditor prefs=new PreferencesEditor(this);
                 prefs.addEmail(n, i);
                 //aggiorna la lista email 
                 EmailFragment ef=(EmailFragment)getFragmentManager().findFragmentById(R.id.fragment_container_settings);

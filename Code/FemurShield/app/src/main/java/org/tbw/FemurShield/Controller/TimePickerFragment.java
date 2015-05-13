@@ -4,8 +4,6 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.app.TimePickerDialog;
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.format.DateFormat;
 import android.widget.TimePicker;
@@ -18,16 +16,16 @@ import org.tbw.FemurShield.R;
 public class TimePickerFragment extends DialogFragment
         implements TimePickerDialog.OnTimeSetListener {
 
-    private SharedPreferences prefs;
+    private PreferencesEditor prefs;
     private OnAlarmChangedListener mCallback;
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         // inizializzo l'oggetto per salvare e leggere i valori dell'orologio
-        prefs=getActivity().getPreferences(Context.MODE_PRIVATE);
+        prefs=new PreferencesEditor(getActivity());
         //carico i valori precedenti o imposto l'ora di default alle 9:00 se non presente
-        int hour=prefs.getInt("alarm_hour",9);
-        int minute=prefs.getInt("alarm_minute",0);
+        int hour=prefs.getAlarmHour();
+        int minute=prefs.getAlarmMinute();
         // Create a new instance of TimePickerDialog and return it
         return new TimePickerDialog(getActivity(), R.style.AppDialogTheme, this, hour, minute,
                 DateFormat.is24HourFormat(getActivity()));

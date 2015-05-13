@@ -5,7 +5,6 @@ import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,15 +19,15 @@ import org.tbw.FemurShield.R;
  */
 public class SliderFragment extends DialogFragment implements DialogInterface.OnClickListener{
 
-    private SharedPreferences prefs;
+    private PreferencesEditor prefs;
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         // inizializzo l'oggetto per salvare e leggere i valori dell'orologio
-        prefs=getActivity().getPreferences(Context.MODE_PRIVATE);
+        prefs=new PreferencesEditor(getActivity());
         //carico i valori precedenti o imposto a meta
         //TODO vedere quale e un valore di default adatto
-        int progress=prefs.getInt("sample_rate",50);
+        int progress=prefs.getSamplingRate();
         AlertDialog.Builder alert = new AlertDialog.Builder(getActivity(), R.style.AppDialogTheme);
         final Context themeContext = getActivity();
         final LayoutInflater inflater = LayoutInflater.from(themeContext);
@@ -36,8 +35,7 @@ public class SliderFragment extends DialogFragment implements DialogInterface.On
         //reimposta la seekbar alla posizione dell ultima volta
         SeekBar seekBar=(SeekBar)view.findViewById(R.id.seekBar);
         if (seekBar != null) {
-            prefs=getActivity().getPreferences(Context.MODE_PRIVATE);
-            seekBar.setProgress(prefs.getInt("sample_rate",50));
+            seekBar.setProgress(prefs.getSamplingRate());
         }
         alert.setView(view);
         alert.setPositiveButton(getString(R.string.ok), this);
@@ -54,10 +52,7 @@ public class SliderFragment extends DialogFragment implements DialogInterface.On
                 SeekBar seekBar=(SeekBar)getDialog().findViewById(R.id.seekBar);
                 if (seekBar != null) {
                     int progress=seekBar.getProgress();
-                    prefs=getActivity().getPreferences(Context.MODE_PRIVATE);
-                    SharedPreferences.Editor editor = prefs.edit();
-                    editor.putInt("sample_rate", progress);
-                    editor.commit();
+                    prefs.setSamplingRate(progress);
                 }
                 break;
         }
