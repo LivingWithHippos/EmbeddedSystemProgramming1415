@@ -8,6 +8,8 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
+import android.widget.Toast;
+
 import org.tbw.FemurShield.R;
 
 /*
@@ -158,7 +160,7 @@ public class UI5 extends Activity implements SettingsFragment.OnFragmentInteract
         {
             String n=nome.getText().toString().trim();
             String i=indirizzo.getText().toString().trim();
-            String regex="[\\w]+@[\\w]+\\.(com|it|net)";
+            String regex="[\\w_.-]+@[\\w.-]{5,30}";
             if(i.matches(regex))
             {
                 prefs.addEmail(n, i);
@@ -166,7 +168,10 @@ public class UI5 extends Activity implements SettingsFragment.OnFragmentInteract
                 EmailFragment ef=(EmailFragment)getFragmentManager().findFragmentById(R.id.fragment_container_settings);
                 ef.addAndUpdateContact(n, i);
             }
-            else{Log.d("FemurShield","Sintassi email errata");}
+            else{
+                Log.d("FemurShield","Sintassi email errata");
+                Toast.makeText(getApplicationContext(), getString(R.string.wrong_email_message),Toast.LENGTH_SHORT).show();
+            }
         }
     }
 }

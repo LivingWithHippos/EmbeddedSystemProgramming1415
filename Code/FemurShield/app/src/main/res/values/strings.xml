@@ -28,5 +28,6 @@
     <string name="set_session_duration_dialog_title">Durata Sessione</string>
     <string name="all_sessions_settings">Sessioni</string>
     <string name="active_session_settings">Sessione Attiva</string>
+    <string name="wrong_email_message">Indirizzo non valido</string>
 
 </resources>
