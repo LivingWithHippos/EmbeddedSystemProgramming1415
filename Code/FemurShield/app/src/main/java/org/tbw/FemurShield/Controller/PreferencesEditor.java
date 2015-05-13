@@ -61,6 +61,34 @@ public class PreferencesEditor {
 
         return mails;
     }
+    public String[] getEmailAddresses()
+    {
+        HashMap<String,String> mails=null;
+        String[] addresses=null;
+        try {
+            File file=new File(activity.getFilesDir(),"emails.dat");
+            FileInputStream fileInputStream = new FileInputStream(file);
+
+            ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
+            mails = (HashMap) objectInputStream.readObject();
+            objectInputStream.close();
+            if(mails!=null) {
+                addresses=new String[mails.size()];
+                int i=0;
+                for (HashMap.Entry<String, String> entry:mails.entrySet())
+                    addresses[i++]=entry.getKey();
+
+            }
+        }catch (Exception e){
+            Log.e("FemurShield","Errore Di lettura email: "+e.getMessage());
+        }
+
+
+        return addresses;
+    }
+
+
+
     public boolean cleanEmailFile()
     {
         try{
