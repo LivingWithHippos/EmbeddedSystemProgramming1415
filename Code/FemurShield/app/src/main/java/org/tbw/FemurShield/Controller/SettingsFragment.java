@@ -28,21 +28,7 @@ public class SettingsFragment extends ListFragment {
     private OnFragmentInteractionListener mListener;
     private SettingListAdapter mAdapter;
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @return A new instance of fragment SettingsFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-   /* public static SettingsFragment newInstance(String param1, String param2) {
-        SettingsFragment fragment = new SettingsFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }*/
+
 
     public SettingsFragment() {
         // Required empty public constructor
@@ -56,7 +42,6 @@ public class SettingsFragment extends ListFragment {
         //mi serve per ottenere le icone
         Resources resources = getResources();
         //TODO: impostare icone di dimensioni diverse a seconda della dimensione dello schermo?
-        //TODO: rinominare le descrizioni in modo che mostrino il valore impostato
         // prefs serve a caricare le impostazioni salvate
         prefs=new PreferencesEditor(getActivity());
         //aggiungo le voci alla lista

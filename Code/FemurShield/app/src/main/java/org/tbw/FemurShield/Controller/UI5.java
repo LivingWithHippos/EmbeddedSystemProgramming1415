@@ -15,7 +15,7 @@ import org.tbw.FemurShield.R;
 /*
 * UI5 e' l'activity che gestisce le impostazioni, contiene il fragment fragment_settings
 * e gestisce il callback dei vari fragment che rappresentano le voci del menu impostazioni
-* TODO: gestire la modalit� landscape e tablet, gestire i vari stati (onPause(), etc), gestire lista email destinatari
+* TODO: gestire la modalita tablet, gestire i vari stati (onPause(), etc)
 * */
 public class UI5 extends Activity implements SettingsFragment.OnFragmentInteractionListener,TimePickerFragment.OnAlarmChangedListener,DurationFragment.OnDurationChangedListener,EmailFragment.OnEmailItemClickedListener,EmailFragment.OnAddEmailButtonClickListener,AddContactFragment.OnUserInsertedListener{
 
