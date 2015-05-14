@@ -65,6 +65,20 @@ public class PreferencesEditor {
         editor.putInt("sample_rate",newRate);
         editor.commit();
     }
+    public int getEmailContactsNumber()
+    {
+        return preferences.getInt("email_contacts",0);
+    }
+    public void setEmailContactsNumber(int newNumber)
+    {
+        editor.putInt("email_contacts",newNumber);
+        editor.commit();
+    }
+    public void addOneContactNumber()
+    {
+        editor.putInt("email_contacts",getEmailContactsNumber()+1);
+        editor.commit();
+    }
     public HashMap<String,String> getEmail()
     {
         HashMap<String,String> mails=null;
@@ -111,13 +125,15 @@ public class PreferencesEditor {
 
     public boolean cleanEmailFile()
     {
+        boolean isDeleted=false;
         try{
 
             File file=new File(activity.getFilesDir(),"emails.dat");
-            return file.delete();
+            isDeleted=file.delete();
+            setEmailContactsNumber(0);
         }catch (Exception e){
             Log.e("FemurShield","Errore Di cancellazione email: "+e.getMessage());}
-        return false;
+        return isDeleted;
     }
 
     //ritorna true se viene salvata correttamente

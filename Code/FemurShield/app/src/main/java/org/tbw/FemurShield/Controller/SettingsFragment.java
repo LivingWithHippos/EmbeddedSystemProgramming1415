@@ -45,25 +45,46 @@ public class SettingsFragment extends ListFragment {
         // prefs serve a caricare le impostazioni salvate
         prefs=new PreferencesEditor(getActivity());
         //aggiungo le voci alla lista
+        int newRate=prefs.getSamplingRate();
         mItems.add(new SettingListItem(resources.getDrawable(R.drawable.frequency),
                 getString(R.string.title_sample_rate),
-                getString(R.string.description_sample_rate)));
+                getString(R.string.description_sample_rate_set_to)+" "+newRate+"%"));
+        int newDuration=prefs.getSessionDuration();
         mItems.add(new SettingListItem(resources.getDrawable(R.drawable.duration),
                 getString(R.string.title_session_duration),
-                getString(R.string.description_session_duration)));
+                newDuration+(newDuration==1?" ora":" ore")));
         mItems.add(new SettingListItem(resources.getDrawable(R.drawable.email),
                 getString(R.string.title_email_recipient),
                 getString(R.string.description_email_recipient)));
-        int hour=prefs.getAlarmHour();
-        int minute=prefs.getAlarmMinute();
         //per stampare i numeri nel formato 05:07 invece di 5:7
         DecimalFormat formatter=new DecimalFormat("00");
+        String hour=formatter.format(prefs.getAlarmHour());
+        String minute=formatter.format(prefs.getAlarmMinute());
         mItems.add(new SettingListItem(resources.getDrawable(R.drawable.alarm),
                 getString(R.string.title_alarm),
-                "Sveglia impostata per le "+formatter.format(hour)+":"+formatter.format(minute)));
+                getString(R.string.description_alarm_set_to) + " " + hour + ":" + minute));
+
         //imposto l'adapter
         mAdapter=new SettingListAdapter(getActivity(), mItems);
         setListAdapter(mAdapter);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        for(SettingListItem s:mItems)
+        {
+            if(s.title.equalsIgnoreCase(getString(R.string.title_email_recipient)))
+            {
+
+                //aggiorna la descrizione email
+                int temp=prefs.getEmailContactsNumber();
+                s.setDescription(temp+" "+(temp==1?"contatto presente":"contatti presenti"));
+                // dice alla lista di aggiornarsi dopo il cambiamento
+                mAdapter.notifyDataSetChanged();
+                break;
+            }
+        }
     }
 
     @Override
@@ -103,7 +124,7 @@ public class SettingsFragment extends ListFragment {
         SettingListItem item = mItems.get(position);
 
         if(mListener!=null&item!=null)
-            mListener.onVoiceSelected(item);
+            mListener.onOptionSelected(item);
     }
 
     public void updateAlarmTime(int hour,int minute)
@@ -153,6 +174,8 @@ public class SettingsFragment extends ListFragment {
             }
         }
     }
+
+
     /**
      * This interface must be implemented by activities that contain this
      * fragment to allow an interaction in this fragment to be communicated
@@ -164,7 +187,7 @@ public class SettingsFragment extends ListFragment {
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnFragmentInteractionListener { 
-        public void onVoiceSelected(SettingListItem s);
+        public void onOptionSelected(SettingListItem s);
     }
 
 }

@@ -69,7 +69,7 @@ public class EmailFragment extends ListFragment implements Button.OnClickListene
         }
         else
         {
-            mItems.add(new EmailListItem("dummy@email.it","dummy"));
+            //mItems.add(new EmailListItem("dummy@email.it","dummy"));
         }
         //imposto l'adapter
         mAdapter=new EmailListAdapter(getActivity(), mItems);

@@ -82,7 +82,7 @@ public class UI5 extends Activity implements SettingsFragment.OnFragmentInteract
     * nel menu principale delle impostazioni e lancia l'interfaccia corrispondente
     */
     @Override
-    public void onVoiceSelected(SettingListItem s) {
+    public void onOptionSelected(SettingListItem s) {
         if(s.title.equalsIgnoreCase(getString(R.string.title_alarm)))
         {
             TimePickerFragment timepick= new TimePickerFragment();
@@ -169,6 +169,8 @@ public class UI5 extends Activity implements SettingsFragment.OnFragmentInteract
                 //aggiorna la lista email 
                 EmailFragment ef=(EmailFragment)getFragmentManager().findFragmentById(R.id.fragment_container_settings);
                 ef.addAndUpdateContact(n, i);
+                prefs.addOneContactNumber();
+
             }
             else{
                 Log.d("FemurShield","Sintassi email errata");
