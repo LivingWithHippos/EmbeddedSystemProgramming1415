@@ -94,7 +94,8 @@ public class FallDetector extends IntentService implements SensorEventListener {
             //costruisco la notifica da visualizzare
             Notification notification = new Notification.Builder(getApplicationContext())
                     .setContentTitle("Fall detector:")
-                    .setContentText("it's running...").setSmallIcon(R.drawable.notification)
+                    .setContentText("it's running...")
+                    .setSmallIcon(R.drawable.notification)
                     .build();
             //setto L'ID per la notifica
             final int notificationID = 1234567;
