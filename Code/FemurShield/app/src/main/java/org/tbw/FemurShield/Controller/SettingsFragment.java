@@ -44,20 +44,26 @@ public class SettingsFragment extends ListFragment {
         //TODO: impostare icone di dimensioni diverse a seconda della dimensione dello schermo?
         // prefs serve a caricare le impostazioni salvate
         prefs=new PreferencesEditor(getActivity());
+        
         //aggiungo le voci alla lista
         int newRate=prefs.getSamplingRate();
         mItems.add(new SettingListItem(resources.getDrawable(R.drawable.frequency),
                 getString(R.string.title_sample_rate),
                 getString(R.string.description_sample_rate_set_to)+" "+newRate+"%"));
+
         int newDuration=prefs.getSessionDuration();
         mItems.add(new SettingListItem(resources.getDrawable(R.drawable.duration),
                 getString(R.string.title_session_duration),
                 newDuration+(newDuration==1?" ora":" ore")));
+
+
+        int temp=prefs.getEmailContactsNumber();
         mItems.add(new SettingListItem(resources.getDrawable(R.drawable.email),
                 getString(R.string.title_email_recipient),
-                getString(R.string.description_email_recipient)));
+                temp+" "+(temp==1?"contatto presente":"contatti presenti")));
+
         //per stampare i numeri nel formato 05:07 invece di 5:7
-        DecimalFormat formatter=new DecimalFormat("00");
+        DecimalFormat formatter = new DecimalFormat("00");
         String hour=formatter.format(prefs.getAlarmHour());
         String minute=formatter.format(prefs.getAlarmMinute());
         mItems.add(new SettingListItem(resources.getDrawable(R.drawable.alarm),

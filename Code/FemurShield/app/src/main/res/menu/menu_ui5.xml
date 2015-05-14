@@ -1,7 +1,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" tools:context="org.tbw.FemurShield.Controller.UI5">
-    <item android:id="@+id/action_all_sessions" android:title="@string/all_sessions_settings"
+    <item android:id="@+id/action_all_sessions" android:title="@string/action_all_sessions"
         android:orderInCategory="100" android:showAsAction="never" />
-    <item android:id="@+id/action_active_session" android:title="@string/active_session_settings"
+    <item android:id="@+id/action_active_session" android:title="@string/action_active_session"
     android:orderInCategory="100" android:showAsAction="never" />
 </menu>

@@ -2,6 +2,8 @@
     <string name="app_name">Femur Shield</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Impostazioni</string>
+    <string name="action_all_sessions">Sessioni</string>
+    <string name="action_active_session">Sessione Attiva</string>
     <string name="title_activity_ui1">UI1</string>
     <string name="title_activity_ui2">UI2</string>
     <string name="title_activity_ui3">UI3</string>
@@ -10,25 +12,18 @@
     <string name="ok">OK</string>
     <string name="cancel">ANNULLA</string>
     <string name="title_sample_rate">Frequenza di campionamento</string>
-    <string name="description_sample_rate">Imposta la Frequenza di campionamento del sensore</string>
+    <string name="description_sample_rate_set_to">Sample Rate :</string>
     <string name="title_alarm">Orario Reminder</string>
-    <string name="description_alarm">A che ora vuoi farti ricordare di FemurShield?</string>
-    <string name="title_email_recipient">Lista Destinatari Email</string>
-    <string name="description_email_recipient">Tutti gli indirizzi che riceveranno una email in caso di emergenza</string>
-    <string name="title_session_duration">Durata Sessione</string>
-    <string name="description_session_duration">Decidi quanto deve durare una sessione</string>
     <string name="description_alarm_set_to">Allarme impostato per le</string>
+    <string name="title_email_recipient">Lista Destinatari Email</string>
+    <string name="title_session_duration">Durata Sessione</string>
     <string name="tv_set_duration">Imposta la durata della sessione</string>
-    <string name="et_duration_hint">Tra 1 e 24 h</string>
+    <string name="et_duration_hint">Min 1 Max 24 ore</string>
     <string name="et_email_name_hint">Inserisci il nome del destinatario</string>
     <string name="et_email_address_hint">Inserisci l\'indirizzo del destinatario</string>
-    <string name="email_list">email_users_list</string>
     <string name="add_contact_dialog_title">Nuovo Contatto</string>
     <string name="set_sampling_rate_dialog_title">Frequenza Campionamento</string>
     <string name="set_session_duration_dialog_title">Durata Sessione</string>
-    <string name="all_sessions_settings">Sessioni</string>
-    <string name="active_session_settings">Sessione Attiva</string>
     <string name="wrong_email_message">Indirizzo non valido</string>
-    <string name="description_sample_rate_set_to">Sample Rate :</string>
 
 </resources>
