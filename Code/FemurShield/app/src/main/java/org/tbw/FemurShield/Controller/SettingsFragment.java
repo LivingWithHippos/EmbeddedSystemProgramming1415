@@ -44,7 +44,7 @@ public class SettingsFragment extends ListFragment {
         //TODO: impostare icone di dimensioni diverse a seconda della dimensione dello schermo?
         // prefs serve a caricare le impostazioni salvate
         prefs=new PreferencesEditor(getActivity());
-        
+
         //aggiungo le voci alla lista
         int newRate=prefs.getSamplingRate();
         mItems.add(new SettingListItem(resources.getDrawable(R.drawable.frequency),

@@ -19,11 +19,11 @@ public class SessionImpl extends Observable implements Session{
 
     public SessionImpl(){
         cadute=new ArrayList<>();
-        signature=new SignatureImpl();
 
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy_HH:mm:ss");
         datetime = sdf.format(new Date());
         name="Sessione"+datetime;
+        signature=new SignatureImpl(this);
     }
 
     @Override
