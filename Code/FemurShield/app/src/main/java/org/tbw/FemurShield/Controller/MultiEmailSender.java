@@ -15,14 +15,16 @@ public class MultiEmailSender extends Service {
     private String[] adresses;
 
     @Override
-    public void onCreate() 
+    public void onCreate()
     {
         adresses = null; // recupera gli indirizzi per la mail TODO
     }
 
     @Override
-    public int onStartCommand(Intent intent, int flags, int startId)  // per far partire il service e avvia metodo sendEmail TODO
+    public int onStartCommand(Intent intent, int flags, int startId)
     {
+    // per far partire il service e avvia metodo sendEmail TODO
+        return Service.START_STICKY;
     }
 
     @Override

@@ -1,6 +1,7 @@
 package org.tbw.FemurShield.Controller;
 
 import android.app.Application;
+import android.content.Context;
 import android.content.Intent;
 
 import java.util.Observable;
@@ -25,7 +26,7 @@ abstract class Controller {
 
     }
 
-    protected static void StartSession(/*Context c*/){ //avere il context ci permette di avere il contesto da passare all'intent del service
+    protected static void StartSession(){
         SessionManager.getInstance().StartSession();
     }
 

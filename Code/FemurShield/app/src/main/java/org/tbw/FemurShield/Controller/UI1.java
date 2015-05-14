@@ -56,6 +56,14 @@ public class UI1 extends Activity {
         //TODO: business logic
         Session sessione=Controller.CreateSession();
 
+
+        new Thread() {
+            public void run(){
+                Intent i = new Intent(getBaseContext(),FallDetector.class);
+                startService(i);
+            }
+        }.start();
+
         onPlayClick(view);
 
         //aggiorno la listView
@@ -86,7 +94,7 @@ public class UI1 extends Activity {
         ((ImageView)findViewById(R.id.stopbntui1)).setVisibility(ImageView.VISIBLE);
         ((ImageView)findViewById(R.id.startbtnui1)).setVisibility(ImageView.INVISIBLE);
 
-        Intent i=new Intent(getApplicationContext(), FallDetector.class);
+        Intent i = new Intent(getBaseContext(),FallDetector.class);
         startService(i);
     }
 
