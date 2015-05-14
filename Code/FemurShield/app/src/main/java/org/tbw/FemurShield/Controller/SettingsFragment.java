@@ -116,9 +116,40 @@ public class SettingsFragment extends ListFragment {
                 //per stampare i numeri nel formato 05:07 invece di 5:7
                 DecimalFormat formatter=new DecimalFormat("00");
                 // aggiorna l'ora dell'allarme da mostrare nella descrizione
-                s.setDescription(getString(R.string.description_alarm_set_to)+" " + formatter.format(hour)+":"+formatter.format(minute));
+                s.setDescription(getString(R.string.description_alarm_set_to) + " " + formatter.format(hour) + ":" + formatter.format(minute));
                 // dice alla lista di aggiornarsi dopo il cambiamento
                 mAdapter.notifyDataSetChanged();
+                break;
+            }
+        }
+    }
+
+    public void updateSessionDuration(int newDuration)
+    {
+        for(SettingListItem s:mItems)
+        {
+            if(s.title.equalsIgnoreCase(getString(R.string.title_session_duration)))
+            {
+                // aggiorna il sampling rate nella descrizione
+                s.setDescription(newDuration+(newDuration==1?" ora":" ore"));
+                // dice alla lista di aggiornarsi dopo il cambiamento
+                mAdapter.notifyDataSetChanged();
+                break;
+            }
+        }
+    }
+
+    public void updateSamplingRate(int newRate)
+    {
+        for(SettingListItem s:mItems)
+        {
+            if(s.title.equalsIgnoreCase(getString(R.string.title_sample_rate)))
+            {
+                // aggiorna il sampling rate nella descrizione
+                s.setDescription(getString(R.string.description_sample_rate_set_to)+" "+newRate+"%");
+                // dice alla lista di aggiornarsi dopo il cambiamento
+                mAdapter.notifyDataSetChanged();
+                break;
             }
         }
     }

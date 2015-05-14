@@ -1,5 +1,6 @@
 package org.tbw.FemurShield.Controller;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
@@ -20,6 +21,7 @@ import org.tbw.FemurShield.R;
 public class SampleRatePickerFragment extends DialogFragment implements DialogInterface.OnClickListener{
 
     private PreferencesEditor prefs;
+    private OnSamplingRateChangedListener mCallback;
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -43,6 +45,20 @@ public class SampleRatePickerFragment extends DialogFragment implements DialogIn
         return alert.create();
     }
 
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+
+        // This makes sure that the container activity has implemented
+        // the callback interface. If not, it throws an exception
+        try {
+            mCallback = (OnSamplingRateChangedListener) activity;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(activity.toString()
+                    + " must implement OnSamplingRateChangedListener");
+        }
+    }
+
 
     @Override
     public void onClick(DialogInterface dialog, int which) {
@@ -53,8 +69,13 @@ public class SampleRatePickerFragment extends DialogFragment implements DialogIn
                 if (seekBar != null) {
                     int progress=seekBar.getProgress();
                     prefs.setSamplingRate(progress);
+                    mCallback.onSamplingRateChanged(progress);
                 }
                 break;
         }
+    }
+
+    public interface OnSamplingRateChangedListener {
+        void onSamplingRateChanged(int newRate);
     }
 }

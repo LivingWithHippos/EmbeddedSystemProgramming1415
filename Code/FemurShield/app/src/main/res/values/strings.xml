@@ -29,5 +29,6 @@
     <string name="all_sessions_settings">Sessioni</string>
     <string name="active_session_settings">Sessione Attiva</string>
     <string name="wrong_email_message">Indirizzo non valido</string>
+    <string name="description_sample_rate_set_to">Sample Rate :</string>
 
 </resources>

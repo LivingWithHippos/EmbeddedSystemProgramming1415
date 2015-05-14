@@ -17,7 +17,7 @@ import org.tbw.FemurShield.R;
 * e gestisce il callback dei vari fragment che rappresentano le voci del menu impostazioni
 * TODO: gestire la modalita tablet, gestire i vari stati (onPause(), etc)
 * */
-public class UI5 extends Activity implements SettingsFragment.OnFragmentInteractionListener,TimePickerFragment.OnAlarmChangedListener,DurationFragment.OnDurationChangedListener,EmailFragment.OnEmailItemClickedListener,EmailFragment.OnAddEmailButtonClickListener,AddContactFragment.OnUserInsertedListener{
+public class UI5 extends Activity implements SettingsFragment.OnFragmentInteractionListener,TimePickerFragment.OnAlarmChangedListener,DurationFragment.OnDurationChangedListener,EmailFragment.OnEmailItemClickedListener,EmailFragment.OnAddEmailButtonClickListener,AddContactFragment.OnUserInsertedListener,SampleRatePickerFragment.OnSamplingRateChangedListener{
 
     private PreferencesEditor prefs;
 
@@ -121,6 +121,10 @@ public class UI5 extends Activity implements SettingsFragment.OnFragmentInteract
     public void onDurationChanged(int newDuration) {
 
         prefs.setSessionDuration(newDuration);
+        SettingsFragment settingsFragment = (SettingsFragment)getFragmentManager().findFragmentById(R.id.fragment_container_settings);
+        if(settingsFragment !=null)
+            settingsFragment.updateSessionDuration(newDuration);
+
     }
 
     /**
@@ -130,13 +134,11 @@ public class UI5 extends Activity implements SettingsFragment.OnFragmentInteract
     */
     @Override
     public void OnAlarmChanged(int hourOfDay, int minute) {
-        // salva l'orario selezionato
-        prefs.setAlarmHour(hourOfDay);
-        prefs.setAlarmMinute(minute);
+
         //aggiorna l'orario mostrato nella descrizione
         SettingsFragment alarmFrag = (SettingsFragment)getFragmentManager().findFragmentById(R.id.fragment_container_settings);
         if(alarmFrag!=null)
-            alarmFrag.updateAlarmTime(hourOfDay,minute);
+            alarmFrag.updateAlarmTime(hourOfDay, minute);
         // TODO: impostare la sveglia con l'orario salvato
     }
 
@@ -173,5 +175,11 @@ public class UI5 extends Activity implements SettingsFragment.OnFragmentInteract
                 Toast.makeText(getApplicationContext(), getString(R.string.wrong_email_message),Toast.LENGTH_SHORT).show();
             }
         }
+    }
+
+    @Override
+    public void onSamplingRateChanged(int newRate) {
+        SettingsFragment settingsFragment=(SettingsFragment)getFragmentManager().findFragmentById(R.id.fragment_container_settings);
+        settingsFragment.updateSamplingRate(newRate);
     }
 }

@@ -47,6 +47,10 @@ public class TimePickerFragment extends DialogFragment
 
     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
 
+        // salva l'orario selezionato
+        prefs.setAlarmHour(hourOfDay);
+        prefs.setAlarmMinute(minute);
+
         mCallback.OnAlarmChanged(hourOfDay, minute);
     }
 
