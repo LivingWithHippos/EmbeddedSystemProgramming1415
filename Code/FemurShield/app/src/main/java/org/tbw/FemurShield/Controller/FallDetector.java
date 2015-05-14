@@ -15,17 +15,31 @@ import android.util.Log;
 import org.tbw.FemurShield.Model.Fall;
 import org.tbw.FemurShield.R;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Observable;
+import java.util.ResourceBundle;
 
 /**
  * Created by Moro on 02/05/15.
  */
 public class FallDetector extends IntentService implements SensorEventListener {
 
-    private SensorManager sensorManagerGiro;
+    private SensorManager sensorManager;
     private Sensor accelerometro;
     public static String DETECTOR_START = "startfalldetector";
     private boolean isRunning = false;
+    private final String X_VALUE="X";
+    private final String Y_VALUE="Y";
+    private final String Z_VALUE="Z";
+    private Map<String,ArrayList<Float>> buffer =new HashMap<>(3);
+
+    {//blocco di inizializzazione del buffer
+        buffer.put(X_VALUE,new ArrayList<Float>());
+        buffer.put(Y_VALUE,new ArrayList<Float>());
+        buffer.put(Z_VALUE,new ArrayList<Float>());
+    }
 
     /**
      * Creates an IntentService.  Invoked by your subclass's constructor.
@@ -54,10 +68,7 @@ public class FallDetector extends IntentService implements SensorEventListener {
 
     @Override
     public void onCreate() {
-        Log.println(Log.INFO, "Service onCreate","fefwef");
-        sensorManagerGiro = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
-        accelerometro = sensorManagerGiro.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
-        sensorManagerGiro.registerListener(this, accelerometro, SensorManager.SENSOR_DELAY_UI);
+        Log.println(Log.INFO, "Service onCreate", "fefwef");
     }
 
     @Override
@@ -80,7 +91,16 @@ public class FallDetector extends IntentService implements SensorEventListener {
 
     @Override
     public void onSensorChanged(SensorEvent event) {
+        if(event.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
+            buffer.get(X_VALUE).add(new Float(event.values[0]));
+            buffer.get(Y_VALUE).add(new Float(event.values[1]));
+            buffer.get(Z_VALUE).add(new Float(event.values[2]));
 
+            if(checkFall(event.values[0],event.values[1],event.values[2])) {
+                Controller.handleFallEvent(new Fall(null, null, null, getBaseContext()));
+                Log.println(Log.INFO, "FALL DETECTED", "Aiaaaaa");
+            }
+        }
     }
 
     @Override
@@ -100,6 +120,10 @@ public class FallDetector extends IntentService implements SensorEventListener {
             //setto L'ID per la notifica
             final int notificationID = 1234567;
             startForeground(notificationID, notification);
+            //TODO assegnazione at the first call only
+            sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+            accelerometro = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+            sensorManager.registerListener(this, accelerometro, SensorManager.SENSOR_DELAY_UI);
         }
     }
 
@@ -108,7 +132,19 @@ public class FallDetector extends IntentService implements SensorEventListener {
         if (isRunning)
         {
             isRunning = false;
+            //fermo il servizio
             stopForeground(true);
+            //fermo il listener
+            sensorManager.unregisterListener(this, accelerometro);
         }
+    }
+
+    public boolean checkFall(float x,float y, float z){
+        double result = Math.sqrt(Math.pow(x,2)+Math.pow(y,2)+Math.pow(z,2));
+        if(result>27.00){
+            Log.println(Log.INFO,"listener event","" + result);
+            return true;
+        }
+        return false;
     }
 }

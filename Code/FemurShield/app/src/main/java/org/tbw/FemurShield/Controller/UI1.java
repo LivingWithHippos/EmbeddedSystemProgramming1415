@@ -121,16 +121,16 @@ public class UI1 extends Activity {
         //lista delle sessioni che la listview visualizzerà
         ArrayList<Session> sessionsList=new ArrayList<>();
 
-        //aggiungo la sessone attiva
-        ActiveSession a =SessionManager.getInstance().getActiveSession();
-        if(a!=null)
-            sessionsList.add(a);
-
         //aggiungo le sessioni vecchie
         ArrayList<OldSession> old=SessionManager.getInstance().getOldSessions();
         for(int i=0;i<old.size();i++){
             sessionsList.add(old.get(i));
         }
+
+        //aggiungo la sessone attiva
+        ActiveSession a =SessionManager.getInstance().getActiveSession();
+        if(a!=null)
+            sessionsList.add(a);
 
         //Questa è la lista che rappresenta la sorgente dei dati della listview
         //ogni elemento è una mappa(chiave->valore)
@@ -138,7 +138,7 @@ public class UI1 extends Activity {
         ArrayList<HashMap<String, Object>> data=new ArrayList<>();
 
 
-        for(int i=0;i<sessionsList.size();i++){
+        for(int i=sessionsList.size()-1;i>=0;i--){
             Session s=sessionsList.get(i);// per ogni sessione all'inteno della lista
 
             HashMap<String,Object> sessionMap=new HashMap<>();//creiamo una mappa di valori
