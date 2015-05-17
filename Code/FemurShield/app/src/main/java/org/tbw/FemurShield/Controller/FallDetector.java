@@ -30,8 +30,8 @@ public class FallDetector extends IntentService implements SensorEventListener {
 
     //costanti per l'algoritmo
     private final int DURATA_IMPATTO_ACC=250; //identifica la durata in ms di un impatto con altri corpi (accelerometro)
-    private final int DISTANZA_CADUTA_GYRO_IMPATTO_CADUTA_ACC = 30;//identifica la distanza in ms tra la fine della caduta e la fine dell'impatto con il terreno
-    private final int DURATA_CADUTA_GYRO=200; //identifica la durata in ms della caduta (giroscopio)
+    private final int DISTANZA_CADUTA_GYRO_IMPATTO_CADUTA_ACC = 30+DURATA_IMPATTO_ACC;//identifica la distanza in ms tra la fine della caduta e la fine dell'impatto con il terreno
+    private final int DURATA_CADUTA_GYRO=300; //identifica la durata in ms della caduta (giroscopio)
     private final int LIMITE_MINIMO_IMPATTO_ACC=27; //identifica il valore minimo che idedntifica un impatto (accelerometro)
     private final int LIMITE_MINIMO_CADUTA_GYRO=7; //identifica il valore minimo che idedntifica una caduta (giroscopio)
 
