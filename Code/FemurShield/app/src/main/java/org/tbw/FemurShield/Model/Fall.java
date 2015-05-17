@@ -21,6 +21,8 @@ public class Fall {
     public static final int X_INDEX=0;
     public static final int Y_INDEX=1;
     public static final int Z_INDEX=2;
+    public static final int TUMBLE_OR_MALAISE=0;
+    public static final int IMPACT=1;
 
     private double[] position=new double[2];
 
