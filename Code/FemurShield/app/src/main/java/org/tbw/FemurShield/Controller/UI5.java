@@ -1,16 +1,29 @@
 package org.tbw.FemurShield.Controller;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.Context;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import org.tbw.FemurShield.Model.SignatureImpl;
 import org.tbw.FemurShield.R;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 
 /*
 * UI5 e' l'activity che gestisce le impostazioni, contiene il fragment fragment_settings
@@ -109,6 +122,38 @@ public class UI5 extends Activity implements SettingsFragment.OnFragmentInteract
 
             // Commit the transaction
             transaction.commit();
+        }
+        if(s.title.equalsIgnoreCase("Test Signature"))
+        {
+            AlertDialog.Builder alert = new AlertDialog.Builder(this, R.style.AppDialogTheme);
+            final LayoutInflater inflater = LayoutInflater.from(this);
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy_HH:mm:ss");
+            String datetime = sdf.format(new Date());
+            SignatureImpl signature=new SignatureImpl(datetime,SignatureImpl.PEAKED_CIRCLE);
+            Bitmap bitmap=signature.toBitmap();
+            //LinearLayOut Setup
+            LinearLayout linearLayout= new LinearLayout(this);
+            linearLayout.setOrientation(LinearLayout.VERTICAL);
+
+            linearLayout.setLayoutParams(new LinearLayout.LayoutParams(
+                    MATCH_PARENT,
+                    LinearLayout.LayoutParams.MATCH_PARENT));
+
+            //ImageView Setup
+            ImageView imageView = new ImageView(this);
+            //setting image resource
+            imageView.setImageBitmap(bitmap);
+            //setting image position
+            imageView.setLayoutParams(new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT));
+
+            //adding view to layout
+            linearLayout.addView(imageView);
+            //make visible to program
+            alert.setView(linearLayout);
+            alert.create();
+            alert.show();
         }
 
     }

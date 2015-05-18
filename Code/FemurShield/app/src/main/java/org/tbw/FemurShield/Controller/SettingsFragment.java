@@ -70,6 +70,10 @@ public class SettingsFragment extends ListFragment {
                 getString(R.string.title_alarm),
                 getString(R.string.description_alarm_set_to) + " " + hour + ":" + minute));
 
+        mItems.add(new SettingListItem(resources.getDrawable(R.drawable.frequency),
+                "Test Signature",
+                "crea una signature di prova"));
+
         //imposto l'adapter
         mAdapter=new SettingListAdapter(getActivity(), mItems);
         setListAdapter(mAdapter);
