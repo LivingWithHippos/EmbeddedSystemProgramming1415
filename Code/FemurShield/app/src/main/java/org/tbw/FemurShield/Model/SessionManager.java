@@ -54,6 +54,21 @@ public class SessionManager {
         return ret;
     }
 
+    /**
+    * metodo che ritorna tutte le sessioni, vecchie e attiva
+     * @return array di interfacce a tutte le sessioni (potrebbe esser vuoto)
+    * */
+    public ArrayList<Session> getAllSessions()
+    {
+        ArrayList<Session> ret=new ArrayList<>();
+        if(sessionivecchie!=null)
+            for(int i=0; i<sessionivecchie.size();i++)
+                ret.add(sessionivecchie.get(i));
+        if(sessioneattiva!=null)
+            ret.add(sessioneattiva);
+        return ret;
+    }
+
     //TODO: eccezioni se non sono state create le sessioni o se non possono esser eseguite tali metodi
     /**
      * avvia la sessione attiva
