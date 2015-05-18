@@ -23,7 +23,7 @@ public class SessionImpl extends Observable implements Session{
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy_HH:mm:ss");
         datetime = sdf.format(new Date());
         name="Sessione"+datetime;
-        signature=new SignatureImpl(datetime);
+        signature=new SignatureImpl(datetime,SignatureImpl.PEAKED_CIRCLE);
     }
 
     @Override

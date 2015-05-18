@@ -2,6 +2,7 @@ package org.tbw.FemurShield.Controller;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -144,7 +145,7 @@ public class UI1 extends Activity {
             HashMap<String,Object> sessionMap=new HashMap<>();//creiamo una mappa di valori
 
 
-            sessionMap.put("signature", s.getSignature());
+            sessionMap.put("signature", s.getSignature().toBitmap());
             sessionMap.put("name", s.getName());
             sessionMap.put("data", s.getDataTime());
             sessionMap.put("falls", "" + s.getFalls().size());
@@ -172,6 +173,24 @@ public class UI1 extends Activity {
                 R.layout.sessionlistitemui1, //layout contenente gli id di "to"
                 from,
                 to);
+
+
+        adapter.setViewBinder(new SimpleAdapter.ViewBinder(){
+
+            @Override
+            public boolean setViewValue(View view, Object data,
+                                        String textRepresentation) {
+                if( (view instanceof ImageView) & (data instanceof Bitmap) ) {
+                    ImageView iv = (ImageView) view;
+                    Bitmap bm = (Bitmap) data;
+                    iv.setImageBitmap(bm);
+                    return true;
+                }
+                return false;
+
+            }
+
+        });
 
         //utilizzo dell'adapter
         ((ListView)findViewById(R.id.listsessionui1)).setAdapter(adapter);
