@@ -25,17 +25,18 @@ public class SessionsListAdapter extends ArrayAdapter{
     }
 
     /* uso il pattern view holder che mi permette di evitare
+    di richiamare findViewById  nella classe utilizzatrice */
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder viewHolder;
 
         if(convertView == null) {
-            // inflate the GridView item layout
+            // carica il layout
             LayoutInflater inflater = LayoutInflater.from(getContext());
             convertView = inflater.inflate(R.layout.sessionlistitemui1, parent, false);
 
             resources=Resources.getSystem();
-            // initialize the view holder
+            // inizializza il view holder
             viewHolder = new ViewHolder();
             viewHolder.ivSignature = (ImageView) convertView.findViewById(R.id.sessionsignatureui1);
             viewHolder.ivState = (ImageView) convertView.findViewById(R.id.sessionstateimgui1);
@@ -46,14 +47,15 @@ public class SessionsListAdapter extends ArrayAdapter{
             viewHolder.tvFallsNumber = (TextView) convertView.findViewById(R.id.sessionfallsui1);
             convertView.setTag(viewHolder);
         } else {
-            // recycle the already inflated view
+            // ricila la view gia' pronta
             viewHolder = (ViewHolder) convertView.getTag();
         }
 
-        // update the item view
+        // aggiorna il viewholder
         SessionsListItem item =(SessionsListItem) getItem(position);
 
         viewHolder.ivState.setImageResource(R.drawable.state);
+        //imposta la visibilita' del tasto rec
         viewHolder.ivState.setVisibility(item.isActive()?View.VISIBLE:View.INVISIBLE);
         viewHolder.ivSignature.setImageBitmap(item.signature);
         viewHolder.tvName.setText(item.name);
@@ -108,23 +110,32 @@ class SessionsListItem{
                 this.state=state;
             }
 
-
+    /**
+     * aggiunge uno al numero di cadute da mostrare
+     * */
     public void addFall()
     {
         this.falls++;
         this.fallsNumber=falls+"";
     }
+    /**
+     * @param falls il numero di cadute da impostare
+     * */
     public void setFallsNumber(int falls)
     {
         this.falls=falls;
         this.fallsNumber=falls+"";
     }
-
+    /**
+     * @param state indica se la sessione rappresentatae' attiva o no
+     * */
     public void setState(boolean state)
     {
         this.state=state;
     }
-
+    /**
+     * @return  se la sessione rappresentata sta registrando o no
+     * */
     public boolean isActive() {
         return state;
     }
