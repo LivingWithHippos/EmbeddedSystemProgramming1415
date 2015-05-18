@@ -39,7 +39,7 @@ public class UI5 extends Activity implements SettingsFragment.OnFragmentInteract
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ui5);
 
-        // controlla che il layout in uso abbia il posto per il fragment
+
         if (findViewById(R.id.fragment_container_settings) != null) {
 
             prefs=new PreferencesEditor(this);
