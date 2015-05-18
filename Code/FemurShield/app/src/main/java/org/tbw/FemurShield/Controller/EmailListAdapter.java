@@ -59,3 +59,19 @@ public class EmailListAdapter extends ArrayAdapter {
         TextView tvAddress;
     }
 }
+
+class EmailListItem {
+    public final String name;
+    public String address;
+
+    public EmailListItem(String address,String name)
+    {
+        this.name=name;
+        this.address=address;
+    }
+
+    public void setAddress(String newAddress)
+    {
+        address=newAddress;
+    }
+}
