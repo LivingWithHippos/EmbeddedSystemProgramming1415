@@ -110,7 +110,7 @@ public class UI1 extends Activity {
 
 
         if(mItems.size()>1)
-            mItems.get(0).setState(SessionsListItem.ACTIVE_STATE);
+            mItems.get(0).setState(SessionsListItem.RECORDING_STATE);
         mAdapter.notifyDataSetChanged();
 
         Intent i = new Intent(getBaseContext(),FallDetector.class);
@@ -157,7 +157,7 @@ public class UI1 extends Activity {
                         calendar.get(Calendar.DAY_OF_MONTH) + "/" + calendar.get(Calendar.MONTH) + "/" + calendar.get(Calendar.YEAR),
                         calendar.get(Calendar.HOUR_OF_DAY) + ":" + calendar.get(Calendar.MINUTE) + ":" + calendar.get(Calendar.SECOND),
                         activeSession.getFallsNumber() + "",
-                        SessionsListItem.ACTIVE_STATE));
+                        SessionsListItem.RECORDING_STATE));
             } catch (ParseException e) {
                 e.printStackTrace();
             }

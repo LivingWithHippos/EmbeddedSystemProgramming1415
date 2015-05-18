@@ -56,7 +56,7 @@ public class SessionsListAdapter extends ArrayAdapter{
 
         viewHolder.ivState.setImageResource(R.drawable.state);
         //imposta la visibilita' del tasto rec
-        viewHolder.ivState.setVisibility(item.isActive()?View.VISIBLE:View.INVISIBLE);
+        viewHolder.ivState.setVisibility(item.isRecording()?View.VISIBLE:View.INVISIBLE);
         viewHolder.ivSignature.setImageBitmap(item.signature);
         viewHolder.tvName.setText(item.name);
         viewHolder.tvDate.setText(item.date);
@@ -85,7 +85,7 @@ public class SessionsListAdapter extends ArrayAdapter{
 
 class SessionsListItem{
 
-    public static final boolean ACTIVE_STATE=true;
+    public static final boolean RECORDING_STATE=true;
     public static final boolean INACTIVE_STATE=false;
 
     public final Bitmap signature;
@@ -136,7 +136,7 @@ class SessionsListItem{
     /**
      * @return  se la sessione rappresentata sta registrando o no
      * */
-    public boolean isActive() {
+    public boolean isRecording() {
         return state;
     }
 }
