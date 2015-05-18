@@ -5,6 +5,8 @@
     <ImageView
         android:layout_width="@dimen/signature_list"
         android:layout_height="@dimen/signature_list"
+        android:scaleType="fitXY"
+        android:adjustViewBounds="false"
         android:id="@+id/sessionsignatureui1" />
 
     <ImageView
