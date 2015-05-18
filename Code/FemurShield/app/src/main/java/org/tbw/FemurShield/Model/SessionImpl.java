@@ -48,4 +48,11 @@ public class SessionImpl extends Observable implements Session{
     public ArrayList<Fall> getFalls(){
         return cadute;
     }
+
+    @Override
+    public int getFallsNumber() {
+        if(cadute!=null)
+            return cadute.size();
+        return 0;
+    }
 }

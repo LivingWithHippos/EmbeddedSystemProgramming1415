@@ -11,5 +11,6 @@ public interface Session {
     public String getName();
     public String getDataTime();
     public ArrayList<Fall> getFalls();
+    public int getFallsNumber();
     public void setName(String sessionname);
 }
