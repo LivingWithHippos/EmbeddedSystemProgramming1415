@@ -30,11 +30,13 @@ public class UI1 extends Activity {
     protected Calendar calendar;
     private List<SessionsListItem> mItems;
     private SessionsListAdapter mAdapter;
+    private PreferencesEditor prefs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ui1);
+        prefs=new PreferencesEditor(this);
         //aggiorno la listView
         //AggiornaLista();
         inizializzaLista();
@@ -70,6 +72,7 @@ public class UI1 extends Activity {
         new Thread() {
             public void run(){
                 Intent i = new Intent(getBaseContext(),FallDetector.class);
+                i.putExtra("sample_rate",prefs.getSamplingRate());
                 startService(i);
             }
         }.start();
@@ -95,6 +98,7 @@ public class UI1 extends Activity {
         mAdapter.notifyDataSetChanged();
 
         Intent i=new Intent(getApplicationContext(), FallDetector.class);
+        i.putExtra("sample_rate",prefs.getSamplingRate());
         stopService(i);
     }
 
@@ -114,6 +118,7 @@ public class UI1 extends Activity {
         mAdapter.notifyDataSetChanged();
 
         Intent i = new Intent(getBaseContext(),FallDetector.class);
+        i.putExtra("sample_rate",prefs.getSamplingRate());
         startService(i);
     }
 
@@ -128,6 +133,7 @@ public class UI1 extends Activity {
         ((ImageView)findViewById(R.id.startbtnui1)).setVisibility(ImageView.INVISIBLE);
 
         Intent i=new Intent(getBaseContext(), FallDetector.class);
+        i.putExtra("sample_rate",prefs.getSamplingRate());
         stopService(i);
 
         //aggiorno la listView

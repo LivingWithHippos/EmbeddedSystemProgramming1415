@@ -1,5 +1,6 @@
 package org.tbw.FemurShield.Controller;
 
+import android.app.Activity;
 import android.app.IntentService;
 import android.app.Notification;
 import android.app.Service;
@@ -37,6 +38,8 @@ public class FallDetector extends IntentService implements SensorEventListener {
 
     //tempo di campionamento dati
     private int tempocampionamento=20;//TODO problemi con 2
+    private int tempocampionamentomax=80;
+    private int tempocampionamentomin=5;
     
     //durata che identifica per quanto tempo mi interessano i valori in ms
     private int tempovalori=500;
@@ -107,17 +110,20 @@ public class FallDetector extends IntentService implements SensorEventListener {
     }
 
     public FallDetector() {
-        super("FallDetector");
+        this("FallDetector");
     }
 
     @Override
     protected void onHandleIntent(Intent intent) {
+        int percent=intent.getIntExtra("sample_rate",50);
+        tempocampionamento=(tempocampionamentomax-tempocampionamentomin)*percent/100+tempocampionamentomin;
         Log.println(Log.INFO, "onHandleIntent", "fefwef");
     }
 
     @Override
     public void onCreate() {
         Log.println(Log.INFO, "Service onCreate", "fefwef");
+
     }
 
     @Override
