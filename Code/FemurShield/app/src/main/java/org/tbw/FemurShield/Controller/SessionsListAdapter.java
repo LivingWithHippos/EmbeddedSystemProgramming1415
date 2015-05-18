@@ -24,7 +24,7 @@ public class SessionsListAdapter extends ArrayAdapter{
         super(context, R.layout.settings_list_item, items);
     }
 
-    // uso il pattern view holder che mi permette di evitare di richiamare spesso findViewById
+    /* uso il pattern view holder che mi permette di evitare
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder viewHolder;

@@ -139,15 +139,19 @@ public class UI1 extends Activity {
     {
         //costruisco la listview
         mItems=new ArrayList<>();
+        calendar= Calendar.getInstance();
 
         //lista delle sessioni che la listview visualizzerà
         //sono già una copia non serve ricopiarle, vedi il metodo
         ArrayList<OldSession> sessionsList=SessionManager.getInstance().getOldSessions();
         ActiveSession activeSession=SessionManager.getInstance().getActiveSession();
+        //metto a sessione attiva in cima alla lista
         if(activeSession!=null)
         {
             try {
+                //inizializzo il calendario con il timestamp della sessione ottenuto tramite getDataTime()
                 calendar.setTime(new SimpleDateFormat(Session.datePattern).parse(activeSession.getDataTime()));
+                // creo l'oggetto che andra' nella lista (vedi costruttore per info)
                 mItems.add(new SessionsListItem(activeSession.getSignature().toBitmap(),
                         activeSession.getName(),
                         calendar.get(Calendar.DAY_OF_MONTH) + "/" + calendar.get(Calendar.MONTH) + "/" + calendar.get(Calendar.YEAR),
@@ -159,7 +163,8 @@ public class UI1 extends Activity {
             }
         }
 
-        calendar= Calendar.getInstance();
+
+        //aggiungo le altre sessioni, quelle vecchie
         for(Session session:sessionsList) {
 
             try {
