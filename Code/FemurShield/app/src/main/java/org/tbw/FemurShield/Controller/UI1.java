@@ -17,18 +17,27 @@ import org.tbw.FemurShield.Model.Session;
 import org.tbw.FemurShield.Model.SessionManager;
 import org.tbw.FemurShield.R;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
+import java.util.List;
 
 
 public class UI1 extends Activity {
+
+    protected Calendar calendar;
+    private List<SessionsListItem> mItems;
+    private SessionsListAdapter mAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ui1);
         //aggiorno la listView
-        AggiornaLista();
+        //AggiornaLista();
+        inizializzaLista();
     }
 
 
@@ -68,7 +77,8 @@ public class UI1 extends Activity {
         onPlayClick(view);
 
         //aggiorno la listView
-        AggiornaLista();
+        //AggiornaLista();
+        inizializzaLista();
     }
 
     public void onPauseClick(View view){
@@ -80,6 +90,9 @@ public class UI1 extends Activity {
         ((ImageView)findViewById(R.id.pausebtnui1)).setVisibility(ImageView.INVISIBLE);
         ((ImageView)findViewById(R.id.stopbntui1)).setVisibility(ImageView.VISIBLE);
         ((ImageView)findViewById(R.id.startbtnui1)).setVisibility(ImageView.VISIBLE);
+
+        mItems.get(0).setState(SessionsListItem.INACTIVE_STATE);
+        mAdapter.notifyDataSetChanged();
 
         Intent i=new Intent(getApplicationContext(), FallDetector.class);
         stopService(i);
@@ -94,6 +107,11 @@ public class UI1 extends Activity {
         ((ImageView)findViewById(R.id.pausebtnui1)).setVisibility(ImageView.VISIBLE);
         ((ImageView)findViewById(R.id.stopbntui1)).setVisibility(ImageView.VISIBLE);
         ((ImageView)findViewById(R.id.startbtnui1)).setVisibility(ImageView.INVISIBLE);
+
+
+        if(mItems.size()>1)
+            mItems.get(0).setState(SessionsListItem.ACTIVE_STATE);
+        mAdapter.notifyDataSetChanged();
 
         Intent i = new Intent(getBaseContext(),FallDetector.class);
         startService(i);
@@ -113,9 +131,58 @@ public class UI1 extends Activity {
         stopService(i);
 
         //aggiorno la listView
-        AggiornaLista();
+        //AggiornaLista();
+        inizializzaLista();
     }
 
+    public void inizializzaLista()
+    {
+        //costruisco la listview
+        mItems=new ArrayList<>();
+
+        //lista delle sessioni che la listview visualizzerà
+        //sono già una copia non serve ricopiarle, vedi il metodo
+        ArrayList<OldSession> sessionsList=SessionManager.getInstance().getOldSessions();
+        ActiveSession activeSession=SessionManager.getInstance().getActiveSession();
+        if(activeSession!=null)
+        {
+            try {
+                calendar.setTime(new SimpleDateFormat(Session.datePattern).parse(activeSession.getDataTime()));
+                mItems.add(new SessionsListItem(activeSession.getSignature().toBitmap(),
+                        activeSession.getName(),
+                        calendar.get(Calendar.DAY_OF_MONTH) + "/" + calendar.get(Calendar.MONTH) + "/" + calendar.get(Calendar.YEAR),
+                        calendar.get(Calendar.HOUR_OF_DAY) + ":" + calendar.get(Calendar.MINUTE) + ":" + calendar.get(Calendar.SECOND),
+                        activeSession.getFallsNumber() + "",
+                        SessionsListItem.ACTIVE_STATE));
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        }
+
+        calendar= Calendar.getInstance();
+        for(Session session:sessionsList) {
+
+            try {
+                calendar.setTime(new SimpleDateFormat(Session.datePattern).parse(session.getDataTime()));
+                mItems.add(new SessionsListItem(session.getSignature().toBitmap(),
+                        session.getName(),
+                        calendar.get(Calendar.DAY_OF_MONTH)+"/"+calendar.get(Calendar.MONTH)+"/"+calendar.get(Calendar.YEAR),
+                        calendar.get(Calendar.HOUR_OF_DAY)+":"+calendar.get(Calendar.MINUTE)+":"+calendar.get(Calendar.SECOND),
+                        session.getFallsNumber()+"",
+                        SessionsListItem.INACTIVE_STATE));
+
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
+        }
+
+        //utilizzo dell'adapter
+        mAdapter=new SessionsListAdapter(this,mItems);
+        ((ListView)findViewById(R.id.listsessionui1)).setAdapter(mAdapter);
+
+    }
+    /*
     public void AggiornaLista(){
         //costruisco la listview
 
@@ -152,7 +219,7 @@ public class UI1 extends Activity {
 
             if(s instanceof ActiveSession){
                 sessionMap.put("duration", "");
-                sessionMap.put("state", R.mipmap.state);
+                sessionMap.put("state", R.drawable.state);
             }
             else if(s instanceof OldSession){
                 sessionMap.put("duration", ((OldSession) s).getDuration());
@@ -194,7 +261,7 @@ public class UI1 extends Activity {
 
         //utilizzo dell'adapter
         ((ListView)findViewById(R.id.listsessionui1)).setAdapter(adapter);
-    }
+    }*/
 
     public void openSettings()
     {
