@@ -20,7 +20,6 @@ public class SignatureImpl implements Signature{
     public static int signatureCounter=0;
     public static final int PEAKED_CIRCLE=0;
     protected Calendar calendar;
-    final SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy_HH:mm:ss");
     protected Bitmap signature;
     private int hour;
     private int minute;
@@ -41,7 +40,7 @@ public class SignatureImpl implements Signature{
         try {
             //dati
             calendar=Calendar.getInstance();
-            calendar.setTime(sdf.parse(date));
+            calendar.setTime(new SimpleDateFormat(Session.datePattern).parse(date));
             dates=new int[6];
             elaborateDate();
             switch (mode) {
