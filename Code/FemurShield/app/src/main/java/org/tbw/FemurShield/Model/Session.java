@@ -6,6 +6,7 @@ import java.util.ArrayList;
  * Created by Moro on 03/05/15.
  */
 public interface Session {
+    public static final String datePattern="dd/MM/yyyy_HH:mm:ss";
     public Signature getSignature();
     public String getName();
     public String getDataTime();
