@@ -31,12 +31,14 @@ public class UI1 extends Activity {
     private List<SessionsListItem> mItems;
     private SessionsListAdapter mAdapter;
     private PreferencesEditor prefs;
+    private String filesDirectory;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ui1);
         prefs=new PreferencesEditor(this);
+        filesDirectory=this.getFilesDir().toString();
         //aggiorno la listView
         //AggiornaLista();
         inizializzaLista();
@@ -73,6 +75,7 @@ public class UI1 extends Activity {
             public void run(){
                 Intent i = new Intent(getBaseContext(),FallDetector.class);
                 i.putExtra("sample_rate",prefs.getSamplingRate());
+                i.putExtra("app_directory",filesDirectory);
                 startService(i);
             }
         }.start();
