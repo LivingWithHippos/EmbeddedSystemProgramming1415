@@ -28,7 +28,6 @@ public class FallDetector extends IntentService implements SensorEventListener {
     private Sensor accelerometro;
     private Sensor giroscopio;
     private boolean isRunning = false;
-    private String filesDirectory="/data/data/org.tbw.FemurShield/files";
 
     //costanti per l'algoritmo
     private final int DURATA_IMPATTO_ACC=250; //identifica la durata in ms di un impatto con altri corpi (accelerometro)
@@ -118,7 +117,6 @@ public class FallDetector extends IntentService implements SensorEventListener {
     protected void onHandleIntent(Intent intent) {
         int percent=intent.getIntExtra("sample_rate",50);
         tempocampionamento=(tempocampionamentomax-tempocampionamentomin)*percent/100+tempocampionamentomin;
-        filesDirectory=intent.getStringExtra("app_directory");
         Log.println(Log.INFO, "onHandleIntent", "fefwef");
     }
 
