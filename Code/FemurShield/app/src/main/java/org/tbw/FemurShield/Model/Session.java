@@ -13,4 +13,5 @@ public interface Session {
     public ArrayList<Fall> getFalls();
     public int getFallsNumber();
     public void setName(String sessionname);
+    public String getId();
 }

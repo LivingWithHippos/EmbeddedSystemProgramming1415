@@ -16,13 +16,15 @@ public class SessionImpl extends Observable implements Session{
     protected SignatureImpl signature;
     protected String name;
     protected String datetime;
+    private String ID;
 
     public SessionImpl(){
         cadute=new ArrayList<>();
 
         SimpleDateFormat sdf = new SimpleDateFormat(Session.datePattern);
         datetime = sdf.format(new Date());
-        name="Sessione"+datetime;
+        name="Sessione "+datetime;
+        ID=datetime;
         signature=new SignatureImpl(datetime,SignatureImpl.PEAKED_CIRCLE);
     }
 
@@ -38,6 +40,11 @@ public class SessionImpl extends Observable implements Session{
 
     @Override
     public void setName(String sessionname) { name=sessionname;}
+
+    @Override
+    public String getId() {
+        return ID;
+    }
 
     @Override
     public String getDataTime() {
