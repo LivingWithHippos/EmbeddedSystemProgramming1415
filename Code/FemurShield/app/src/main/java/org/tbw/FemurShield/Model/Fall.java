@@ -6,7 +6,9 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.util.Log;
 
+import org.tbw.FemurShield.Controller.LocationLocator;
 import org.tbw.FemurShield.Controller.MultiEmailSender;
 
 import java.util.HashMap;
@@ -38,7 +40,7 @@ public class Fall {
 
     public Fall(float[][] beforeValues, float[][] FallValues, float[][] afterValues, Context contx)
     {
-
+        Log.d("Fall", "Creating Fall Event");
         id=i++;
 
         valuesBeforeFall=beforeValues;
@@ -85,49 +87,15 @@ public class Fall {
 
     private void setPostion()//serve per inizializzare i valori di position usando locationmanager
     {
-        Location loc;
-        LocationManager lm = (LocationManager) cont.getSystemService(Context.LOCATION_SERVICE);
-
-        LocationListener ll = new LocationListener() // non mi interessa implementare i metodi in quanto mi serve solo location
-        {
+        LocationLocator.LocationResult locationResult = new LocationLocator.LocationResult(){
             @Override
-            public void onLocationChanged(Location location) {
-
-            }
-
-            @Override
-            public void onStatusChanged(String provider, int status, Bundle extras) {
-
-            }
-
-            @Override
-            public void onProviderEnabled(String provider) {
-
-            }
-
-            @Override
-            public void onProviderDisabled(String provider) {
-
+            public void gotLocation(Location location)
+            {
+                position[FALL_LATITUDE] = location.getLatitude(); // leggo la latuditine e la metto in position
+                position[FALL_LONGITUDE] = location.getLongitude(); // idem con la longitudine
             }
         };
-
-        String p = "";
-
-        if(lm.isProviderEnabled(LocationManager.GPS_PROVIDER)) //verifica se il GPS attivo e sceglie il provider
-        {
-            p = LocationManager.GPS_PROVIDER;
-        }
-        else if(lm.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) //idem con il network
-        {
-            p = LocationManager.NETWORK_PROVIDER;
-        }
-
-        lm.requestSingleUpdate(p, ll, null); // chiede una lettura dal listener
-        loc = lm.getLastKnownLocation(p); //chiede la location della ultima lettura
-
-        position[FALL_LATITUDE] = loc.getLatitude(); // leggo la latuditine e la metto in position
-        position[FALL_LONGITUDE] = loc.getLongitude(); // idem con la longitudine
-
-        lm.removeUpdates(ll);
+        LocationLocator myLocation = new LocationLocator();
+        myLocation.getLocation(cont, locationResult);
     }
 }
