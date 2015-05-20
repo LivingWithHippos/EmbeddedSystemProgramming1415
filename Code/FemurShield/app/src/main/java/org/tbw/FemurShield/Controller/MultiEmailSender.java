@@ -1,7 +1,7 @@
 package org.tbw.FemurShield.Controller;
 
 /**
- * Created by Vianello on 09/05/15. in Editing
+ * Created by Vianello on 09/05/15.
  */
 
 import android.app.Service;

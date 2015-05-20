@@ -1,7 +1,7 @@
 package org.tbw.FemurShield.Controller;
 
 /**
- * Created by lucavianello on 20/05/15.
+ * Created by Vianello on 20/05/15.
  */
 
 import java.util.Timer;
@@ -51,13 +51,13 @@ public class LocationLocator
         if(network_on)
             lm.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locationListenerNetwork);
 
-        // utlizzando il Timer andorid, fai partire il task dopo 20 sec, tempo per la rilevazione della posizione
+        // utlizzando il Timer andorid, fai partire il task dopo 20 sec (tempo utile per la rilevazione della posizione)
         timer1=new Timer();
         timer1.schedule(new GetLastLocation(), 20000);
         return true;
     }
 
-    // Inizializzazione Listener GPS
+    // Inizializzazione Listener GPS. quando rileva un cambiamento, prende il risultato fermando il timer e rilascia il listener
     LocationListener locationListenerGPS = new LocationListener()
     {
         @Override
@@ -79,6 +79,7 @@ public class LocationLocator
         public void onStatusChanged(String provider, int status, Bundle extras) {}
     };
 
+    // Inizializzazione Listener Network. quando rileva un cambiamento, prende il risultato fermando il timer e rilascia il listener
     LocationListener locationListenerNetwork = new LocationListener()
     {
         @Override
@@ -100,17 +101,17 @@ public class LocationLocator
         public void onStatusChanged(String provider, int status, Bundle extras) {}
     };
 
-    // semplice Task che tramite un timer temporale legge la posizione
+    // semplice Task che si attiva dopo un timer temporale
     class GetLastLocation extends TimerTask
     {
         @Override
         public void run()
         {
-            // rimuove possibili vecchie letture di un'altra sessione passata
+            // rilascia i listener dopo i 20 secondi
             lm.removeUpdates(locationListenerGPS);
             lm.removeUpdates(locationListenerNetwork);
 
-            //prende la ultima locazione se i porvider sono attivi
+            //prende la ultima locazione rilevata se i porvider sono attivi
             Location net_loc=null, gps_loc=null;
             if(gps_on)
                 gps_loc=lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
