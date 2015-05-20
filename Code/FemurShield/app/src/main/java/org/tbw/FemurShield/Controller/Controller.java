@@ -1,23 +1,37 @@
 package org.tbw.FemurShield.Controller;
 
+import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
-
-import java.util.Observable;
-import java.util.Observer;
+import android.util.Log;
 
 import org.tbw.FemurShield.Model.ActiveSession;
 import org.tbw.FemurShield.Model.Fall;
 import org.tbw.FemurShield.Model.Session;
 import org.tbw.FemurShield.Model.SessionManager;
+import org.tbw.FemurShield.Observer.Observable;
+import org.tbw.FemurShield.Observer.Observer;
 
 /**
  * Created by Moro on 02/05/15.
  */
-abstract class Controller {
+public class Controller implements Observer {
 
-    protected static Session CreateSession(){
+    private static Controller instance;
+
+    private Controller(){
+    }
+
+    public static Controller getInstance(){
+        if(instance!=null)
+            return instance;
+        instance=new Controller();
+        getNotification().attach(instance);
+        return instance;
+    }
+
+    public Session CreateSession(){
         ActiveSession active=SessionManager.getInstance().getActiveSession();
         if(active==null)
             return SessionManager.getInstance().createNewActiveSession();
@@ -26,19 +40,32 @@ abstract class Controller {
 
     }
 
-    protected static void StartSession(){
+    public void StartSession(Activity a){
         SessionManager.getInstance().StartSession();
+        Intent i = new Intent(a,FallDetector.class);
+        a.startService(i);
     }
 
-    protected static void PauseSession(){
+    public void PauseSession(Activity a){
         SessionManager.getInstance().PauseSession();
+        Intent i=new Intent(a, FallDetector.class);
+        a.stopService(i);
     }
 
-    protected static void StopSession(){
+    public void StopSession(Activity a){
         SessionManager.getInstance().StopSession();
+        Intent i=new Intent(a, FallDetector.class);
+        a.stopService(i);
     }
 
-    protected static void handleFallEvent(Fall fall){
-        SessionManager.getInstance().getActiveSession().AddFall(fall);
+    public static NotificationFallImpl getNotification(){
+        return NotificationFallImpl.getInstance();
+    }
+
+    @Override
+    public void update(Observable oggettoosservato, Object o) {
+
+        //TODO
+        SessionManager.getInstance().getActiveSession().AddFall((Fall) o);
     }
 }

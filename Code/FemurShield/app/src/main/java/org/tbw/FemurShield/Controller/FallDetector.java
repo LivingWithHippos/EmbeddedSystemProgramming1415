@@ -266,7 +266,10 @@ public class FallDetector extends IntentService implements SensorEventListener {
 
             //aggiungo la caduta
             //TODO inviare anche typeOfFall
-            Controller.handleFallEvent(new Fall(beforevalue, fallvalue, aftervalue, getBaseContext()));
+
+            Log.println(Log.INFO, "cadutaaaaa NOTIFY", Controller.getNotification().toString()+"   ");
+            Controller.getNotification().NotifyFall(new Fall(beforevalue, fallvalue, aftervalue, getBaseContext()));
+
 
             //svuoto i buffer e i campi...e metto i valori di after in before
             fallstate=NONE;

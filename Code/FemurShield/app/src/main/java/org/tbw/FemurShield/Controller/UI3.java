@@ -12,12 +12,13 @@ import java.util.Observable;
 import java.util.Observer;
 
 
-public class UI3 extends Activity implements Observer {
+public class UI3 extends Activity implements org.tbw.FemurShield.Observer.Observer {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ui3);
+        Controller.getNotification().addObserver(this);
     }
 
 
@@ -44,7 +45,9 @@ public class UI3 extends Activity implements Observer {
     }
 
     @Override
-    public void update(Observable observable, Object data) {
+    public void update(org.tbw.FemurShield.Observer.Observable oggettoosservato, Object o) {
         //aggiornare la UI in base ai vallori ricevuti TODO
+
+        //TODO controllo che aggiornamtno ho
     }
 }

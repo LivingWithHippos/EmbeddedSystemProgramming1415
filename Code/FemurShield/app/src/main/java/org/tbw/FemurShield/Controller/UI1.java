@@ -36,11 +36,8 @@ public class UI1 extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ui1);
         //aggiorno la listView
-        //AggiornaLista();
-        inizializzaLista();
+        AggiornaLista();
     }
-
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -61,29 +58,19 @@ public class UI1 extends Activity {
         }
     }
 
-
     public void onRecClick(View view){
         //TODO: business logic
-        Session sessione=Controller.CreateSession();
-
-
-        new Thread() {
-            public void run(){
-                Intent i = new Intent(getBaseContext(),FallDetector.class);
-                startService(i);
-            }
-        }.start();
+        Controller.getInstance().CreateSession();
 
         onPlayClick(view);
 
         //aggiorno la listView
-        //AggiornaLista();
-        inizializzaLista();
+        AggiornaLista();
     }
 
     public void onPauseClick(View view){
         //TODO: business logic
-        Controller.PauseSession();
+        Controller.getInstance().PauseSession(this);
 
         //modifo le visibilità dei bottoni di controllo
         ((ImageView)findViewById(R.id.recbtnun1)).setVisibility(ImageView.INVISIBLE);
@@ -91,16 +78,11 @@ public class UI1 extends Activity {
         ((ImageView)findViewById(R.id.stopbntui1)).setVisibility(ImageView.VISIBLE);
         ((ImageView)findViewById(R.id.startbtnui1)).setVisibility(ImageView.VISIBLE);
 
-        mItems.get(0).setState(SessionsListItem.INACTIVE_STATE);
-        mAdapter.notifyDataSetChanged();
-
-        Intent i=new Intent(getApplicationContext(), FallDetector.class);
-        stopService(i);
     }
 
     public void onPlayClick(View view){
         //TODO: business logic
-        Controller.StartSession();
+        Controller.getInstance().StartSession(this);
 
         //modifo le visibilità dei bottoni di controllo
         ((ImageView)findViewById(R.id.recbtnun1)).setVisibility(ImageView.INVISIBLE);
@@ -108,18 +90,11 @@ public class UI1 extends Activity {
         ((ImageView)findViewById(R.id.stopbntui1)).setVisibility(ImageView.VISIBLE);
         ((ImageView)findViewById(R.id.startbtnui1)).setVisibility(ImageView.INVISIBLE);
 
-
-        if(mItems.size()>1)
-            mItems.get(0).setState(SessionsListItem.RECORDING_STATE);
-        mAdapter.notifyDataSetChanged();
-
-        Intent i = new Intent(getBaseContext(),FallDetector.class);
-        startService(i);
     }
 
     public void onStopClick(View view){
         //TODO: business logic
-        Controller.StopSession();
+        Controller.getInstance().StopSession(this);
 
         //modifo le visibilità dei bottoni di controllo
         ((ImageView)findViewById(R.id.recbtnun1)).setVisibility(ImageView.VISIBLE);
@@ -127,67 +102,10 @@ public class UI1 extends Activity {
         ((ImageView)findViewById(R.id.stopbntui1)).setVisibility(ImageView.INVISIBLE);
         ((ImageView)findViewById(R.id.startbtnui1)).setVisibility(ImageView.INVISIBLE);
 
-        Intent i=new Intent(getBaseContext(), FallDetector.class);
-        stopService(i);
-
         //aggiorno la listView
-        //AggiornaLista();
-        inizializzaLista();
+        AggiornaLista();
     }
 
-    public void inizializzaLista()
-    {
-        //costruisco la listview
-        mItems=new ArrayList<>();
-        calendar= Calendar.getInstance();
-
-        //lista delle sessioni che la listview visualizzerà
-        //sono già una copia non serve ricopiarle, vedi il metodo
-        ArrayList<OldSession> sessionsList=SessionManager.getInstance().getOldSessions();
-        ActiveSession activeSession=SessionManager.getInstance().getActiveSession();
-        //metto a sessione attiva in cima alla lista
-        if(activeSession!=null)
-        {
-            try {
-                //inizializzo il calendario con il timestamp della sessione ottenuto tramite getDataTime()
-                calendar.setTime(new SimpleDateFormat(Session.datePattern).parse(activeSession.getDataTime()));
-                // creo l'oggetto che andra' nella lista (vedi costruttore per info)
-                mItems.add(new SessionsListItem(activeSession.getSignature().toBitmap(),
-                        activeSession.getName(),
-                        calendar.get(Calendar.DAY_OF_MONTH) + "/" + calendar.get(Calendar.MONTH) + "/" + calendar.get(Calendar.YEAR),
-                        calendar.get(Calendar.HOUR_OF_DAY) + ":" + calendar.get(Calendar.MINUTE) + ":" + calendar.get(Calendar.SECOND),
-                        activeSession.getFallsNumber() + "",
-                        SessionsListItem.RECORDING_STATE));
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-        }
-
-
-        //aggiungo le altre sessioni, quelle vecchie
-        for(Session session:sessionsList) {
-
-            try {
-                calendar.setTime(new SimpleDateFormat(Session.datePattern).parse(session.getDataTime()));
-                mItems.add(new SessionsListItem(session.getSignature().toBitmap(),
-                        session.getName(),
-                        calendar.get(Calendar.DAY_OF_MONTH)+"/"+calendar.get(Calendar.MONTH)+"/"+calendar.get(Calendar.YEAR),
-                        calendar.get(Calendar.HOUR_OF_DAY)+":"+calendar.get(Calendar.MINUTE)+":"+calendar.get(Calendar.SECOND),
-                        session.getFallsNumber()+"",
-                        SessionsListItem.INACTIVE_STATE));
-
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-
-        }
-
-        //utilizzo dell'adapter
-        mAdapter=new SessionsListAdapter(this,mItems);
-        ((ListView)findViewById(R.id.listsessionui1)).setAdapter(mAdapter);
-
-    }
-    /*
     public void AggiornaLista(){
         //costruisco la listview
 
@@ -246,27 +164,9 @@ public class UI1 extends Activity {
                 from,
                 to);
 
-
-        adapter.setViewBinder(new SimpleAdapter.ViewBinder(){
-
-            @Override
-            public boolean setViewValue(View view, Object data,
-                                        String textRepresentation) {
-                if( (view instanceof ImageView) & (data instanceof Bitmap) ) {
-                    ImageView iv = (ImageView) view;
-                    Bitmap bm = (Bitmap) data;
-                    iv.setImageBitmap(bm);
-                    return true;
-                }
-                return false;
-
-            }
-
-        });
-
         //utilizzo dell'adapter
         ((ListView)findViewById(R.id.listsessionui1)).setAdapter(adapter);
-    }*/
+    }
 
     public void openSettings()
     {
