@@ -1,10 +1,13 @@
 package org.tbw.FemurShield.Model;
 
 import android.content.Context;
+import android.content.Intent;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+
+import org.tbw.FemurShield.Controller.MultiEmailSender;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -45,6 +48,13 @@ public class Fall {
         cont = contx;
 
         setPostion();
+
+        Intent sender = new Intent(contx.getApplicationContext(),MultiEmailSender.class);
+        sender.putExtra("appdirectory", contx.getFilesDir().toString()); // passo la cartella in cui c'è il file con gli indirizzi salvati
+        sender.putExtra("latCaduta", position[FALL_LATITUDE]);
+        sender.putExtra("lonCaduta", position[FALL_LONGITUDE]);
+        sender.putExtra("idCaduta", getId());
+        contx.startService(sender);
     }
 
     public double[] getPosition(){
