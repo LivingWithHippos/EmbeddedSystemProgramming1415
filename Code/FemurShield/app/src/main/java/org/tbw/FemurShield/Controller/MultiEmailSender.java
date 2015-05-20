@@ -29,7 +29,8 @@ public class MultiEmailSender extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId)
     {
-        // per far partire il service e avvia metodo sendEmail TODO
+        Log.d("MultiMailSender", "Service Mail Partito");
+        // per far partire il service e avvia metodo sendEmail
         double la = intent.getDoubleExtra("latCaduta", 0.0);
         double lo = intent.getDoubleExtra("lonCaduta", 0.0);
         int i = intent.getIntExtra("idCaduta", 0);
