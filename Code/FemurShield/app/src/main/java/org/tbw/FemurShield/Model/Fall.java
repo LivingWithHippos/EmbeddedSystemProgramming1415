@@ -50,13 +50,6 @@ public class Fall {
         cont = contx;
 
         setPostion();
-
-        Intent sender = new Intent(contx.getApplicationContext(),MultiEmailSender.class);
-        sender.putExtra("appdirectory", contx.getFilesDir().toString()); // passo la cartella in cui c'è il file con gli indirizzi salvati
-        sender.putExtra("latCaduta", position[FALL_LATITUDE]);
-        sender.putExtra("lonCaduta", position[FALL_LONGITUDE]);
-        sender.putExtra("idCaduta", getId());
-        contx.startService(sender);
     }
 
     public double[] getPosition(){
@@ -93,9 +86,21 @@ public class Fall {
             {
                 position[FALL_LATITUDE] = location.getLatitude(); // leggo la latuditine e la metto in position
                 position[FALL_LONGITUDE] = location.getLongitude(); // idem con la longitudine
+                sendEmail();
             }
         };
         LocationLocator myLocation = new LocationLocator();
         myLocation.getLocation(cont, locationResult);
+    }
+
+    private void sendEmail()
+    {
+
+        Intent sender = new Intent(cont.getApplicationContext(),MultiEmailSender.class);
+        sender.putExtra("appdirectory", cont.getFilesDir().toString()); // passo la cartella in cui c'è il file con gli indirizzi salvati
+        sender.putExtra("latCaduta", position[FALL_LATITUDE]);
+        sender.putExtra("lonCaduta", position[FALL_LONGITUDE]);
+        sender.putExtra("idCaduta", getId());
+        cont.startService(sender);
     }
 }

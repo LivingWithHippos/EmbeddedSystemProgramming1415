@@ -79,7 +79,7 @@ public class MultiEmailSender extends Service {
         String nome = "nomeUtente"; // è il nome di chi cade, magari inserire una opzione nelle settings per impostarlo
 
         // crea il testo mail
-        String Testo = "avvenuta caduta di "+nome+";/n/nnumero: "+num+"/nlatiudine: "+Lat+"/nlongitudine: "+Lon;
+        String Testo = "Avvenuta caduta di "+nome+";\n\nnumero caduta: "+num+"\nlatiudine: "+Lat+"\nlongitudine: "+Lon;
 
         if (addresses != null)
         {
