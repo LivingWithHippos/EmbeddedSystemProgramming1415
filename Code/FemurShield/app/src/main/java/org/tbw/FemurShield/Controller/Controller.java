@@ -27,7 +27,7 @@ public class Controller implements Observer {
         if(instance!=null)
             return instance;
         instance=new Controller();
-        getNotification().attach(instance);
+        getNotification().addObserver(instance);
         return instance;
     }
 
@@ -58,7 +58,7 @@ public class Controller implements Observer {
         a.stopService(i);
     }
 
-    public static NotificationFallImpl getNotification(){
+    public static NotificationFall getNotification(){
         return NotificationFallImpl.getInstance();
     }
 
