@@ -19,7 +19,7 @@ import java.util.List;
  */
 public class SessionsListAdapter extends ArrayAdapter{
 
-    Resources resources;
+
     public SessionsListAdapter(Context context, List<SessionsListItem> items) {
         super(context, R.layout.settings_list_item, items);
     }
@@ -35,7 +35,6 @@ public class SessionsListAdapter extends ArrayAdapter{
             LayoutInflater inflater = LayoutInflater.from(getContext());
             convertView = inflater.inflate(R.layout.sessionlistitemui1, parent, false);
 
-            resources=Resources.getSystem();
             // inizializza il view holder
             viewHolder = new ViewHolder();
             viewHolder.ivSignature = (ImageView) convertView.findViewById(R.id.sessionsignatureui1);
