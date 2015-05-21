@@ -7,7 +7,7 @@ import org.tbw.FemurShield.Model.Fall;
 /**
  * Created by Moro on 19/05/15.
  */
-public class NotificationFallImpl extends org.tbw.FemurShield.Observer.Observable implements NotificationFall {
+class NotificationFallImpl extends org.tbw.FemurShield.Observer.Observable implements NotificationFall {
     private static NotificationFallImpl instance;
 
     private NotificationFallImpl(){
