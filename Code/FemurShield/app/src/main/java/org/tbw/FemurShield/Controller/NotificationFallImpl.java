@@ -26,7 +26,11 @@ class NotificationFallImpl extends org.tbw.FemurShield.Observer.Observable imple
     }
 
     public void NotifyAccData(float x, float y, float z){
-        this.notifyObserver(new float[]{x, y, z});
+        float[] args= new float[3];
+        args[0]=x;
+        args[1]=y;
+        args[2]=z;
+        this.notifyObserver(args);
     }
 
     public void NotifyFall(Fall f) {

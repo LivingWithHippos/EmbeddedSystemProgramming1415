@@ -148,9 +148,12 @@ public class FallDetector extends IntentService implements SensorEventListener {
         if(event.sensor.getType() == Sensor.TYPE_GYROSCOPE)
             if(result>LIMITE_MINIMO_CADUTA_GYRO)
                 Log.println(Log.DEBUG, "Giroscopio: ", "" + result);
-        if(event.sensor.getType() == Sensor.TYPE_ACCELEROMETER)
-            if(result>LIMITE_MINIMO_IMPATTO_ACC)
-                Log.println(Log.DEBUG,"Accelerometro: ",""+result);
+        if(event.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
+            if (result > LIMITE_MINIMO_IMPATTO_ACC)
+                Log.println(Log.DEBUG, "Accelerometro: ", "" + result);
+
+            Controller.getNotification().NotifyAccData(event.values[0], event.values[1], event.values[2]);
+        }
 
         fallAlgorithm(event);
     }
@@ -329,160 +332,163 @@ public class FallDetector extends IntentService implements SensorEventListener {
     int countlifegyro=0;
 
     public void falldetect(float x, float y, float z){
-        if(fallstate==NONE){
-            /*
-            controllo se ho la risultante delle accellerazioni sia un valore di una potenziale caduta.
-            in quel caso mi metto in osservazione/studio dei prossimi valori impostando fallstate=IN_PROGRESS;
-             */
-            if(Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2) + Math.pow(z, 2))>LIMITE_MINIMO_CADUTA_GYRO){
-                fallstate=IN_PROGRESS;
+        try{
+            if(fallstate==NONE){
+                /*
+                controllo se ho la risultante delle accellerazioni sia un valore di una potenziale caduta.
+                in quel caso mi metto in osservazione/studio dei prossimi valori impostando fallstate=IN_PROGRESS;
+                 */
+                if(Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2) + Math.pow(z, 2))>LIMITE_MINIMO_CADUTA_GYRO){
+                    fallstate=IN_PROGRESS;
 
-                Log.println(Log.INFO,"caduta in progress", "");
-                //aggiungo il valore nell'array con i valori di caduta
-                bufferValueFallGyro.get(X_VALUE).add(x);
-                bufferValueFallGyro.get(Y_VALUE).add(y);
-                bufferValueFallGyro.get(Z_VALUE).add(z);
+                    Log.println(Log.INFO,"caduta in progress", "");
+                    //aggiungo il valore nell'array con i valori di caduta
+                    bufferValueFallGyro.get(X_VALUE).add(x);
+                    bufferValueFallGyro.get(Y_VALUE).add(y);
+                    bufferValueFallGyro.get(Z_VALUE).add(z);
+                }
+                else{
+                    /*controllo che il buffer non inizi ad avere valori che non ci interessano più
+                    (voglio mostrare valori solo per tempovalori millisecondi)...
+                    In quel caso rimuovo il primo elemento (piu vecchio)
+                     */
+                    if(bufferValueBeforeGyro.get(X_VALUE).size() * tempocampionamento > tempovalori){
+                        bufferValueBeforeGyro.get(X_VALUE).remove(0);
+                        bufferValueBeforeGyro.get(Y_VALUE).remove(0);
+                        bufferValueBeforeGyro.get(Z_VALUE).remove(0);
+                    }
+                    //aggiungo i valori letti al buffer (con i valori prima della caduta) perchè mi potrebbero servire in futuro
+                    bufferValueBeforeGyro.get(X_VALUE).add(x);
+                    bufferValueBeforeGyro.get(Y_VALUE).add(y);
+                    bufferValueBeforeGyro.get(Z_VALUE).add(z);
+                }
             }
             else{
-                /*controllo che il buffer non inizi ad avere valori che non ci interessano più 
-                (voglio mostrare valori solo per tempovalori millisecondi)...
-                In quel caso rimuovo il primo elemento (piu vecchio)
-                 */
-                if(bufferValueBeforeGyro.get(X_VALUE).size() * tempocampionamento > tempovalori){
-                    bufferValueBeforeGyro.get(X_VALUE).remove(0);
-                    bufferValueBeforeGyro.get(Y_VALUE).remove(0);
-                    bufferValueBeforeGyro.get(Z_VALUE).remove(0);
-                }
-                //aggiungo i valori letti al buffer (con i valori prima della caduta) perchè mi potrebbero servire in futuro
-                bufferValueBeforeGyro.get(X_VALUE).add(x);
-                bufferValueBeforeGyro.get(Y_VALUE).add(y);
-                bufferValueBeforeGyro.get(Z_VALUE).add(z);
-            }
-        }
-        else{
-            if(fallstate==IN_PROGRESS){
-				/* controllo il numero di valori alti per dire se è effettivamente un urto se al
-				raggiungimento del tempo statndard di impatto ho raggiunto un tot di valori sufficienti
-				a quel punto passo ad IDENTIFIED atrimenti a NONE ed i valori nel buffer di caduta
-				vengono spostati sul buffer di beforefall.*/
-                if(bufferValueFallGyro.get(X_VALUE).size()*tempocampionamento>DURATA_CADUTA_GYRO) {
-                    //TODO controllare anche se ho avuto un tot di valori (vedi commento sopra)
-                    fallstate = IDENTIFIED;
+                if(fallstate==IN_PROGRESS){
+                    /* controllo il numero di valori alti per dire se è effettivamente un urto se al
+                    raggiungimento del tempo statndard di impatto ho raggiunto un tot di valori sufficienti
+                    a quel punto passo ad IDENTIFIED atrimenti a NONE ed i valori nel buffer di caduta
+                    vengono spostati sul buffer di beforefall.*/
+                    if(bufferValueFallGyro.get(X_VALUE).size()*tempocampionamento>DURATA_CADUTA_GYRO) {
+                        //TODO controllare anche se ho avuto un tot di valori (vedi commento sopra)
+                        fallstate = IDENTIFIED;
 
-                    Log.println(Log.INFO,"caduta identified", "");
+                        Log.println(Log.INFO,"caduta identified", "");
+                    }
+                    //aggiungo il valore nell'array con i valori di caduta
+                    bufferValueFallGyro.get(X_VALUE).add(x);
+                    bufferValueFallGyro.get(Y_VALUE).add(y);
+                    bufferValueFallGyro.get(Z_VALUE).add(z);
                 }
-                //aggiungo il valore nell'array con i valori di caduta
-                bufferValueFallGyro.get(X_VALUE).add(x);
-                bufferValueFallGyro.get(Y_VALUE).add(y);
-                bufferValueFallGyro.get(Z_VALUE).add(z);
-            }
-            else{ //fallstate==IDENTIFIED
-                countlifegyro++;
-                //attendo il tempo massimo in attesa dell'impatto...
-                //se potrebbe ancora verificarsi l'impatto mantengo su IDENTIFIED la variabile di
-                //stato, altrimenti la imposto nuovamente a NONE e i valori del buffer dopo la
-                // caduta li sposto su quello dei valori prima della caduta (eliminando quelli troppo vecchi)
-                if(countlifegyro*tempocampionamento> DISTANZA_CADUTA_GYRO_IMPATTO_CADUTA_ACC){
-                    fallstate=NONE;
-                    countlifegyro=0;
-                    Log.println(Log.INFO,"caduta terminata", "");
-                    tipoA=false;
+                else{ //fallstate==IDENTIFIED
+                    countlifegyro++;
+                    //attendo il tempo massimo in attesa dell'impatto...
+                    //se potrebbe ancora verificarsi l'impatto mantengo su IDENTIFIED la variabile di
+                    //stato, altrimenti la imposto nuovamente a NONE e i valori del buffer dopo la
+                    // caduta li sposto su quello dei valori prima della caduta (eliminando quelli troppo vecchi)
+                    if(countlifegyro*tempocampionamento> DISTANZA_CADUTA_GYRO_IMPATTO_CADUTA_ACC){
+                        fallstate=NONE;
+                        countlifegyro=0;
+                        Log.println(Log.INFO,"caduta terminata", "");
+                        tipoA=false;
 
-                    for (int i =0;i<bufferValueAfterGyro.get(X_VALUE).size();i++) {
-                        bufferValueBeforeGyro.get(X_VALUE).add(bufferValueAfterGyro.get(X_VALUE).get(i));
-                        bufferValueBeforeGyro.get(Y_VALUE).add(bufferValueAfterGyro.get(Y_VALUE).get(i));
-                        bufferValueBeforeGyro.get(Z_VALUE).add(bufferValueAfterGyro.get(Z_VALUE).get(i));
-                        if (bufferValueBeforeGyro.get(X_VALUE).size() * tempocampionamento > tempovalori) {
-                            bufferValueBeforeGyro.get(X_VALUE).remove(0);
-                            bufferValueBeforeGyro.get(Y_VALUE).remove(0);
-                            bufferValueBeforeGyro.get(Z_VALUE).remove(0);
+                        for (int i =0;i<bufferValueAfterGyro.get(X_VALUE).size();i++) {
+                            bufferValueBeforeGyro.get(X_VALUE).add(bufferValueAfterGyro.get(X_VALUE).get(i));
+                            bufferValueBeforeGyro.get(Y_VALUE).add(bufferValueAfterGyro.get(Y_VALUE).get(i));
+                            bufferValueBeforeGyro.get(Z_VALUE).add(bufferValueAfterGyro.get(Z_VALUE).get(i));
+                            if (bufferValueBeforeGyro.get(X_VALUE).size() * tempocampionamento > tempovalori) {
+                                bufferValueBeforeGyro.get(X_VALUE).remove(0);
+                                bufferValueBeforeGyro.get(Y_VALUE).remove(0);
+                                bufferValueBeforeGyro.get(Z_VALUE).remove(0);
+                            }
                         }
                     }
-                }
-                else {
-                    bufferValueAfterGyro.get(X_VALUE).add(x);
-                    bufferValueAfterGyro.get(Y_VALUE).add(y);
-                    bufferValueAfterGyro.get(Z_VALUE).add(z);
+                    else {
+                        bufferValueAfterGyro.get(X_VALUE).add(x);
+                        bufferValueAfterGyro.get(Y_VALUE).add(y);
+                        bufferValueAfterGyro.get(Z_VALUE).add(z);
+                    }
                 }
             }
-        }
+        }catch (IndexOutOfBoundsException e ){
+            Log.println(Log.INFO, "BUGGGGGGGG", "IndexOutOfBoundsException");}
     }
 
     int countlifeacc=0;
 
     public void impactdetect(float x, float y, float z){
-        if(impactstate==NONE){
-            /*
-            controllo se ho la risultante delle accellerazioni sia un valore di una potenziale caduta.
-            in quel caso mi metto in osservazione/studio dei prossimi valori impostando fallstate=IN_PROGRESS;
-             */
-            if(Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2) + Math.pow(z, 2))>LIMITE_MINIMO_IMPATTO_ACC){
-                impactstate=IN_PROGRESS;
-
-                Log.println(Log.INFO,"impatto in progress", "");
-                //aggiungo il valore nell'array con i valori di caduta
-                bufferValueFallAcc.get(X_VALUE).add(x);
-                bufferValueFallAcc.get(Y_VALUE).add(y);
-                bufferValueFallAcc.get(Z_VALUE).add(z);
-            }
-            else{
-                /*controllo che il buffer non inizi ad avere valori che non ci interessano più
-                (voglio mostrare valori solo per tempovalori millisecondi)...
-                In quel caso rimuovo il primo elemento (piu vecchio)
+        try {
+            if (impactstate == NONE) {
+                /*
+                controllo se ho la risultante delle accellerazioni sia un valore di una potenziale caduta.
+                in quel caso mi metto in osservazione/studio dei prossimi valori impostando fallstate=IN_PROGRESS;
                  */
-                if(bufferValueBeforeAcc.get(X_VALUE).size() * tempocampionamento > tempovalori){
-                    bufferValueBeforeAcc.get(X_VALUE).remove(0);
-                    bufferValueBeforeAcc.get(Y_VALUE).remove(0);
-                    bufferValueBeforeAcc.get(Z_VALUE).remove(0);
+                if (Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2) + Math.pow(z, 2)) > LIMITE_MINIMO_IMPATTO_ACC) {
+                    impactstate = IN_PROGRESS;
+
+                    Log.println(Log.INFO, "impatto in progress", "");
+                    //aggiungo il valore nell'array con i valori di caduta
+                    bufferValueFallAcc.get(X_VALUE).add(x);
+                    bufferValueFallAcc.get(Y_VALUE).add(y);
+                    bufferValueFallAcc.get(Z_VALUE).add(z);
+                } else {
+                    /*controllo che il buffer non inizi ad avere valori che non ci interessano più
+                    (voglio mostrare valori solo per tempovalori millisecondi)...
+                    In quel caso rimuovo il primo elemento (piu vecchio)
+                     */
+                    if (bufferValueBeforeAcc.get(X_VALUE).size() * tempocampionamento > tempovalori) {
+                        bufferValueBeforeAcc.get(X_VALUE).remove(0);
+                        bufferValueBeforeAcc.get(Y_VALUE).remove(0);
+                        bufferValueBeforeAcc.get(Z_VALUE).remove(0);
+                    }
+                    //aggiungo i valori letti al buffer (con i valori prima della caduta) perchè mi potrebbero servire in futuro
+                    bufferValueBeforeAcc.get(X_VALUE).add(x);
+                    bufferValueBeforeAcc.get(Y_VALUE).add(y);
+                    bufferValueBeforeAcc.get(Z_VALUE).add(z);
                 }
-                //aggiungo i valori letti al buffer (con i valori prima della caduta) perchè mi potrebbero servire in futuro
-                bufferValueBeforeAcc.get(X_VALUE).add(x);
-                bufferValueBeforeAcc.get(Y_VALUE).add(y);
-                bufferValueBeforeAcc.get(Z_VALUE).add(z);
-            }
-        }
-        else{
-            if(impactstate==IN_PROGRESS){
-				/* controllo il numero di valori alti per dire se è effettivamente un urto se al
-				raggiungimento del tempo statndard di impatto ho raggiunto un tot di valori sufficienti
-				a quel punto passo ad IDENTIFIED atrimenti a NONE ed i valori nel buffer di caduta
-				vengono spostati sul buffer di beforefall.*/
-                if(bufferValueFallAcc.get(X_VALUE).size()*tempocampionamento>DURATA_IMPATTO_ACC) {
-                    //TODO controllare anche se ho avuto un tot di valori (vedi commento sopra)
-                    impactstate = IDENTIFIED;
-                    Log.println(Log.INFO,"impatto identified", "");
-                }
-                //aggiungo il valore nell'array con i valori di caduta
-                bufferValueFallAcc.get(X_VALUE).add(x);
-                bufferValueFallAcc.get(Y_VALUE).add(y);
-                bufferValueFallAcc.get(Z_VALUE).add(z);
-            }
-            else{ //impactstate==IDENTIFIED
-                countlifeacc++;
-                //attendo il tempo massimo in attesa dell'impatto...
-                //se potrebbe ancora verificarsi l'impatto mantengo su IDENTIFIED la variabile di
-                //stato, altrimenti la imposto nuovamente a NONE e i valori del buffer dopo la
-                // caduta li sposto su quello dei valori prima della caduta (eliminando quelli troppo vecchi)
-                if(countlifeacc*tempocampionamento> DISTANZA_CADUTA_GYRO_IMPATTO_CADUTA_ACC){
-                    //TODO continuare a registrare i valori
-                    impactstate=NONE;
-                    countlifeacc=0;
-                    Log.println(Log.INFO,"impatto terminata", "");
-                    for (int i =0;i<bufferValueAfterGyro.get(X_VALUE).size();i++) {
-                        bufferValueBeforeAcc.get(X_VALUE).add(bufferValueAfterAcc.get(X_VALUE).get(i));
-                        bufferValueBeforeAcc.get(Y_VALUE).add(bufferValueAfterAcc.get(Y_VALUE).get(i));
-                        bufferValueBeforeAcc.get(Z_VALUE).add(bufferValueAfterAcc.get(Z_VALUE).get(i));
-                        if (bufferValueBeforeAcc.get(X_VALUE).size() * tempocampionamento > tempovalori) {
-                            bufferValueBeforeAcc.get(X_VALUE).remove(0);
-                            bufferValueBeforeAcc.get(Y_VALUE).remove(0);
-                            bufferValueBeforeAcc.get(Z_VALUE).remove(0);
+            } else {
+                if (impactstate == IN_PROGRESS) {
+                    /* controllo il numero di valori alti per dire se è effettivamente un urto se al
+                    raggiungimento del tempo statndard di impatto ho raggiunto un tot di valori sufficienti
+                    a quel punto passo ad IDENTIFIED atrimenti a NONE ed i valori nel buffer di caduta
+                    vengono spostati sul buffer di beforefall.*/
+                    if (bufferValueFallAcc.get(X_VALUE).size() * tempocampionamento > DURATA_IMPATTO_ACC) {
+                        //TODO controllare anche se ho avuto un tot di valori (vedi commento sopra)
+                        impactstate = IDENTIFIED;
+                        Log.println(Log.INFO, "impatto identified", "");
+                    }
+                    //aggiungo il valore nell'array con i valori di caduta
+                    bufferValueFallAcc.get(X_VALUE).add(x);
+                    bufferValueFallAcc.get(Y_VALUE).add(y);
+                    bufferValueFallAcc.get(Z_VALUE).add(z);
+                } else { //impactstate==IDENTIFIED
+                    countlifeacc++;
+                    //attendo il tempo massimo in attesa dell'impatto...
+                    //se potrebbe ancora verificarsi l'impatto mantengo su IDENTIFIED la variabile di
+                    //stato, altrimenti la imposto nuovamente a NONE e i valori del buffer dopo la
+                    // caduta li sposto su quello dei valori prima della caduta (eliminando quelli troppo vecchi)
+                    if (countlifeacc * tempocampionamento > DISTANZA_CADUTA_GYRO_IMPATTO_CADUTA_ACC) {
+                        //TODO continuare a registrare i valori
+                        impactstate = NONE;
+                        countlifeacc = 0;
+                        Log.println(Log.INFO, "impatto terminata", "");
+                        for (int i = 0; i < bufferValueAfterGyro.get(X_VALUE).size(); i++) {
+                            bufferValueBeforeAcc.get(X_VALUE).add(bufferValueAfterAcc.get(X_VALUE).get(i));
+                            bufferValueBeforeAcc.get(Y_VALUE).add(bufferValueAfterAcc.get(Y_VALUE).get(i));
+                            bufferValueBeforeAcc.get(Z_VALUE).add(bufferValueAfterAcc.get(Z_VALUE).get(i));
+                            if (bufferValueBeforeAcc.get(X_VALUE).size() * tempocampionamento > tempovalori) {
+                                bufferValueBeforeAcc.get(X_VALUE).remove(0);
+                                bufferValueBeforeAcc.get(Y_VALUE).remove(0);
+                                bufferValueBeforeAcc.get(Z_VALUE).remove(0);
+                            }
                         }
                     }
+                    bufferValueAfterAcc.get(X_VALUE).add(x);
+                    bufferValueAfterAcc.get(Y_VALUE).add(y);
+                    bufferValueAfterAcc.get(Z_VALUE).add(z);
                 }
-                bufferValueAfterAcc.get(X_VALUE).add(x);
-                bufferValueAfterAcc.get(Y_VALUE).add(y);
-                bufferValueAfterAcc.get(Z_VALUE).add(z);
             }
-        }
+        }catch (IndexOutOfBoundsException e ){
+            Log.println(Log.INFO, "BUGGGGGGGG", "IndexOutOfBoundsException");}
     }
 }

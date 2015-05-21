@@ -66,6 +66,8 @@ public class UI1 extends Activity {
 
         //aggiorno la listView
         AggiornaLista();
+        Intent intent=new Intent(this,UI3.class);
+        startActivity(intent);
     }
 
     public void onPauseClick(View view){

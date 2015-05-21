@@ -66,6 +66,7 @@ public class Controller implements Observer {
     public void update(Observable oggettoosservato, Object o) {
 
         //TODO
-        SessionManager.getInstance().getActiveSession().AddFall((Fall) o);
+        if(o instanceof Fall)
+            SessionManager.getInstance().getActiveSession().AddFall((Fall) o);
     }
 }
