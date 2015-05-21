@@ -77,9 +77,11 @@ public class MultiEmailSender extends Service {
         double Lon = lon;
         int num = id;
         String nome = "nomeUtente"; // è il nome di chi cade, magari inserire una opzione nelle settings per impostarlo
+        String link = "https://www.google.it/maps/@";
+        String zoom = "18z";
 
         // crea il testo mail
-        String Testo = "Avvenuta caduta di "+nome+";\n\nnumero caduta: "+num+"\nlatiudine: "+Lat+"\nlongitudine: "+Lon;
+        String Testo = "Avvenuta caduta di "+nome+";\n\nnumero caduta: "+num+"\nlatiudine: "+Lat+"\nlongitudine: "+Lon+"\nLink Google Maps: "+link+Lat+","+Lon+","+zoom;
 
         if (addresses != null)
         {
