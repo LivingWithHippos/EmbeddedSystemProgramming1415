@@ -79,7 +79,7 @@ public class MultiEmailSender extends Service {
         String nome = "nomeUtente"; // è il nome di chi cade, magari inserire una opzione nelle settings per impostarlo
 
         // crea il testo mail
-        String Testo = "avvenuta caduta di "+nome+", numero: "+num+",in latiudine: "+Lat+",e in longitudine: "+Lon+".";
+        String Testo = "avvenuta caduta di "+nome+";/n/nnumero: "+num+"/nlatiudine: "+Lat+"/nlongitudine: "+Lon;
 
         if (addresses != null)
         {
@@ -91,7 +91,9 @@ public class MultiEmailSender extends Service {
             email.setType("message/rfc822");
 
             //avvia la activty per l'invio della mail
-            startActivity(Intent.createChooser(email, "Scegli un Client E-Mail :"));
+            Intent sendEmail = Intent.createChooser(email, "Scegli un Client E-Mail :");
+            sendEmail.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(sendEmail);
         }
         else
         {
