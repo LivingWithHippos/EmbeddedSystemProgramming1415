@@ -14,6 +14,7 @@ import org.tbw.FemurShield.Model.Fall;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.ObjectInputStream;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class MultiEmailSender extends Service {
@@ -68,19 +69,21 @@ public class MultiEmailSender extends Service {
         }
     }
 
-    public void sendEmail(double lat, double lon, int id)
+    public void sendEmail(double la, double lo, int id)
     {
 
         // recupera i dati da inserire nella mail
 
-        double Lat = lat;
-        double Lon = lon;
+        double lat = la;
+        double lon = lo;
         int num = id;
         String nome = "nomeUtente"; // è il nome di chi cade, magari inserire una opzione nelle settings per impostarlo
         String link = "https://www.google.it/maps/?z=18&q=";
 
         // crea il testo mail
-        String Testo = "Avvenuta caduta di "+nome+";\n\nnumero caduta: "+num+"\nlatiudine: "+Lat+"\nlongitudine: "+Lon+"\nLink Google Maps: "+link+Lat+","+Lon;
+        String testo = "Avvenuta caduta di "+nome+";\n\nnumero caduta: "+num+"\nlatiudine: "+lat+"\nlongitudine: "+lon+"\nLink Google Maps: "+link+lat+","+lon;
+        ArrayList<String> extra_text = new ArrayList<>();
+        extra_text.add(testo);
 
         if (addresses != null)
         {
@@ -88,7 +91,7 @@ public class MultiEmailSender extends Service {
             Intent email = new Intent(Intent.ACTION_SEND_MULTIPLE);
             email.putExtra(Intent.EXTRA_SUBJECT, "(noreply) - FREMUR SHIELD Notification");
             email.putExtra(Intent.EXTRA_BCC, addresses);
-            email.putExtra(Intent.EXTRA_TEXT, Testo);
+            email.putExtra(Intent.EXTRA_TEXT, extra_text);
             email.setType("message/rfc822");
 
             //avvia la activty per l'invio della mail
