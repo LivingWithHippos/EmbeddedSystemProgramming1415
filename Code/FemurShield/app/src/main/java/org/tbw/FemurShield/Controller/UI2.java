@@ -17,9 +17,11 @@ public class UI2 extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ui2);
         FallFragment ff = FallFragment.newInstance();
+        SessionDetailsFragment sdf = SessionDetailsFragment.newIstance();
         FragmentManager fm = getFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
         ft.add(ff, "cadutalista");
+        ft.add(sdf, "dettaglicaduta");
         ft.commit();
     }
 
@@ -44,5 +46,11 @@ public class UI2 extends Activity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onBackPressed()
+    {
+        finish(); // chiude la UI2 quando premi il tasto back e ritorna alla chiamante (UI1)
     }
 }
