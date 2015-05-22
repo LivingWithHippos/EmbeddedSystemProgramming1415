@@ -1,5 +1,6 @@
 package org.tbw.FemurShield.Controller;
 
+import android.app.Activity;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.widget.ImageView;
@@ -24,6 +25,14 @@ public class SessionDetailsFragment extends Fragment
         return fragment;
     }
 
+    @Override
+    public void onAttach (Activity activity)
+    {
+        // TODO dalla UI2 prende i dati della sessione selezionata da UI1,
+        // TODO che mostra tutte le sessioni, passare tramite intent?
+    }
+
+    @Override
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);

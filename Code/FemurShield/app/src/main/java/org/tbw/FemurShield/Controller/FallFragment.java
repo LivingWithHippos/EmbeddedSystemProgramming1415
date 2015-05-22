@@ -3,9 +3,13 @@ package org.tbw.FemurShield.Controller;
 import android.app.Activity;
 import android.app.ListFragment;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import org.tbw.FemurShield.Model.Fall;
 import org.tbw.FemurShield.Model.Session;
+import org.tbw.FemurShield.R;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -59,5 +63,12 @@ public class FallFragment extends ListFragment
         }
         fAdapter=new FallListAdapter(getActivity(), fItems);
         setListAdapter(fAdapter);
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
+    {
+        View rootView = inflater.inflate(R.layout.fragment_fall, container,false);
+        return rootView;
     }
 }
