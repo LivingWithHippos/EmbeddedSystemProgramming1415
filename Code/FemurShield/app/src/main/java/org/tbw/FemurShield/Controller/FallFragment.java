@@ -1,7 +1,11 @@
 package org.tbw.FemurShield.Controller;
 
+import android.app.Activity;
 import android.app.ListFragment;
 import android.os.Bundle;
+
+import org.tbw.FemurShield.Model.Fall;
+import org.tbw.FemurShield.Model.Session;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,6 +16,9 @@ import java.util.List;
 public class FallFragment extends ListFragment
 {
     private List<FallListItem> fItems;
+    private FallListAdapter fAdapter;
+    private ArrayList<Fall> falls;
+    private Session session;
 
     public FallFragment()
     {
@@ -24,6 +31,13 @@ public class FallFragment extends ListFragment
     }
 
     @Override
+    public void onAttach (Activity activity)
+    {
+        // TODO dalla UI2 prende i dati della sessione selezionata da UI1,
+        // TODO che mostra tutte le sessioni, passare tramite intent?
+    }
+
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
@@ -33,6 +47,17 @@ public class FallFragment extends ListFragment
     public void startlist()
     {
         fItems = new ArrayList<>();
+        falls = session.getFalls();
+        for(int i = 0; i< session.getFallsNumber();i++)
+        {
+            int num = falls.get(i).getId();
+            String n = "Caduta N°"+num;
+            String d = falls.get(i).getData();
+            boolean s = falls.get(i).isReported();
 
+            fItems.add(new FallListItem(n,d,s));
+        }
+        fAdapter=new FallListAdapter(getActivity(), fItems);
+        setListAdapter(fAdapter);
     }
 }

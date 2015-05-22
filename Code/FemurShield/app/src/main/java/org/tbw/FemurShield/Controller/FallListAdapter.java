@@ -14,7 +14,7 @@ import org.tbw.FemurShield.R;
 import java.util.List;
 
 /**
- * Created by lucavianello on 21/05/15.
+ * Created by Vianello on 21/05/15.
  */
 public class FallListAdapter extends ArrayAdapter
 {
