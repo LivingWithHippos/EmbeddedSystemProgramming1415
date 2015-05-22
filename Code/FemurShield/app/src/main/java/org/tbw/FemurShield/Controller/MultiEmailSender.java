@@ -35,9 +35,10 @@ public class MultiEmailSender extends Service {
         double la = intent.getDoubleExtra("latCaduta", 0.0);
         double lo = intent.getDoubleExtra("lonCaduta", 0.0);
         int i = intent.getIntExtra("idCaduta", 0);
+        String da =  intent.getStringExtra("dataCaduta");
         String path = intent.getStringExtra("appdirectory");
         getAdresses(path);
-        sendEmail(la, lo, i);
+        sendEmail(la, lo, i, da);
         return Service.START_STICKY;
     }
 
@@ -69,7 +70,7 @@ public class MultiEmailSender extends Service {
         }
     }
 
-    public void sendEmail(double la, double lo, int id)
+    public void sendEmail(double la, double lo, int id, String da)
     {
 
         // recupera i dati da inserire nella mail
@@ -77,11 +78,12 @@ public class MultiEmailSender extends Service {
         double lat = la;
         double lon = lo;
         int num = id;
+        String data = da;
         String nome = "nomeUtente"; // è il nome di chi cade, magari inserire una opzione nelle settings per impostarlo
         String link = "https://www.google.it/maps/?z=18&q=";
 
         // crea il testo mail
-        String testo = "Avvenuta caduta di "+nome+";\n\nnumero caduta: "+num+"\nlatiudine: "+lat+"\nlongitudine: "+lon+"\nLink Google Maps: "+link+lat+","+lon;
+        String testo = "Avvenuta caduta di "+nome+" in data: "+data+"\n\nnumero caduta: "+num+"\nlatiudine: "+lat+"\nlongitudine: "+lon+"\nLink Google Maps: "+link+lat+","+lon;
         ArrayList<String> extra_text = new ArrayList<>();
         extra_text.add(testo);
 

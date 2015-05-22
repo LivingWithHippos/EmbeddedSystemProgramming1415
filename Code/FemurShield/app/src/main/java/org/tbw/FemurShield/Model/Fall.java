@@ -6,6 +6,7 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.text.format.Time;
 import android.util.Log;
 
 import org.tbw.FemurShield.Controller.LocationLocator;
@@ -30,7 +31,7 @@ public class Fall {
     public static final int IMPACT=1;
 
     private double[] position=new double[2];
-
+    private String data;
     private boolean segnalato=false;
     private float[][] valuesBeforeFall= new float[3][];
     private float[][] valuesFall= new float[3][];
@@ -49,6 +50,7 @@ public class Fall {
 
         cont = contx;
 
+        setData();
         setPostion();
     }
 
@@ -78,6 +80,8 @@ public class Fall {
 
     public int getId() { return id; }
 
+    public String getData() { return data;}
+
     private void setPostion()//serve per inizializzare i valori di position usando locationmanager
     {
         LocationLocator.LocationResult locationResult = new LocationLocator.LocationResult(){
@@ -101,6 +105,14 @@ public class Fall {
         sender.putExtra("latCaduta", position[FALL_LATITUDE]);
         sender.putExtra("lonCaduta", position[FALL_LONGITUDE]);
         sender.putExtra("idCaduta", getId());
+        sender.putExtra("dataCaduta", getData());
         cont.startService(sender);
+    }
+
+    private void setData()
+    {
+        Time t = new Time(Time.getCurrentTimezone());
+        t.setToNow();
+        data = t.format("dd/MM/yyyy\nHH:mm:ss a");
     }
 }
