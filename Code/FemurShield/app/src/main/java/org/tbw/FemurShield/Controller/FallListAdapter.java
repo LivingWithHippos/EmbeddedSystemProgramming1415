@@ -50,8 +50,14 @@ public class FallListAdapter extends ArrayAdapter
             FallListItem item =(FallListItem) getItem(position);
             viewHolder.tvName.setText(item.name);
             viewHolder.tvdate.setText(item.date);
-            viewHolder.ivSent.setImageResource(R.drawable.uncheck);
-
+            if(item.sent)
+            {
+                viewHolder.ivSent.setImageResource(R.drawable.check);
+            }
+            else
+            {
+                viewHolder.ivSent.setImageResource(R.drawable.uncheck);
+            }
             return convertView;
         }
 

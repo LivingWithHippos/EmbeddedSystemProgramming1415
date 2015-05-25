@@ -91,7 +91,7 @@ public class MultiEmailSender extends Service {
         {
             //compone la mail con oggetto, destinatari in CCn e testo
             Intent email = new Intent(Intent.ACTION_SEND_MULTIPLE);
-            email.putExtra(Intent.EXTRA_SUBJECT, "(noreply) - FREMUR SHIELD Notification");
+            email.putExtra(Intent.EXTRA_SUBJECT, "(noreply) - FemurShield Notification");
             email.putExtra(Intent.EXTRA_BCC, addresses);
             email.putExtra(Intent.EXTRA_TEXT, extra_text);
             email.setType("message/rfc822");
