@@ -6,6 +6,11 @@ import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import org.tbw.FemurShield.Model.Session;
+import org.tbw.FemurShield.Model.SessionManager;
+
+import java.util.ArrayList;
+
 /**
  * Created by Vianello on 21/05/15.
  * mostra detagli: nome sessione - data - durata
@@ -15,6 +20,8 @@ import android.widget.TextView;
  */
 public class SessionDetailsFragment extends Fragment
 {
+    private Session session;
+
     public SessionDetailsFragment()
     {
     }
@@ -40,16 +47,27 @@ public class SessionDetailsFragment extends Fragment
         startDetails();
     }
 
-    private void startDetails()
+    public void setSession(String date)
     {
-        //TODO metodo che inizializza i dettagli della sessione
+        ArrayList<Session> s = SessionManager.getInstance().getAllSessions();
+        if(s!= null)
+        {
+            for(Session sex : s)
+            {
+                if(sex.getDataTime().equalsIgnoreCase(date))
+                {
+                    session = sex;
+                    break;
+                }
+            }
+        }
     }
 
-    private static class ViewHolder
+    private void startDetails()
     {
-        TextView tvName;
-        TextView tvdate;
-        TextView tvDuration;
-        ImageView ivGraphic; // lo so è una signature, ho messo così che non da errore
+        if(session!=null)
+        {
+            //TODO inizializzare i valori con findwibyid ecc...
+        }
     }
 }

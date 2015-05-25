@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 
 import org.tbw.FemurShield.Model.Fall;
 import org.tbw.FemurShield.Model.Session;
+import org.tbw.FemurShield.Model.SessionManager;
 import org.tbw.FemurShield.R;
 
 import java.util.ArrayList;
@@ -48,21 +49,42 @@ public class FallFragment extends ListFragment
         startlist();
     }
 
+    public void setSession(String date)
+    {
+       ArrayList<Session> s = SessionManager.getInstance().getAllSessions();
+        if(s!= null)
+        {
+            for(Session sex : s)
+            {
+                if(sex.getDataTime().equalsIgnoreCase(date))
+                {
+                    session = sex;
+                    break;
+                }
+            }
+        }
+    }
+
     public void startlist()
     {
-        fItems = new ArrayList<>();
-        falls = session.getFalls();
-        for(int i = 0; i< session.getFallsNumber();i++)
+        if (session != null)
         {
-            int num = falls.get(i).getId();
-            String n = "Caduta N°"+num;
-            String d = falls.get(i).getData();
-            boolean s = falls.get(i).isReported();
+            fItems = new ArrayList<>();
+            falls = session.getFalls();
+            if(falls!=null)
+            {
+                for (int i = 0; i < session.getFallsNumber(); i++) {
+                    int num = falls.get(i).getId();
+                    String n = "Caduta N°" + num;
+                    String d = falls.get(i).getData();
+                    boolean s = falls.get(i).isReported();
 
-            fItems.add(new FallListItem(n,d,s));
+                    fItems.add(new FallListItem(n, d, s));
+                }
+                fAdapter = new FallListAdapter(getActivity(), fItems);
+                setListAdapter(fAdapter);
+            }
         }
-        fAdapter=new FallListAdapter(getActivity(), fItems);
-        setListAdapter(fAdapter);
     }
 
     @Override
