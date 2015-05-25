@@ -7,15 +7,26 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import org.tbw.FemurShield.Model.Session;
 import org.tbw.FemurShield.R;
 
 
 public class UI2 extends Activity {
 
+    private Session thisSession;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ui2);
+        String thisData = savedInstanceState.getString("sessiondatastamp");
+        FragmentManager fm = getFragmentManager();
+        SessionDetailsFragment sdf = (SessionDetailsFragment)fm.findFragmentById(R.id.SessionDetailsFragment);
+        FallFragment ff = (FallFragment)fm.findFragmentById(R.id.FallFragment);
+        sdf.setSession(thisData);
+        ff.setSession(thisData);
+
+        /*
         FallFragment ff = FallFragment.newInstance();
         SessionDetailsFragment sdf = SessionDetailsFragment.newIstance();
         FragmentManager fm = getFragmentManager();
@@ -23,8 +34,8 @@ public class UI2 extends Activity {
         ft.add(ff, "cadutalista");
         ft.add(sdf, "dettaglicaduta");
         ft.commit();
+        */
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
