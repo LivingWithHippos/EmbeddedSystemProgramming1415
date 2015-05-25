@@ -21,7 +21,7 @@ import java.util.Map;
  */
 public class Fall {
     private static int i=0;
-    private int id;
+    private int id; // TODO da azzerare a inizio di ogni nuova session
     public static final int FALL_LATITUDE=0;
     public static final int FALL_LONGITUDE=1;
     public static final int X_INDEX=0;
@@ -113,6 +113,6 @@ public class Fall {
     {
         Time t = new Time(Time.getCurrentTimezone());
         t.setToNow();
-        data = t.format("dd/MM/yyyy\nHH:mm:ss a");
+        data = t.format(Session.datePattern);
     }
 }
