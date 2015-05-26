@@ -38,14 +38,13 @@ public class FallFragment extends ListFragment
     @Override
     public void onAttach (Activity activity)
     {
-        // TODO dalla UI2 prende i dati della sessione selezionata da UI1,
-        // TODO che mostra tutte le sessioni, passare tramite intent?
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        String thisData = savedInstanceState.getString("sessiondatastamp");
+        setSession(thisData);
         startlist();
     }
 

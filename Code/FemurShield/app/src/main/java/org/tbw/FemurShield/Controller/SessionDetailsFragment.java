@@ -2,12 +2,16 @@ package org.tbw.FemurShield.Controller;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import org.tbw.FemurShield.Model.Session;
 import org.tbw.FemurShield.Model.SessionManager;
+import org.tbw.FemurShield.R;
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
@@ -35,15 +39,14 @@ public class SessionDetailsFragment extends Fragment
     @Override
     public void onAttach (Activity activity)
     {
-        // TODO dalla UI2 prende i dati della sessione selezionata da UI1,
-        // TODO che mostra tutte le sessioni, passare tramite intent?
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-
+        String thisData = savedInstanceState.getString("sessiondatastamp");
+        setSession(thisData);
         startDetails();
     }
 
@@ -67,7 +70,13 @@ public class SessionDetailsFragment extends Fragment
     {
         if(session!=null)
         {
-            //TODO inizializzare i valori con findwibyid ecc...
+            TextView tvNome = (TextView) getView().findViewById(R.id.tvSessionName); // è sia nome che data
+            TextView tvDurata = (TextView) getView().findViewById(R.id.tvSessionDuration);
+
+            tvNome.setText(session.getName());
+            tvDurata.setText("durata da implementare su session");
+
+            //TODO manca il grafico
         }
     }
 }
