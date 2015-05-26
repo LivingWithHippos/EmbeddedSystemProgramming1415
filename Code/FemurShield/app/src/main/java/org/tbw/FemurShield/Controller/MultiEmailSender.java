@@ -22,10 +22,7 @@ public class MultiEmailSender extends Service {
     private String[] addresses;
 
     @Override
-    public void onCreate()
-    {
-        addresses = null; // recupera gli indirizzi per la mail TODO
-    }
+    public void onCreate() {}
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId)
