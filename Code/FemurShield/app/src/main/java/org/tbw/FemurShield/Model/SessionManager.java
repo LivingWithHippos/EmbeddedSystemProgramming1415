@@ -9,6 +9,7 @@ public class SessionManager {
     private static SessionManager instance; //identifica l'istanza unica di questa classe (singleton)
     private ActiveSessionImpl sessioneattiva=null;
     private static ArrayList<OldSessionImpl> sessionivecchie=new ArrayList<>();
+    private boolean running=false;
 
     /**
      * costruttore o getter di sessionManager essendo esso un singleton
@@ -77,6 +78,7 @@ public class SessionManager {
     public boolean StartSession(){
         if(sessioneattiva==null)
             return false;
+        running=true;
         return sessioneattiva.Start();
     }
 
@@ -87,6 +89,7 @@ public class SessionManager {
     public boolean PauseSession(){
         if(sessioneattiva==null)
             return false;
+        running=false;
         return sessioneattiva.Pause();
     }
 
@@ -100,6 +103,11 @@ public class SessionManager {
         sessioneattiva.Stop(); //TODO: maggiore controllo magari
         sessionivecchie.add(new OldSessionImpl(sessioneattiva)); //sfrutto con polimorfismo il costruttore OldSessionImpl(SessionImpl o)
         sessioneattiva=null; //cancello la sessione attiva
+        running=false;
         return true;
+    }
+
+    public boolean isRunning() {
+        return running;
     }
 }

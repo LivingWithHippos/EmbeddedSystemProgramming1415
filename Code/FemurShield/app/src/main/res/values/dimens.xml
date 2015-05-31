@@ -14,4 +14,6 @@
     <dimen name="email_button_height_normal">2dp</dimen>
     <dimen name="email_button_height_pressed">5dp</dimen>
     <dimen name="altezza_grafico">190dp</dimen>
+    <dimen name="button_image_small">47dp</dimen>
+    <dimen name="small_button_padding">10dp</dimen>
 </resources>

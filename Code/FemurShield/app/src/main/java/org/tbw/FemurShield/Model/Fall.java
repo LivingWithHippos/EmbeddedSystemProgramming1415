@@ -3,17 +3,13 @@ package org.tbw.FemurShield.Model;
 import android.content.Context;
 import android.content.Intent;
 import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
-import android.os.Bundle;
-import android.text.format.Time;
 import android.util.Log;
 
 import org.tbw.FemurShield.Controller.LocationLocator;
 import org.tbw.FemurShield.Controller.MultiEmailSender;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * Created by Moro on 30/04/15.
@@ -50,7 +46,8 @@ public class Fall {
 
         cont = contx;
 
-        setData();
+        SimpleDateFormat sdf = new SimpleDateFormat(Session.datePattern);
+        data=sdf.format(new Date());
         setPostion();
     }
 
@@ -107,12 +104,5 @@ public class Fall {
         sender.putExtra("idCaduta", getId());
         sender.putExtra("dataCaduta", getData());
         cont.startService(sender);
-    }
-
-    private void setData()
-    {
-        Time t = new Time(Time.getCurrentTimezone());
-        t.setToNow();
-        data = t.format(Session.datePattern);
     }
 }

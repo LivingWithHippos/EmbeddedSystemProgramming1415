@@ -1,10 +1,7 @@
 package org.tbw.FemurShield.Controller;
 
 import android.app.Activity;
-import android.app.Application;
-import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 
 import org.tbw.FemurShield.Model.ActiveSession;
 import org.tbw.FemurShield.Model.Fall;
@@ -56,6 +53,14 @@ public class Controller implements Observer {
         SessionManager.getInstance().StopSession();
         Intent i=new Intent(a, FallDetector.class);
         a.stopService(i);
+    }
+
+    public boolean isRunning(){
+        return SessionManager.getInstance().isRunning();
+    }
+
+    public boolean isRecording(){
+        return SessionManager.getInstance().getActiveSession()==null;
     }
 
     public static NotificationFall getNotification(){

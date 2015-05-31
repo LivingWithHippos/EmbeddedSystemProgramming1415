@@ -2,23 +2,26 @@ package org.tbw.FemurShield.Controller;
 
 
 import android.app.Activity;
-import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.hardware.Sensor;
-import android.hardware.SensorManager;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
+import android.widget.ListView;
+import android.widget.SimpleAdapter;
+import android.widget.TextView;
 
+import org.tbw.FemurShield.Model.Fall;
+import org.tbw.FemurShield.Model.SessionManager;
 import org.tbw.FemurShield.R;
 
-import java.util.Observable;
-import java.util.Observer;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 
 public class UI3 extends Activity implements org.tbw.FemurShield.Observer.Observer {
@@ -56,6 +59,17 @@ public class UI3 extends Activity implements org.tbw.FemurShield.Observer.Observ
         imageViewGraficoAcc.draw(canvasGraficoAcc);
         larghezzachart=getWindowManager().getDefaultDisplay().getWidth();
         Controller.getNotification().addObserver(this);
+
+        ((TextView)findViewById(R.id.session_name)).setText(SessionManager.getInstance().getActiveSession().getName());
+        ((TextView)findViewById(R.id.session_date)).setText(SessionManager.getInstance().getActiveSession().getDataTime());
+        //TODO timer nel controller che si stoppa e riparte a seconda degli eventi
+        ((TextView)findViewById(R.id.num_fall)).setText(""+SessionManager.getInstance().getActiveSession().getFallsNumber());
+        if(Controller.getInstance().isRunning()){
+            ((ImageView)findViewById(R.id.pausebtnui3)).setVisibility(ImageView.VISIBLE);
+            ((ImageView)findViewById(R.id.stopbntui3)).setVisibility(ImageView.VISIBLE);
+        }
+        else
+            ((ImageView)findViewById(R.id.startbtnui3)).setVisibility(ImageView.VISIBLE);
     }
 
 
@@ -83,12 +97,16 @@ public class UI3 extends Activity implements org.tbw.FemurShield.Observer.Observ
 
     @Override
     public void update(org.tbw.FemurShield.Observer.Observable oggettoosservato, Object o) {
-        //aggiornare la UI in base ai vallori ricevuti TODO
         if(o instanceof float[]){
             float[] arg=(float[])o;
-            DrawGraphSliceAcc(arg[0], arg[1], arg[2]);
+            DrawGraphSliceAcc(arg[0]*6, arg[1]*6, arg[2]*6);
         }
-        //TODO controllo che aggiornamtno ho
+        else{
+            if(o instanceof Fall){
+                ((TextView)findViewById(R.id.num_fall)).setText(""+SessionManager.getInstance().getActiveSession().getFallsNumber());
+                aggiornaListaCadute();
+            }
+        }
     }
 
     float distCentro=400.0f;
@@ -146,5 +164,82 @@ public class UI3 extends Activity implements org.tbw.FemurShield.Observer.Observ
     private void DrawSegmentZAcc(float xStart, float yStart, float xStop, float yStop){
         canvasGraficoAcc.drawLine(xStart, yStart, xStop, yStop, paintZ);
         ((ImageView)findViewById(R.id.graficoacc)).setImageBitmap(bitmapGraficoAcc);
+    }
+
+    public void onPauseClick(View view){
+        //TODO: business logic
+        Controller.getInstance().PauseSession(this);
+
+        //modifo le visibilità dei bottoni di controllo
+        ((ImageView)findViewById(R.id.pausebtnui3)).setVisibility(ImageView.INVISIBLE);
+        ((ImageView)findViewById(R.id.stopbntui3)).setVisibility(ImageView.VISIBLE);
+        ((ImageView)findViewById(R.id.startbtnui3)).setVisibility(ImageView.VISIBLE);
+
+    }
+
+    public void onPlayClick(View view){
+        //TODO: business logic
+        Controller.getInstance().StartSession(this);
+
+        //modifo le visibilità dei bottoni di controllo
+        ((ImageView)findViewById(R.id.pausebtnui3)).setVisibility(ImageView.VISIBLE);
+        ((ImageView)findViewById(R.id.stopbntui3)).setVisibility(ImageView.VISIBLE);
+        ((ImageView)findViewById(R.id.startbtnui3)).setVisibility(ImageView.INVISIBLE);
+
+    }
+
+    public void onStopClick(View view){
+        //TODO: business logic
+        Controller.getInstance().StopSession(this);
+
+        //modifo le visibilità dei bottoni di controllo
+        ((ImageView)findViewById(R.id.pausebtnui3)).setVisibility(ImageView.INVISIBLE);
+        ((ImageView)findViewById(R.id.stopbntui3)).setVisibility(ImageView.INVISIBLE);
+        ((ImageView)findViewById(R.id.startbtnui3)).setVisibility(ImageView.INVISIBLE);
+        Intent i = new Intent(this,UI1.class);
+        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(i);
+    }
+
+    public void aggiornaListaCadute(){
+        ArrayList<Fall> falls =SessionManager.getInstance().getActiveSession().getFalls();
+
+        //Questa è la lista che rappresenta la sorgente dei dati della listview
+        //ogni elemento è una mappa(chiave->valore)
+
+        ArrayList<HashMap<String, Object>> data=new ArrayList<>();
+
+
+        for(int i=falls.size()-1;i>=0;i--){
+            Fall s=falls.get(i);// per ogni sessione all'inteno della lista
+
+            HashMap<String,Object> sessionMap=new HashMap<>();//creiamo una mappa di valori
+
+
+            sessionMap.put("date", s.getData());
+            if(s.isReported())
+                sessionMap.put("state","Segnalata");
+            else
+                sessionMap.put("state","Non segnalata");
+
+            data.add(sessionMap);  //aggiungiamo la mappa di valori alla sorgente dati
+        }
+
+
+        String[] from={"date","state"}; //dai valori contenuti in queste chiavi
+        int[] to={R.id.data_ora_caduta_ui3,R.id.stato_segnalazione_ui3};//agli id delle view
+
+        //costruzione dell adapter
+        SimpleAdapter adapter=new SimpleAdapter(
+                getApplicationContext(),
+                data,//sorgente dati
+                R.layout.falllistitemui3, //layout contenente gli id di "to"
+                from,
+                to);
+
+        //utilizzo dell'adapter
+        ((ListView)findViewById(R.id.listfallui3)).setAdapter(adapter);
+
+        //TODO inviata non inviata mail
     }
 }

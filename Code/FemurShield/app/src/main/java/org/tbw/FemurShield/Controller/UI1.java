@@ -17,8 +17,6 @@ import org.tbw.FemurShield.Model.Session;
 import org.tbw.FemurShield.Model.SessionManager;
 import org.tbw.FemurShield.R;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
