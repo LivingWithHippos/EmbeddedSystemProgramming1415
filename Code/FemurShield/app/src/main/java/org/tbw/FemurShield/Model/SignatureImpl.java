@@ -46,11 +46,12 @@ public class SignatureImpl implements Signature,org.tbw.FemurShield.Observer.Obs
     private int xc,yc;
     //variabili CIRCLE_MODE
     private int space;
-    private MPoint startPoint,finishPoint;
+    private MPoint[] startPoint,finishPoint;
     private double beta;
-    private final float coeff=20;
+    private final float coeff=5;
     private int radius;
-    private MCircle circle;
+    private MCircle[] circles;
+    private Paint[] circlePaint;
 
 
 
@@ -68,10 +69,7 @@ public class SignatureImpl implements Signature,org.tbw.FemurShield.Observer.Obs
 
         } catch (ParseException e) {e.printStackTrace();}
 
-        paint=new Paint(Paint.ANTI_ALIAS_FLAG);
-        paint.setStrokeWidth(2);
-        paint.setColor(Color.RED);
-        paint.setStyle(Paint.Style.STROKE);
+
         signature= Bitmap.createBitmap(resolution, resolution, Bitmap.Config.ARGB_8888);
         canvas = new Canvas(signature);
 
@@ -79,15 +77,44 @@ public class SignatureImpl implements Signature,org.tbw.FemurShield.Observer.Obs
         {
             case CIRCLE_STATIC:
             {
-                xc=yc=resolution/2;
                 radius=resolution/4;
-                circle=new MCircle(xc,yc,radius);
                 beta=0.0;
-                startPoint=new MPoint(xc+radius,yc);
+                setCirclesPaints();
+                finishPoint=new MPoint[3];
+
+                MCircle circleX=new MCircle((resolution/6)*3,(resolution/6)*2,radius);
+                MCircle circleY=new MCircle((resolution/6)*2,(resolution/6)*4,radius);
+                MCircle circleZ=new MCircle((resolution/6)*4,(resolution/6)*4,radius);
+                circles=new MCircle[]{circleX,circleY,circleZ};
+                MPoint pointX=new MPoint(circleX.xCenter+radius,circleX.yCenter);
+                MPoint pointY=new MPoint(circleY.xCenter+radius,circleY.yCenter);
+                MPoint pointZ=new MPoint(circleZ.xCenter+radius,circleZ.yCenter);
+                startPoint=new MPoint[]{pointX,pointY,pointZ};
 
                 Controller.getNotification().addObserver(this);
             }
         }
+    }
+
+    private void setCirclesPaints() {
+
+        circlePaint=new Paint[3];
+        Paint paint=new Paint(Paint.ANTI_ALIAS_FLAG);
+        paint.setStrokeWidth(6);
+        paint.setColor(Color.RED);
+        paint.setStyle(Paint.Style.STROKE);
+        circlePaint[0]=paint;
+        paint=new Paint(Paint.ANTI_ALIAS_FLAG);
+        paint.setStrokeWidth(6);
+        paint.setColor(Color.BLUE);
+        paint.setStyle(Paint.Style.STROKE);
+        circlePaint[1]=paint;
+        paint=new Paint(Paint.ANTI_ALIAS_FLAG);
+        paint.setStrokeWidth(6);
+        paint.setColor(Color.BLACK);
+        paint.setStyle(Paint.Style.STROKE);
+        circlePaint[2]=paint;
+
     }
 
     private void elaborateDate()
@@ -107,11 +134,15 @@ public class SignatureImpl implements Signature,org.tbw.FemurShield.Observer.Obs
         beta+= (2*Math.PI)/360;
         if(beta<(2*Math.PI))
         {
-            double newX=xc+(radius+arg[0]*coeff)*Math.cos(beta);
-            double newY=yc+(radius+arg[0]*coeff)*Math.sin(beta);
-            finishPoint=new MPoint(newX,newY);
-            canvas.drawLine((float)startPoint.x,(float)startPoint.y,(float)finishPoint.x,(float)finishPoint.y,paint);
-            startPoint.set(finishPoint.x,finishPoint.y);
+            for(int i=0;i<circles.length;i++)
+            {
+                double newX=circles[i].xCenter+(radius+arg[i]*coeff)*Math.cos(beta);
+                double newY=circles[i].yCenter+(radius+arg[i]*coeff)*Math.sin(beta);
+                finishPoint[i]=new MPoint(newX,newY);
+                canvas.drawLine((float)startPoint[i].x,(float)startPoint[i].y,(float)finishPoint[i].x,(float)finishPoint[i].y,circlePaint[i]);
+                startPoint[i].set(finishPoint[i].x, finishPoint[i].y);
+            }
+
         }
         else{
             Controller.getNotification().deattach(this);
@@ -329,6 +360,10 @@ class MCircle
         this.xCenter=xCenter;
         this.yCenter=yCenter;
         this.radius=radius;
+    }
+
+    public MPoint getCenter() {
+        return new MPoint(xCenter,yCenter);
     }
 }
 

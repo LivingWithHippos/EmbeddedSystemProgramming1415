@@ -1,6 +1,5 @@
 package org.tbw.FemurShield.Observer;
 
-import java.util.ArrayList;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 /*
