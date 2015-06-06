@@ -1,6 +1,7 @@
 package org.tbw.FemurShield.Observer;
 
 import java.util.ArrayList;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /*
 tale classe rappresenta un oggetto osservabile, ovvero un oggeto che può
@@ -11,7 +12,7 @@ Non è possibile infatti creare un'istanza di Observable perchè la classe
 */
 abstract public class Observable{
     //questa lista ha lo scopo di salvare tutti gli osservatori dell'oggetto
-    private ArrayList<Observer> osservatori=new ArrayList<>();
+    private CopyOnWriteArrayList<Observer> osservatori=new CopyOnWriteArrayList<>();
 
     /*
     tale metodo serve ad un osservatore per registrarsi nella lista degli
