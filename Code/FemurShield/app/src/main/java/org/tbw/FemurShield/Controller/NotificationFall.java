@@ -9,6 +9,7 @@ import org.tbw.FemurShield.Observer.Observer;
  */
 public interface NotificationFall {
     void addObserver(Observer o );
+    void deattach(Observer o );
     void NotifyAccData(float x, float y, float z);
     void NotifyFall(Fall f);
 }

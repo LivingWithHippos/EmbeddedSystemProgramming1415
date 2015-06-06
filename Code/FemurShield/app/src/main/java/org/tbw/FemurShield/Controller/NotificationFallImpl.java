@@ -3,6 +3,7 @@ package org.tbw.FemurShield.Controller;
 import android.util.Log;
 
 import org.tbw.FemurShield.Model.Fall;
+import org.tbw.FemurShield.Observer.Observer;
 
 /**
  * Created by Moro on 19/05/15.
@@ -23,6 +24,11 @@ class NotificationFallImpl extends org.tbw.FemurShield.Observer.Observable imple
     @Override
     public void addObserver(org.tbw.FemurShield.Observer.Observer o) {
         this.attach(o);
+    }
+
+    @Override
+    public void deattach(org.tbw.FemurShield.Observer.Observer o) {
+        super.deattach(o);
     }
 
     public void NotifyAccData(float x, float y, float z){
