@@ -25,7 +25,7 @@ public class SessionImpl extends Observable implements Session{
         datetime = sdf.format(new Date());
         name="Sessione "+datetime;
         ID=datetime;
-        signature=new SignatureImpl(datetime,SignatureImpl.PEAKED_CIRCLE);
+        signature=new SignatureImpl(datetime,SignatureImpl.CIRCLE_STATIC);
     }
 
     @Override

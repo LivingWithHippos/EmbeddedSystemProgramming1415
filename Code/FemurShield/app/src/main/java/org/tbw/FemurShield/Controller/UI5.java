@@ -129,7 +129,7 @@ public class UI5 extends Activity implements SettingsFragment.OnFragmentInteract
             final LayoutInflater inflater = LayoutInflater.from(this);
             SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy_HH:mm:ss");
             String datetime = sdf.format(new Date());
-            SignatureImpl signature=new SignatureImpl(datetime,SignatureImpl.PEAKED_CIRCLE);
+            SignatureImpl signature=new SignatureImpl(datetime,SignatureImpl.CIRCLE_STATIC);
             Bitmap bitmap=signature.toBitmap();
             //LinearLayOut Setup
             LinearLayout linearLayout= new LinearLayout(this);
@@ -207,7 +207,7 @@ public class UI5 extends Activity implements SettingsFragment.OnFragmentInteract
         {
             String n=nome.getText().toString().trim();
             String i=indirizzo.getText().toString().trim();
-            String regex="[\\w_.-]+@[\\w.-]{5,30}";
+            String regex="[\\w_.-]+@[\\w.-]{4,30}";
             if(i.matches(regex))
             {
                 prefs.addEmail(n, i);
