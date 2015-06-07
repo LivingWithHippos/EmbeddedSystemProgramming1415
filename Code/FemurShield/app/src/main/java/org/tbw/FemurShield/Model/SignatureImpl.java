@@ -47,7 +47,7 @@ public class SignatureImpl implements Signature,org.tbw.FemurShield.Observer.Obs
     //variabili CIRCLE_MODE
     private int space;
     private MPoint[] startPoint,finishPoint;
-    private double beta;
+    private float beta;
     private final float coeff=5;
     private int radius;
     private MCircle[] circles;
@@ -78,7 +78,7 @@ public class SignatureImpl implements Signature,org.tbw.FemurShield.Observer.Obs
             case CIRCLE_STATIC:
             {
                 radius=resolution/4;
-                beta=0.0;
+                beta=(float)0.0;
                 setCirclesPaints();
                 finishPoint=new MPoint[3];
 
@@ -136,10 +136,18 @@ public class SignatureImpl implements Signature,org.tbw.FemurShield.Observer.Obs
         {
             for(int i=0;i<circles.length;i++)
             {
-                double newX=circles[i].xCenter+(radius+arg[i]*coeff)*Math.cos(beta);
-                double newY=circles[i].yCenter+(radius+arg[i]*coeff)*Math.sin(beta);
+                float newX,newY;
+                if(i<2) {
+                    newX =(float) (circles[i].xCenter + (radius + arg[i] * coeff) * Math.cos(beta));
+                    newY = (float)(circles[i].yCenter + (radius + arg[i] * coeff) * Math.sin(beta));
+                }else
+                {
+
+                    newX = (float) (circles[i].xCenter + (radius + (arg[i]-9.81) * coeff) * Math.cos(beta));
+                    newY = (float) (circles[i].yCenter + (radius + (arg[i]-9.81) * coeff) * Math.sin(beta));
+                }
                 finishPoint[i]=new MPoint(newX,newY);
-                canvas.drawLine((float)startPoint[i].x,(float)startPoint[i].y,(float)finishPoint[i].x,(float)finishPoint[i].y,circlePaint[i]);
+                canvas.drawLine(startPoint[i].x, startPoint[i].y, finishPoint[i].x, finishPoint[i].y,circlePaint[i]);
                 startPoint[i].set(finishPoint[i].x, finishPoint[i].y);
             }
 
@@ -196,61 +204,56 @@ public class SignatureImpl implements Signature,org.tbw.FemurShield.Observer.Obs
 
 class MPoint
 {
-    public double x,y;
+    public float x,y;
     public MPoint()
     {}
-    public MPoint(double x, double y)
-    {
-        this.x=x;
-        this.y=y;
-    }
     public MPoint(float x, float y)
     {
         this.x=x;
         this.y=y;
     }
 
-    public void set(double x,double y)
+    public void set(float x,float y)
     {
         this.x=x;
         this.y=y;
     }
 
-    public static double calcolaDistanza(MPoint a,MPoint b)
+    public static float calcolaDistanza(MPoint a,MPoint b)
     {
-        return Math.sqrt(Math.pow(a.x - b.x,2)+Math.pow(a.y-b.y,2));
+        return (float)Math.sqrt(Math.pow(a.x - b.x,2)+Math.pow(a.y-b.y,2));
     }
 
 }
 
 class MRect
 {
-    private double m;
-    private double q;
-    private double alpha;
-    public double coefA,coefB,coefC;
+    private float m;
+    private float q;
+    private float alpha;
+    public float coefA,coefB,coefC;
     public boolean IS_X_AXIS_PARALLEL;
     public boolean IS_Y_AXIS_PARALLEL;
     public static final boolean IS_X=true;
     public static final boolean IS_Y=false;
 
-    public double getAlpha()
+    public float getAlpha()
     {
 
         //varia tra zero e pi greco mezzi
         if(coefA==0)
             return 0;
         if(coefB==0)
-            return Math.PI/2;
-        return Math.atan(-coefA/coefB);
+            return (float)Math.PI/2;
+        return (float)Math.atan(-coefA/coefB);
     }
 
-    public double getM()
+    public float getM()
     {
         return -coefA/coefB;
     }
 
-    public double getQ()
+    public float getQ()
     {
         return -coefC/coefB;
     }
@@ -261,14 +264,14 @@ class MRect
     }
 
 
-    public MRect(MPoint point,double alpha)
+    public MRect(MPoint point,float alpha)
     {
        if(alpha==0) {
            calculateValues(point, new MPoint(point.x + 1, point.y));
        }
         else {
-           double newX = point.x + 10* Math.cos(alpha);
-           double newY = point.y + 10* Math.sin(alpha);
+           float newX =(float)( point.x + 10* Math.cos(alpha));
+           float newY = (float)(point.y + 10* Math.sin(alpha));
            calculateValues(point,new MPoint(newX,newY));
        }
     }
@@ -276,8 +279,8 @@ class MRect
     private void calculateValues(MPoint a,MPoint b)
     {
         //formula ax+by+c=0;
-        double diff1=b.x-a.x;
-        double diff2=a.y-b.y;
+        float diff1=b.x-a.x;
+        float diff2=a.y-b.y;
         if(diff1==0)
         {
             coefA=1;
@@ -322,15 +325,15 @@ class MRect
                 newPoint=new MPoint(point.x+1,point.y);
             else
             {
-                double newM=-1/getM();
-                double newQ=point.y-point.x*newM;
+                float newM=-1/getM();
+                float newQ=point.y-point.x*newM;
                 newPoint=new MPoint(point.x+1,newM*(point.x+1)+newQ);
             }
 
         return new MRect(point,newPoint);
     }
 
-    public MPoint[] getPointsFromDistance(MPoint point,double distance)
+    public MPoint[] getPointsFromDistance(MPoint point,float distance)
     {
         MPoint lessPoint,morePoint;
         MPoint points[];
@@ -338,11 +341,11 @@ class MRect
             return points=new MPoint[]{new MPoint(point.x-distance,point.y),new MPoint(point.x+distance,point.y)};
         if(coefB==0)
             return points=new MPoint[]{new MPoint(point.x,point.y-distance),new MPoint(point.x,point.y+distance)};
-        double newX=point.x+distance*Math.cos(alpha);
-        double newY=point.y+distance*Math.sin(alpha);
+        float newX=(float)(point.x+distance*Math.cos(alpha));
+        float newY=(float)(point.y+distance*Math.sin(alpha));
         morePoint=new MPoint(newX,newY);
-        newX=point.x-distance*Math.cos(alpha);
-        newY=point.y-distance*Math.sin(alpha);
+        newX=(float)(point.x-distance*Math.cos(alpha));
+        newY=(float)(point.y-distance*Math.sin(alpha));
         lessPoint=new MPoint(newX,newY);
         points=new MPoint[]{lessPoint,morePoint};
         return points;
