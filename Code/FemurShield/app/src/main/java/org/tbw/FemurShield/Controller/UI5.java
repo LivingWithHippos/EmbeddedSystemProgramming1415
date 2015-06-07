@@ -1,10 +1,15 @@
 package org.tbw.FemurShield.Controller;
 
 import android.app.Activity;
+import android.app.AlarmManager;
 import android.app.AlertDialog;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.app.PendingIntent;
+import android.content.ComponentName;
 import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.Log;
@@ -21,6 +26,7 @@ import org.tbw.FemurShield.Model.SignatureImpl;
 import org.tbw.FemurShield.R;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
@@ -109,7 +115,7 @@ public class UI5 extends Activity implements SettingsFragment.OnFragmentInteract
         if(s.title.equalsIgnoreCase(getString(R.string.title_session_duration)))
         {
             DurationFragment duration=new DurationFragment();
-            duration.show(getFragmentManager(),"DurationPicker");
+            duration.show(getFragmentManager(), "DurationPicker");
         }
         if(s.title.equalsIgnoreCase(getString(R.string.title_email_recipient)))
         {
@@ -154,6 +160,20 @@ public class UI5 extends Activity implements SettingsFragment.OnFragmentInteract
         if(alarmFrag!=null)
             alarmFrag.updateAlarmTime(hourOfDay, minute);
         // TODO: impostare la sveglia con l'orario salvato
+        Log.d("UI5","Attivo sveglia");
+        Intent alarmService = new Intent(this, ReminderService.class);
+        alarmService.setAction(ReminderService.CREATE);
+        startService(alarmService);
+        //attiva il broadcast receiver per il boot
+        //che riattiverà la sveglia ad ogni riavvio
+        //nel manifest è impostato su false in modo che non parta fino
+        //all'attivazione della sveglia per risparmiare risorse ed evitare errori
+        ComponentName receiver = new ComponentName(this, BootReceiver.class);
+        PackageManager pm = this.getPackageManager();
+
+        pm.setComponentEnabledSetting(receiver,
+                PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
+                PackageManager.DONT_KILL_APP);
     }
 
     @Override

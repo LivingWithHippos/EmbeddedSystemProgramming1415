@@ -3,6 +3,7 @@ package org.tbw.FemurShield.Controller;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
 import java.io.File;
@@ -25,7 +26,13 @@ public class PreferencesEditor {
     public PreferencesEditor(Activity a)
     {
         activity=a;
-        preferences=activity.getPreferences(Context.MODE_PRIVATE);
+        preferences= PreferenceManager.getDefaultSharedPreferences(a);
+        editor=preferences.edit();
+    }
+
+    public PreferencesEditor(Context c)
+    {
+        preferences= PreferenceManager.getDefaultSharedPreferences(c);
         editor=preferences.edit();
     }
 
