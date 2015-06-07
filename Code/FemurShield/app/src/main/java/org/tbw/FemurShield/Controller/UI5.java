@@ -123,38 +123,7 @@ public class UI5 extends Activity implements SettingsFragment.OnFragmentInteract
             // Commit the transaction
             transaction.commit();
         }
-        if(s.title.equalsIgnoreCase("Test Signature"))
-        {
-            AlertDialog.Builder alert = new AlertDialog.Builder(this, R.style.AppDialogTheme);
-            final LayoutInflater inflater = LayoutInflater.from(this);
-            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy_HH:mm:ss");
-            String datetime = sdf.format(new Date());
-            SignatureImpl signature=new SignatureImpl(datetime,SignatureImpl.CIRCLE_STATIC);
-            Bitmap bitmap=signature.toBitmap();
-            //LinearLayOut Setup
-            LinearLayout linearLayout= new LinearLayout(this);
-            linearLayout.setOrientation(LinearLayout.VERTICAL);
 
-            linearLayout.setLayoutParams(new LinearLayout.LayoutParams(
-                    MATCH_PARENT,
-                    LinearLayout.LayoutParams.MATCH_PARENT));
-
-            //ImageView Setup
-            ImageView imageView = new ImageView(this);
-            //setting image resource
-            imageView.setImageBitmap(bitmap);
-            //setting image position
-            imageView.setLayoutParams(new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.MATCH_PARENT,
-                    LinearLayout.LayoutParams.WRAP_CONTENT));
-
-            //adding view to layout
-            linearLayout.addView(imageView);
-            //make visible to program
-            alert.setView(linearLayout);
-            alert.create();
-            alert.show();
-        }
 
     }
 
