@@ -138,13 +138,14 @@ public class SignatureImpl implements Signature,org.tbw.FemurShield.Observer.Obs
             {
                 float newX,newY;
                 if(i<2) {
-                    newX =(float) (circles[i].xCenter + (radius + arg[i] * coeff) * Math.cos(beta));
-                    newY = (float)(circles[i].yCenter + (radius + arg[i] * coeff) * Math.sin(beta));
+                    float newradius=(radius + arg[i] * coeff);
+                    newX =(float) (circles[i].xCenter + newradius * Math.cos(beta));
+                    newY = (float)(circles[i].yCenter + newradius * Math.sin(beta));
                 }else
                 {
-
-                    newX = (float) (circles[i].xCenter + (radius + (arg[i]-9.81) * coeff) * Math.cos(beta));
-                    newY = (float) (circles[i].yCenter + (radius + (arg[i]-9.81) * coeff) * Math.sin(beta));
+                    float newradius=(float)(radius + (Math.abs(arg[i])-9.81) * coeff) ;
+                    newX = (float) (circles[i].xCenter +newradius* Math.cos(beta));
+                    newY = (float) (circles[i].yCenter + newradius* Math.sin(beta));
                 }
                 finishPoint[i]=new MPoint(newX,newY);
                 canvas.drawLine(startPoint[i].x, startPoint[i].y, finishPoint[i].x, finishPoint[i].y,circlePaint[i]);
@@ -154,6 +155,7 @@ public class SignatureImpl implements Signature,org.tbw.FemurShield.Observer.Obs
         }
         else{
             Controller.getNotification().deattach(this);
+            //TODO: completa il metodo, qui o in sessionmanager
             saveSignature();
         }
 
@@ -172,6 +174,7 @@ public class SignatureImpl implements Signature,org.tbw.FemurShield.Observer.Obs
     }
 
     private void saveSignature() {
+
         /*File pictureFile=new File(context.getFilesDir(),"signature_"+datetime+".png");
         if (pictureFile == null) {
             Log.d("SignatureImpl","Error creating media file, check storage permissions: ");
