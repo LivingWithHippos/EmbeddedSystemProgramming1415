@@ -19,10 +19,6 @@ public class SessionReminderReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
 
-            //TODO : cosa fare quando parte l'allarme
-
-        Toast.makeText(context,"L'allarme funziona!",Toast.LENGTH_LONG).show();
-
         Intent sesRemIntent=new Intent(context,SessionReminderActivity.class);
         sesRemIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         sesRemIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);

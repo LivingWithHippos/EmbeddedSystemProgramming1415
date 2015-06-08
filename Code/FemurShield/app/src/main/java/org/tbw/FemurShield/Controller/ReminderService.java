@@ -47,15 +47,13 @@ public class ReminderService extends IntentService {
             Calendar calendar = Calendar.getInstance();
             calendar.setTimeInMillis(System.currentTimeMillis());
             calendar.set(Calendar.HOUR_OF_DAY, prefs.getAlarmHour());
-            Log.d("ReminderService", "ora :" + prefs.getAlarmHour());
             calendar.set(Calendar.MINUTE, prefs.getAlarmMinute());
-            Log.d("ReminderService", "minuto :" + prefs.getAlarmMinute());
             PendingIntent pi = PendingIntent.getBroadcast(this, SessionReminderReceiver.ID, intent,
                     PendingIntent.FLAG_UPDATE_CURRENT);
 
 
             if (CREATE.equals(action)) {
-                // siccome non ci importa che parta presto o tardi usiamo inexact, può partire anche un minuto dopo
+                // siccome non ci importa che parta presto o tardi usiamo inexact, puo' partire anche un minuto dopo
                 am.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),
                         AlarmManager.INTERVAL_DAY, pi);
 
