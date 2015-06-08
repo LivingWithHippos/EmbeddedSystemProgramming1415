@@ -23,6 +23,7 @@ import org.tbw.FemurShield.Controller.Settings.SampleRatePickerFragment;
 import org.tbw.FemurShield.Controller.Settings.SettingListItem;
 import org.tbw.FemurShield.Controller.Settings.SettingsFragment;
 import org.tbw.FemurShield.Controller.Settings.TimePickerFragment;
+import org.tbw.FemurShield.Model.SessionManager;
 import org.tbw.FemurShield.R;
 
 /**
@@ -78,12 +79,24 @@ public class UI5 extends Activity implements SettingsFragment.OnFragmentInteract
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
 
-        switch(id)
+        switch(item.getItemId())
         {
-            case R.id.action_all_sessions:return true;
-            case R.id.action_active_session: return true;
+            case R.id.action_all_sessions:
+                Intent ui1=new Intent(this,UI1.class);
+                startActivity(ui1);
+                break;
+            case R.id.action_active_session:
+                if(SessionManager.getInstance().getActiveSession()!=null)
+                {
+                    Intent ui3=new Intent(this,UI3.class);
+                    startActivity(ui3);
+                }
+                else
+                    Toast.makeText(this,getString(R.string.no_active_session),Toast.LENGTH_LONG).show();
+                
+
+                break;
         }
 
         return super.onOptionsItemSelected(item);

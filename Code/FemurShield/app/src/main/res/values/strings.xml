@@ -28,5 +28,6 @@
     <string name="start_session_dialog_description">Vuoi cominciare la tua sessione giornaliera con Femur Shield?</string>
     <string name="startSession">Avvia</string>
     <string name="action_clear_all_contacts">Cancella Contatti</string>
+    <string name="no_active_session">Nessuna Sessione Attiva!</string>
 
 </resources>
