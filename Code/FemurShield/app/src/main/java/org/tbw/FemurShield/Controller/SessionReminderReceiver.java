@@ -5,7 +5,6 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.os.PowerManager;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -14,25 +13,21 @@ import android.widget.Toast;
  */
 public class SessionReminderReceiver extends BroadcastReceiver {
 
-    private static PreferencesEditor prefs;
     public final static int ID=1911466196;
-    private PowerManager.WakeLock mWakeLock;
+    public final String TAG = this.getClass().getSimpleName();
 
     @Override
     public void onReceive(Context context, Intent intent) {
 
             //TODO : cosa fare quando parte l'allarme
-        Log.d("SessionReminderReceiver","allarme preso");
 
-        // Acquire wakelock
-        PowerManager pm = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
-        if (mWakeLock == null) {
-            mWakeLock = pm.newWakeLock((PowerManager.FULL_WAKE_LOCK | PowerManager.SCREEN_BRIGHT_WAKE_LOCK | PowerManager.ACQUIRE_CAUSES_WAKEUP), "SessionReminderReceiver");
-        }
-        if (!mWakeLock.isHeld()) {
-            mWakeLock.acquire();
-        }
         Toast.makeText(context,"L'allarme funziona!",Toast.LENGTH_LONG).show();
+
+        Intent sesRemIntent=new Intent(context,SessionReminderActivity.class);
+        sesRemIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        sesRemIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        sesRemIntent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+        context.startActivity(sesRemIntent);
 
     }
 

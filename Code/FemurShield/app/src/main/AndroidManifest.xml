@@ -37,6 +37,11 @@
             android:name=".Controller.UI5"
             android:label="@string/app_name" >
         </activity>
+        <activity
+            android:name=".Controller.SessionReminderActivity"
+            android:taskAffinity=".Controller.SessionReminderDialog"
+            android:excludeFromRecents="true">
+        </activity>
 
         <service android:enabled="true" android:name=".Controller.FallDetector" />
         <service
@@ -49,7 +54,7 @@
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
-        <receiver android:name="org.tbw.FemurShield.Controller.SessionReminderReceiver" ></receiver>
+        <receiver android:name="org.tbw.FemurShield.Controller.SessionReminderReceiver" />
     </application>
 
 </manifest>

@@ -160,7 +160,7 @@ public class UI5 extends Activity implements SettingsFragment.OnFragmentInteract
         if(alarmFrag!=null)
             alarmFrag.updateAlarmTime(hourOfDay, minute);
         // TODO: impostare la sveglia con l'orario salvato
-        Log.d("UI5","Attivo sveglia");
+
         Intent alarmService = new Intent(this, ReminderService.class);
         alarmService.setAction(ReminderService.CREATE);
         startService(alarmService);
