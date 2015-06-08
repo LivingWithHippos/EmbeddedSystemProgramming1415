@@ -1,4 +1,4 @@
-package org.tbw.FemurShield.Controller;
+package org.tbw.FemurShield.Controller.Settings;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.SeekBar;
 
+import org.tbw.FemurShield.Controller.PreferencesEditor;
 import org.tbw.FemurShield.R;
 
 /**

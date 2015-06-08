@@ -1,14 +1,13 @@
-package org.tbw.FemurShield.Controller;
+package org.tbw.FemurShield.Controller.Reminder;
 
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.os.PowerManager;
-import android.util.Log;
 import android.view.WindowManager;
 
+import org.tbw.FemurShield.Controller.UI1;
 import org.tbw.FemurShield.R;
 
 /**

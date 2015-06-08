@@ -1,4 +1,4 @@
-package org.tbw.FemurShield.Controller;
+package org.tbw.FemurShield.Controller.Settings;
 
 import android.app.Activity;
 import android.app.Dialog;
@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.text.format.DateFormat;
 import android.widget.TimePicker;
 
+import org.tbw.FemurShield.Controller.PreferencesEditor;
 import org.tbw.FemurShield.R;
 
 /**

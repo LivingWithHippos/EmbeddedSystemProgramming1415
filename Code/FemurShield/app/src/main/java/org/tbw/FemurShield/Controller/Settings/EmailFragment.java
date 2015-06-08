@@ -1,4 +1,4 @@
-package org.tbw.FemurShield.Controller;
+package org.tbw.FemurShield.Controller.Settings;
 
 import android.app.Activity;
 import android.app.ListFragment;
@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ListView;
 
+import org.tbw.FemurShield.Controller.PreferencesEditor;
 import org.tbw.FemurShield.R;
 
 import java.util.ArrayList;

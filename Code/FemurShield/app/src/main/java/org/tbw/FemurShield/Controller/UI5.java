@@ -1,37 +1,31 @@
 package org.tbw.FemurShield.Controller;
 
 import android.app.Activity;
-import android.app.AlarmManager;
-import android.app.AlertDialog;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
-import android.app.PendingIntent;
 import android.content.ComponentName;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import org.tbw.FemurShield.Model.SignatureImpl;
+import org.tbw.FemurShield.Controller.Reminder.BootReceiver;
+import org.tbw.FemurShield.Controller.Reminder.ReminderService;
+import org.tbw.FemurShield.Controller.Settings.AddContactFragment;
+import org.tbw.FemurShield.Controller.Settings.DurationFragment;
+import org.tbw.FemurShield.Controller.Settings.EmailFragment;
+import org.tbw.FemurShield.Controller.Settings.EmailListItem;
+import org.tbw.FemurShield.Controller.Settings.SampleRatePickerFragment;
+import org.tbw.FemurShield.Controller.Settings.SettingListItem;
+import org.tbw.FemurShield.Controller.Settings.SettingsFragment;
+import org.tbw.FemurShield.Controller.Settings.TimePickerFragment;
 import org.tbw.FemurShield.R;
 
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-
-import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
-
-/*
+/**
 * UI5 e' l'activity che gestisce le impostazioni, contiene il fragment fragment_settings
 * e gestisce il callback dei vari fragment che rappresentano le voci del menu impostazioni
 * TODO: gestire la modalita tablet, gestire i vari stati (onPause(), etc)

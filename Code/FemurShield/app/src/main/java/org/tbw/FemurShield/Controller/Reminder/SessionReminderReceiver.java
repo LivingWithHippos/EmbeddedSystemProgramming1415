@@ -1,12 +1,10 @@
-package org.tbw.FemurShield.Controller;
+package org.tbw.FemurShield.Controller.Reminder;
 
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.util.Log;
-import android.widget.Toast;
 
 /**
  * Created by Marco on 07/06/2015.

@@ -1,4 +1,4 @@
-package org.tbw.FemurShield.Controller;
+package org.tbw.FemurShield.Controller.Reminder;
 
 import android.app.AlarmManager;
 import android.app.IntentService;
@@ -6,7 +6,8 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.util.Log;
+
+import org.tbw.FemurShield.Controller.PreferencesEditor;
 
 import java.util.Calendar;
 

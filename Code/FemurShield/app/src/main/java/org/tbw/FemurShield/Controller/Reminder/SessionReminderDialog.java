@@ -1,4 +1,4 @@
-package org.tbw.FemurShield.Controller;
+package org.tbw.FemurShield.Controller.Reminder;
 
 import android.app.Activity;
 import android.app.AlertDialog;

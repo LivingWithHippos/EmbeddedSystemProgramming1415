@@ -1,4 +1,4 @@
-package org.tbw.FemurShield.Controller;
+package org.tbw.FemurShield.Controller.Settings;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
@@ -66,20 +66,3 @@ public class SettingListAdapter extends ArrayAdapter {
     }
 }
 
-class SettingListItem {
-    public final Drawable icon;
-    public final String title;
-    public String description;
-
-    public SettingListItem(Drawable icon, String title, String description) {
-        this.icon = icon;
-        this.title = title;
-        this.description = description;
-    }
-
-    public void setDescription(String newDescription)
-    {
-        description=newDescription;
-    }
-
-}
