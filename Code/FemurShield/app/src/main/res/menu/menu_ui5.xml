@@ -3,5 +3,7 @@
     <item android:id="@+id/action_all_sessions" android:title="@string/action_all_sessions"
         android:orderInCategory="100" android:showAsAction="never" />
     <item android:id="@+id/action_active_session" android:title="@string/action_active_session"
-    android:orderInCategory="100" android:showAsAction="never" />
+        android:orderInCategory="100" android:showAsAction="never" />
+    <item android:id="@+id/action_clear_all_contacts" android:title="@string/action_clear_all_contacts"
+        android:orderInCategory="100" android:showAsAction="never" android:visible="false"/>
 </menu>

@@ -4,7 +4,11 @@ import android.app.Activity;
 import android.app.ListFragment;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -28,9 +32,11 @@ import java.util.List;
 public class EmailFragment extends ListFragment implements Button.OnClickListener {
 
 
+
     private List<EmailListItem> mItems;
     private OnEmailItemClickedListener mCallback;
     private OnAddEmailButtonClickListener aEmailCallback;
+    private OnClearEmailClickListener mClearCallback;
     private EmailListAdapter mAdapter;
     private Button addEmail;
     private HashMap<String,String> emailContacts;
@@ -55,7 +61,7 @@ public class EmailFragment extends ListFragment implements Button.OnClickListene
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        setHasOptionsMenu(true);
         initializeList();
     }
 
@@ -104,6 +110,12 @@ public class EmailFragment extends ListFragment implements Button.OnClickListene
             throw new ClassCastException(activity.toString()
                     + " must implement OnAddEmailButtonClickListener");
         }
+        try {
+            mClearCallback = (OnClearEmailClickListener) activity;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(activity.toString()
+                    + " must implement OnClearEmailClickListener");
+        }
     }
 
     @Override
@@ -111,6 +123,7 @@ public class EmailFragment extends ListFragment implements Button.OnClickListene
         super.onDetach();
         mCallback = null;
         aEmailCallback=null;
+        mClearCallback=null;
     }
 
 
@@ -119,6 +132,14 @@ public class EmailFragment extends ListFragment implements Button.OnClickListene
     {
         if(mAdapter!=null){
             mAdapter.add(new EmailListItem(indirizzo,nome));
+            mAdapter.notifyDataSetChanged();}
+
+    }
+
+    public void clearList()
+    {
+        if(mAdapter!=null){
+            mAdapter.clear();
             mAdapter.notifyDataSetChanged();}
 
     }
@@ -134,6 +155,23 @@ public class EmailFragment extends ListFragment implements Button.OnClickListene
     @Override
     public void onClick(View v) {
         aEmailCallback.onAddEmailButtonClick();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId())
+        {
+            case R.id.action_clear_all_contacts:
+                mClearCallback.onClearEmail();
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        MenuItem clearContacts=menu.findItem(R.id.action_clear_all_contacts);
+        clearContacts.setVisible(true);
+        super.onCreateOptionsMenu(menu, inflater);
     }
 
     /**
@@ -154,6 +192,10 @@ public class EmailFragment extends ListFragment implements Button.OnClickListene
     public interface OnAddEmailButtonClickListener {
 
         public void onAddEmailButtonClick();
+    }
+    public interface OnClearEmailClickListener {
+
+        public void onClearEmail();
     }
 
 

@@ -30,7 +30,7 @@ import org.tbw.FemurShield.R;
 * e gestisce il callback dei vari fragment che rappresentano le voci del menu impostazioni
 * TODO: gestire la modalita tablet, gestire i vari stati (onPause(), etc)
 * */
-public class UI5 extends Activity implements SettingsFragment.OnFragmentInteractionListener,TimePickerFragment.OnAlarmChangedListener,DurationFragment.OnDurationChangedListener,EmailFragment.OnEmailItemClickedListener,EmailFragment.OnAddEmailButtonClickListener,AddContactFragment.OnUserInsertedListener,SampleRatePickerFragment.OnSamplingRateChangedListener{
+public class UI5 extends Activity implements SettingsFragment.OnFragmentInteractionListener,TimePickerFragment.OnAlarmChangedListener,DurationFragment.OnDurationChangedListener,EmailFragment.OnEmailItemClickedListener,EmailFragment.OnAddEmailButtonClickListener,AddContactFragment.OnUserInsertedListener,SampleRatePickerFragment.OnSamplingRateChangedListener,EmailFragment.OnClearEmailClickListener{
 
     private PreferencesEditor prefs;
 
@@ -211,5 +211,13 @@ public class UI5 extends Activity implements SettingsFragment.OnFragmentInteract
     public void onSamplingRateChanged(int newRate) {
         SettingsFragment settingsFragment=(SettingsFragment)getFragmentManager().findFragmentById(R.id.fragment_container_settings);
         settingsFragment.updateSamplingRate(newRate);
+    }
+
+    @Override
+    public void onClearEmail() {
+        prefs.cleanEmailFile();
+        EmailFragment ef=(EmailFragment)getFragmentManager().findFragmentById(R.id.fragment_container_settings);
+        ef.clearList();
+
     }
 }
