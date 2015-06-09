@@ -17,6 +17,7 @@ import org.tbw.FemurShield.R;
  */
 public class SessionReminderDialog extends DialogFragment implements DialogInterface.OnClickListener{
     private OnSessionStartingListener mCallback;
+    private OnDialogClosedListener cDialogCallback;
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -54,9 +55,25 @@ public class SessionReminderDialog extends DialogFragment implements DialogInter
             throw new ClassCastException(activity.toString()
                     + " must implement OnSessionStartingListener");
         }
+        try {
+            cDialogCallback = (OnDialogClosedListener) activity;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(activity.toString()
+                    + " must implement OnDialogClosedListener");
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        cDialogCallback.onDialogClosed();
     }
 
     public interface OnSessionStartingListener {
         void onSessionStarted(boolean wantToStart);
+    }
+
+    public interface OnDialogClosedListener {
+        void onDialogClosed();
     }
 }

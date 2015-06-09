@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.PowerManager;
+import android.view.Window;
 import android.view.WindowManager;
 
 import org.tbw.FemurShield.Controller.UI1;
@@ -13,7 +14,7 @@ import org.tbw.FemurShield.R;
 /**
  * Created by Marco on 07/06/2015.
  */
-public class SessionReminderActivity extends Activity implements SessionReminderDialog.OnSessionStartingListener {
+public class SessionReminderActivity extends Activity implements SessionReminderDialog.OnSessionStartingListener,SessionReminderDialog.OnDialogClosedListener {
 
     public final String TAG = this.getClass().getSimpleName();
     private PowerManager.WakeLock mWakeLock;
@@ -23,6 +24,7 @@ public class SessionReminderActivity extends Activity implements SessionReminder
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_session_reminder);
 
         if (findViewById(R.id.fragment_container_settings) != null) {
@@ -83,5 +85,10 @@ public class SessionReminderActivity extends Activity implements SessionReminder
             intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
             startActivity(intent);
         }else{finish();}
+    }
+
+    @Override
+    public void onDialogClosed() {
+        finish();
     }
 }
