@@ -24,6 +24,7 @@ import org.tbw.FemurShield.Controller.Settings.SampleRatePickerFragment;
 import org.tbw.FemurShield.Controller.Settings.SettingListItem;
 import org.tbw.FemurShield.Controller.Settings.SettingsFragment;
 import org.tbw.FemurShield.Controller.Settings.TimePickerFragment;
+import org.tbw.FemurShield.Model.Fall;
 import org.tbw.FemurShield.Model.SessionManager;
 import org.tbw.FemurShield.R;
 
@@ -137,6 +138,8 @@ public class UI5 extends Activity implements SettingsFragment.OnFragmentInteract
             // Commit the transaction
             transaction.commit();
         }
+        if(s.title.equalsIgnoreCase("Simula Caduta"))
+            Controller.getNotification().NotifyFall(new Fall(null,null,null, getBaseContext()));
 
 
     }
