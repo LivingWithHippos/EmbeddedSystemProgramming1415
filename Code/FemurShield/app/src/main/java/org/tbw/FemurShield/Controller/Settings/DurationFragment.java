@@ -13,6 +13,7 @@ import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import org.tbw.FemurShield.Controller.PreferencesEditor;
 import org.tbw.FemurShield.R;
@@ -55,19 +56,26 @@ public class DurationFragment extends DialogFragment implements DialogInterface.
                 if (mCallback != null) {
                     mEditText=(EditText)getDialog().findViewById(R.id.etDuration);
                     String temp=mEditText.getText().toString();
-                    if(temp!=null) {
+                    if(temp!=null)
+                    {
                         int duration=prefs.getSessionDuration();
                         try {
                             duration = Integer.parseInt(temp.trim());
+                            if(duration<1) {
+                                duration = 1;
+                                Toast.makeText(getActivity(),getString(R.string.duration_too_low),Toast.LENGTH_LONG).show();
+                            }
+                            if(duration>24) {
+                                duration = 24;
+                                Toast.makeText(getActivity(),getString(R.string.duration_too_high),Toast.LENGTH_LONG).show();
+                            }
+                            mCallback.onDurationChanged(duration);
+
                         }catch(NumberFormatException nfe){
                                 Log.e("FemurShield","Errore di conversione string a int");
                             }
 
-                            if(duration<1)
-                                duration=1;
-                            if(duration>24)
-                                duration=24;
-                            mCallback.onDurationChanged(duration);
+
                     }
                 }
                 break;

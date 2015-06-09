@@ -19,5 +19,7 @@
         android:singleLine="true"
         android:hint="@string/et_duration_hint"
         android:ems="10"
+        android:digits="0123456789"
+        android:maxLength="2"
         android:id="@+id/etDuration" />
 </LinearLayout>
