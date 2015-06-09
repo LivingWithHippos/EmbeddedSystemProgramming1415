@@ -5,12 +5,14 @@ import android.app.ListFragment;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.util.Log;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 
@@ -29,7 +31,7 @@ import java.util.List;
  * Use the {@link EmailFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class EmailFragment extends ListFragment implements Button.OnClickListener {
+public class EmailFragment extends ListFragment implements Button.OnClickListener{
 
 
 
@@ -37,6 +39,7 @@ public class EmailFragment extends ListFragment implements Button.OnClickListene
     private OnEmailItemClickedListener mCallback;
     private OnAddEmailButtonClickListener aEmailCallback;
     private OnClearEmailClickListener mClearCallback;
+    private OnContactClickListener mContactClickCallback;
     private EmailListAdapter mAdapter;
     private Button addEmail;
     private HashMap<String,String> emailContacts;
@@ -63,6 +66,7 @@ public class EmailFragment extends ListFragment implements Button.OnClickListene
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
         initializeList();
+       // getListView().setOnItemLongClickListener();
     }
 
     private void initializeList()
@@ -87,13 +91,19 @@ public class EmailFragment extends ListFragment implements Button.OnClickListene
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Mi serve per il findViewByID
-        View rootView = inflater.inflate(R.layout.fragment_email, container,false);
+        View rootView = inflater.inflate(R.layout.fragment_email, container, false);
         addEmail=(Button)rootView.findViewById(R.id.add_email_button);
         addEmail.setOnClickListener(this);
 
         return rootView;
     }
 
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        ListView list=getListView();
+        list.setOnItemLongClickListener(new OnContactLongClickListener());
+    }
 
     @Override
     public void onAttach(Activity activity) {
@@ -116,6 +126,13 @@ public class EmailFragment extends ListFragment implements Button.OnClickListene
             throw new ClassCastException(activity.toString()
                     + " must implement OnClearEmailClickListener");
         }
+        try {
+            mContactClickCallback = (OnContactClickListener) activity;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(activity.toString()
+                    + " must implement OnContactClickListener");
+        }
+
     }
 
     @Override
@@ -124,14 +141,15 @@ public class EmailFragment extends ListFragment implements Button.OnClickListene
         mCallback = null;
         aEmailCallback=null;
         mClearCallback=null;
+        mContactClickCallback=null;
     }
 
 
 
-    public void addAndUpdateContact(String nome, String indirizzo)
+    public void addAndUpdateContact(String indirizzo,String nome)
     {
         if(mAdapter!=null){
-            mAdapter.add(new EmailListItem(indirizzo,nome));
+            mAdapter.add(new EmailListItem(indirizzo, nome));
             mAdapter.notifyDataSetChanged();}
 
     }
@@ -143,7 +161,6 @@ public class EmailFragment extends ListFragment implements Button.OnClickListene
             mAdapter.notifyDataSetChanged();}
 
     }
-
 
 
     @Override
@@ -164,6 +181,9 @@ public class EmailFragment extends ListFragment implements Button.OnClickListene
             case R.id.action_clear_all_contacts:
                 mClearCallback.onClearEmail();
         }
+        // il super chiama il metodo nella UI 5
+        // che gestisce gli altri bottoni del menu
+        //senza bisogno di riscriverne i metodi
         return super.onOptionsItemSelected(item);
     }
 
@@ -172,6 +192,10 @@ public class EmailFragment extends ListFragment implements Button.OnClickListene
         MenuItem clearContacts=menu.findItem(R.id.action_clear_all_contacts);
         clearContacts.setVisible(true);
         super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    public void updateList() {
+        initializeList();
     }
 
     /**
@@ -197,7 +221,21 @@ public class EmailFragment extends ListFragment implements Button.OnClickListene
 
         public void onClearEmail();
     }
+    public interface OnContactClickListener {
+
+        public void onContactLongClick(String emailAddress,String name);
+    }
 
 
+    public class OnContactLongClickListener implements ListView.OnItemLongClickListener
+    {
+        @Override
+        public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+
+            EmailListItem eli=(EmailListItem)parent.getItemAtPosition(position);
+            mContactClickCallback.onContactLongClick(eli.address,eli.name);
+            return true;
+        }
+    }
 
 }

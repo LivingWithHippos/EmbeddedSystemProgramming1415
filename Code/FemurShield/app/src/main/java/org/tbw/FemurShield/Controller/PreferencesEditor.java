@@ -122,14 +122,6 @@ public class PreferencesEditor {
         editor.commit();
     }
 
-    /**
-     * Aggiunge uno al contatore di contatti
-     */
-    public void addOneContactNumber()
-    {
-        editor.putInt("email_contacts",getEmailContactsNumber()+1);
-        editor.commit();
-    }
 
     /**
      * Vedi metodo getEmailAddresses() se solo gli indirizzi sono di interesse
@@ -159,23 +151,15 @@ public class PreferencesEditor {
     {
         HashMap<String,String> mails=null;
         String[] addresses=null;
-        try {
-            File file=new File(appPath,"emails.dat");
-            FileInputStream fileInputStream = new FileInputStream(file);
+        mails = getEmail();
 
-            ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
-            mails = (HashMap) objectInputStream.readObject();
-            objectInputStream.close();
-            if(mails!=null) {
-                addresses=new String[mails.size()];
-                int i=0;
-                for (HashMap.Entry<String, String> entry:mails.entrySet())
-                    addresses[i++]=entry.getKey();
-
-            }
-        }catch (Exception e){
-            Log.e("FemurShield","Errore Di lettura email: "+e.getMessage());
-        }
+        if(mails!=null)
+        {
+            addresses=new String[mails.size()];
+            int i=0;
+            for (HashMap.Entry<String, String> entry:mails.entrySet())
+                addresses[i++]=entry.getKey();
+         }
 
         return addresses;
     }
@@ -198,35 +182,110 @@ public class PreferencesEditor {
     }
 
     /**
-     *
+     *Aggiunge un contatto al database
      * @param nome il nome del contatto da aggiungere
      * @param indirizzo l'indirizzo del contatto da aggiungere
      * @return true se il contatto e' stato inserito correttamente, false altrimenti
      */
-    public boolean addEmail(String nome,String indirizzo)
+    public boolean addEmail(String indirizzo,String nome)
     {
+        boolean result = false;
         HashMap<String,String> oldEmail=getEmail();
-        HashMap<String,String> newEmail;
-        boolean result=true;
-        if(oldEmail!=null)
-        {
-            newEmail=new HashMap<>(oldEmail.size()+1);
-            newEmail.putAll(oldEmail);
+        if(!oldEmail.containsKey(indirizzo)) {
+            HashMap<String, String> newEmail;
+
+            if (oldEmail != null) {
+                newEmail = new HashMap<>(oldEmail.size() + 1);
+                newEmail.putAll(oldEmail);
+            } else
+                newEmail = new HashMap<>(1);
+
+            newEmail.put(indirizzo, nome);
+
+            return writeEmailFile(newEmail);
         }
-        else
-            newEmail=new HashMap<>(1);
-
-
-        newEmail.put(indirizzo,nome);
-        File file=new File(appPath,"emails.dat");
-        try {
-            ObjectOutputStream outputStream = new ObjectOutputStream(new FileOutputStream(file));
-            outputStream.writeObject(newEmail);
-            outputStream.flush();
-            outputStream.close();
-            Log.d("FemurShield","File email Scritto correttamente");
-        }catch (Exception e){Log.e("FemurShield","Errore aggiunta contatto email : "+e.getMessage());result=false;}
         return result;
+    }
+
+
+    /**
+     * Salva una lista di email cancellando il vecchio file opzionalmente
+     * @param emails la lista di contatti da scrivere
+     * @param cleanOldFile cancellare il vecchio file?
+     * @return true se e' stato scritto false altrimenti
+     */
+    public boolean setEmails(HashMap<String,String> emails, boolean cleanOldFile)
+    {
+        if (emails!=null)
+        {
+            if (cleanOldFile)
+                cleanEmailFile();
+
+            return writeEmailFile(emails);
+        }
+        return false;
+    }
+
+    /**
+     * Metodo privato da usare solo internamente per scrivere la mappa sul file email
+     * @param emails la mappa nome,indirizzo da scrivere
+     * @return true se viene scritta correttamente false altrimenti
+     */
+    private boolean writeEmailFile(HashMap<String,String> emails)
+    {
+        if (emails!=null)
+        {
+            boolean result = true;
+            File file = new File(appPath, "emails.dat");
+            try {
+                ObjectOutputStream outputStream = new ObjectOutputStream(new FileOutputStream(file));
+                outputStream.writeObject(emails);
+                outputStream.flush();
+                outputStream.close();
+                setEmailContactsNumber(emails.size());
+                Log.d("FemurShield", "File email Scritto correttamente");
+            } catch (Exception e) {
+                Log.e("FemurShield", "Errore aggiunta contatto email : " + e.getMessage());
+                result = false;
+            }
+            return result;
+        }
+        return false;
+    }
+
+    /**
+     * Cancella un contatto e salva la nuova lista
+     * @param addressToDelete l'email (chiave) da cancellare
+     * @return true se e' stata trovata E cancellata, false altrimenti
+     */
+    public boolean deleteContact(String addressToDelete)
+    {
+        if(addressToDelete!=null)
+        {
+            HashMap<String,String> map=getEmail();
+            if (map!=null)
+                if(map.remove(addressToDelete)!=null)
+                {
+                    return setEmails(map,true);
+                }else{return false;}
+        }
+
+        return false;
+    }
+
+    /**
+     *
+     * @param address l'indirizzo da confrontare
+     * @return true se e' gia' presente false altrimenti
+     */
+    public boolean isAddressNew(String address)
+    {
+        HashMap<String,String> map=getEmail();
+        if (map!=null)
+        {
+            return map.containsKey(address);
+        }
+        return false;
     }
 
 

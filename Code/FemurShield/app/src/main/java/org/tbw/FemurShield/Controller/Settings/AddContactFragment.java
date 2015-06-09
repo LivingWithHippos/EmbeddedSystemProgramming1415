@@ -8,9 +8,11 @@ import android.app.DialogFragment;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import org.tbw.FemurShield.R;
 
@@ -20,6 +22,13 @@ import org.tbw.FemurShield.R;
 public class AddContactFragment extends DialogFragment implements DialogInterface.OnClickListener{
 
     private OnUserInsertedListener mCallback;
+    private OnUserToUpdateInsertedListener mUpdateCallback;
+    public final static String CONTACT_MODE="contact_mode";
+    public final static String OLD_EMAIL="old_email";
+    public final static String OLD_NAME="old_name";
+    public final static boolean MODE_NEW_USER=true;
+    public final static boolean MODE_EDIT_USER=false;
+    private boolean mode;
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -32,6 +41,21 @@ public class AddContactFragment extends DialogFragment implements DialogInterfac
         alert.setView(view);
         alert.setPositiveButton(getString(R.string.ok), this);
         alert.setNegativeButton(getString(R.string.cancel), this);
+
+        Bundle bundle=getArguments();
+        mode=bundle.getBoolean(CONTACT_MODE);
+        if(mode==MODE_EDIT_USER)
+        {
+            //TODO: stiamo modificando un utente
+            String oldName=bundle.getString(OLD_NAME);
+            String oldEmail=bundle.getString(OLD_EMAIL);
+            TextView title=(TextView)view.findViewById(R.id.tvAddContactTitle);
+            title.setText(getString(R.string.edit_contact_dialog_title));
+            EditText etName=(EditText)view.findViewById(R.id.etEmailName);
+            etName.setText(oldName);
+            EditText etAddress=(EditText)view.findViewById(R.id.etEmailAddress);
+            etAddress.setText(oldEmail);
+        }
         return alert.create();
     }
 
@@ -39,12 +63,22 @@ public class AddContactFragment extends DialogFragment implements DialogInterfac
     public void onClick(DialogInterface dialog, int which) {
         switch (which) {
             case AlertDialog.BUTTON_POSITIVE:
-                if (mCallback != null) {
-                    EditText nome=(EditText)getDialog().findViewById(R.id.etEmailName);
-
-                    EditText indirizzo=(EditText)getDialog().findViewById(R.id.etEmailAddress);
-                    mCallback.onUserInserted(nome,indirizzo);
+                if(mode==MODE_NEW_USER) {
+                    if (mCallback != null) {
+                        EditText nome = (EditText) getDialog().findViewById(R.id.etEmailName);
+                        EditText indirizzo = (EditText) getDialog().findViewById(R.id.etEmailAddress);
+                        mCallback.onUserInserted(nome, indirizzo);
+                    }
                 }
+                else
+                    {
+                        if (mUpdateCallback != null) {
+                            EditText nome=(EditText)getDialog().findViewById(R.id.etEmailName);
+                            EditText indirizzo=(EditText)getDialog().findViewById(R.id.etEmailAddress);
+                            String oldEmail=getArguments().getString(OLD_EMAIL);
+                            mUpdateCallback.onUserToUpdateInserted(nome,indirizzo,oldEmail);
+                        }
+                    }
                 break;
         }
     }
@@ -60,6 +94,12 @@ public class AddContactFragment extends DialogFragment implements DialogInterfac
             throw new ClassCastException(activity.toString()
                     + " must implement OnUserInsertedListener");
         }
+        try {
+            mUpdateCallback = (OnUserToUpdateInsertedListener) activity;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(activity.toString()
+                    + " must implement OnUserToUpdateInsertedListener");
+        }
     }
 
     /**
@@ -71,6 +111,12 @@ public class AddContactFragment extends DialogFragment implements DialogInterfac
          * @param nome EditText in cui e stato inserito il nome
          * @param indirizzo EditText in cui e stato inserita l email
          */
-        void onUserInserted(EditText nome,EditText indirizzo);
+        boolean onUserInserted(EditText nome,EditText indirizzo);
+    }
+
+    public interface OnUserToUpdateInsertedListener
+    {
+        boolean onUserToUpdateInserted(EditText nome,EditText indirizzo,String oldEmail);
+
     }
 }

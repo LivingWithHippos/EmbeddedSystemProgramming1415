@@ -16,6 +16,7 @@ import android.widget.Toast;
 import org.tbw.FemurShield.Controller.Reminder.BootReceiver;
 import org.tbw.FemurShield.Controller.Reminder.ReminderService;
 import org.tbw.FemurShield.Controller.Settings.AddContactFragment;
+import org.tbw.FemurShield.Controller.Settings.ContactOptionsDialog;
 import org.tbw.FemurShield.Controller.Settings.DurationFragment;
 import org.tbw.FemurShield.Controller.Settings.EmailFragment;
 import org.tbw.FemurShield.Controller.Settings.EmailListItem;
@@ -31,7 +32,7 @@ import org.tbw.FemurShield.R;
 * e gestisce il callback dei vari fragment che rappresentano le voci del menu impostazioni
 * TODO: gestire la modalita tablet, gestire i vari stati (onPause(), etc)
 * */
-public class UI5 extends Activity implements SettingsFragment.OnFragmentInteractionListener,TimePickerFragment.OnAlarmChangedListener,DurationFragment.OnDurationChangedListener,EmailFragment.OnEmailItemClickedListener,EmailFragment.OnAddEmailButtonClickListener,AddContactFragment.OnUserInsertedListener,SampleRatePickerFragment.OnSamplingRateChangedListener,EmailFragment.OnClearEmailClickListener{
+public class UI5 extends Activity implements SettingsFragment.OnFragmentInteractionListener,TimePickerFragment.OnAlarmChangedListener,DurationFragment.OnDurationChangedListener,EmailFragment.OnEmailItemClickedListener,EmailFragment.OnAddEmailButtonClickListener,AddContactFragment.OnUserInsertedListener,SampleRatePickerFragment.OnSamplingRateChangedListener,EmailFragment.OnClearEmailClickListener,EmailFragment.OnContactClickListener,ContactOptionsDialog.OnContactOptionsClickListener,AddContactFragment.OnUserToUpdateInsertedListener{
 
     private PreferencesEditor prefs;
 
@@ -186,19 +187,22 @@ public class UI5 extends Activity implements SettingsFragment.OnFragmentInteract
     @Override
     public void onEmailItemClicked(EmailListItem e) {
         // TODO aggiungere rinomina e cancella email
-        Log.d("FemureShield","Cliccato su "+e.name+" "+e.address);
+        Log.d("FemureShield", "Cliccato su " + e.name + " " + e.address);
 
     }
 
     @Override
     public void onAddEmailButtonClick() {
         AddContactFragment emailFragment=new AddContactFragment();
-        emailFragment.show(getFragmentManager(),"Add Contact Dialog");
+        Bundle bundle=new Bundle();
+        bundle.putBoolean(AddContactFragment.CONTACT_MODE,AddContactFragment.MODE_NEW_USER);
+        emailFragment.setArguments(bundle);
+        emailFragment.show(getFragmentManager(), "Add Contact Dialog");
     }
 
     @Override
-    public void onUserInserted(EditText nome, EditText indirizzo) {
-
+    public boolean onUserInserted(EditText nome, EditText indirizzo) {
+        boolean result=true;
         if(nome!=null&indirizzo!=null)
         {
             String n=nome.getText().toString().trim();
@@ -206,18 +210,43 @@ public class UI5 extends Activity implements SettingsFragment.OnFragmentInteract
             String regex="[\\w_.-]+@[\\w.-]{4,30}";
             if(i.matches(regex))
             {
-                prefs.addEmail(n, i);
-                //aggiorna la lista email 
-                EmailFragment ef=(EmailFragment)getFragmentManager().findFragmentById(R.id.fragment_container_settings);
-                ef.addAndUpdateContact(n, i);
-                prefs.addOneContactNumber();
+                result=prefs.addEmail(i,n);
+                if(result) {
+                    //aggiorna la lista email
+                    EmailFragment ef = (EmailFragment) getFragmentManager().findFragmentById(R.id.fragment_container_settings);
+                    ef.updateList();
+                }
+                else
+                    Toast.makeText(getApplicationContext(), getString(R.string.wrong_email_message),Toast.LENGTH_SHORT).show();
 
             }
             else{
                 Log.d("FemurShield","Sintassi email errata");
+                result=false;
                 Toast.makeText(getApplicationContext(), getString(R.string.wrong_email_message),Toast.LENGTH_SHORT).show();
             }
         }
+        return result;
+    }
+
+    @Override
+    public boolean onUserToUpdateInserted(EditText nome, EditText indirizzo, String oldEmail) {
+
+        boolean result=false;
+        String newEmail=indirizzo.getText().toString();
+        if(newEmail.equalsIgnoreCase(oldEmail))
+        {
+            result = prefs.deleteContact(oldEmail);
+            onUserInserted(nome,indirizzo);
+        }
+        else {
+            if (onUserInserted(nome, indirizzo)) {
+                result = prefs.deleteContact(oldEmail);
+                EmailFragment ef = (EmailFragment) getFragmentManager().findFragmentById(R.id.fragment_container_settings);
+                ef.updateList();
+            }
+        }
+        return result;
     }
 
     @Override
@@ -233,4 +262,42 @@ public class UI5 extends Activity implements SettingsFragment.OnFragmentInteract
         ef.clearList();
 
     }
+
+    @Override
+    public void onContactLongClick(String emailAddress,String name) {
+        ContactOptionsDialog dialog=new ContactOptionsDialog();
+        Bundle bundle=new Bundle();
+        bundle.putString(ContactOptionsDialog.SELECTED_MAIL, emailAddress);
+        bundle.putString(ContactOptionsDialog.SELECTED_NAME,name);
+        dialog.setArguments(bundle);
+        dialog.show(getFragmentManager(), "Contact Options Menu");
+    }
+
+    @Override
+    public void onContactOptionClick(String emailAddress, String name, int type) {
+        switch (type)
+        {
+            case ContactOptionsDialog.DELETE_CONTACT:
+                if(prefs.deleteContact(emailAddress))
+                {
+                    EmailFragment ef=(EmailFragment)getFragmentManager().findFragmentById(R.id.fragment_container_settings);
+                    ef.updateList();
+                }else
+                {
+                    Toast.makeText(this, getString(R.string.contact_not_deleted), Toast.LENGTH_LONG).show();
+                }
+                break;
+            case ContactOptionsDialog.EDIT_CONTACT:
+                AddContactFragment emailFragment=new AddContactFragment();
+                Bundle bundle=new Bundle();
+                bundle.putBoolean(AddContactFragment.CONTACT_MODE,AddContactFragment.MODE_EDIT_USER);
+                bundle.putString(AddContactFragment.OLD_EMAIL, emailAddress);
+                bundle.putString(AddContactFragment.OLD_NAME,name);
+                emailFragment.setArguments(bundle);
+                emailFragment.show(getFragmentManager(),"Add Contact Dialog");
+                break;
+        }
+    }
+
+
 }
