@@ -191,20 +191,25 @@ public class PreferencesEditor {
     {
         boolean result = false;
         HashMap<String,String> oldEmail=getEmail();
-        if(!oldEmail.containsKey(indirizzo)) {
-            HashMap<String, String> newEmail;
+        HashMap<String, String> newEmail;
 
-            if (oldEmail != null) {
-                newEmail = new HashMap<>(oldEmail.size() + 1);
-                newEmail.putAll(oldEmail);
-            } else
-                newEmail = new HashMap<>(1);
-
-            newEmail.put(indirizzo, nome);
-
+        if(oldEmail==null) {
+            newEmail = new HashMap<>(1);
+            newEmail.put(indirizzo,nome);
             return writeEmailFile(newEmail);
         }
-        return result;
+        else
+        {
+            if(oldEmail.containsKey(indirizzo))
+                return false;
+            else
+            {
+                newEmail = new HashMap<>(oldEmail.size() + 1);
+                newEmail.putAll(oldEmail);
+                return writeEmailFile(newEmail);
+            }
+        }
+
     }
 
 
