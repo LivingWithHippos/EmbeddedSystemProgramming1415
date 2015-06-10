@@ -1,14 +1,17 @@
 package org.tbw.FemurShield.Controller;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import org.tbw.FemurShield.Model.Session;
+import org.tbw.FemurShield.Model.SessionManager;
 import org.tbw.FemurShield.R;
 
 
@@ -62,16 +65,24 @@ public class UI2 extends Activity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        // Handle presses on the action bar items
+        switch (item.getItemId()) {
+            case R.id.action_settings:
+                Intent intent = new Intent(this, UI5.class);
+                startActivity(intent);
+                return true;
+            case R.id.action_all_sessions:
+                Intent ui1 = new Intent(this, UI1.class);
+                startActivity(ui1);
+                return true;
+            case R.id.action_active_session:
+                if (SessionManager.getInstance().getActiveSession() != null) {
+                    Intent ui3 = new Intent(this, UI3.class);
+                    startActivity(ui3);
+                } else
+                    Toast.makeText(this, getString(R.string.no_active_session), Toast.LENGTH_LONG).show();
+                return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 
