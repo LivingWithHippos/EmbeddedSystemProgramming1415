@@ -35,5 +35,6 @@
     <string name="edit_contact_dialog_title">Modifica Contatto</string>
     <string name="duration_too_low">Inserire una durata maggiore di un ora!</string>
     <string name="duration_too_high">Inserire una durata minore di 24 ore!</string>
+    <string name="empty_contact_list">Lista  contatti già vuota</string>
 
 </resources>

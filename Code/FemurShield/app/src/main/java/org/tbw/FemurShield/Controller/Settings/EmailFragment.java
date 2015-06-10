@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import org.tbw.FemurShield.Controller.PreferencesEditor;
 import org.tbw.FemurShield.R;
@@ -156,9 +157,14 @@ public class EmailFragment extends ListFragment implements Button.OnClickListene
 
     public void clearList()
     {
-        if(mAdapter!=null){
-            mAdapter.clear();
-            mAdapter.notifyDataSetChanged();}
+        if(mAdapter!=null) {
+            if (mAdapter.getCount() > 0) {
+                mAdapter.clear();
+                mAdapter.notifyDataSetChanged();
+            } else {
+                Toast.makeText(getActivity(),getString(R.string.empty_contact_list),Toast.LENGTH_LONG).show();
+            }
+        }
 
     }
 
