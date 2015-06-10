@@ -14,17 +14,20 @@ import org.tbw.FemurShield.R;
 public class UI2 extends Activity {
 
     private Session thisSession;
+    public final static String SESSION_DATA_STAMP = "sessiondatastamp";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ui2);
-        String thisData = savedInstanceState.getString("sessiondatastamp");
+        String thisData = savedInstanceState.getString(SESSION_DATA_STAMP);
+        Bundle bundle = new Bundle();
+        bundle.putString(SESSION_DATA_STAMP,thisData);
         FragmentManager fm = getFragmentManager();
         SessionDetailsFragment sdf = (SessionDetailsFragment)fm.findFragmentById(R.id.SessionDetailsFragment);
         FallFragment ff = (FallFragment)fm.findFragmentById(R.id.FallFragment);
-        sdf.setSession(thisData);
-        ff.setSession(thisData);
+        ff.setArguments(bundle);
+        sdf.setArguments(bundle);
 
         /*
         FallFragment ff = FallFragment.newInstance();
