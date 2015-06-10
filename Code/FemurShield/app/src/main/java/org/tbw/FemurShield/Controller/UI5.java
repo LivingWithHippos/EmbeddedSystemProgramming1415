@@ -208,10 +208,15 @@ public class UI5 extends Activity implements SettingsFragment.OnFragmentInteract
         {
             String n=nome.getText().toString().trim();
             String i=indirizzo.getText().toString().trim();
+            Log.d("UI5","nome :"+n);
+            Log.d("UI5","indirizzo :"+i);
+
             String regex="[\\w_.-]+@[\\w.-]{4,30}";
             if(i.matches(regex))
             {
                 result=prefs.addEmail(i,n);
+                Log.d("UI5","ho modificato : "+result);
+
                 if(result) {
                     //aggiorna la lista email
                     EmailFragment ef = (EmailFragment) getFragmentManager().findFragmentById(R.id.fragment_container_settings);
@@ -222,7 +227,7 @@ public class UI5 extends Activity implements SettingsFragment.OnFragmentInteract
 
             }
             else{
-                Log.d("FemurShield","Sintassi email errata");
+                Log.d("UI5","Sintassi email errata");
                 result=false;
                 Toast.makeText(getApplicationContext(), getString(R.string.wrong_email_message),Toast.LENGTH_SHORT).show();
             }
@@ -234,19 +239,10 @@ public class UI5 extends Activity implements SettingsFragment.OnFragmentInteract
     public boolean onUserToUpdateInserted(EditText nome, EditText indirizzo, String oldEmail) {
 
         boolean result=false;
-        String newEmail=indirizzo.getText().toString();
-        if(newEmail.equalsIgnoreCase(oldEmail))
-        {
-            result = prefs.deleteContact(oldEmail);
-            onUserInserted(nome,indirizzo);
-        }
-        else {
-            if (onUserInserted(nome, indirizzo)) {
-                result = prefs.deleteContact(oldEmail);
-                EmailFragment ef = (EmailFragment) getFragmentManager().findFragmentById(R.id.fragment_container_settings);
-                ef.updateList();
-            }
-        }
+        result = prefs.deleteContact(oldEmail);
+        if(result)
+            result=onUserInserted(nome,indirizzo);
+
         return result;
     }
 

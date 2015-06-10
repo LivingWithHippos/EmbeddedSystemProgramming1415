@@ -182,10 +182,11 @@ public class PreferencesEditor {
     }
 
     /**
-     *Aggiunge un contatto al database
+     *Aggiunge un contatto al database SE NON E' GIA' PRESENTE
      * @param nome il nome del contatto da aggiungere
      * @param indirizzo l'indirizzo del contatto da aggiungere
-     * @return true se il contatto e' stato inserito correttamente, false altrimenti
+     * @return true se il contatto e' stato inserito correttamente,
+     * false se l'indirizzo era gia' presente o non si e' riusciti a scrivere il file
      */
     public boolean addEmail(String indirizzo,String nome)
     {
@@ -206,6 +207,7 @@ public class PreferencesEditor {
             {
                 newEmail = new HashMap<>(oldEmail.size() + 1);
                 newEmail.putAll(oldEmail);
+                newEmail.put(indirizzo,nome);
                 return writeEmailFile(newEmail);
             }
         }
@@ -268,10 +270,13 @@ public class PreferencesEditor {
         if(addressToDelete!=null)
         {
             HashMap<String,String> map=getEmail();
-            if (map!=null)
+            if (map!=null&map.size()>0)
                 if(map.remove(addressToDelete)!=null)
                 {
-                    return setEmails(map,true);
+                    if(map.size()>0)
+                        return setEmails(map,true);
+                    else
+                        return cleanEmailFile();
                 }else{return false;}
         }
 
