@@ -87,7 +87,7 @@ public class UI5 extends Activity implements SettingsFragment.OnFragmentInteract
             case R.id.action_all_sessions:
                 Intent ui1=new Intent(this,UI1.class);
                 startActivity(ui1);
-                break;
+                return true;
             case R.id.action_active_session:
                 if(SessionManager.getInstance().getActiveSession()!=null)
                 {
@@ -96,9 +96,7 @@ public class UI5 extends Activity implements SettingsFragment.OnFragmentInteract
                 }
                 else
                     Toast.makeText(this,getString(R.string.no_active_session),Toast.LENGTH_LONG).show();
-                
-
-                break;
+                return true;
         }
 
         return super.onOptionsItemSelected(item);
