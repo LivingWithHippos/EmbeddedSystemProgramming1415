@@ -7,8 +7,17 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Dettagli Sessione"
+        android:id="@+id/titoloFragmentSessione" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Sessione data"
+        android:layout_marginTop="15dp"
+        android:layout_marginLeft="15dp"
         android:id="@+id/tvSessionName" />
 
     <TextView
@@ -16,11 +25,16 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Durata: xx:xx:xx"
+        android:layout_marginLeft="15dp"
+        android:layout_marginBottom="15dp"
         android:id="@+id/tvSessionDuration" />
 
     <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="180dp"
+        android:layout_height="180dp"
+        android:scaleType="fitXY"
+        android:layout_gravity="center"
+        android:src="@drawable/check"
         android:id="@+id/ivGraficoSessione" />
 
 

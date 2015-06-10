@@ -8,12 +8,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Lista Fall"
-        android:id="@+id/textView5" />
+        android:text="Lista Cadute"
+        android:id="@+id/titoloFragmentCadute" />
 
     <ListView
         android:id="@android:id/list"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1" >
     </ListView>

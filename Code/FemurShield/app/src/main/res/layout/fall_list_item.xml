@@ -1,40 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal" android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:orientation="horizontal" android:layout_width="fill_parent"
+    android:layout_height="70dp"
     android:baselineAligned="false">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Sessione n°X"
+        android:gravity="left"
         android:id="@+id/tvFallName"
-        android:layout_margin="15dp" />
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginBottom="15dp"/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:text="GG/MM/AAAA\nHH:MM:SS"
-        android:gravity="center_horizontal"
+        android:gravity="center"
         android:id="@+id/tvFallDate"
-        android:layout_margin="15dp" />
-
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal" android:layout_width="match_parent"
-        android:layout_gravity="center"
-        android:layout_height="match_parent">
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginBottom="15dp" />
 
     <ImageView
         android:layout_width="40dp"
         android:layout_height="40dp"
+        android:layout_marginLeft="10dp"
+        android:layout_gravity="center_vertical"
         android:id="@+id/ivFallSent"
-        android:src="@drawable/uncheck"
-        android:layout_marginTop="15dp"
-        android:layout_marginLeft="15dp"/>
+        android:src="@drawable/uncheck"/>
 
 
     </LinearLayout>
-
-</LinearLayout>
