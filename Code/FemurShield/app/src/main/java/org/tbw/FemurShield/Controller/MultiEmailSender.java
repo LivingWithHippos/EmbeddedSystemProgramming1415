@@ -81,8 +81,6 @@ public class MultiEmailSender extends Service {
 
         // crea il testo mail
         String testo = "Avvenuta caduta di "+nome+" in data: "+data+"\n\nnumero caduta: "+num+"\nlatiudine: "+lat+"\nlongitudine: "+lon+"\nLink Google Maps: "+link+lat+","+lon;
-        ArrayList<String> extra_text = new ArrayList<>();
-        extra_text.add(testo);
 
         if (addresses != null)
         {
