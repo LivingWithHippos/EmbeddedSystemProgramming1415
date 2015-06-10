@@ -73,11 +73,11 @@ public class SessionDetailsFragment extends Fragment
         {
             TextView tvNome = (TextView) getView().findViewById(R.id.tvSessionName); // è sia nome che data
             TextView tvDurata = (TextView) getView().findViewById(R.id.tvSessionDuration);
+            ImageView ivGrafico = (ImageView) getView().findViewById(R.id.ivGraficoSessione);
 
             tvNome.setText(session.getName());
-            tvDurata.setText("durata da implementare su session");
-
-            //TODO manca il grafico
+            tvDurata.setText("durata session");
+            ivGrafico.setImageBitmap(session.getSignature().toBitmap());
         }
     }
 }

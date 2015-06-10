@@ -18,4 +18,10 @@
         android:text="Durata: xx:xx:xx"
         android:id="@+id/tvSessionDuration" />
 
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/ivGraficoSessione" />
+
+
 </LinearLayout>
