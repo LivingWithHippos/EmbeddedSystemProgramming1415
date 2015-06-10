@@ -36,22 +36,21 @@ public class SessionDetailsFragment extends Fragment
     {
     }
 
-    public static SessionDetailsFragment newIstance()
+    public static SessionDetailsFragment newIstance(String datatime)
     {
         SessionDetailsFragment fragment = new SessionDetailsFragment();
+        Bundle b = new Bundle();
+        b.putString(UI2.SESSION_DATA_STAMP, datatime);
+        fragment.setArguments(b);
         return fragment;
     }
 
-    @Override
-    public void onAttach (Activity activity)
-    {
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        String thisData = savedInstanceState.getString(UI2.SESSION_DATA_STAMP);
+        String thisData = getArguments().getString(UI2.SESSION_DATA_STAMP);
         setSession(thisData);
         startDetails();
     }
