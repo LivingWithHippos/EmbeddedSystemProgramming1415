@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -50,10 +51,18 @@ public class SessionDetailsFragment extends Fragment
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
+
+    }
+
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
         String thisData = getArguments().getString(UI2.SESSION_DATA_STAMP);
+        Log.d("SessionDetailFragment","thisData:"+thisData);
         setSession(thisData);
         startDetails();
     }
+
 
     public void setSession(String date)
     {
@@ -62,6 +71,7 @@ public class SessionDetailsFragment extends Fragment
         {
             for(Session sex : s)
             {
+                Log.d("SessionDetailFragment","Datastamp sessioni salvate :"+sex.getDataTime());
                 if(sex.getDataTime().equalsIgnoreCase(date))
                 {
                     session = sex;
@@ -82,6 +92,8 @@ public class SessionDetailsFragment extends Fragment
             tvNome.setText(session.getName());
             tvDurata.setText("durata session");
             ivGrafico.setImageBitmap(session.getSignature().toBitmap());
+
+            getView().invalidate();
         }
     }
 
