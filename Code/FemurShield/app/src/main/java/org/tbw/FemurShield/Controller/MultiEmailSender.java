@@ -90,7 +90,7 @@ public class MultiEmailSender extends Service {
             Intent email = new Intent(Intent.ACTION_SEND_MULTIPLE);
             email.putExtra(Intent.EXTRA_SUBJECT, "(noreply) - FemurShield Notification");
             email.putExtra(Intent.EXTRA_BCC, addresses);
-            email.putExtra(Intent.EXTRA_TEXT, extra_text);
+            email.putExtra(Intent.EXTRA_TEXT, testo);
             email.setType("message/rfc822");
 
             //avvia la activty per l'invio della mail
