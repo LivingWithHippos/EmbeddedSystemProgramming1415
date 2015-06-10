@@ -29,7 +29,7 @@ public class UI2 extends Activity {
 
         LinearLayout ll = new LinearLayout(this);
         int orientation=this.getResources().getConfiguration().orientation;
-        ll.setOrientation(orientation== Configuration.ORIENTATION_PORTRAIT?LinearLayout.HORIZONTAL:LinearLayout.VERTICAL);
+        ll.setOrientation(orientation== Configuration.ORIENTATION_PORTRAIT?LinearLayout.VERTICAL:LinearLayout.HORIZONTAL);
 
         ll.setId(View.generateViewId());
 
