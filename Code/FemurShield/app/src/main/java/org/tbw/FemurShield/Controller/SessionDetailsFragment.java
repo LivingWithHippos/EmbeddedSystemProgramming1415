@@ -1,21 +1,16 @@
 package org.tbw.FemurShield.Controller;
 
-import android.app.Activity;
 import android.app.Fragment;
-import android.net.NetworkInfo;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import org.tbw.FemurShield.Model.Session;
 import org.tbw.FemurShield.Model.SessionManager;
 import org.tbw.FemurShield.R;
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
@@ -58,7 +53,6 @@ public class SessionDetailsFragment extends Fragment
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         String thisData = getArguments().getString(UI2.SESSION_DATA_STAMP);
-        Log.d("SessionDetailFragment","thisData:"+thisData);
         setSession(thisData);
         startDetails();
     }
@@ -71,7 +65,6 @@ public class SessionDetailsFragment extends Fragment
         {
             for(Session sex : s)
             {
-                Log.d("SessionDetailFragment","Datastamp sessioni salvate :"+sex.getDataTime());
                 if(sex.getDataTime().equalsIgnoreCase(date))
                 {
                     session = sex;
