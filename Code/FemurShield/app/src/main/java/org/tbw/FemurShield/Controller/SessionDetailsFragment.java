@@ -25,6 +25,7 @@ import java.util.ArrayList;
 public class SessionDetailsFragment extends Fragment
 {
     private Session session;
+    public final static String SESSION_DATA_STAMP = "sessiondatastamp";
 
     public SessionDetailsFragment()
     {
@@ -45,7 +46,7 @@ public class SessionDetailsFragment extends Fragment
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        String thisData = savedInstanceState.getString("sessiondatastamp");
+        String thisData = savedInstanceState.getString(SESSION_DATA_STAMP);
         setSession(thisData);
         startDetails();
     }

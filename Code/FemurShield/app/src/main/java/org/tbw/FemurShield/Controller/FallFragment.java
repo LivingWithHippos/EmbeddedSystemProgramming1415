@@ -43,7 +43,7 @@ public class FallFragment extends ListFragment
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        String thisData = savedInstanceState.getString("sessiondatastamp");
+        String thisData = savedInstanceState.getString(SessionDetailsFragment.SESSION_DATA_STAMP);
         setSession(thisData);
         startlist();
     }
