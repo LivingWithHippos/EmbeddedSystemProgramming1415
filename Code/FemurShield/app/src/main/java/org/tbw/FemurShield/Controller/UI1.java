@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
@@ -35,6 +36,20 @@ public class UI1 extends Activity {
         setContentView(R.layout.activity_ui1);
         //aggiorno la listView
         AggiornaLista();
+        ListView list=((ListView)findViewById(R.id.listsessionui1));
+        final Activity activity=this;
+        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                HashMap<String,String> item=(HashMap<String,String>)parent.getItemAtPosition(position);
+                String datetime=item.get("data");
+                Intent i=new Intent(activity,UI2.class);
+                i.putExtra(UI2.SESSION_DATA_STAMP,datetime);
+                startActivity(i);
+
+            }
+
+        });
     }
 
     @Override
