@@ -4,6 +4,9 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -17,11 +20,14 @@ import java.util.ArrayList;
 
 /**
  * Created by Vianello on 21/05/15.
- * mostra detagli: nome sessione - data - durata
+ * mostra detagli:
+ * nome sessione - data e ora
+ * durata
  * e sotto la signature della sessione
  *
  * usata nella UI2
  */
+
 public class SessionDetailsFragment extends Fragment
 {
     private Session session;
@@ -79,5 +85,12 @@ public class SessionDetailsFragment extends Fragment
             tvDurata.setText("durata session");
             ivGrafico.setImageBitmap(session.getSignature().toBitmap());
         }
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
+    {
+        View rootView = inflater.inflate(R.layout.fragment_details, container,false);
+        return rootView;
     }
 }
