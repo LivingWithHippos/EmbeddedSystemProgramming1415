@@ -1,6 +1,8 @@
 package org.tbw.FemurShield.Model;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 
 /**
  * Created by Moro on 24/04/15.
@@ -8,7 +10,7 @@ import java.util.ArrayList;
 public class SessionManager {
     private static SessionManager instance; //identifica l'istanza unica di questa classe (singleton)
     private ActiveSessionImpl sessioneattiva=null;
-    private static ArrayList<OldSessionImpl> sessionivecchie=new ArrayList<>();
+    private static HashMap<String,OldSessionImpl> sessionivecchie=new HashMap<>();
     private boolean running=false;
 
     /**
@@ -48,23 +50,67 @@ public class SessionManager {
      * metodo get ritorna semplicemente un array list con tutte le sessioni terminate.
      * @return array di interfacce alle sessioni vecchie (potrebbe esser vuoto)
      */
+    public HashMap<String , OldSession> getOldSessionsById(){
+        HashMap<String,OldSession> ret=new HashMap<>();
+        for(int i=0; i<sessionivecchie.size();i++)
+            ret.put(sessionivecchie.get(i).getId(), sessionivecchie.get(i));
+        return ret;
+    }
+
+
+    /**
+     * metodo get ritorna semplicemente un array list con tutte le sessioni terminate.
+     * @return array di interfacce alle sessioni vecchie (potrebbe esser vuoto)
+     */
     public ArrayList<OldSession> getOldSessions(){
         ArrayList<OldSession> ret=new ArrayList<>();
-        for(int i=0; i<sessionivecchie.size();i++)
-            ret.add(sessionivecchie.get(i));
+        Iterator it = sessionivecchie.entrySet().iterator();
+        while (it.hasNext()) {
+            OldSession session = ((HashMap.Entry<String,OldSession>)it.next()).getValue();
+            ret.add(session);
+        }
+        return ret;
+    }
+
+
+    /**
+     * metodo get ritorna una particolare sessione.
+     * @return array di interfacce alle sessioni vecchie (potrebbe esser vuoto)
+     */
+    public Session getSession(String id){
+        if(sessioneattiva.getId().equals(id))
+            return sessioneattiva;
+        return sessionivecchie.get(id);
+    }
+
+    /**
+     * metodo che ritorna tutte le sessioni, vecchie e attiva
+     * @return array di interfacce a tutte le sessioni (potrebbe esser vuoto)
+     * */
+    public HashMap<String, Session> getAllSessionsById()
+    {
+        HashMap<String,Session> ret=new HashMap<>();
+        if(sessionivecchie!=null)
+            for(int i=0; i<sessionivecchie.size();i++)
+                ret.put(sessionivecchie.get(i).getId(), sessionivecchie.get(i));
+        if(sessioneattiva!=null)
+            ret.put(sessioneattiva.getId(),sessioneattiva);
         return ret;
     }
 
     /**
-    * metodo che ritorna tutte le sessioni, vecchie e attiva
+     * metodo che ritorna tutte le sessioni, vecchie e attiva
      * @return array di interfacce a tutte le sessioni (potrebbe esser vuoto)
-    * */
+     * */
     public ArrayList<Session> getAllSessions()
     {
         ArrayList<Session> ret=new ArrayList<>();
-        if(sessionivecchie!=null)
-            for(int i=0; i<sessionivecchie.size();i++)
-                ret.add(sessionivecchie.get(i));
+        Iterator it = sessionivecchie.entrySet().iterator();
+        while (it.hasNext()) {
+            Session pair = ((HashMap.Entry<String,Session>)it.next()).getValue();
+            ret.add(pair);
+        }
+
         if(sessioneattiva!=null)
             ret.add(sessioneattiva);
         return ret;
@@ -101,7 +147,7 @@ public class SessionManager {
         if(sessioneattiva==null)
             return false;
         sessioneattiva.Stop(); //TODO: maggiore controllo magari
-        sessionivecchie.add(new OldSessionImpl(sessioneattiva)); //sfrutto con polimorfismo il costruttore OldSessionImpl(SessionImpl o)
+        sessionivecchie.put(sessioneattiva.getId(),new OldSessionImpl(sessioneattiva)); //sfrutto con polimorfismo il costruttore OldSessionImpl(SessionImpl o)
         sessioneattiva=null; //cancello la sessione attiva
         running=false;
         return true;
