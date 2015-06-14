@@ -63,15 +63,15 @@ public class Fall {
         segnalato=true;
     }
 
-    public float[][] GetValuesBeforeFall(){
+    public float[][] getValuesBeforeFall(){
         return valuesBeforeFall;
     }
 
-    public float[][] GetValuesAfterFall(){
+    public float[][] getValuesAfterFall(){
         return valuesAfterFall;
     }
 
-    public float[][] GetFallValues(){
+    public float[][] getFallValues(){
         return valuesFall;
     }
 

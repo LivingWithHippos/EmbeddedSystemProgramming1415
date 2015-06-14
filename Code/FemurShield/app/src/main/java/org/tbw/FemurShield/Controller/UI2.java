@@ -95,7 +95,6 @@ public class UI2 extends Activity implements FallFragment.OnFallClickListener{
 
     @Override
     public void onFallClick(String sessionID, String fallID) {
-        Log.d("UI","preso il click");
         Intent fallDetails=new Intent(this,UI4.class);
         fallDetails.putExtra(UI4.ID_SESSION, sessionID);
         fallDetails.putExtra(UI4.ID_FALL, fallID);
