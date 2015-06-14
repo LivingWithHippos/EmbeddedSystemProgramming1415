@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -15,7 +16,7 @@ import org.tbw.FemurShield.Model.SessionManager;
 import org.tbw.FemurShield.R;
 
 
-public class UI2 extends Activity {
+public class UI2 extends Activity implements FallFragment.OnFallClickListener{
 
     private Session thisSession;
     public final static String SESSION_DATA_STAMP = "sessiondatastamp";
@@ -90,5 +91,14 @@ public class UI2 extends Activity {
     public void onBackPressed()
     {
         finish(); // chiude la UI2 quando premi il tasto back e ritorna alla chiamante (UI1)
+    }
+
+    @Override
+    public void onFallClick(String sessionID, String fallID) {
+        Log.d("UI","preso il click");
+        Intent fallDetails=new Intent(this,UI4.class);
+        fallDetails.putExtra(UI4.ID_SESSION, sessionID);
+        fallDetails.putExtra(UI4.ID_FALL, fallID);
+        startActivity(fallDetails);
     }
 }

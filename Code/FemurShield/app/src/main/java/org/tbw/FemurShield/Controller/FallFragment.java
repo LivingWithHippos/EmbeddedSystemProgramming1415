@@ -1,10 +1,14 @@
 package org.tbw.FemurShield.Controller;
 
+import android.app.Activity;
 import android.app.ListFragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.LinearLayout;
+import android.widget.ListView;
 
 import org.tbw.FemurShield.Model.Fall;
 import org.tbw.FemurShield.Model.Session;
@@ -23,6 +27,9 @@ public class FallFragment extends ListFragment
     private FallListAdapter fAdapter;
     private ArrayList<Fall> falls;
     private Session session;
+
+    private OnFallClickListener mListener;
+    private ListView list;
 
     public FallFragment()
     {
@@ -43,6 +50,13 @@ public class FallFragment extends ListFragment
         String thisData = getArguments().getString(UI2.SESSION_DATA_STAMP);
         setSession(thisData);
         startlist();
+    }
+
+    @Override
+    public void onListItemClick(ListView l, View v, int position, long id) {
+        super.onListItemClick(l, v, position, id);
+        FallListItem fall=(FallListItem)l.getItemAtPosition(position);
+        mListener.onFallClick(session.getDataTime(), fall.date);
     }
 
     public void setSession(String date)
@@ -88,5 +102,27 @@ public class FallFragment extends ListFragment
     {
         View rootView = inflater.inflate(R.layout.fragment_fall, container,false);
         return rootView;
+    }
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        try {
+            mListener = (OnFallClickListener) activity;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(activity.toString()
+                    + " must implement OnFallClickListener");
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mListener = null;
+    }
+
+    public interface OnFallClickListener
+    {
+        public void onFallClick(String sessionID,String fallID);
     }
 }
