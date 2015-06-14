@@ -32,7 +32,7 @@ import org.tbw.FemurShield.R;
 * UI5 e' l'activity che gestisce le impostazioni, contiene il fragment fragment_settings
 * e gestisce il callback dei vari fragment che rappresentano le voci del menu impostazioni
 * */
-public class UI5 extends Activity implements TimePickerFragment.OnAlarmChangedListener,DurationFragment.OnDurationChangedListener,EmailFragment.OnEmailItemClickedListener,EmailFragment.OnAddEmailButtonClickListener,AddContactFragment.OnUserInsertedListener,SampleRatePickerFragment.OnSamplingRateChangedListener,EmailFragment.OnClearEmailClickListener,EmailFragment.OnContactClickListener,ContactOptionsDialog.OnContactOptionsClickListener,AddContactFragment.OnUserToUpdateInsertedListener{
+public class UI5 extends Activity implements TimePickerFragment.OnAlarmChangedListener,DurationFragment.OnDurationChangedListener,EmailFragment.OnAddEmailButtonClickListener,AddContactFragment.OnUserInsertedListener,SampleRatePickerFragment.OnSamplingRateChangedListener,EmailFragment.OnClearEmailClickListener,EmailFragment.OnContactClickListener,ContactOptionsDialog.OnContactOptionsClickListener,AddContactFragment.OnUserToUpdateInsertedListener{
 
     private PreferencesEditor prefs;
 
