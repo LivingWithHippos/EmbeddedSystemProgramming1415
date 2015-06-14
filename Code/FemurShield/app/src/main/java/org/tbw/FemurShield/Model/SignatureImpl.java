@@ -40,10 +40,7 @@ public class SignatureImpl implements Signature,org.tbw.FemurShield.Observer.Obs
     //variabili bitmap
     protected Bitmap signature;
     private Canvas canvas;
-    private Random random;
-    private Paint paint;
     private int resolution=500;
-    private int xc,yc;
     //variabili CIRCLE_MODE
     private int space;
     private MPoint[] startPoint,finishPoint;
@@ -55,20 +52,9 @@ public class SignatureImpl implements Signature,org.tbw.FemurShield.Observer.Obs
 
 
 
-    public SignatureImpl(String date,int mode){
+    public SignatureImpl(int mode){
 
         this.MODE=mode;
-        datetime=date;
-
-        try {
-            //dati
-            calendar=Calendar.getInstance();
-            calendar.setTime(new SimpleDateFormat(Session.datePattern).parse(date));
-            dates=new int[6];
-            elaborateDate();
-
-        } catch (ParseException e) {e.printStackTrace();}
-
 
         signature= Bitmap.createBitmap(resolution, resolution, Bitmap.Config.ARGB_8888);
         canvas = new Canvas(signature);
@@ -115,18 +101,6 @@ public class SignatureImpl implements Signature,org.tbw.FemurShield.Observer.Obs
         paint.setStyle(Paint.Style.STROKE);
         circlePaint[2]=paint;
 
-    }
-
-    private void elaborateDate()
-    {
-        dates[0]=hour=calendar.get(Calendar.SECOND);
-        dates[1]=minute=calendar.get(Calendar.MINUTE);
-        dates[2]=second=calendar.get(Calendar.HOUR);
-        dates[3]=year=calendar.get(Calendar.YEAR);
-        dates[4]=month=calendar.get(Calendar.MONTH);
-        dates[5]=day=calendar.get(Calendar.DAY_OF_YEAR);
-        for(int i:dates)
-            sum += i;
     }
 
 
