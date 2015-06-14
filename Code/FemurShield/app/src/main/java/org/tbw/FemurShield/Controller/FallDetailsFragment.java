@@ -33,7 +33,6 @@ public class FallDetailsFragment extends Fragment {
     private String sessionID;
     private String fallID;
     private String latitude,longitude;
-    private int orientation;
 
     private LinearLayout ll;
 
@@ -48,29 +47,22 @@ public class FallDetailsFragment extends Fragment {
     private TextView tvFallLongitude;
 
 
-    public static FallDetailsFragment newInstance(String sessionID,String fallID,int orientation) {
+    public static FallDetailsFragment newInstance(String sessionID,String fallID) {
         FallDetailsFragment fragment = new FallDetailsFragment();
         Bundle args = new Bundle();
         args.putString(UI4.ID_SESSION, sessionID);
         args.putString(UI4.ID_FALL, fallID);
-        args.putInt(UI4.ORIENTATION, orientation);
         fragment.setArguments(args);
         return fragment;
     }
 
-    public void setOrientation(int orientation)
-    {
-        this.orientation=orientation;
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
         View rootView = inflater.inflate(R.layout.fragment_fall_details, container, false);
-        //imposto l'orientamento
-        ll=(LinearLayout)rootView.findViewById(R.id.llChangeOnOrientation);
-        ll.setOrientation(orientation);
+
         //imposto la signature della sessione
         ivSessionSignature=(ImageView)rootView.findViewById(R.id.ivSessionSignatureInFallDetails);
         ivSessionSignature.setImageBitmap(sessionSignature);
@@ -106,7 +98,6 @@ public class FallDetailsFragment extends Fragment {
         if (getArguments() != null) {
             sessionID = getArguments().getString(UI4.ID_SESSION);
             fallID = getArguments().getString(UI4.ID_FALL);
-            orientation=getArguments().getInt(UI4.ORIENTATION);
         }
 
         SessionManager sm=SessionManager.getInstance();

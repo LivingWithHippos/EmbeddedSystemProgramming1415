@@ -21,7 +21,6 @@ public class UI4 extends Activity {
 
     public static final String ID_FALL = "ID_CADUTA";
     public static final String ID_SESSION = "ID_SESSIONE";
-    public static final String ORIENTATION = "ORIENTATION";
     private String fallID,sessionID;
 
     @Override
@@ -31,9 +30,8 @@ public class UI4 extends Activity {
 
         sessionID=getIntent().getExtras().getString(ID_SESSION);
         fallID=getIntent().getExtras().getString(ID_FALL);
-        int orientation=this.getResources().getConfiguration().orientation;
 
-        FallDetailsFragment fdf=FallDetailsFragment.newInstance(sessionID,fallID,orientation);
+        FallDetailsFragment fdf=FallDetailsFragment.newInstance(sessionID,fallID);
         FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
@@ -48,6 +46,8 @@ public class UI4 extends Activity {
         getMenuInflater().inflate(R.menu.menu_ui4, menu);
         return true;
     }
+
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
