@@ -1,0 +1,73 @@
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:id="@+id/fall_container_fragment" android:layout_width="match_parent"
+    android:layout_height="match_parent" tools:context="org.tbw.FemurShield.Controller.FallFragment">
+
+    <FrameLayout  android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/state"
+            android:id="@+id/ivFallSignature" />
+
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:id="@+id/ivSentSign"
+            android:layout_gravity="bottom|right"
+            android:paddingBottom="10dp"
+            android:paddingRight="10dp"
+            android:src="@drawable/check"/>
+
+    </FrameLayout>
+<LinearLayout
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:id="@+id/llChangeOnOrientation"
+    android:layout_height="match_parent">
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="@string/fall_date_time"
+            android:id="@+id/tvFallDetailsDateTime"
+            android:layout_gravity="center_horizontal" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="@string/fall_latitude"
+            android:id="@+id/tvFallLatitude"
+            android:layout_gravity="center_horizontal" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="@string/fall_longitude"
+            android:id="@+id/tvFallLongitude"
+            android:layout_gravity="center_horizontal" />
+    </LinearLayout>
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/ivSessionSignatureInFallDetails"
+        android:src="@drawable/logo"
+        android:layout_gravity="center_horizontal" />
+
+</LinearLayout>
+
+
+</LinearLayout>

@@ -1,5 +1,9 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" tools:context="org.tbw.FemurShield.Controller.UI4">
+    xmlns:tools="http://schemas.android.com/tools" tools:context="org.tbw.FemurShield.Controller.UI2">
     <item android:id="@+id/action_settings" android:title="@string/action_settings"
+        android:orderInCategory="100" android:showAsAction="never" />
+    <item android:id="@+id/action_all_sessions" android:title="@string/action_all_sessions"
+        android:orderInCategory="100" android:showAsAction="never" />
+    <item android:id="@+id/action_active_session" android:title="@string/action_active_session"
         android:orderInCategory="100" android:showAsAction="never" />
 </menu>
