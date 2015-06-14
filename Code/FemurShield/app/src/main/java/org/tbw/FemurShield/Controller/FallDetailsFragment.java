@@ -45,12 +45,15 @@ public class FallDetailsFragment extends Fragment {
     private TextView tvFallLatitude;
     private TextView tvFallLongitude;
 
+    private String[] palette;
 
-    public static FallDetailsFragment newInstance(String sessionID,String fallID) {
+
+    public static FallDetailsFragment newInstance(String sessionID,String fallID,String[] palette) {
         FallDetailsFragment fragment = new FallDetailsFragment();
         Bundle args = new Bundle();
         args.putString(UI4.ID_SESSION, sessionID);
         args.putString(UI4.ID_FALL, fallID);
+        args.putStringArray(UI4.COLOR_PALETTE,palette);
         fragment.setArguments(args);
         return fragment;
     }
@@ -88,7 +91,7 @@ public class FallDetailsFragment extends Fragment {
     }
 
     public void loadBitmap(int resId, ImageView imageView,View view) {
-        FallBitmapCreator fbc=new FallBitmapCreator(view,ivFallSignature,shownFall,height,width);
+        FallBitmapCreator fbc=new FallBitmapCreator(view,ivFallSignature,shownFall,height,width,palette);
         fbc.execute(resId);
     }
 
@@ -111,6 +114,7 @@ public class FallDetailsFragment extends Fragment {
         if (getArguments() != null) {
             sessionID = getArguments().getString(UI4.ID_SESSION);
             fallID = getArguments().getString(UI4.ID_FALL);
+            palette=getArguments().getStringArray(UI4.COLOR_PALETTE);
         }
 
         SessionManager sm=SessionManager.getInstance();

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="random_palette_1">
+        <item>#D4CC43</item>
+        <item>#FB752C</item>
+        <item>#534334</item>
+    </string-array>
+    <string-array name="random_palette_2">
+        <item>#F77925</item>
+        <item>#64B897</item>
+        <item>#ffff3831</item>
+    </string-array>
+    <string-array name="random_palette_3">
+        <item>#855A7D</item>
+        <item>#BA7983</item>
+        <item>#F7A856</item>
+    </string-array>
+    <string-array name="random_palette_4">
+        <item>#A1FE8A</item>
+        <item>#DBFE8A</item>
+        <item>#FEE68A</item>
+    </string-array>
+</resources>

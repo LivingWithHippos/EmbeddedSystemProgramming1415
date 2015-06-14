@@ -39,12 +39,14 @@ public class FallBitmapCreator extends AsyncTask<Integer, Void, Bitmap> {
     Paint paintX = new Paint(Paint.ANTI_ALIAS_FLAG);
     Paint paintY = new Paint(Paint.ANTI_ALIAS_FLAG);
     Paint paintZ = new Paint(Paint.ANTI_ALIAS_FLAG);
+    private String[] color_palette;
 
 
-    public FallBitmapCreator(View view,ImageView imageView,Fall fall, int height, int width) {
+    public FallBitmapCreator(View view, ImageView imageView, Fall fall, int height, int width, String[] palette) {
 
         this.view=view;
         imageViewReference = new WeakReference<ImageView>(imageView);
+        color_palette=palette;
         signHeight=height/5;
         signWidth=width;
         scale=2;
@@ -55,13 +57,13 @@ public class FallBitmapCreator extends AsyncTask<Integer, Void, Bitmap> {
         dataAfter=fall.getValuesAfterFall();
         xStep=signWidth/(dataBefore[0].length+dataDuring[0].length+dataAfter[0].length);
 
-        paintX.setColor(Color.BLACK);
+        paintX.setColor(Color.parseColor(color_palette[0]));
         paintX.setStrokeWidth(2.0f);
 
-        paintY.setColor(Color.RED);
+        paintY.setColor(Color.parseColor(color_palette[1]));
         paintY.setStrokeWidth(2.0f);
 
-        paintZ.setColor(Color.GREEN);
+        paintZ.setColor(Color.parseColor(color_palette[2]));
         paintZ.setStrokeWidth(2.0f);
 
         bitmapGraficoAcc = Bitmap.createBitmap(signWidth,signHeight, Bitmap.Config.ARGB_8888);
