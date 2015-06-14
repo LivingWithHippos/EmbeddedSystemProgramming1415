@@ -90,9 +90,10 @@ public class SessionManager {
     public HashMap<String, Session> getAllSessionsById()
     {
         HashMap<String,Session> ret=new HashMap<>();
-        if(sessionivecchie!=null)
-            for(int i=0; i<sessionivecchie.size();i++)
-                ret.put(sessionivecchie.get(i).getId(), sessionivecchie.get(i));
+        if(sessionivecchie!=null){
+            for(Session s:sessionivecchie.values())
+                ret.put(s.getId(),s);
+            }
         if(sessioneattiva!=null)
             ret.put(sessioneattiva.getId(),sessioneattiva);
         return ret;
