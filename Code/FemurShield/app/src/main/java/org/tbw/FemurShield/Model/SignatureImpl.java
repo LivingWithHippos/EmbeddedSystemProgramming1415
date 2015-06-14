@@ -55,7 +55,7 @@ public class SignatureImpl implements Signature,org.tbw.FemurShield.Observer.Obs
 
 
 
-    public SignatureImpl(String date,int mode){//TODO: creazione immagine
+    public SignatureImpl(String date,int mode){
 
         this.MODE=mode;
         datetime=date;
@@ -155,7 +155,7 @@ public class SignatureImpl implements Signature,org.tbw.FemurShield.Observer.Obs
         }
         else{
             Controller.getNotification().deattach(this);
-            //TODO: completa il metodo, qui o in sessionmanager
+
             saveSignature();
         }
 
@@ -169,7 +169,6 @@ public class SignatureImpl implements Signature,org.tbw.FemurShield.Observer.Obs
 
     @Override
     public Bitmap toBitmap() {
-        //TODO;
         return signature;
     }
 

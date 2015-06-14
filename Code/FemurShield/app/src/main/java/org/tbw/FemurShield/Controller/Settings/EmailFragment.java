@@ -27,7 +27,6 @@ import java.util.List;
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link EmailFragment.OnEmailItemClickedListener} interface
  * to handle interaction events.
  * Use the {@link EmailFragment#newInstance} factory method to
  * create an instance of this fragment.
@@ -37,7 +36,6 @@ public class EmailFragment extends ListFragment implements Button.OnClickListene
 
 
     private List<EmailListItem> mItems;
-    private OnEmailItemClickedListener mCallback;
     private OnAddEmailButtonClickListener aEmailCallback;
     private OnClearEmailClickListener mClearCallback;
     private OnContactClickListener mContactClickCallback;
@@ -109,12 +107,7 @@ public class EmailFragment extends ListFragment implements Button.OnClickListene
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        try {
-            mCallback = (OnEmailItemClickedListener) activity;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString()
-                    + " must implement onEmailItemClickedListener");
-        }
+
         try {
             aEmailCallback = (OnAddEmailButtonClickListener) activity;
         } catch (ClassCastException e) {
@@ -139,7 +132,6 @@ public class EmailFragment extends ListFragment implements Button.OnClickListene
     @Override
     public void onDetach() {
         super.onDetach();
-        mCallback = null;
         aEmailCallback=null;
         mClearCallback=null;
         mContactClickCallback=null;
@@ -168,12 +160,6 @@ public class EmailFragment extends ListFragment implements Button.OnClickListene
 
     }
 
-
-    @Override
-    public void onListItemClick(ListView l, View v, int position, long id) {
-        EmailListItem e=mItems.get(position);
-        mCallback.onEmailItemClicked(e);
-    }
 
     @Override
     public void onClick(View v) {
@@ -214,10 +200,6 @@ public class EmailFragment extends ListFragment implements Button.OnClickListene
      * "http://developer.android.com/training/basics/fragments/communicating.html"
      * >Communicating with Other Fragments</a> for more information.
      */
-    public interface OnEmailItemClickedListener {
-
-        public void onEmailItemClicked(EmailListItem e);
-    }
 
     public interface OnAddEmailButtonClickListener {
 

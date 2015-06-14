@@ -28,7 +28,6 @@ import java.util.ArrayList;
  */
 public class FallDetailsFragment extends Fragment {
 
-    // TODO: Rename and change types of parameters
     private String sessionID;
     private String fallID;
     private String latitude,longitude;
@@ -72,7 +71,7 @@ public class FallDetailsFragment extends Fragment {
         //imposto la signature della sessione
         ivSessionSignature=(ImageView)rootView.findViewById(R.id.ivSessionSignatureInFallDetails);
         ivSessionSignature.setImageBitmap(sessionSignature);
-        //TODO: calcolare e impostare l'immagine del fall
+
         ivFallSignature=(ImageView)rootView.findViewById(R.id.ivFallSignature);
         loadBitmap(R.id.ivFallSignature,ivFallSignature,rootView);
        // ivFallSignature.setImageBitmap(fbc.getBitmap());

@@ -37,8 +37,6 @@
     <string name="duration_too_high">Inserire una durata minore di 24 ore!</string>
     <string name="empty_contact_list">Lista  contatti già vuota</string>
 
-<!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="fall_date_time">Data e ora :</string>
     <string name="fall_latitude">Latitudine :</string>
     <string name="fall_longitude">Longitudine :</string>

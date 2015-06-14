@@ -31,9 +31,8 @@ import org.tbw.FemurShield.R;
 /**
 * UI5 e' l'activity che gestisce le impostazioni, contiene il fragment fragment_settings
 * e gestisce il callback dei vari fragment che rappresentano le voci del menu impostazioni
-* TODO: gestire la modalita tablet, gestire i vari stati (onPause(), etc)
 * */
-public class UI5 extends Activity implements SettingsFragment.OnFragmentInteractionListener,TimePickerFragment.OnAlarmChangedListener,DurationFragment.OnDurationChangedListener,EmailFragment.OnEmailItemClickedListener,EmailFragment.OnAddEmailButtonClickListener,AddContactFragment.OnUserInsertedListener,SampleRatePickerFragment.OnSamplingRateChangedListener,EmailFragment.OnClearEmailClickListener,EmailFragment.OnContactClickListener,ContactOptionsDialog.OnContactOptionsClickListener,AddContactFragment.OnUserToUpdateInsertedListener{
+public class UI5 extends Activity implements TimePickerFragment.OnAlarmChangedListener,DurationFragment.OnDurationChangedListener,EmailFragment.OnEmailItemClickedListener,EmailFragment.OnAddEmailButtonClickListener,AddContactFragment.OnUserInsertedListener,SampleRatePickerFragment.OnSamplingRateChangedListener,EmailFragment.OnClearEmailClickListener,EmailFragment.OnContactClickListener,ContactOptionsDialog.OnContactOptionsClickListener,AddContactFragment.OnUserToUpdateInsertedListener{
 
     private PreferencesEditor prefs;
 
@@ -103,46 +102,6 @@ public class UI5 extends Activity implements SettingsFragment.OnFragmentInteract
     }
 
     /**
-    * @param s La voce del menu selezionata.
-    * Questa funzione attivata tramite callback identifica l'elemento selezionato
-    * nel menu principale delle impostazioni e lancia l'interfaccia corrispondente
-    */
-    @Override
-    public void onOptionSelected(SettingListItem s) {
-        if(s.title.equalsIgnoreCase(getString(R.string.title_alarm)))
-        {
-            TimePickerFragment timepick= new TimePickerFragment();
-            timepick.show(getFragmentManager(), "TimePicker");
-        }
-        if(s.title.equalsIgnoreCase(getString(R.string.title_sample_rate)))
-        {
-            SampleRatePickerFragment slider=new SampleRatePickerFragment();
-            slider.show(getFragmentManager(),"SampleRatePicker");
-        }
-        if(s.title.equalsIgnoreCase(getString(R.string.title_session_duration)))
-        {
-            DurationFragment duration=new DurationFragment();
-            duration.show(getFragmentManager(), "DurationPicker");
-        }
-        if(s.title.equalsIgnoreCase(getString(R.string.title_email_recipient)))
-        {
-            EmailFragment emailFragment=new EmailFragment();
-            FragmentTransaction transaction = getFragmentManager().beginTransaction();
-
-            // rimpiazza il fragment attuale e lo aggiunge allo stack in modo che premendo indietro ricompaia
-            transaction.replace(R.id.fragment_container_settings, emailFragment);
-            transaction.addToBackStack(null);
-
-            // Commit the transaction
-            transaction.commit();
-        }
-        if(s.title.equalsIgnoreCase("Simula Caduta"))
-            Controller.getNotification().NotifyFall(new Fall(null,null,null, getBaseContext()));
-
-
-    }
-
-    /**
      * @param newDuration indica la nuova durata massima della sessione scelta.
      * Questa � l'implementazione dell'interfaccia di callback dichirata nel DurationFragment
      */
@@ -168,7 +127,6 @@ public class UI5 extends Activity implements SettingsFragment.OnFragmentInteract
         SettingsFragment alarmFrag = (SettingsFragment)getFragmentManager().findFragmentById(R.id.fragment_container_settings);
         if(alarmFrag!=null)
             alarmFrag.updateAlarmTime(hourOfDay, minute);
-        // TODO: impostare la sveglia con l'orario salvato
 
         Intent alarmService = new Intent(this, ReminderService.class);
         alarmService.setAction(ReminderService.CREATE);
@@ -183,13 +141,6 @@ public class UI5 extends Activity implements SettingsFragment.OnFragmentInteract
         pm.setComponentEnabledSetting(receiver,
                 PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
                 PackageManager.DONT_KILL_APP);
-    }
-
-    @Override
-    public void onEmailItemClicked(EmailListItem e) {
-        // TODO aggiungere rinomina e cancella email
-        Log.d("FemureShield", "Cliccato su " + e.name + " " + e.address);
-
     }
 
     @Override
