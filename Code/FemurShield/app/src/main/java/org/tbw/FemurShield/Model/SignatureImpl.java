@@ -8,6 +8,7 @@ import android.graphics.Paint;
 import android.util.Log;
 
 
+import org.tbw.FemurShield.Controller.ColorsPicker;
 import org.tbw.FemurShield.Controller.Controller;
 import org.tbw.FemurShield.Observer.Observable;
 
@@ -25,31 +26,18 @@ public class SignatureImpl implements Signature,org.tbw.FemurShield.Observer.Obs
     public static final int CLOVER=1;
     public static final int CIRCLE_STATIC=2 ;
     private int MODE;
-    private Context context;
-    private String datetime;
-    //variabili data
-    protected Calendar calendar;
-    private int hour;
-    private int minute;
-    private int second;
-    private int day;
-    private int month;
-    private int year;
-    private int[] dates;
-    private int sum;
     //variabili bitmap
     protected Bitmap signature;
     private Canvas canvas;
     private int resolution=500;
     //variabili CIRCLE_MODE
-    private int space;
     private MPoint[] startPoint,finishPoint;
     private float beta;
     private final float coeff=5;
     private int radius;
     private MCircle[] circles;
     private Paint[] circlePaint;
-
+    private String[] palette;
 
 
     public SignatureImpl(int mode){
@@ -84,20 +72,21 @@ public class SignatureImpl implements Signature,org.tbw.FemurShield.Observer.Obs
 
     private void setCirclesPaints() {
 
+        palette= ColorsPicker.pickRandomColors();
         circlePaint=new Paint[3];
         Paint paint=new Paint(Paint.ANTI_ALIAS_FLAG);
         paint.setStrokeWidth(6);
-        paint.setColor(Color.RED);
+        paint.setColor(Color.parseColor(palette[0]));
         paint.setStyle(Paint.Style.STROKE);
         circlePaint[0]=paint;
         paint=new Paint(Paint.ANTI_ALIAS_FLAG);
         paint.setStrokeWidth(6);
-        paint.setColor(Color.BLUE);
+        paint.setColor(Color.parseColor(palette[1]));
         paint.setStyle(Paint.Style.STROKE);
         circlePaint[1]=paint;
         paint=new Paint(Paint.ANTI_ALIAS_FLAG);
         paint.setStrokeWidth(6);
-        paint.setColor(Color.BLACK);
+        paint.setColor(Color.parseColor(palette[2]));
         paint.setStyle(Paint.Style.STROKE);
         circlePaint[2]=paint;
 

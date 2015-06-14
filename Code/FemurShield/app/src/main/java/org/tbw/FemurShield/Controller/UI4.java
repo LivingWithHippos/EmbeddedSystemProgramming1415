@@ -35,7 +35,7 @@ public class UI4 extends Activity {
         sessionID = getIntent().getExtras().getString(ID_SESSION);
         fallID = getIntent().getExtras().getString(ID_FALL);
 
-        FallDetailsFragment fdf = FallDetailsFragment.newInstance(sessionID, fallID,choosePalette());
+        FallDetailsFragment fdf = FallDetailsFragment.newInstance(sessionID, fallID,ColorsPicker.pickRandomColors());
 
         FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
@@ -77,19 +77,6 @@ public class UI4 extends Activity {
     }
 
 
-    public String[] choosePalette()
-    {
 
-        int paletta=rand.nextInt(5);
-        switch(paletta)
-        {
-            case 0:return getResources().getStringArray(R.array.random_palette_1);
-            case 1:return getResources().getStringArray(R.array.random_palette_2);
-            case 2:return getResources().getStringArray(R.array.random_palette_3);
-            case 3:return getResources().getStringArray(R.array.random_palette_4);
-            case 4:return getResources().getStringArray(R.array.random_palette_5);
-        }
-        return null;
-    }
 
 }

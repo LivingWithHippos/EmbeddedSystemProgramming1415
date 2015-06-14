@@ -36,15 +36,16 @@ public class UI1 extends Activity {
         setContentView(R.layout.activity_ui1);
         //aggiorno la listView
         AggiornaLista();
+        instantiateColors();
         ListView list=((ListView)findViewById(R.id.listsessionui1));
         final Activity activity=this;
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                HashMap<String,String> item=(HashMap<String,String>)parent.getItemAtPosition(position);
-                String datetime=item.get("data");
-                Intent i=new Intent(activity,UI2.class);
-                i.putExtra(UI2.SESSION_DATA_STAMP,datetime);
+                HashMap<String, String> item = (HashMap<String, String>) parent.getItemAtPosition(position);
+                String datetime = item.get("data");
+                Intent i = new Intent(activity, UI2.class);
+                i.putExtra(UI2.SESSION_DATA_STAMP, datetime);
                 startActivity(i);
 
             }
@@ -205,5 +206,18 @@ public class UI1 extends Activity {
         //lancio senza opzioni perchè la ui impostazioni non ne richiede
         Intent intent=new Intent(this,UI5.class);
         startActivity(intent);
+    }
+
+    private void instantiateColors()
+    {
+
+        ColorsPicker colorsPicker=ColorsPicker.getInstance(new String[][]{
+                getResources().getStringArray(R.array.random_palette_1),
+                getResources().getStringArray(R.array.random_palette_2),
+                getResources().getStringArray(R.array.random_palette_3),
+                getResources().getStringArray(R.array.random_palette_4),
+                getResources().getStringArray(R.array.random_palette_5)
+        });
+
     }
 }
