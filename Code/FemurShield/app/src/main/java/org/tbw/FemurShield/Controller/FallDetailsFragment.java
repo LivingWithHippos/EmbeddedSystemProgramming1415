@@ -1,11 +1,10 @@
 package org.tbw.FemurShield.Controller;
 
 import android.app.Activity;
-import android.graphics.Bitmap;
-import android.net.Uri;
-import android.os.Bundle;
 import android.app.Fragment;
-import android.util.Log;
+import android.graphics.Bitmap;
+import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,6 +34,7 @@ public class FallDetailsFragment extends Fragment {
     private String latitude,longitude;
 
     private LinearLayout ll;
+    private int width,height;
 
     private Session shownSession;
     private Fall shownFall;
@@ -63,20 +63,34 @@ public class FallDetailsFragment extends Fragment {
 
         View rootView = inflater.inflate(R.layout.fragment_fall_details, container, false);
 
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        getActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        height = displayMetrics.heightPixels;
+        width = displayMetrics.widthPixels;
+
+
         //imposto la signature della sessione
         ivSessionSignature=(ImageView)rootView.findViewById(R.id.ivSessionSignatureInFallDetails);
         ivSessionSignature.setImageBitmap(sessionSignature);
         //TODO: calcolare e impostare l'immagine del fall
         ivFallSignature=(ImageView)rootView.findViewById(R.id.ivFallSignature);
+        loadBitmap(R.id.ivFallSignature,ivFallSignature,rootView);
+       // ivFallSignature.setImageBitmap(fbc.getBitmap());
+
         //setto il testo
         tvFallDateTime=(TextView)rootView.findViewById(R.id.tvFallDetailsDateTime);
         tvFallDateTime.setText(getString(R.string.fall_date_time)+" "+fallID);
         tvFallLatitude=(TextView)rootView.findViewById(R.id.tvFallLatitude);
-        tvFallLatitude.setText(getString(R.string.fall_latitude)+" "+latitude);
+        tvFallLatitude.setText(getString(R.string.fall_latitude) + " " + latitude);
         tvFallLongitude=(TextView)rootView.findViewById(R.id.tvFallLongitude);
-        tvFallLongitude.setText(getString(R.string.fall_longitude)+" "+longitude);
+        tvFallLongitude.setText(getString(R.string.fall_longitude) + " " + longitude);
 
         return rootView;
+    }
+
+    public void loadBitmap(int resId, ImageView imageView,View view) {
+        FallBitmapCreator fbc=new FallBitmapCreator(view,ivFallSignature,shownFall,height,width);
+        fbc.execute(resId);
     }
 
     public FallDetailsFragment() {
@@ -116,19 +130,18 @@ public class FallDetailsFragment extends Fragment {
                 sessionSignature = shownSession.getSignature().toBitmap();
                 latitude=shownFall.getPosition()[0]+"";
                 longitude=shownFall.getPosition()[1]+"";
+
             }else
             {
-                Toast.makeText(activity,getString(R.string.no_session_found),Toast.LENGTH_LONG);
+                Toast.makeText(activity,getString(R.string.no_session_found),Toast.LENGTH_LONG).show();
             }
 
 
         }else
         {
-            Toast.makeText(activity,getString(R.string.no_session_found),Toast.LENGTH_LONG);
+            Toast.makeText(activity,getString(R.string.no_session_found),Toast.LENGTH_LONG).show();
         }
     }
-
-
 
 
 }

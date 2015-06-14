@@ -4,15 +4,12 @@ import android.app.Activity;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Intent;
-import android.content.res.Configuration;
-import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import org.tbw.FemurShield.Model.Fall;
 import org.tbw.FemurShield.Model.SessionManager;
 import org.tbw.FemurShield.R;
 
@@ -21,22 +18,25 @@ public class UI4 extends Activity {
 
     public static final String ID_FALL = "ID_CADUTA";
     public static final String ID_SESSION = "ID_SESSIONE";
-    private String fallID,sessionID;
+    private String fallID, sessionID;
+    private Fall fall;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ui4);
 
-        sessionID=getIntent().getExtras().getString(ID_SESSION);
-        fallID=getIntent().getExtras().getString(ID_FALL);
+        sessionID = getIntent().getExtras().getString(ID_SESSION);
+        fallID = getIntent().getExtras().getString(ID_FALL);
 
-        FallDetailsFragment fdf=FallDetailsFragment.newInstance(sessionID,fallID);
+        FallDetailsFragment fdf = FallDetailsFragment.newInstance(sessionID, fallID);
+
         FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
         fragmentTransaction.add(R.id.ui4rootLayout, fdf, "mFallDetailsFragment");
         fragmentTransaction.commit();
+
     }
 
 
@@ -46,8 +46,6 @@ public class UI4 extends Activity {
         getMenuInflater().inflate(R.menu.menu_ui4, menu);
         return true;
     }
-
-
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
