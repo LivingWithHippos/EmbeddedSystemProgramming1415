@@ -34,7 +34,7 @@ public class SignatureImpl implements Signature,org.tbw.FemurShield.Observer.Obs
     //variabili CIRCLE_MODE
     private MPoint[] startPoint,finishPoint,firstPoint;
     private float beta;
-    private final float coeff=5;
+    private final float coeff=4;
     private int radius;
     private MCircle[] circles;
     private Paint[] circlePaint;
@@ -94,7 +94,7 @@ public class SignatureImpl implements Signature,org.tbw.FemurShield.Observer.Obs
 
 
     private void drawCircle(float[] arg) {
-        beta+= (2*Math.PI)/360;
+        beta+= (2*Math.PI)/300;
         if(beta<(2*Math.PI))
         {
             for(int i=0;i<circles.length;i++)

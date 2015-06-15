@@ -30,17 +30,18 @@ public class FallDetailsFragment extends Fragment {
 
     private String sessionID;
     private String fallID;
-    private String latitude,longitude;
+    private String latitude, longitude;
 
     private LinearLayout ll;
-    private int width,height;
+    private int width, height;
 
     private Session shownSession;
     private Fall shownFall;
 
     private Bitmap sessionSignature;
-    private ImageView ivSessionSignature;
+    private ImageView ivSentSign;
     private ImageView ivFallSignature;
+    private ImageView ivSessionSignature;
     private TextView tvFallDateTime;
     private TextView tvFallLatitude;
     private TextView tvFallLongitude;
@@ -48,12 +49,12 @@ public class FallDetailsFragment extends Fragment {
     private String[] palette;
 
 
-    public static FallDetailsFragment newInstance(String sessionID,String fallID,String[] palette) {
+    public static FallDetailsFragment newInstance(String sessionID, String fallID, String[] palette) {
         FallDetailsFragment fragment = new FallDetailsFragment();
         Bundle args = new Bundle();
         args.putString(UI4.ID_SESSION, sessionID);
         args.putString(UI4.ID_FALL, fallID);
-        args.putStringArray(UI4.COLOR_PALETTE,palette);
+        args.putStringArray(UI4.COLOR_PALETTE, palette);
         fragment.setArguments(args);
         return fragment;
     }
@@ -70,28 +71,32 @@ public class FallDetailsFragment extends Fragment {
         height = displayMetrics.heightPixels;
         width = displayMetrics.widthPixels;
 
+        ivSentSign = (ImageView) rootView.findViewById(R.id.ivSentSign);
+        if (shownFall.isReported())
+            ivSentSign.setImageResource(R.drawable.check);
+        else
+            ivSentSign.setImageResource(R.drawable.uncheck);
 
         //imposto la signature della sessione
-        ivSessionSignature=(ImageView)rootView.findViewById(R.id.ivSessionSignatureInFallDetails);
+        ivSessionSignature = (ImageView) rootView.findViewById(R.id.ivSessionSignatureInFallDetails);
         ivSessionSignature.setImageBitmap(sessionSignature);
 
-        ivFallSignature=(ImageView)rootView.findViewById(R.id.ivFallSignature);
-        loadBitmap(R.id.ivFallSignature,ivFallSignature,rootView);
-       // ivFallSignature.setImageBitmap(fbc.getBitmap());
+        ivFallSignature = (ImageView) rootView.findViewById(R.id.ivFallSignature);
+        loadBitmap(R.id.ivFallSignature, ivFallSignature, rootView);
 
         //setto il testo
-        tvFallDateTime=(TextView)rootView.findViewById(R.id.tvFallDetailsDateTime);
-        tvFallDateTime.setText(getString(R.string.fall_date_time)+" "+fallID);
-        tvFallLatitude=(TextView)rootView.findViewById(R.id.tvFallLatitude);
+        tvFallDateTime = (TextView) rootView.findViewById(R.id.tvFallDetailsDateTime);
+        tvFallDateTime.setText(getString(R.string.fall_date_time) + " " + fallID);
+        tvFallLatitude = (TextView) rootView.findViewById(R.id.tvFallLatitude);
         tvFallLatitude.setText(getString(R.string.fall_latitude) + " " + latitude);
-        tvFallLongitude=(TextView)rootView.findViewById(R.id.tvFallLongitude);
+        tvFallLongitude = (TextView) rootView.findViewById(R.id.tvFallLongitude);
         tvFallLongitude.setText(getString(R.string.fall_longitude) + " " + longitude);
 
         return rootView;
     }
 
-    public void loadBitmap(int resId, ImageView imageView,View view) {
-        FallBitmapCreator fbc=new FallBitmapCreator(view,ivFallSignature,shownFall,height,width,palette);
+    public void loadBitmap(int resId, ImageView imageView, View view) {
+        FallBitmapCreator fbc = new FallBitmapCreator(view, ivFallSignature, shownFall, height, width, palette);
         fbc.execute(resId);
     }
 
@@ -114,35 +119,31 @@ public class FallDetailsFragment extends Fragment {
         if (getArguments() != null) {
             sessionID = getArguments().getString(UI4.ID_SESSION);
             fallID = getArguments().getString(UI4.ID_FALL);
-            palette=getArguments().getStringArray(UI4.COLOR_PALETTE);
+            palette = getArguments().getStringArray(UI4.COLOR_PALETTE);
         }
 
-        SessionManager sm=SessionManager.getInstance();
-        shownSession=sm.getAllSessionsById().get(sessionID);
-        if(shownSession!=null) {
-            ArrayList<Fall> fallList=shownSession.getFalls();
-            for(Fall f:fallList)
-                if(f.getData().equalsIgnoreCase(fallID))
-                {
-                    shownFall=f;
+        SessionManager sm = SessionManager.getInstance();
+        shownSession = sm.getAllSessionsById().get(sessionID);
+        if (shownSession != null) {
+            ArrayList<Fall> fallList = shownSession.getFalls();
+            for (Fall f : fallList)
+                if (f.getData().equalsIgnoreCase(fallID)) {
+                    shownFall = f;
                     break;
                 }
 
-            if(shownFall!=null)
-            {
+            if (shownFall != null) {
                 sessionSignature = shownSession.getSignature().toBitmap();
-                latitude=shownFall.getPosition()[0]+"";
-                longitude=shownFall.getPosition()[1]+"";
+                latitude = shownFall.getPosition()[0] + "";
+                longitude = shownFall.getPosition()[1] + "";
 
-            }else
-            {
-                Toast.makeText(activity,getString(R.string.no_session_found),Toast.LENGTH_LONG).show();
+            } else {
+                Toast.makeText(activity, getString(R.string.no_session_found), Toast.LENGTH_LONG).show();
             }
 
 
-        }else
-        {
-            Toast.makeText(activity,getString(R.string.no_session_found),Toast.LENGTH_LONG).show();
+        } else {
+            Toast.makeText(activity, getString(R.string.no_session_found), Toast.LENGTH_LONG).show();
         }
     }
 
