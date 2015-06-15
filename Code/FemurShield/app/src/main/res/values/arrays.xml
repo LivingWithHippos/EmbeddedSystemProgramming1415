@@ -25,4 +25,14 @@
         <item>#E54523</item>
         <item>#FC9171</item>
     </string-array>
+    <string-array name="random_palette_6">
+        <item>#FE4365</item>
+        <item>#FC9D9A</item>
+        <item>#83AF9B</item>
+    </string-array>
+    <string-array name="random_palette_7">
+        <item>#556270</item>
+        <item>#4ECDC4</item>
+        <item>#C7F464</item>
+    </string-array>
 </resources>

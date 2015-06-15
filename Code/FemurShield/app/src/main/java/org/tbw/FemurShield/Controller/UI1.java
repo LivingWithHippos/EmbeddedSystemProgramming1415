@@ -216,7 +216,9 @@ public class UI1 extends Activity {
                 getResources().getStringArray(R.array.random_palette_2),
                 getResources().getStringArray(R.array.random_palette_3),
                 getResources().getStringArray(R.array.random_palette_4),
-                getResources().getStringArray(R.array.random_palette_5)
+                getResources().getStringArray(R.array.random_palette_5),
+                getResources().getStringArray(R.array.random_palette_6),
+                getResources().getStringArray(R.array.random_palette_7)
         });
 
     }
