@@ -49,7 +49,7 @@ public class FallBitmapCreator extends AsyncTask<Integer, Void, Bitmap> {
         color_palette=palette;
         signHeight=height/4;
         signWidth=width;
-        scale=2;
+        scale=4;
 
 
         dataBefore=fall.getValuesBeforeFall();
