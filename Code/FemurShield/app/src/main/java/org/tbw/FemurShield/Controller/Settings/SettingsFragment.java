@@ -19,14 +19,14 @@ import java.util.List;
 
 /**
  * Classe Fragment che implementa l'interfaccia
- * {@link SettingsFragment.OnFragmentInteractionListener}
+ * {@link SettingsFragment.OnOptionSelectedListener}
  * che gestisce l'interazione con le voci della lista.
  */
 public class SettingsFragment extends ListFragment {
 
     private List<SettingListItem> mItems;
     private PreferencesEditor prefs;
-    private OnFragmentInteractionListener mListener;
+    private OnOptionSelectedListener mListener;
     private SettingListAdapter mAdapter;
 
 
@@ -109,10 +109,10 @@ public class SettingsFragment extends ListFragment {
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         try {
-            mListener = (OnFragmentInteractionListener) activity;
+            mListener = (OnOptionSelectedListener) activity;
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString()
-                    + " must implement OnFragmentInteractionListener");
+                    + " must implement OnOptionSelectedListener");
         }
     }
 
@@ -197,7 +197,7 @@ public class SettingsFragment extends ListFragment {
      * "http://developer.android.com/training/basics/fragments/communicating.html"
      * >Communicating with Other Fragments</a> for more information.
      */
-    public interface OnFragmentInteractionListener { 
+    public interface OnOptionSelectedListener {
         public void onOptionSelected(SettingListItem s);
     }
 

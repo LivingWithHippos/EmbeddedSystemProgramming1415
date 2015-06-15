@@ -32,7 +32,7 @@ import org.tbw.FemurShield.R;
 * UI5 e' l'activity che gestisce le impostazioni, contiene il fragment fragment_settings
 * e gestisce il callback dei vari fragment che rappresentano le voci del menu impostazioni
 * */
-public class UI5 extends Activity implements TimePickerFragment.OnAlarmChangedListener,DurationFragment.OnDurationChangedListener,EmailFragment.OnAddEmailButtonClickListener,AddContactFragment.OnUserInsertedListener,SampleRatePickerFragment.OnSamplingRateChangedListener,EmailFragment.OnClearEmailClickListener,EmailFragment.OnContactClickListener,ContactOptionsDialog.OnContactOptionsClickListener,AddContactFragment.OnUserToUpdateInsertedListener{
+public class UI5 extends Activity implements SettingsFragment.OnOptionSelectedListener,TimePickerFragment.OnAlarmChangedListener,DurationFragment.OnDurationChangedListener,EmailFragment.OnAddEmailButtonClickListener,AddContactFragment.OnUserInsertedListener,SampleRatePickerFragment.OnSamplingRateChangedListener,EmailFragment.OnClearEmailClickListener,EmailFragment.OnContactClickListener,ContactOptionsDialog.OnContactOptionsClickListener,AddContactFragment.OnUserToUpdateInsertedListener{
 
     private PreferencesEditor prefs;
 
@@ -248,4 +248,38 @@ public class UI5 extends Activity implements TimePickerFragment.OnAlarmChangedLi
     }
 
 
+    @Override
+    public void onOptionSelected(SettingListItem s) {
+        
+        if(s.title.equalsIgnoreCase(getString(R.string.title_alarm)))
+        {
+            TimePickerFragment timepick= new TimePickerFragment();
+            timepick.show(getFragmentManager(), "TimePicker");
+        }
+        if(s.title.equalsIgnoreCase(getString(R.string.title_sample_rate)))
+        {
+            SampleRatePickerFragment slider=new SampleRatePickerFragment();
+            slider.show(getFragmentManager(),"SampleRatePicker");
+        }
+        if(s.title.equalsIgnoreCase(getString(R.string.title_session_duration)))
+        {
+            DurationFragment duration=new DurationFragment();
+            duration.show(getFragmentManager(), "DurationPicker");
+        }
+        if(s.title.equalsIgnoreCase(getString(R.string.title_email_recipient)))
+        {
+            EmailFragment emailFragment=new EmailFragment();
+            FragmentTransaction transaction = getFragmentManager().beginTransaction();
+
+            // rimpiazza il fragment attuale e lo aggiunge allo stack in modo che premendo indietro ricompaia
+            transaction.replace(R.id.fragment_container_settings, emailFragment);
+            transaction.addToBackStack(null);
+
+            // Commit the transaction
+            transaction.commit();
+        }
+        if(s.title.equalsIgnoreCase("Simula Caduta"))
+            Controller.getNotification().NotifyFall(new Fall(null,null,null, getBaseContext()));
+
+    }
 }
