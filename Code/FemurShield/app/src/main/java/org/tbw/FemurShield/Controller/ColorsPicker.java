@@ -20,17 +20,16 @@ public class ColorsPicker {
         return instance;
     }
 
-    public static ColorsPicker getInstance() {
-        //trick, se e' nulla deve ritornare null per permettere di controllare
-        return instance;
-    }
-
 
     public static String[] pickRandomColors()
     {
         //TODO: tenere aggiornati i cambiamenti
-        Random random=new Random();
-        int i=random.nextInt(5);
-        return palettes[i];
+        if(palettes!=null)
+        {
+            Random random=new Random();
+            int i=random.nextInt(5);
+            return palettes[i];
+        }
+        return new String[]{"#F77925","#64B897","#ffff3831"};
     }
 }
