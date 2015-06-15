@@ -15,8 +15,8 @@
             android:id="@+id/ivFallSignature" />
 
         <ImageView
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:id="@+id/ivSentSign"
             android:layout_gravity="bottom|right"
             android:paddingBottom="10dp"
