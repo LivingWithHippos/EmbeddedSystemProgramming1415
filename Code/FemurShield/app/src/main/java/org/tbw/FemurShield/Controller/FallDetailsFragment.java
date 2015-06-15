@@ -75,19 +75,21 @@ public class FallDetailsFragment extends Fragment {
         height = displayMetrics.heightPixels;
         width = displayMetrics.widthPixels;
 
+        ivFallSignature = (ImageView) rootView.findViewById(R.id.ivFallSignature);
+        loadBitmap(R.id.ivFallSignature, ivFallSignature, rootView);
+
         ivSentSign = (ImageView) rootView.findViewById(R.id.ivSentSign);
         if (shownFall.isReported())
             ivSentSign.setImageResource(R.drawable.check);
         else
             ivSentSign.setImageResource(R.drawable.uncheck);
-
+        ivSentSign.setVisibility(View.INVISIBLE);
 
         //imposto la signature della sessione
         ivSessionSignature = (ImageView) rootView.findViewById(R.id.ivSessionSignatureInFallDetails);
         ivSessionSignature.setImageBitmap(sessionSignature);
 
-        ivFallSignature = (ImageView) rootView.findViewById(R.id.ivFallSignature);
-        loadBitmap(R.id.ivFallSignature, ivFallSignature, rootView);
+
 
         //setto il testo
         tvFallDateTime = (TextView) rootView.findViewById(R.id.tvFallDetailsDateTime);
@@ -113,8 +115,9 @@ public class FallDetailsFragment extends Fragment {
 
                     // create the animator for this view (the start radius is zero)
                     Animator anim = ViewAnimationUtils.createCircularReveal(ivSentSign, cx, cy, 0, finalRadius);
-                    anim.setDuration(700);
 
+                    anim.setDuration(600);
+                    ivSentSign.setVisibility(View.VISIBLE);
                     anim.start();
                 }
             });
