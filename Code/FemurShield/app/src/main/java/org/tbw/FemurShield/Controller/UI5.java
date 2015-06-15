@@ -326,6 +326,7 @@ public class UI5 extends Activity implements SettingsFragment.OnOptionSelectedLi
             // Commit the transaction
             transaction.commit();
         }
+        //TODO: da rimuovere nella versione finale
         if (s.title.equalsIgnoreCase("Simula Caduta"))
             Controller.getNotification().NotifyFall(new Fall(null, null, null, getBaseContext()));
 
