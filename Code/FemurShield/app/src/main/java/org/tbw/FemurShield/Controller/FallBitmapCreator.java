@@ -47,7 +47,7 @@ public class FallBitmapCreator extends AsyncTask<Integer, Void, Bitmap> {
         this.view=view;
         imageViewReference = new WeakReference<ImageView>(imageView);
         color_palette=palette;
-        signHeight=height/5;
+        signHeight=height/4;
         signWidth=width;
         scale=2;
 
@@ -55,8 +55,8 @@ public class FallBitmapCreator extends AsyncTask<Integer, Void, Bitmap> {
         dataBefore=fall.getValuesBeforeFall();
         dataDuring=fall.getFallValues();
         dataAfter=fall.getValuesAfterFall();
-        xStep=signWidth/(dataBefore[0].length+dataDuring[0].length+dataAfter[0].length);
-
+        xStep=((float)signWidth)/(dataBefore[0].length+dataDuring[0].length+dataAfter[0].length);
+        
         paintX.setColor(Color.parseColor(color_palette[0]));
         paintX.setStrokeWidth(2.0f);
 
