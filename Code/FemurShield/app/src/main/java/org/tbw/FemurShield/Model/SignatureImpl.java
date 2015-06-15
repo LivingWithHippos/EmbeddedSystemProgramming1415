@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.hardware.SensorManager;
 import android.util.Log;
 
 
@@ -31,13 +32,15 @@ public class SignatureImpl implements Signature,org.tbw.FemurShield.Observer.Obs
     private Canvas canvas;
     private int resolution=500;
     //variabili CIRCLE_MODE
-    private MPoint[] startPoint,finishPoint;
+    private MPoint[] startPoint,finishPoint,firstPoint;
     private float beta;
     private final float coeff=5;
     private int radius;
     private MCircle[] circles;
     private Paint[] circlePaint;
     private String[] palette;
+    private int sign=1;
+    private boolean invertSign=true;
 
 
     public SignatureImpl(int mode){
@@ -51,7 +54,7 @@ public class SignatureImpl implements Signature,org.tbw.FemurShield.Observer.Obs
         {
             case CIRCLE_STATIC:
             {
-                radius=resolution/4;
+                radius=resolution/5;
                 beta=(float)0.0;
                 setCirclesPaints();
                 finishPoint=new MPoint[3];
@@ -60,11 +63,8 @@ public class SignatureImpl implements Signature,org.tbw.FemurShield.Observer.Obs
                 MCircle circleY=new MCircle((resolution/6)*2,(resolution/6)*4,radius);
                 MCircle circleZ=new MCircle((resolution/6)*4,(resolution/6)*4,radius);
                 circles=new MCircle[]{circleX,circleY,circleZ};
-                MPoint pointX=new MPoint(circleX.xCenter+radius,circleX.yCenter);
-                MPoint pointY=new MPoint(circleY.xCenter+radius,circleY.yCenter);
-                MPoint pointZ=new MPoint(circleZ.xCenter+radius,circleZ.yCenter);
-                startPoint=new MPoint[]{pointX,pointY,pointZ};
-
+                startPoint=new MPoint[3];
+                firstPoint=new MPoint[3];
                 Controller.getNotification().addObserver(this);
             }
         }
@@ -75,17 +75,17 @@ public class SignatureImpl implements Signature,org.tbw.FemurShield.Observer.Obs
         palette= ColorsPicker.pickRandomColors();
         circlePaint=new Paint[3];
         Paint paint=new Paint(Paint.ANTI_ALIAS_FLAG);
-        paint.setStrokeWidth(6);
+        paint.setStrokeWidth(4);
         paint.setColor(Color.parseColor(palette[0]));
         paint.setStyle(Paint.Style.STROKE);
         circlePaint[0]=paint;
         paint=new Paint(Paint.ANTI_ALIAS_FLAG);
-        paint.setStrokeWidth(6);
+        paint.setStrokeWidth(4);
         paint.setColor(Color.parseColor(palette[1]));
         paint.setStyle(Paint.Style.STROKE);
         circlePaint[1]=paint;
         paint=new Paint(Paint.ANTI_ALIAS_FLAG);
-        paint.setStrokeWidth(6);
+        paint.setStrokeWidth(4);
         paint.setColor(Color.parseColor(palette[2]));
         paint.setStyle(Paint.Style.STROKE);
         circlePaint[2]=paint;
@@ -101,28 +101,60 @@ public class SignatureImpl implements Signature,org.tbw.FemurShield.Observer.Obs
             {
                 float newX,newY;
                 if(i<2) {
-                    float newradius=(radius + arg[i] * coeff);
+                    float newradius=Math.abs(radius + sign*Math.abs(arg[i]) * coeff);
+                    if(newradius<radius/2)
+                        newradius=radius/2;
+                    Log.d("asd","raggio "+newradius );
                     newX =(float) (circles[i].xCenter + newradius * Math.cos(beta));
                     newY = (float)(circles[i].yCenter + newradius * Math.sin(beta));
                 }else
                 {
-                    float newradius=(float)(radius + (Math.abs(arg[i])-9.81) * coeff) ;
+                    //qui c'e' la gravita' da tenere in conto
+                    float newradius=(float)Math.abs(radius + sign*(Math.abs(arg[i])-9.81) * coeff) ;
+                    if(newradius<radius/2)
+                        newradius=radius/2;
                     newX = (float) (circles[i].xCenter +newradius* Math.cos(beta));
                     newY = (float) (circles[i].yCenter + newradius* Math.sin(beta));
+                    if(invertSign)
+                        sign*=-1;
                 }
-                finishPoint[i]=new MPoint(newX,newY);
-                canvas.drawLine(startPoint[i].x, startPoint[i].y, finishPoint[i].x, finishPoint[i].y,circlePaint[i]);
-                startPoint[i].set(finishPoint[i].x, finishPoint[i].y);
-            }
+                finishPoint[i]=new MPoint(checkValue(newX),checkValue(newY));
+                if(startPoint[i]!=null)
+                {
+                    canvas.drawLine(startPoint[i].x, startPoint[i].y, finishPoint[i].x, finishPoint[i].y,circlePaint[i]);
+                    startPoint[i].set(finishPoint[i].x, finishPoint[i].y);
+                }
+                else
+                {
+                    startPoint[i]=new MPoint(finishPoint[i].x,finishPoint[i].y);
+                    firstPoint[i]=new MPoint(finishPoint[i].x,finishPoint[i].y);
+                }
 
+
+
+            }
         }
         else{
             Controller.getNotification().deattach(this);
-
+            //unisco l'ulitmo e il primo punto
+            for(int i=0;i<3;i++)
+                canvas.drawLine(finishPoint[i].x, finishPoint[i].y,firstPoint[i].x,firstPoint[i].y,circlePaint[i]);
+            //TODO: impolementa metodo
             saveSignature();
         }
 
     }
+
+    private float checkValue(float i)
+    {
+        float temp=i;
+        if(i<0)
+            temp=0;
+        if (i>resolution)
+            temp=resolution;
+        return temp;
+    }
+
 
 
     public void setMode(int mode)
