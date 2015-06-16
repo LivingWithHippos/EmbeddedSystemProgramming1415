@@ -1,12 +1,16 @@
 package org.tbw.FemurShield.Controller;
 
+import android.animation.Animator;
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.Fragment;
 import android.graphics.Bitmap;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewAnimationUtils;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -74,13 +78,35 @@ public class FallDetailsFragment extends Fragment {
         ivFallSignature = (ImageView) rootView.findViewById(R.id.ivFallSignature);
 
         ivSentSign = (ImageView) rootView.findViewById(R.id.ivSentSign);
+        loadBitmap(R.id.ivFallSignature);
+
         if (shownFall.isReported())
             ivSentSign.setImageResource(R.drawable.check);
         else
             ivSentSign.setImageResource(R.drawable.uncheck);
 
-        loadBitmap(R.id.ivFallSignature);
+        //mettendo il metodo dentro a questo listener ci si assicura di risolvere
+        //un errore che compare se l'interfaccia non è pronta
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            rootView.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
+                @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+                @Override
+                public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
+                    v.removeOnLayoutChangeListener(this);
+                    int cx = (ivSentSign.getLeft() + ivSentSign.getRight()) / 2;
+                    int cy = (ivSentSign.getTop() + ivSentSign.getBottom()) / 2;
 
+                    int finalRadius = Math.max(ivSentSign.getWidth(), ivSentSign.getHeight());
+
+                    // create the animator for this view (the start radius is zero)
+                    Animator anim = ViewAnimationUtils.createCircularReveal(ivSentSign, cx, cy, 0, finalRadius);
+
+                    anim.setDuration(700);
+                    ivSentSign.setVisibility(View.VISIBLE);
+                    anim.start();
+                }
+            });
+        }
 
         //imposto la signature della sessione
         ivSessionSignature = (ImageView) rootView.findViewById(R.id.ivSessionSignatureInFallDetails);
@@ -99,9 +125,8 @@ public class FallDetailsFragment extends Fragment {
         return rootView;
     }
 
-
     public void loadBitmap(int resId) {
-        FallBitmapCreator fbc = new FallBitmapCreator(ivSentSign, ivFallSignature, shownFall, height, width, palette);
+        FallBitmapCreator fbc = new FallBitmapCreator(ivFallSignature, shownFall, height, width, palette);
         fbc.execute(resId);
     }
 

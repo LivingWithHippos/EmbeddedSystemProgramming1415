@@ -23,7 +23,7 @@ public class FallBitmapCreator extends AsyncTask<Integer, Void, Bitmap> {
 
     public final String TAG = this.getClass().getSimpleName();
 
-    private final WeakReference<ImageView> ivFallReference,ivSentSignReference;
+    private final WeakReference<ImageView> ivFallReference;
 
     private float[][] dataBefore;
     private float[][] dataDuring;
@@ -45,14 +45,15 @@ public class FallBitmapCreator extends AsyncTask<Integer, Void, Bitmap> {
     private String[] color_palette;
 
 
-    public FallBitmapCreator(ImageView ivSentSign, ImageView ivFall, Fall fall, int height, int width, String[] palette) {
+    public FallBitmapCreator(ImageView ivFall, Fall fall, int height, int width, String[] palette) {
 
-        ivSentSignReference = new WeakReference<ImageView>(ivSentSign);
+
         ivFallReference = new WeakReference<ImageView>(ivFall);
         color_palette=palette;
         //quanto occupa sullo schermo il disegno di fall?
         signHeight=height/3;
         signWidth=width;
+        //viene regolata in checkvalue()
         scale=4;
 
         dataBefore=fall.getValuesBeforeFall();
@@ -167,10 +168,15 @@ public class FallBitmapCreator extends AsyncTask<Integer, Void, Bitmap> {
     private float checkValue(float i)
     {
         float temp=i;
-        if(i<0)
-            temp=0;
-        if (i>signHeight)
-            temp=signHeight;
+        if(i<0) {
+            temp = 0;
+        }
+        if (i>signHeight) {
+            temp = signHeight;
+        }
+        if(i>0&i<signHeight)
+            scale=4;
+        else{scale=3.8f;}
         return temp;
     }
 
@@ -179,22 +185,8 @@ public class FallBitmapCreator extends AsyncTask<Integer, Void, Bitmap> {
 
         if (ivFallReference != null && bitmap != null) {
             final ImageView fallImage = ivFallReference.get();
-            final ImageView sentImage = ivSentSignReference.get();
-            if (fallImage != null&&sentImage!=null) {
+            if (fallImage != null) {
                 fallImage.setImageBitmap(bitmap);
-
-                int cx = (sentImage.getLeft() + sentImage.getRight()) / 2;
-                int cy = (sentImage.getTop() + sentImage.getBottom()) / 2;
-
-                int finalRadius = Math.max(sentImage.getWidth(), sentImage.getHeight());
-
-                // create the animator for this view (the start radius is zero)
-                Animator anim = ViewAnimationUtils.createCircularReveal(sentImage, cx, cy, 0, finalRadius);
-                
-                anim.setDuration(600);
-                sentImage.setVisibility(View.VISIBLE);
-                anim.start();
-
             }
             else{Log.d(TAG,"Problema caricamento riferimento imageView");}
         }
