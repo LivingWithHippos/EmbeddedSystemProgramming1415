@@ -180,13 +180,10 @@ public class UI5 extends Activity implements SettingsFragment.OnOptionSelectedLi
         if (nome != null & indirizzo != null) {
             String n = nome.getText().toString().trim();
             String i = indirizzo.getText().toString().trim();
-            Log.d("UI5", "nome :" + n);
-            Log.d("UI5", "indirizzo :" + i);
 
             String regex = "[\\w_.-]+@[\\w.-]{4,30}";
             if (i.matches(regex)) {
                 result = prefs.addEmail(i, n);
-                Log.d("UI5", "ho modificato : " + result);
 
                 if (result) {
                     //aggiorna la lista email
@@ -196,7 +193,6 @@ public class UI5 extends Activity implements SettingsFragment.OnOptionSelectedLi
                     Toast.makeText(getApplicationContext(), getString(R.string.wrong_email_message), Toast.LENGTH_SHORT).show();
 
             } else {
-                Log.d("UI5", "Sintassi email errata");
                 result = false;
                 Toast.makeText(getApplicationContext(), getString(R.string.wrong_email_message), Toast.LENGTH_SHORT).show();
             }

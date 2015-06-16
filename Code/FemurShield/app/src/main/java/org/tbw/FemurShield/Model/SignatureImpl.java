@@ -104,7 +104,6 @@ public class SignatureImpl implements Signature,org.tbw.FemurShield.Observer.Obs
                     float newradius=Math.abs(radius + sign*Math.abs(arg[i]) * coeff);
                     if(newradius<radius/2)
                         newradius=radius/2;
-                    Log.d("asd","raggio "+newradius );
                     newX =(float) (circles[i].xCenter + newradius * Math.cos(beta));
                     newY = (float)(circles[i].yCenter + newradius * Math.sin(beta));
                 }else
