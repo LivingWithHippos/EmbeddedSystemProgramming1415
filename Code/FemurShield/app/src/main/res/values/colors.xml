@@ -4,7 +4,7 @@
     <color name="colorPrimaryDark">#b71c1c</color>
     <color name="textColorPrimary">#000</color>
     <color name="textColorSecondary">#000</color>
-    <color name="windowBackground">#FFFFFF</color>
+    <color name="windowBackground">#F5F5F5</color>
     <color name="navigationBarColor">#000</color>
     <color name="colorAccent">#ff3d00</color>
     <color name="settingSecondary">#ffaaa08e</color>

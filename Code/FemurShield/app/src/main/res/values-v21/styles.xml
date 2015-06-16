@@ -7,6 +7,7 @@
         <item name="android:textColorPrimary">@color/textColorPrimary</item>
         <item name="android:textColor">@color/textColorSecondary</item>
         <item name="android:navigationBarColor">@color/navigationBarColor</item>
+        <item name="android:windowBackground">@color/windowBackground</item>
     </style>
     <style name="AppDialogTheme" parent="android:Theme.Material.Light.Dialog.Alert">
         <item name="android:colorPrimary">@color/colorPrimary</item>
