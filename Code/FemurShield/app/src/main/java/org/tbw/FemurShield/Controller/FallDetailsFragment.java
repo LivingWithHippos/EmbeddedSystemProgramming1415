@@ -1,16 +1,12 @@
 package org.tbw.FemurShield.Controller;
 
-import android.animation.Animator;
-import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.Fragment;
 import android.graphics.Bitmap;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewAnimationUtils;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -76,19 +72,19 @@ public class FallDetailsFragment extends Fragment {
         width = displayMetrics.widthPixels;
 
         ivFallSignature = (ImageView) rootView.findViewById(R.id.ivFallSignature);
-        loadBitmap(R.id.ivFallSignature, ivFallSignature, rootView);
 
         ivSentSign = (ImageView) rootView.findViewById(R.id.ivSentSign);
         if (shownFall.isReported())
             ivSentSign.setImageResource(R.drawable.check);
         else
             ivSentSign.setImageResource(R.drawable.uncheck);
-        ivSentSign.setVisibility(View.INVISIBLE);
+
+        loadBitmap(R.id.ivFallSignature);
+
 
         //imposto la signature della sessione
         ivSessionSignature = (ImageView) rootView.findViewById(R.id.ivSessionSignatureInFallDetails);
         ivSessionSignature.setImageBitmap(sessionSignature);
-
 
 
         //setto il testo
@@ -99,36 +95,13 @@ public class FallDetailsFragment extends Fragment {
         tvFallLongitude = (TextView) rootView.findViewById(R.id.tvFallLongitude);
         tvFallLongitude.setText(getString(R.string.fall_longitude) + " " + longitude);
 
-        //effetto ripple sull'immagine di invio
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            rootView.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
-                @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-                @Override
-                public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
-                    v.removeOnLayoutChangeListener(this);
-                    ivSentSign=(ImageView)v.findViewById(R.id.ivSentSign);
-                    // get the center for the clipping circle
-                    int cx = (ivSentSign.getLeft() + ivSentSign.getRight()) / 2;
-                    int cy = (ivSentSign.getTop() + ivSentSign.getBottom()) / 2;
-
-                    int finalRadius = Math.max(ivSentSign.getWidth(), ivSentSign.getHeight());
-
-                    // create the animator for this view (the start radius is zero)
-                    Animator anim = ViewAnimationUtils.createCircularReveal(ivSentSign, cx, cy, 0, finalRadius);
-
-                    anim.setDuration(600);
-                    ivSentSign.setVisibility(View.VISIBLE);
-                    anim.start();
-                }
-            });
-        }
 
         return rootView;
     }
 
 
-    public void loadBitmap(int resId, ImageView imageView, View view) {
-        FallBitmapCreator fbc = new FallBitmapCreator(view, ivFallSignature, shownFall, height, width, palette);
+    public void loadBitmap(int resId) {
+        FallBitmapCreator fbc = new FallBitmapCreator(ivSentSign, ivFallSignature, shownFall, height, width, palette);
         fbc.execute(resId);
     }
 

@@ -1,5 +1,6 @@
 package org.tbw.FemurShield.Controller;
 
+import android.animation.Animator;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -7,6 +8,7 @@ import android.graphics.Paint;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewAnimationUtils;
 import android.widget.ImageView;
 
 import org.tbw.FemurShield.Model.Fall;
@@ -19,7 +21,9 @@ import java.util.Arrays;
  */
 public class FallBitmapCreator extends AsyncTask<Integer, Void, Bitmap> {
 
-    private final WeakReference<ImageView> imageViewReference;
+    public final String TAG = this.getClass().getSimpleName();
+
+    private final WeakReference<ImageView> ivFallReference,ivSentSignReference;
 
     private float[][] dataBefore;
     private float[][] dataDuring;
@@ -29,12 +33,11 @@ public class FallBitmapCreator extends AsyncTask<Integer, Void, Bitmap> {
     private float[] newPointsY;
     private float xPointer,xPointerPlus,xStep;
 
-    private int scale;
+    private float scale;
 
     Canvas canvasGraficoAcc;
     Bitmap bitmapGraficoAcc;
     private int signHeight,signWidth;
-    private View view;
 
     Paint paintX = new Paint(Paint.ANTI_ALIAS_FLAG);
     Paint paintY = new Paint(Paint.ANTI_ALIAS_FLAG);
@@ -42,19 +45,24 @@ public class FallBitmapCreator extends AsyncTask<Integer, Void, Bitmap> {
     private String[] color_palette;
 
 
-    public FallBitmapCreator(View view, ImageView imageView, Fall fall, int height, int width, String[] palette) {
+    public FallBitmapCreator(ImageView ivSentSign, ImageView ivFall, Fall fall, int height, int width, String[] palette) {
 
-        this.view=view;
-        imageViewReference = new WeakReference<ImageView>(imageView);
+        ivSentSignReference = new WeakReference<ImageView>(ivSentSign);
+        ivFallReference = new WeakReference<ImageView>(ivFall);
         color_palette=palette;
-        signHeight=height/4;
+        //quanto occupa sullo schermo il disegno di fall?
+        signHeight=height/3;
         signWidth=width;
         scale=4;
-
 
         dataBefore=fall.getValuesBeforeFall();
         dataDuring=fall.getFallValues();
         dataAfter=fall.getValuesAfterFall();
+
+        //questo regola la scala in base
+        //all'altezza del grafico z
+        //scale=(signHeight/2)/(getMax(dataBefore,dataDuring,dataAfter)*1.5f);
+
         xStep=((float)signWidth)/(dataBefore[0].length+dataDuring[0].length+dataAfter[0].length);
         
         paintX.setColor(Color.parseColor(color_palette[0]));
@@ -73,6 +81,48 @@ public class FallBitmapCreator extends AsyncTask<Integer, Void, Bitmap> {
         oldPointsY=new float[]{signHeight/2,signHeight/2,signHeight/2};
 
 
+    }
+
+    private float getMax(float[][] x,float[][] y,float[][] z)
+    {
+        float[] xmax=new float[x.length];
+        float[] ymax=new float[y.length];
+        float[] zmax=new float[z.length];
+        for(int i=0;i<x.length;i++)
+            xmax[i]=getMax(x[i]);
+        for(int i=0;i<y.length;i++)
+            ymax[i]=getMax(y[i]);
+        for(int i=0;i<x.length;i++)
+            zmax[i]=getMax(z[i]);
+        return getMax(xmax,ymax,zmax);
+    }
+
+    private float getMax(float[] x,float [] y,float[] z)
+    {
+        float massimoX=getMax(x);
+        float massimoY=getMax(y);
+        float massimoZ=getMax(z);
+
+        if(massimoX>massimoY)
+            return Math.max(massimoX,massimoZ);
+        else
+            return Math.max(massimoY,massimoZ);
+
+    }
+
+    private float getMax(float[] f)
+    {
+        float max=-1;
+        if(f.length>0) {
+            max = Math.abs(f[0]);
+
+            for (int i = 0; i < f.length; i++) {
+                if (Math.abs(f[i]) > max) {
+                    max = f[i];
+                }
+            }
+        }
+        return max;
     }
 
     // Decode image in background.
@@ -127,13 +177,26 @@ public class FallBitmapCreator extends AsyncTask<Integer, Void, Bitmap> {
     @Override
     protected void onPostExecute(Bitmap bitmap) {
 
-        if (imageViewReference != null && bitmap != null) {
-            final ImageView imageView = imageViewReference.get();
-            if (imageView != null) {
-                imageView.setImageBitmap(bitmap);
-               view.invalidate();
+        if (ivFallReference != null && bitmap != null) {
+            final ImageView fallImage = ivFallReference.get();
+            final ImageView sentImage = ivSentSignReference.get();
+            if (fallImage != null&&sentImage!=null) {
+                fallImage.setImageBitmap(bitmap);
+
+                int cx = (sentImage.getLeft() + sentImage.getRight()) / 2;
+                int cy = (sentImage.getTop() + sentImage.getBottom()) / 2;
+
+                int finalRadius = Math.max(sentImage.getWidth(), sentImage.getHeight());
+
+                // create the animator for this view (the start radius is zero)
+                Animator anim = ViewAnimationUtils.createCircularReveal(sentImage, cx, cy, 0, finalRadius);
+                
+                anim.setDuration(600);
+                sentImage.setVisibility(View.VISIBLE);
+                anim.start();
 
             }
+            else{Log.d(TAG,"Problema caricamento riferimento imageView");}
         }
     }
 
