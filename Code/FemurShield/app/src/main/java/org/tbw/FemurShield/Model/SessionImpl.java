@@ -1,7 +1,5 @@
 package org.tbw.FemurShield.Model;
 
-import android.util.Log;
-
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -20,12 +18,20 @@ public class SessionImpl extends Observable implements Session{
 
     public SessionImpl(){
         cadute=new ArrayList<>();
-
         SimpleDateFormat sdf = new SimpleDateFormat(Session.datePattern);
         datetime = sdf.format(new Date());
         name="Sessione "+datetime;
         ID=datetime;
         signature=new SignatureImpl(SignatureImpl.CIRCLE_STATIC);
+    }
+
+    public SessionImpl(String nome,String datetime, ArrayList<Fall> falls,int duration,SignatureImpl sign){
+        this.name=nome;
+        this.datetime=datetime;
+        this.cadute=falls;
+        this.secondduration=duration;
+        this.ID=datetime;
+        this.signature=sign;
     }
 
     @Override

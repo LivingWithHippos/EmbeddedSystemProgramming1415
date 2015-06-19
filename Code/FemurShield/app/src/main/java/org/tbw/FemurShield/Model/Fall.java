@@ -51,6 +51,22 @@ public class Fall {
         setPostion();
     }
 
+    /**
+     * da usare per il ripristino
+     */
+    Fall(float[][] beforeValues, float[][] FallValues, float[][] afterValues, Context contx,int id,String data,double lat, double longi, boolean segnalato)
+    {
+        this.valuesAfterFall=afterValues;
+        this.valuesFall=FallValues;
+        this.valuesBeforeFall=beforeValues;
+        cont=contx;
+        this.id=id;
+        this.data=data;
+        this.position[this.FALL_LATITUDE]=lat;
+        this.position[this.FALL_LONGITUDE]=longi;
+        this.segnalato=segnalato;
+    }
+
     public double[] getPosition(){
         return position;
     }

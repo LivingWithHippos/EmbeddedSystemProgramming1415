@@ -30,10 +30,12 @@ public class BaseActivity extends Activity {
      */
     public void SaveAll(){
         Toast.makeText(getBaseContext(),"Salvo",Toast.LENGTH_SHORT).show();
-        String FILENAME = "hello_file";
+        String FILENAME = "SessionsData";
         String string = "hello world!";
 
         FileOutputStream fos = null;
+
+
         try {
             fos = openFileOutput(FILENAME, Context.MODE_PRIVATE);
             fos.write(string.getBytes());
