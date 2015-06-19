@@ -52,10 +52,10 @@ public class SessionsListAdapter extends ArrayAdapter{
 
         // aggiorna il viewholder
         SessionsListItem item =(SessionsListItem) getItem(position);
-
-        viewHolder.ivState.setImageResource(R.drawable.state);
         //imposta la visibilita' del tasto rec
+        viewHolder.ivState.setImageResource(R.drawable.state);
         viewHolder.ivState.setVisibility(item.isRecording()?View.VISIBLE:View.INVISIBLE);
+
         viewHolder.ivSignature.setImageBitmap(item.signature);
         viewHolder.tvName.setText(item.name);
         viewHolder.tvDate.setText(item.date);
@@ -96,15 +96,14 @@ class SessionsListItem{
     private int falls;
     private boolean state;
 
-            public SessionsListItem(Bitmap signature,String name, String date,String startingTime,String fallsNumber,boolean state) {
+            public SessionsListItem(Bitmap signature,String name, String date,String startingTime,int fallsNumber,boolean state) {
                 this.signature = signature;
                 this.name = name;
                 this.date = date;
                 this.startingTime = startingTime;
-                this.fallsNumber=fallsNumber;
-                try {
-                    this.falls = Integer.parseInt(fallsNumber);
-                }catch(NumberFormatException nfe){falls=0;}
+                this.fallsNumber=fallsNumber+"";
+                this.falls = fallsNumber;
+                //TODO: ricevere durata
                 duration="in corso...";
                 this.state=state;
             }
@@ -137,5 +136,9 @@ class SessionsListItem{
      * */
     public boolean isRecording() {
         return state;
+    }
+
+    public String getDataTime() {
+        return date;
     }
 }
