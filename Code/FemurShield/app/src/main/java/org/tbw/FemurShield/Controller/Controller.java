@@ -74,4 +74,12 @@ public class Controller implements Observer {
         if(o instanceof Fall)
             SessionManager.getInstance().getActiveSession().AddFall((Fall) o);
     }
+
+    public void SaveAll(){
+
+    }
+
+    public void RestoreAll(){
+
+    }
 }

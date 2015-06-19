@@ -34,6 +34,7 @@ public class UI1 extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ui1);
+        Controller.getInstance().RestoreAll();
         //aggiorno la listView
         AggiornaLista();
         instantiateColors();
@@ -225,5 +226,11 @@ public class UI1 extends Activity {
                 getResources().getStringArray(R.array.random_palette_7)
         });
 
+    }
+
+    public void onDestroy() {
+        super.onDestroy();
+        Controller.getInstance().SaveAll();
+        finish();
     }
 }

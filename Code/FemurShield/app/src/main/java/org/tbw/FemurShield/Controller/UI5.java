@@ -7,7 +7,6 @@ import android.content.ComponentName;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
@@ -42,6 +41,7 @@ public class UI5 extends Activity implements SettingsFragment.OnOptionSelectedLi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ui5);
+        Controller.getInstance().RestoreAll();
 
 
         if (findViewById(R.id.fragment_container_settings) != null) {
@@ -326,5 +326,11 @@ public class UI5 extends Activity implements SettingsFragment.OnOptionSelectedLi
         if (s.title.equalsIgnoreCase("Simula Caduta"))
             Controller.getNotification().NotifyFall(new Fall(null, null, null, getBaseContext()));
 
+    }
+
+    public void onDestroy() {
+        super.onDestroy();
+        Controller.getInstance().SaveAll();
+        finish();
     }
 }

@@ -30,6 +30,7 @@ public class UI3 extends Activity implements org.tbw.FemurShield.Observer.Observ
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ui3);
+        Controller.getInstance().RestoreAll();
         paintX.setColor(Color.BLACK);
         paintX.setStrokeWidth(6.0f);
 
@@ -241,5 +242,11 @@ public class UI3 extends Activity implements org.tbw.FemurShield.Observer.Observ
         ((ListView)findViewById(R.id.listfallui3)).setAdapter(adapter);
 
         //TODO inviata non inviata mail
+    }
+
+    public void onDestroy() {
+        super.onDestroy();
+        Controller.getInstance().SaveAll();
+        finish();
     }
 }

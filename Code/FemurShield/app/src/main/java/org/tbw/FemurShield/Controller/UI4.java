@@ -5,7 +5,6 @@ import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -30,6 +29,7 @@ public class UI4 extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ui4);
+        Controller.getInstance().RestoreAll();
         rand=new Random();
 
         sessionID = getIntent().getExtras().getString(ID_SESSION);
@@ -76,7 +76,9 @@ public class UI4 extends Activity {
         return super.onOptionsItemSelected(item);
     }
 
-
-
-
+    public void onDestroy() {
+        super.onDestroy();
+        Controller.getInstance().SaveAll();
+        finish();
+    }
 }
