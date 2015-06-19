@@ -49,7 +49,7 @@ public class SessionsListFragment extends ListFragment {
             for (int i = 0; i < old.size(); i++) {
                 Session s = old.get(i);
                 //TODO metti durata
-                SessionsListItem sli = new SessionsListItem(s.getSignature().toBitmap(), s.getName(), s.getDataTime(), s.getDataTime(), s.getFallsNumber(), false);
+                SessionsListItem sli = new SessionsListItem(s.getSignature().toBitmap(), s.getName(), s.getDataTime(), s.getFallsNumber(), false);
                 sItems.add(sli);
             }
         }
@@ -58,7 +58,7 @@ public class SessionsListFragment extends ListFragment {
         ActiveSession a =SessionManager.getInstance().getActiveSession();
         if(a!=null) {
             //TODO metti durata
-            SessionsListItem sli=new SessionsListItem(a.getSignature().toBitmap(),a.getName(),a.getDataTime(),a.getDataTime(),a.getFallsNumber(),true);
+            SessionsListItem sli=new SessionsListItem(a.getSignature().toBitmap(),a.getName(),a.getDataTime(),a.getFallsNumber(),true);
             sItems.add(sli);
 
         }

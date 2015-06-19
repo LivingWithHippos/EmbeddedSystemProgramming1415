@@ -1,7 +1,6 @@
 package org.tbw.FemurShield.Controller;
 
 import android.content.Context;
-import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,8 +9,14 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import org.tbw.FemurShield.Model.Session;
 import org.tbw.FemurShield.R;
 
+import java.text.DecimalFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -54,14 +59,14 @@ public class SessionsListAdapter extends ArrayAdapter{
         SessionsListItem item =(SessionsListItem) getItem(position);
         //imposta la visibilita' del tasto rec
         viewHolder.ivState.setImageResource(R.drawable.state);
-        viewHolder.ivState.setVisibility(item.isRecording()?View.VISIBLE:View.INVISIBLE);
+        viewHolder.ivState.setVisibility(item.isRecording() ? View.VISIBLE : View.INVISIBLE);
 
         viewHolder.ivSignature.setImageBitmap(item.signature);
         viewHolder.tvName.setText(item.name);
         viewHolder.tvDate.setText(item.date);
         viewHolder.tvStartingTime.setText(item.startingTime);
         viewHolder.tvDuration.setText(item.duration);
-        viewHolder.tvFallsNumber.setText(item.fallsNumber);
+        viewHolder.tvFallsNumber.setText(item.falls+"");
 
         return convertView;
     }
@@ -89,23 +94,35 @@ class SessionsListItem{
 
     public final Bitmap signature;
     public String name;
-    public final String date;
-    public final String startingTime;
+    public String date;
+    public String startingTime;
     public String duration;
-    public String fallsNumber;
-    private int falls;
-    private boolean state;
+    public int falls;
+    public boolean state;
+    private String datetime;
 
-            public SessionsListItem(Bitmap signature,String name, String date,String startingTime,int fallsNumber,boolean state) {
+            public SessionsListItem(Bitmap signature,String name, String date,int fallsNumber,boolean state) {
                 this.signature = signature;
                 this.name = name;
-                this.date = date;
-                this.startingTime = startingTime;
-                this.fallsNumber=fallsNumber+"";
                 this.falls = fallsNumber;
+                this.datetime=date;
                 //TODO: ricevere durata
                 duration="in corso...";
                 this.state=state;
+
+                try {
+                    SimpleDateFormat sdf = new SimpleDateFormat(Session.datePattern);
+                    Date timestamp = sdf.parse(datetime);
+                    Calendar calendar=Calendar.getInstance();
+                    calendar.setTime(timestamp);
+                    //scrive mesi giorni e ore ad una cifra come 0x invece di x
+                    DecimalFormat formatter = new DecimalFormat("00");
+                    //il mese parte da zero non da uno
+                    this.date=formatter.format(calendar.get(Calendar.DAY_OF_MONTH))+"/"+formatter.format(calendar.get(Calendar.MONTH)+1)+"/"+calendar.get(Calendar.YEAR);
+                    this.startingTime = formatter.format(calendar.get(Calendar.HOUR_OF_DAY))+":"+formatter.format(calendar.get(Calendar.MINUTE))+":"+formatter.format(calendar.get(Calendar.SECOND));
+                }catch (ParseException pe){
+                    this.date="0";this.startingTime="0";
+                }
             }
 
     /**
@@ -114,7 +131,6 @@ class SessionsListItem{
     public void addFall()
     {
         this.falls++;
-        this.fallsNumber=falls+"";
     }
     /**
      * @param falls il numero di cadute da impostare
@@ -122,7 +138,6 @@ class SessionsListItem{
     public void setFallsNumber(int falls)
     {
         this.falls=falls;
-        this.fallsNumber=falls+"";
     }
     /**
      * @param state indica se la sessione rappresentatae' attiva o no
@@ -139,6 +154,6 @@ class SessionsListItem{
     }
 
     public String getDataTime() {
-        return date;
+        return datetime;
     }
 }
