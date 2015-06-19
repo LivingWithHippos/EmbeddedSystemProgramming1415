@@ -1,8 +1,11 @@
 package org.tbw.FemurShield.Controller;
 
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -11,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 
+import org.tbw.FemurShield.Controller.Settings.SettingsFragment;
 import org.tbw.FemurShield.Model.ActiveSession;
 import org.tbw.FemurShield.Model.OldSession;
 import org.tbw.FemurShield.Model.Session;
@@ -23,7 +27,7 @@ import java.util.HashMap;
 import java.util.List;
 
 
-public class UI1 extends BaseActivity {
+public class UI1 extends BaseActivity implements SessionsListFragment.OnSessionClickListener,SessionCommandsFragment.OnCommandUpdatedListener{
 
     protected Calendar calendar;
     private List<SessionsListItem> mItems;
@@ -31,30 +35,33 @@ public class UI1 extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         RestoreAll();
         setContentView(R.layout.activity_ui1);
-        //aggiorno la listView
-        AggiornaLista();
-        instantiateColors();
-        ListView list=((ListView)findViewById(R.id.listsessionui1));
-        //final Activity activity=this;
-        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if (position == 0 && SessionManager.getInstance().getActiveSession() != null) {
-                    Intent i = new Intent(getBaseContext(), UI3.class);
-                    startActivity(i);
-                    return;
-                }
-                HashMap<String, String> item = (HashMap<String, String>) parent.getItemAtPosition(position);
-                String datetime = item.get("data");
-                Intent i = new Intent(getBaseContext(), UI2.class);
-                i.putExtra(UI2.SESSION_DATA_STAMP, datetime);
-                startActivity(i);
+
+        if (findViewById(R.id.ui1rootLayout) != null) {
+
+            /*Se stiamo tornando indietro non abbiamo bisogno di ricaricarlo
+            * rischiamo di ritrovarci con un secondo fragment sovrapposto*/
+            if (savedInstanceState != null) {
+                return;
             }
 
-        });
+            SessionsListFragment sFragment=SessionsListFragment.newInstance();
+            SessionCommandsFragment cFragment=SessionCommandsFragment.newInstance();
+
+            // carico il gestore di fragment e mostro il fragment
+            FragmentManager fragmentManager = getFragmentManager();
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+
+            fragmentTransaction.add(R.id.listaSessioniUI1, sFragment, "mSessionsListFragment");
+            fragmentTransaction.add(R.id.comandiSessioniUI1, cFragment, "mSessionCommandsFragment");
+            fragmentTransaction.commit();
+        }
+
+        instantiateColors();
+
     }
 
     @Override
@@ -76,133 +83,9 @@ public class UI1 extends BaseActivity {
         }
     }
 
-    public void onRecClick(View view){
-        //TODO: business logic
-        Controller.getInstance().CreateSession();
-
-        onPlayClick(view);
-
-        //aggiorno la listView
-        AggiornaLista();
-        Intent intent=new Intent(this,UI3.class);
-        startActivity(intent);
-    }
-
-    public void onPauseClick(View view){
-        //TODO: business logic
-        Controller.getInstance().PauseSession(this);
-
-        //modifo le visibilità dei bottoni di controllo
-        ((ImageView)findViewById(R.id.recbtnun1)).setVisibility(ImageView.INVISIBLE);
-        ((ImageView)findViewById(R.id.pausebtnui1)).setVisibility(ImageView.INVISIBLE);
-        ((ImageView)findViewById(R.id.stopbntui1)).setVisibility(ImageView.VISIBLE);
-        ((ImageView)findViewById(R.id.startbtnui1)).setVisibility(ImageView.VISIBLE);
-
-    }
-
-    public void onPlayClick(View view){
-        //TODO: business logic
-        Controller.getInstance().StartSession(this);
-
-        //modifo le visibilità dei bottoni di controllo
-        ((ImageView)findViewById(R.id.recbtnun1)).setVisibility(ImageView.INVISIBLE);
-        ((ImageView)findViewById(R.id.pausebtnui1)).setVisibility(ImageView.VISIBLE);
-        ((ImageView)findViewById(R.id.stopbntui1)).setVisibility(ImageView.VISIBLE);
-        ((ImageView)findViewById(R.id.startbtnui1)).setVisibility(ImageView.INVISIBLE);
-
-    }
-
-    public void onStopClick(View view){
-        //TODO: business logic
-        Controller.getInstance().StopSession(this);
-
-        //modifo le visibilità dei bottoni di controllo
-        ((ImageView)findViewById(R.id.recbtnun1)).setVisibility(ImageView.VISIBLE);
-        ((ImageView)findViewById(R.id.pausebtnui1)).setVisibility(ImageView.INVISIBLE);
-        ((ImageView)findViewById(R.id.stopbntui1)).setVisibility(ImageView.INVISIBLE);
-        ((ImageView)findViewById(R.id.startbtnui1)).setVisibility(ImageView.INVISIBLE);
-
-        //aggiorno la listView
-        AggiornaLista();
-    }
-
-    public void AggiornaLista(){
-        //costruisco la listview
-
-        //lista delle sessioni che la listview visualizzerà
-        ArrayList<Session> sessionsList=new ArrayList<>();
-
-        //aggiungo le sessioni vecchie
-        ArrayList<OldSession> old=SessionManager.getInstance().getOldSessions();
-        for(int i=0;i<old.size();i++){
-            sessionsList.add(old.get(i));
-        }
-
-        //aggiungo la sessone attiva
-        ActiveSession a =SessionManager.getInstance().getActiveSession();
-        if(a!=null)
-            sessionsList.add(a);
-
-        //Questa è la lista che rappresenta la sorgente dei dati della listview
-        //ogni elemento è una mappa(chiave->valore)
-
-        ArrayList<HashMap<String, Object>> data=new ArrayList<>();
-
-
-        for(int i=sessionsList.size()-1;i>=0;i--){
-            Session s=sessionsList.get(i);// per ogni sessione all'inteno della lista
-
-            HashMap<String,Object> sessionMap=new HashMap<>();//creiamo una mappa di valori
-
-
-            sessionMap.put("signature", s.getSignature().toBitmap());
-            sessionMap.put("name", s.getName());
-            sessionMap.put("data", s.getDataTime());
-            sessionMap.put("falls", "" + s.getFalls().size());
-
-            if(s instanceof ActiveSession){
-                sessionMap.put("duration", "");
-                sessionMap.put("state", R.drawable.state);
-            }
-            else if(s instanceof OldSession){
-                sessionMap.put("duration", ((OldSession) s).getDuration());
-                sessionMap.put("state", "");
-            }
-
-            data.add(sessionMap);  //aggiungiamo la mappa di valori alla sorgente dati
-        }
-
-
-        String[] from={"signature","name","data","falls","duration","state"}; //dai valori contenuti in queste chiavi
-        int[] to={R.id.sessionsignatureui1,R.id.sessionnameui1,R.id.sessiondateui1,R.id.sessionfallsui1,R.id.sessiondurationui1,R.id.sessionstateimgui1};//agli id delle view
-
-        //costruzione dell adapter
-        SimpleAdapter adapter=new SimpleAdapter(
-                getApplicationContext(),
-                data,//sorgente dati
-                R.layout.sessionlistitemui1, //layout contenente gli id di "to"
-                from,
-                to);
-
-        adapter.setViewBinder(new SimpleAdapter.ViewBinder(){
-
-            @Override
-            public boolean setViewValue(View view, Object data,
-                                        String textRepresentation) {
-                if( (view instanceof ImageView) & (data instanceof Bitmap) ) {
-                    ImageView iv = (ImageView) view;
-                    Bitmap bm = (Bitmap) data;
-                    iv.setImageBitmap(bm);
-                    return true;
-                }
-                return false;
-
-            }
-
-        });
-
-        //utilizzo dell'adapter
-        ((ListView)findViewById(R.id.listsessionui1)).setAdapter(adapter);
+    public void aggiornaLista(){
+        SessionsListFragment fragment = (SessionsListFragment) getFragmentManager().findFragmentById(R.id.listaSessioniUI1);
+        fragment.aggiornaLista();
     }
 
     public void openSettings()
@@ -225,5 +108,12 @@ public class UI1 extends BaseActivity {
                 getResources().getStringArray(R.array.random_palette_7)
         });
 
+    }
+
+    @Override
+    public void onSessionClick(String sessionID) {
+        Intent i = new Intent(getBaseContext(), UI2.class);
+        i.putExtra(UI2.SESSION_DATA_STAMP, sessionID);
+        startActivity(i);
     }
 }
