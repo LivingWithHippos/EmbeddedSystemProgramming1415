@@ -1,0 +1,25 @@
+cosa serve salvare:
+
+nome
+data
+durata
+numero cadute
+pathimmagine
+FALL{
+latitude
+longitude
+data
+segnalato
+lunghezzabefore
+xbefore1
+ybefore1
+zbefore1
+xbefore2
+ybefore2
+zbefore2
+....
+
+IDEM per fall e after
+
+}
+....
