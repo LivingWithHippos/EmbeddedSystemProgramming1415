@@ -1,6 +1,5 @@
 package org.tbw.FemurShield.Controller;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -15,7 +14,7 @@ import org.tbw.FemurShield.Model.SessionManager;
 import org.tbw.FemurShield.R;
 
 
-public class UI2 extends Activity implements FallFragment.OnFallClickListener{
+public class UI2 extends BaseActivity implements FallFragment.OnFallClickListener{
 
     private Session thisSession;
     public final static String SESSION_DATA_STAMP = "sessiondatastamp";
@@ -24,7 +23,6 @@ public class UI2 extends Activity implements FallFragment.OnFallClickListener{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ui2);
-        Controller.getInstance().RestoreAll();
 
 
         LinearLayout fragContainer = (LinearLayout) findViewById(R.id.ui2rootLayout);
@@ -99,11 +97,5 @@ public class UI2 extends Activity implements FallFragment.OnFallClickListener{
         fallDetails.putExtra(UI4.ID_SESSION, sessionID);
         fallDetails.putExtra(UI4.ID_FALL, fallID);
         startActivity(fallDetails);
-    }
-
-    public void onDestroy() {
-        super.onDestroy();
-        Controller.getInstance().SaveAll();
-        finish();
     }
 }

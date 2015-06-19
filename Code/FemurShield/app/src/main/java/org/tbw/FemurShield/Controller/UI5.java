@@ -1,6 +1,5 @@
 package org.tbw.FemurShield.Controller;
 
-import android.app.Activity;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.ComponentName;
@@ -33,7 +32,7 @@ import org.tbw.FemurShield.R;
  *
  * @author Marco Biasin
  */
-public class UI5 extends Activity implements SettingsFragment.OnOptionSelectedListener, TimePickerFragment.OnAlarmChangedListener, DurationFragment.OnDurationChangedListener, EmailFragment.OnAddEmailButtonClickListener, AddContactFragment.OnUserInsertedListener, SampleRatePickerFragment.OnSamplingRateChangedListener, EmailFragment.OnClearEmailClickListener, EmailFragment.OnContactClickListener, ContactOptionsDialog.OnContactOptionsClickListener, AddContactFragment.OnUserToUpdateInsertedListener {
+public class UI5 extends BaseActivity implements SettingsFragment.OnOptionSelectedListener, TimePickerFragment.OnAlarmChangedListener, DurationFragment.OnDurationChangedListener, EmailFragment.OnAddEmailButtonClickListener, AddContactFragment.OnUserInsertedListener, SampleRatePickerFragment.OnSamplingRateChangedListener, EmailFragment.OnClearEmailClickListener, EmailFragment.OnContactClickListener, ContactOptionsDialog.OnContactOptionsClickListener, AddContactFragment.OnUserToUpdateInsertedListener {
 
     private PreferencesEditor prefs;
 
@@ -41,7 +40,6 @@ public class UI5 extends Activity implements SettingsFragment.OnOptionSelectedLi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ui5);
-        Controller.getInstance().RestoreAll();
 
 
         if (findViewById(R.id.fragment_container_settings) != null) {
@@ -326,11 +324,5 @@ public class UI5 extends Activity implements SettingsFragment.OnOptionSelectedLi
         if (s.title.equalsIgnoreCase("Simula Caduta"))
             Controller.getNotification().NotifyFall(new Fall(null, null, null, getBaseContext()));
 
-    }
-
-    public void onDestroy() {
-        super.onDestroy();
-        Controller.getInstance().SaveAll();
-        finish();
     }
 }

@@ -4,8 +4,8 @@
 
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
-    <uses-permission android:name='android.permission.WAKE_LOCK'/>
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
 
     <application
         android:allowBackup="true"
@@ -39,23 +39,33 @@
         </activity>
         <activity
             android:name=".Controller.Reminder.SessionReminderActivity"
+            android:excludeFromRecents="true"
             android:taskAffinity=".Controller.SessionReminderDialog"
-            android:theme="@style/AppDialogTheme"
-            android:excludeFromRecents="true">
+            android:theme="@style/AppDialogTheme" >
         </activity>
 
-        <service android:enabled="true" android:name=".Controller.FallDetector" />
+        <service
+            android:name=".Controller.FallDetector"
+            android:enabled="true" />
         <service
             android:name=".Controller.MultiEmailSender"
             android:enabled="true"
             android:exported="false" />
-        <service android:enabled="true" android:name=".Controller.Reminder.ReminderService" />
+        <service
+            android:name=".Controller.Reminder.ReminderService"
+            android:enabled="true" />
+
         <receiver android:name=".Controller.Reminder.BootReceiver" >
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
         <receiver android:name=".Controller.Reminder.SessionReminderReceiver" />
+
+        <activity
+            android:name=".Controller.BaseActivity"
+            android:label="@string/title_activity_base" >
+        </activity>
     </application>
 
 </manifest>

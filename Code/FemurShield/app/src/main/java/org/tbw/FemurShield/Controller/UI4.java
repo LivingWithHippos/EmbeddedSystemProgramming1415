@@ -1,6 +1,5 @@
 package org.tbw.FemurShield.Controller;
 
-import android.app.Activity;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Intent;
@@ -16,7 +15,7 @@ import org.tbw.FemurShield.R;
 import java.util.Random;
 
 
-public class UI4 extends Activity {
+public class UI4 extends BaseActivity {
 
     public static final String ID_FALL = "ID_CADUTA";
     public static final String ID_SESSION = "ID_SESSIONE";
@@ -29,7 +28,6 @@ public class UI4 extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ui4);
-        Controller.getInstance().RestoreAll();
         rand=new Random();
 
         sessionID = getIntent().getExtras().getString(ID_SESSION);
@@ -74,11 +72,5 @@ public class UI4 extends Activity {
                 return true;
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    public void onDestroy() {
-        super.onDestroy();
-        Controller.getInstance().SaveAll();
-        finish();
     }
 }

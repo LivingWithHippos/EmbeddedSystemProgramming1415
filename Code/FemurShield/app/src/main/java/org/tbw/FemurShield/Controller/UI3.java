@@ -1,7 +1,6 @@
 package org.tbw.FemurShield.Controller;
 
 
-import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -24,13 +23,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 
-public class UI3 extends Activity implements org.tbw.FemurShield.Observer.Observer {
+public class UI3 extends BaseActivity implements org.tbw.FemurShield.Observer.Observer {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ui3);
-        Controller.getInstance().RestoreAll();
         paintX.setColor(Color.BLACK);
         paintX.setStrokeWidth(6.0f);
 
@@ -242,11 +240,5 @@ public class UI3 extends Activity implements org.tbw.FemurShield.Observer.Observ
         ((ListView)findViewById(R.id.listfallui3)).setAdapter(adapter);
 
         //TODO inviata non inviata mail
-    }
-
-    public void onDestroy() {
-        super.onDestroy();
-        Controller.getInstance().SaveAll();
-        finish();
     }
 }

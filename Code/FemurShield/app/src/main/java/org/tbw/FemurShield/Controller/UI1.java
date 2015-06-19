@@ -1,6 +1,5 @@
 package org.tbw.FemurShield.Controller;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -24,7 +23,7 @@ import java.util.HashMap;
 import java.util.List;
 
 
-public class UI1 extends Activity {
+public class UI1 extends BaseActivity {
 
     protected Calendar calendar;
     private List<SessionsListItem> mItems;
@@ -33,8 +32,8 @@ public class UI1 extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        RestoreAll();
         setContentView(R.layout.activity_ui1);
-        Controller.getInstance().RestoreAll();
         //aggiorno la listView
         AggiornaLista();
         instantiateColors();
@@ -43,7 +42,7 @@ public class UI1 extends Activity {
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if(position==0 && SessionManager.getInstance().getActiveSession()!=null) {
+                if (position == 0 && SessionManager.getInstance().getActiveSession() != null) {
                     Intent i = new Intent(getBaseContext(), UI3.class);
                     startActivity(i);
                     return;
@@ -226,11 +225,5 @@ public class UI1 extends Activity {
                 getResources().getStringArray(R.array.random_palette_7)
         });
 
-    }
-
-    public void onDestroy() {
-        super.onDestroy();
-        Controller.getInstance().SaveAll();
-        finish();
     }
 }

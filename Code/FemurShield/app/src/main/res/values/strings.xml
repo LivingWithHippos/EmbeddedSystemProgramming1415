@@ -41,5 +41,6 @@
     <string name="fall_latitude">Latitudine :</string>
     <string name="fall_longitude">Longitudine :</string>
     <string name="no_session_found">Sessione non trovata</string>
+    <string name="title_activity_base">BaseActivity</string>
 
 </resources>
