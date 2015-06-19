@@ -86,7 +86,7 @@ public class FallDetailsFragment extends Fragment {
             ivSentSign.setImageResource(R.drawable.uncheck);
 
         //mettendo il metodo dentro a questo listener ci si assicura di risolvere
-        //un errore che compare se l'interfaccia non è pronta
+        //un errore che compare se l'interfaccia non Ã¨ pronta
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             rootView.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
                 @TargetApi(Build.VERSION_CODES.LOLLIPOP)

@@ -38,16 +38,20 @@ public class UI1 extends Activity {
         AggiornaLista();
         instantiateColors();
         ListView list=((ListView)findViewById(R.id.listsessionui1));
-        final Activity activity=this;
+        //final Activity activity=this;
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                if(position==0 && SessionManager.getInstance().getActiveSession()!=null) {
+                    Intent i = new Intent(getBaseContext(), UI3.class);
+                    startActivity(i);
+                    return;
+                }
                 HashMap<String, String> item = (HashMap<String, String>) parent.getItemAtPosition(position);
                 String datetime = item.get("data");
-                Intent i = new Intent(activity, UI2.class);
+                Intent i = new Intent(getBaseContext(), UI2.class);
                 i.putExtra(UI2.SESSION_DATA_STAMP, datetime);
                 startActivity(i);
-
             }
 
         });
