@@ -6,6 +6,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.hardware.SensorManager;
+import android.os.Environment;
 import android.util.Log;
 
 
@@ -13,6 +14,10 @@ import org.tbw.FemurShield.Controller.ColorsPicker;
 import org.tbw.FemurShield.Controller.Controller;
 import org.tbw.FemurShield.Observer.Observable;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -27,6 +32,7 @@ public class SignatureImpl implements Signature,org.tbw.FemurShield.Observer.Obs
     public static final int CLOVER=1;
     public static final int CIRCLE_STATIC=2 ;
     private int MODE;
+    private String sessionID;
     //variabili bitmap
     protected Bitmap signature;
     private Canvas canvas;
@@ -43,9 +49,10 @@ public class SignatureImpl implements Signature,org.tbw.FemurShield.Observer.Obs
     private boolean invertSign=true;
 
 
-    public SignatureImpl(int mode){
+    public SignatureImpl(int mode,String sessionID){
 
         this.MODE=mode;
+        this.sessionID=sessionID.replaceAll("/","_");
 
         signature= Bitmap.createBitmap(resolution, resolution, Bitmap.Config.ARGB_8888);
         canvas = new Canvas(signature);
@@ -166,22 +173,57 @@ public class SignatureImpl implements Signature,org.tbw.FemurShield.Observer.Obs
         return signature;
     }
 
-    private void saveSignature() {
+    private boolean saveSignature() {
 
-        /*File pictureFile=new File(context.getFilesDir(),"signature_"+datetime+".png");
-        if (pictureFile == null) {
-            Log.d("SignatureImpl","Error creating media file, check storage permissions: ");
-            return;
+        boolean result=false;
+        if (isExternalStorageWritable()) {
+            File appPath = new File(Environment.getExternalStorageDirectory(), "FemurShield");
+            appPath.mkdirs();
+            //nasconde i file immagine dalla galleria
+            File nomedia = new File(appPath, ".nomedia");
+            if (!nomedia.exists()) {
+                try {
+                    FileOutputStream fos = new FileOutputStream(nomedia);
+                    fos.close();
+                } catch (FileNotFoundException e) {
+                    Log.d("SignatureImpl", "File not found: " + e.getMessage());
+                } catch (IOException e) {
+                    Log.d("SignatureImpl", "Error accessing file: " + e.getMessage());
+                }
+            }
+            //salvo la signature
+            File picture = new File(appPath, "signature_" + sessionID + ".png");
+            try {
+                FileOutputStream fos = new FileOutputStream(picture);
+                toBitmap().compress(Bitmap.CompressFormat.PNG, 90, fos);
+                fos.close();
+                result = true;
+            } catch (FileNotFoundException e) {
+                Log.d("SignatureImpl", "File not found: " + e.getMessage());
+            } catch (IOException e) {
+                Log.d("SignatureImpl", "Error accessing file: " + e.getMessage());
+            }
         }
-        try {
-            FileOutputStream fos = new FileOutputStream(pictureFile);
-            toBitmap().compress(Bitmap.CompressFormat.PNG, 90, fos);
-            fos.close();
-        } catch (FileNotFoundException e) {
-            Log.d("SignatureImpl", "File not found: " + e.getMessage());
-        } catch (IOException e) {
-            Log.d("SignatureImpl", "Error accessing file: " + e.getMessage());
-        }*/
+        return result;
+    }
+
+    /* Checks if external storage is available for read and write */
+    public boolean isExternalStorageWritable() {
+        String state = Environment.getExternalStorageState();
+        if (Environment.MEDIA_MOUNTED.equals(state)) {
+            return true;
+        }
+        return false;
+    }
+
+    /* Checks if external storage is available to at least read */
+    public boolean isExternalStorageReadable() {
+        String state = Environment.getExternalStorageState();
+        if (Environment.MEDIA_MOUNTED.equals(state) ||
+                Environment.MEDIA_MOUNTED_READ_ONLY.equals(state)) {
+            return true;
+        }
+        return false;
     }
 
     @Override

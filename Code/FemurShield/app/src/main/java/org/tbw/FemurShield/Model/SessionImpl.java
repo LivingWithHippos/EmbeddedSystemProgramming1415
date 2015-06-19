@@ -22,7 +22,7 @@ public class SessionImpl extends Observable implements Session{
         datetime = sdf.format(new Date());
         name="Sessione "+datetime;
         ID=datetime;
-        signature=new SignatureImpl(SignatureImpl.CIRCLE_STATIC);
+        signature=new SignatureImpl(SignatureImpl.CIRCLE_STATIC,datetime);
     }
 
     public SessionImpl(String nome,String datetime, ArrayList<Fall> falls,int duration,SignatureImpl sign){
