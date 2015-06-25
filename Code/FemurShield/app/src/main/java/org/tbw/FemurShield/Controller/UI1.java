@@ -3,27 +3,14 @@ package org.tbw.FemurShield.Controller;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ImageView;
-import android.widget.ListView;
-import android.widget.SimpleAdapter;
 
-import org.tbw.FemurShield.Controller.Settings.SettingsFragment;
-import org.tbw.FemurShield.Model.ActiveSession;
-import org.tbw.FemurShield.Model.OldSession;
-import org.tbw.FemurShield.Model.Session;
 import org.tbw.FemurShield.Model.SessionManager;
 import org.tbw.FemurShield.R;
 
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.HashMap;
 import java.util.List;
 
 
@@ -112,8 +99,14 @@ public class UI1 extends BaseActivity implements SessionsListFragment.OnSessionC
 
     @Override
     public void onSessionClick(String sessionID) {
-        Intent i = new Intent(getBaseContext(), UI2.class);
-        i.putExtra(UI2.SESSION_DATA_STAMP, sessionID);
-        startActivity(i);
+        if(SessionManager.getInstance().getActiveSession()!=null && SessionManager.getInstance().getActiveSession().getId().equals(sessionID)){
+            Intent i = new Intent(getBaseContext(), UI3.class);
+            startActivity(i);
+        }
+        else {
+            Intent i = new Intent(getBaseContext(), UI2.class);
+            i.putExtra(UI2.SESSION_DATA_STAMP, sessionID);
+            startActivity(i);
+        }
     }
 }

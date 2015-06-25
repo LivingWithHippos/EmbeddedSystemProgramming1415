@@ -8,9 +8,4 @@ class OldSessionImpl extends SessionImpl implements OldSession {
     public OldSessionImpl(SessionImpl o){
         super(o.name,o.datetime,o.cadute,o.secondduration,o.signature);
     }
-
-    @Override
-    public String getDuration() {
-        return ""+secondduration;
-    }
 }

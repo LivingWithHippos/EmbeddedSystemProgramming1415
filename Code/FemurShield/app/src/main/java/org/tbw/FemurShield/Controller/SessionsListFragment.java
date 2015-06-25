@@ -43,25 +43,31 @@ public class SessionsListFragment extends ListFragment {
     public void aggiornaLista(){
 
         sItems=new ArrayList<>();
+        //aggiungo la sessone attiva
+        ActiveSession a =SessionManager.getInstance().getActiveSession();
+        if(a!=null) {
+            SessionsListItem sli=new SessionsListItem(a.getSignature().toBitmap(),a.getName(),a.getDataTime(),a.getFallsNumber(),"",true);
+            sItems.add(sli);
+
+        }
         //aggiungo le sessioni vecchie
         ArrayList<OldSession> old= SessionManager.getInstance().getOldSessions();
         if(old!=null) {
             for (int i = 0; i < old.size(); i++) {
                 Session s = old.get(i);
-                //TODO metti durata
-                SessionsListItem sli = new SessionsListItem(s.getSignature().toBitmap(), s.getName(), s.getDataTime(), s.getFallsNumber(), false);
+                long timeElapsed=s.getDuration();
+                int hours = (int) (timeElapsed / 3600000);
+                String h=((""+hours).length()==1)?"0"+hours: ""+hours;
+                int minutes = (int) (timeElapsed - hours * 3600000) / 60000;
+                String m=((""+minutes).length()==1)?"0"+minutes: ""+minutes;
+                int seconds = (int) (timeElapsed - hours * 3600000 - minutes * 60000) / 1000;
+                String se=((""+seconds).length()==1)?"0"+seconds: ""+seconds;
+                String durata=""+h+":"+m+":"+se;
+                SessionsListItem sli = new SessionsListItem(s.getSignature().toBitmap(), s.getName(), s.getDataTime(), s.getFallsNumber(),durata, false);
                 sItems.add(sli);
             }
         }
 
-        //aggiungo la sessone attiva
-        ActiveSession a =SessionManager.getInstance().getActiveSession();
-        if(a!=null) {
-            //TODO metti durata
-            SessionsListItem sli=new SessionsListItem(a.getSignature().toBitmap(),a.getName(),a.getDataTime(),a.getFallsNumber(),true);
-            sItems.add(sli);
-
-        }
         sAdapter = new SessionsListAdapter(getActivity(), sItems);
         setListAdapter(sAdapter);
     }

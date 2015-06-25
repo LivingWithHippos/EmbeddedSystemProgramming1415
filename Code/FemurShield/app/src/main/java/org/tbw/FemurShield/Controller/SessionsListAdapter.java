@@ -101,13 +101,13 @@ class SessionsListItem{
     public boolean state;
     private String datetime;
 
-            public SessionsListItem(Bitmap signature,String name, String date,int fallsNumber,boolean state) {
+            public SessionsListItem(Bitmap signature,String name, String date,int fallsNumber,String duration,boolean state) {
                 this.signature = signature;
                 this.name = name;
                 this.falls = fallsNumber;
                 this.datetime=date;
                 //TODO: ricevere durata
-                duration="in corso...";
+                this.duration=duration;
                 this.state=state;
 
                 try {

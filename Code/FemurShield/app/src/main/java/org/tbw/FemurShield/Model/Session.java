@@ -14,4 +14,6 @@ public interface Session {
     public int getFallsNumber();
     public void setName(String sessionname);
     public String getId();
+    public long getDuration();
+    public void setDuration(long duration);
 }

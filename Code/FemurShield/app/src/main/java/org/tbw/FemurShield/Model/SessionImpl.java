@@ -10,7 +10,7 @@ import java.util.Observable;
  */
 public class SessionImpl extends Observable implements Session{
     protected ArrayList<Fall> cadute;
-    protected int secondduration=0;
+    protected long secondduration=0;
     protected SignatureImpl signature;
     protected String name;
     protected String datetime;
@@ -25,7 +25,7 @@ public class SessionImpl extends Observable implements Session{
         signature=new SignatureImpl(SignatureImpl.CIRCLE_STATIC,datetime);
     }
 
-    public SessionImpl(String nome,String datetime, ArrayList<Fall> falls,int duration,SignatureImpl sign){
+    public SessionImpl(String nome,String datetime, ArrayList<Fall> falls,long duration,SignatureImpl sign){
         this.name=nome;
         this.datetime=datetime;
         this.cadute=falls;
@@ -43,9 +43,16 @@ public class SessionImpl extends Observable implements Session{
     public String getName() {
         return name;
     }
-
     @Override
     public void setName(String sessionname) { name=sessionname;}
+
+    @Override
+    public long getDuration() {
+        return secondduration;
+    }
+
+    @Override
+    public void setDuration(long duration) { secondduration=duration;}
 
     @Override
     public String getId() {

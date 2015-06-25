@@ -30,6 +30,11 @@
             android:id="@+id/session_time"
             android:textSize="@dimen/testo_lista" />
 
+        <Chronometer
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/chronometerui3" />
+
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"

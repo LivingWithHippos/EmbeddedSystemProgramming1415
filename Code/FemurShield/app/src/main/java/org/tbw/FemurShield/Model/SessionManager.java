@@ -144,11 +144,13 @@ public class SessionManager {
      * termina la sessione attiva
      * @return true se è stata terminata con successo, false se non esiste ancora una sessione
      */
-    public boolean StopSession(){
+    public boolean StopSession(long duration){
         if(sessioneattiva==null)
             return false;
         sessioneattiva.Stop(); //TODO: maggiore controllo magari
-        sessionivecchie.put(sessioneattiva.getId(),new OldSessionImpl(sessioneattiva)); //sfrutto con polimorfismo il costruttore OldSessionImpl(SessionImpl o)
+        OldSessionImpl nuovavecchia=new OldSessionImpl(sessioneattiva);
+        nuovavecchia.setDuration(duration);
+        sessionivecchie.put(sessioneattiva.getId(),nuovavecchia); //sfrutto con polimorfismo il costruttore OldSessionImpl(SessionImpl o)
         sessioneattiva=null; //cancello la sessione attiva
         running=false;
         return true;

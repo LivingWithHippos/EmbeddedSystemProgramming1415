@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Chronometer;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
@@ -24,6 +25,7 @@ import java.util.HashMap;
 
 
 public class UI3 extends BaseActivity implements org.tbw.FemurShield.Observer.Observer {
+    private long duration=0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,15 +64,19 @@ public class UI3 extends BaseActivity implements org.tbw.FemurShield.Observer.Ob
         ((TextView)findViewById(R.id.session_name)).setText(SessionManager.getInstance().getActiveSession().getName());
         ((TextView)findViewById(R.id.session_date)).setText(SessionManager.getInstance().getActiveSession().getDataTime());
         //TODO timer nel controller che si stoppa e riparte a seconda degli eventi
-        ((TextView)findViewById(R.id.num_fall)).setText(""+SessionManager.getInstance().getActiveSession().getFallsNumber());
+        ((TextView)findViewById(R.id.num_fall)).setText("" + SessionManager.getInstance().getActiveSession().getFallsNumber());
         if(Controller.getInstance().isRunning()){
             ((ImageView)findViewById(R.id.pausebtnui3)).setVisibility(ImageView.VISIBLE);
             ((ImageView)findViewById(R.id.stopbntui3)).setVisibility(ImageView.VISIBLE);
+            ((Chronometer)findViewById(R.id.chronometerui3)).setBase(Controller.getInstance().getActualChronoBase());
+            ((Chronometer)findViewById(R.id.chronometerui3)).start();
         }
-        else
-            ((ImageView)findViewById(R.id.startbtnui3)).setVisibility(ImageView.VISIBLE);
-    }
+        else {
+            ((ImageView) findViewById(R.id.startbtnui3)).setVisibility(ImageView.VISIBLE);
+            ((Chronometer)findViewById(R.id.chronometerui3)).setBase(Controller.getInstance().getActualChronoBase());
 
+        }
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -168,7 +174,7 @@ public class UI3 extends BaseActivity implements org.tbw.FemurShield.Observer.Ob
     public void onPauseClick(View view){
         //TODO: business logic
         Controller.getInstance().PauseSession(this);
-
+        ((Chronometer)findViewById(R.id.chronometerui3)).stop();
         //modifo le visibilità dei bottoni di controllo
         ((ImageView)findViewById(R.id.pausebtnui3)).setVisibility(ImageView.INVISIBLE);
         ((ImageView)findViewById(R.id.stopbntui3)).setVisibility(ImageView.VISIBLE);
@@ -179,7 +185,8 @@ public class UI3 extends BaseActivity implements org.tbw.FemurShield.Observer.Ob
     public void onPlayClick(View view){
         //TODO: business logic
         Controller.getInstance().StartSession(this);
-
+        ((Chronometer)findViewById(R.id.chronometerui3)).setBase(Controller.getInstance().getActualChronoBase());
+        ((Chronometer)findViewById(R.id.chronometerui3)).start();
         //modifo le visibilità dei bottoni di controllo
         ((ImageView)findViewById(R.id.pausebtnui3)).setVisibility(ImageView.VISIBLE);
         ((ImageView)findViewById(R.id.stopbntui3)).setVisibility(ImageView.VISIBLE);
@@ -190,7 +197,7 @@ public class UI3 extends BaseActivity implements org.tbw.FemurShield.Observer.Ob
     public void onStopClick(View view){
         //TODO: business logic
         Controller.getInstance().StopSession(this);
-
+        ((Chronometer)findViewById(R.id.chronometerui3)).stop();
         //modifo le visibilità dei bottoni di controllo
         ((ImageView)findViewById(R.id.pausebtnui3)).setVisibility(ImageView.INVISIBLE);
         ((ImageView)findViewById(R.id.stopbntui3)).setVisibility(ImageView.INVISIBLE);

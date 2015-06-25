@@ -2,6 +2,9 @@ package org.tbw.FemurShield.Controller;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.os.SystemClock;
+import android.util.Log;
+import android.widget.Chronometer;
 
 import org.tbw.FemurShield.Model.ActiveSession;
 import org.tbw.FemurShield.Model.Fall;
@@ -16,14 +19,16 @@ import org.tbw.FemurShield.Observer.Observer;
 public class Controller implements Observer {
 
     private static Controller instance;
+    Chronometer crono;
 
     private Controller(){
+        instance = this;
     }
 
     public static Controller getInstance(){
         if(instance!=null)
             return instance;
-        instance=new Controller();
+        new Controller();
         getNotification().addObserver(instance);
         return instance;
     }
@@ -36,23 +41,42 @@ public class Controller implements Observer {
             return null; //TODO: sollevare errore magari;
 
     }
-
+    long durata=0;
     public void StartSession(Activity a){
         SessionManager.getInstance().StartSession();
+        if(crono==null) {
+            crono = new Chronometer(a.getBaseContext());
+        }
+        Log.e("dutata",""+(-durata));
+        crono.setBase(SystemClock.elapsedRealtime()+durata);
+        crono.start();
         Intent i = new Intent(a,FallDetector.class);
         a.startService(i);
     }
 
     public void PauseSession(Activity a){
         SessionManager.getInstance().PauseSession();
+        durata=crono.getBase()-SystemClock.elapsedRealtime();
+        SessionManager.getInstance().getActiveSession().setDuration(-durata);
+        Log.e("dutata", "" + (-durata));
+        crono.stop();
         Intent i=new Intent(a, FallDetector.class);
         a.stopService(i);
     }
 
     public void StopSession(Activity a){
-        SessionManager.getInstance().StopSession();
+        durata=crono.getBase()-SystemClock.elapsedRealtime();
+        SessionManager.getInstance().StopSession((-durata));
+        Log.e("dutata", "" + (-durata));
+        durata=0;
+        crono.stop();
+        crono =null;
         Intent i=new Intent(a, FallDetector.class);
         a.stopService(i);
+    }
+
+    public long getActualChronoBase(){
+        return crono.getBase();
     }
 
     public boolean isRunning(){

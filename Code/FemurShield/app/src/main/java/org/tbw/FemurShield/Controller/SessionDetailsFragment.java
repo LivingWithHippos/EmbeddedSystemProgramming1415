@@ -46,7 +46,6 @@ public class SessionDetailsFragment extends Fragment
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-
     }
 
     @Override
@@ -83,7 +82,15 @@ public class SessionDetailsFragment extends Fragment
             ImageView ivGrafico = (ImageView) getView().findViewById(R.id.ivGraficoSessione);
 
             tvNome.setText(session.getName());
-            tvDurata.setText("durata session");
+            long timeElapsed=session.getDuration();
+            int hours = (int) (timeElapsed / 3600000);
+            String h=((""+hours).length()==1)?"0"+hours: ""+hours;
+            int minutes = (int) (timeElapsed - hours * 3600000) / 60000;
+            String m=((""+minutes).length()==1)?"0"+minutes: ""+minutes;
+            int seconds = (int) (timeElapsed - hours * 3600000 - minutes * 60000) / 1000;
+            String se=((""+seconds).length()==1)?"0"+seconds: ""+seconds;
+            String durata=""+h+":"+m+":"+se;
+            tvDurata.setText(durata);
             ivGrafico.setImageBitmap(session.getSignature().toBitmap());
 
             getView().invalidate();
