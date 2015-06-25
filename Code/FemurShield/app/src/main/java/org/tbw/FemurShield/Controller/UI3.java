@@ -7,6 +7,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -73,7 +74,7 @@ public class UI3 extends BaseActivity implements org.tbw.FemurShield.Observer.Ob
         }
         else {
             ((ImageView) findViewById(R.id.startbtnui3)).setVisibility(ImageView.VISIBLE);
-            ((Chronometer)findViewById(R.id.chronometerui3)).setBase(Controller.getInstance().getActualChronoBase());
+            ((Chronometer)findViewById(R.id.chronometerui3)).setBase(SystemClock.elapsedRealtime()+Controller.getInstance().durata);
 
         }
     }
