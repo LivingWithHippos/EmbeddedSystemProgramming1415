@@ -3,7 +3,6 @@ package org.tbw.FemurShield.Controller;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.SystemClock;
-import android.util.Log;
 import android.widget.Chronometer;
 
 import org.tbw.FemurShield.Model.ActiveSession;
@@ -47,7 +46,6 @@ public class Controller implements Observer {
         if(crono==null) {
             crono = new Chronometer(a.getBaseContext());
         }
-        Log.e("dutata",""+(-durata));
         crono.setBase(SystemClock.elapsedRealtime()+durata);
         crono.start();
         Intent i = new Intent(a,FallDetector.class);
@@ -58,7 +56,6 @@ public class Controller implements Observer {
         SessionManager.getInstance().PauseSession();
         durata=crono.getBase()-SystemClock.elapsedRealtime();
         SessionManager.getInstance().getActiveSession().setDuration(-durata);
-        Log.e("dutata", "" + (-durata));
         crono.stop();
         Intent i=new Intent(a, FallDetector.class);
         a.stopService(i);
@@ -67,7 +64,6 @@ public class Controller implements Observer {
     public void StopSession(Activity a){
         durata=crono.getBase()-SystemClock.elapsedRealtime();
         SessionManager.getInstance().StopSession((-durata));
-        Log.e("dutata", "" + (-durata));
         durata=0;
         crono.stop();
         crono =null;
