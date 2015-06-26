@@ -37,7 +37,7 @@ public class FallDetector extends IntentService implements SensorEventListener {
     private final int LIMITE_MINIMO_CADUTA_GYRO=7; //identifica il valore minimo che idedntifica una caduta (giroscopio)
 
     //tempo di campionamento dati
-    private int tempocampionamento=20;//TODO problemi con 2
+    private int tempocampionamento= 20 ;
     
     //durata che identifica per quanto tempo mi interessano i valori in ms
     private int tempovalori=500;
@@ -165,6 +165,9 @@ public class FallDetector extends IntentService implements SensorEventListener {
     }
 
     private void startDetector(){
+        PreferencesEditor pref=new PreferencesEditor(getBaseContext());
+        tempocampionamento= 20+(((65000-20)/100)*pref.getSamplingRate()) ;
+        Log.e("SAMPLING RATING",""+tempocampionamento);
         if(!isRunning) {
             isRunning=true;
             //costruisco la notifica da visualizzare
@@ -176,7 +179,7 @@ public class FallDetector extends IntentService implements SensorEventListener {
             //setto L'ID per la notifica
             final int notificationID = 1234567;
             startForeground(notificationID, notification);
-            //TODO assegnazione at the first call only
+
             sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
             accelerometro = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
             sensorManager.registerListener(this, accelerometro, tempocampionamento);
@@ -198,7 +201,8 @@ public class FallDetector extends IntentService implements SensorEventListener {
         }
     }
 
-    boolean tipoA=false;
+    boolean fall=false;
+    int cycleAfterFall=0;
 
     public void fallAlgorithm(SensorEvent event){
         /*
@@ -228,117 +232,108 @@ public class FallDetector extends IntentService implements SensorEventListener {
             if(event.sensor.getType() == Sensor.TYPE_ACCELEROMETER)
                 impactdetect(x,y,z);
 
-        if(fallstate==IDENTIFIED && impactstate==IDENTIFIED){
-            int typeOfFall;
-            if(tipoA)
-                typeOfFall=Fall.IMPACT;
-            else
-                typeOfFall=Fall.TUMBLE_OR_MALAISE;
-            Log.println(Log.INFO,"CADUTAAAAAAAAAAAAAAAAA", ""+typeOfFall);
-            //trasformo i dati del buffer nel formato richiesto ovvero fall[3][]
-
-            //TODO per ogni buffer da inviare (da chiedere quali valori devono esser visualizzati giro o acc)
-
-
-            Log.println(Log.INFO,"CANCELLOOOOOOOOOO", ""+typeOfFall);
-            //valori prima della caduta
-            float[][] beforevalue=new float[3][];
-            for(int i=0;i<3;i++){
-                beforevalue[i]=new float[bufferValueBeforeAcc.get(i).size()];
-                for(int j=0; j<bufferValueBeforeAcc.get(i).size();j++){
-                    beforevalue[i][j]=bufferValueBeforeAcc.get(i).get(j);
-                }
+        if(fall){
+            cycleAfterFall++;
+            if(cycleAfterFall>70) {
+                fall = false;
+                cycleAfterFall=0;
             }
-            //valori della caduta
-
-            float[][] fallvalue=new float[3][];
-            for(int i=0;i<3;i++){
-                fallvalue[i]=new float[bufferValueFallGyro.get(i).size()];
-                for(int j=0; j<bufferValueFallGyro.get(i).size();j++){
-                    fallvalue[i][j]=bufferValueFallGyro.get(i).get(j);
-                }
-            }
-
-            //valori dopo la caduta
-            float[][] aftervalue=new float[3][];
-            for(int i=0;i<3;i++){
-                aftervalue[i]=new float[bufferValueAfterAcc.get(i).size()];
-                for(int j=0; j<bufferValueAfterAcc.get(i).size();j++){
-                    aftervalue[i][j]=bufferValueAfterAcc.get(i).get(j);
-                }
-            }
-
-            //aggiungo la caduta
-            //TODO inviare anche typeOfFall
-
-            Log.println(Log.INFO, "cadutaaaaa NOTIFY", Controller.getNotification().toString() + "   ");
-
-            final double[] position=new double[2];
-            LocationLocator.LocationResult locationResult = new LocationLocator.LocationResult(){
-                @Override
-                public void gotLocation(Location location)
-                {
-                    position[0] = location.getLatitude(); // leggo la latuditine e la metto in position
-                    position[1] = location.getLongitude(); // idem con la longitudine
-                }
-            };
-            LocationLocator myLocation = new LocationLocator();
-            myLocation.getLocation(getBaseContext(),locationResult);
-
-            Fall f =new Fall(beforevalue, fallvalue, aftervalue,position[0], position[1]);
-            Controller.getNotification().NotifyFall(f);
-
-            //svuoto i buffer e i campi...e metto i valori di after in before
-            fallstate=NONE;
-            impactstate=NONE;
-            bufferValueBeforeAcc.clear();
-            bufferValueFallAcc.clear();
-            bufferValueBeforeGyro.clear();
-            bufferValueFallGyro.clear();
-            bufferValueBeforeAcc=new ArrayList<>(3);
-            bufferValueBeforeAcc.add(X_VALUE, bufferValueAfterAcc.get(X_VALUE));
-            bufferValueBeforeAcc.add(Y_VALUE, bufferValueAfterAcc.get(Y_VALUE));
-            bufferValueBeforeAcc.add(Z_VALUE, bufferValueAfterAcc.get(Z_VALUE));
-            bufferValueAfterAcc.clear();
-            bufferValueBeforeGyro=new ArrayList<>(3);
-            bufferValueBeforeGyro.add(X_VALUE,bufferValueAfterGyro.get(X_VALUE));
-            bufferValueBeforeGyro.add(Y_VALUE, bufferValueAfterGyro.get(Y_VALUE));
-            bufferValueBeforeGyro.add(Z_VALUE,bufferValueAfterGyro.get(Z_VALUE));
-            bufferValueAfterGyro.clear();
-
-            //ri-inizializzo i buffer
-            bufferValueFallAcc =new ArrayList<>(3);
-            bufferValueAfterAcc =new ArrayList<>(3);
-
-            bufferValueFallGyro =new ArrayList<>(3);
-            bufferValueAfterGyro =new ArrayList<>(3);
-
-            //buffer per l'accelerometro
-            bufferValueFallAcc.add(X_VALUE, new ArrayList<Float>());
-            bufferValueFallAcc.add(Y_VALUE, new ArrayList<Float>());
-            bufferValueFallAcc.add(Z_VALUE, new ArrayList<Float>());
-
-            bufferValueAfterAcc.add(X_VALUE, new ArrayList<Float>());
-            bufferValueAfterAcc.add(Y_VALUE, new ArrayList<Float>());
-            bufferValueAfterAcc.add(Z_VALUE, new ArrayList<Float>());
-
-            //buffer per il giroscopio
-            bufferValueFallGyro.add(X_VALUE, new ArrayList<Float>());
-            bufferValueFallGyro.add(Y_VALUE, new ArrayList<Float>());
-            bufferValueFallGyro.add(Z_VALUE, new ArrayList<Float>());
-
-            bufferValueAfterGyro.add(X_VALUE, new ArrayList<Float>());
-            bufferValueAfterGyro.add(Y_VALUE, new ArrayList<Float>());
-            bufferValueAfterGyro.add(Z_VALUE, new ArrayList<Float>());
-            tipoA=false;
         }
         else {
-            //controllo se è avvenuto un impatto prima dell'inizio della caduta o dello studio di 
-            // una caduta...in quel caso so che potrebbe essere l'impatto iniziale quindi la caduta
-            // sarebbe di tipologia A
-            if (impactstate == IDENTIFIED && fallstate==NONE){ //fallstate != IDENTIFIED
-                tipoA = true;
-                Log.println(Log.INFO,"TIPO A", "assegnato");
+            if (fallstate == IDENTIFIED && impactstate == IDENTIFIED) {
+                fall = true;
+                Log.println(Log.INFO, "CADUTAAAAAAAAAAAAAAAAA", "");
+                //trasformo i dati del buffer nel formato richiesto ovvero fall[3][]
+
+                //TODO per ogni buffer da inviare (da chiedere quali valori devono esser visualizzati giro o acc)
+
+
+                Log.println(Log.INFO, "CANCELLOOOOOOOOOO", "");
+                //valori prima della caduta
+                float[][] beforevalue = new float[3][];
+                for (int i = 0; i < 3; i++) {
+                    beforevalue[i] = new float[bufferValueBeforeAcc.get(i).size()];
+                    for (int j = 0; j < bufferValueBeforeAcc.get(i).size(); j++) {
+                        beforevalue[i][j] = bufferValueBeforeAcc.get(i).get(j);
+                    }
+                }
+                //valori della caduta
+
+                float[][] fallvalue = new float[3][];
+                for (int i = 0; i < 3; i++) {
+                    fallvalue[i] = new float[bufferValueFallGyro.get(i).size()];
+                    for (int j = 0; j < bufferValueFallGyro.get(i).size(); j++) {
+                        fallvalue[i][j] = bufferValueFallGyro.get(i).get(j);
+                    }
+                }
+
+                //valori dopo la caduta
+                float[][] aftervalue = new float[3][];
+                for (int i = 0; i < 3; i++) {
+                    aftervalue[i] = new float[bufferValueAfterAcc.get(i).size()];
+                    for (int j = 0; j < bufferValueAfterAcc.get(i).size(); j++) {
+                        aftervalue[i][j] = bufferValueAfterAcc.get(i).get(j);
+                    }
+                }
+
+                Log.println(Log.INFO, "cadutaaaaa NOTIFY", Controller.getNotification().toString() + "   ");
+
+                final double[] position = new double[2];
+                LocationLocator.LocationResult locationResult = new LocationLocator.LocationResult() {
+                    @Override
+                    public void gotLocation(Location location) {
+                        position[0] = location.getLatitude(); // leggo la latuditine e la metto in position
+                        position[1] = location.getLongitude(); // idem con la longitudine
+                    }
+                };
+                LocationLocator myLocation = new LocationLocator();
+                myLocation.getLocation(getBaseContext(), locationResult);
+
+                Fall f = new Fall(beforevalue, fallvalue, aftervalue, position[0], position[1]);
+                Controller.getNotification().NotifyFall(f);
+
+                //svuoto i buffer e i campi...e metto i valori di after in before
+                fallstate = NONE;
+                impactstate = NONE;
+                bufferValueBeforeAcc.clear();
+                bufferValueFallAcc.clear();
+                bufferValueBeforeGyro.clear();
+                bufferValueFallGyro.clear();
+                bufferValueBeforeAcc = new ArrayList<>(3);
+                bufferValueBeforeAcc.add(X_VALUE, bufferValueAfterAcc.get(X_VALUE));
+                bufferValueBeforeAcc.add(Y_VALUE, bufferValueAfterAcc.get(Y_VALUE));
+                bufferValueBeforeAcc.add(Z_VALUE, bufferValueAfterAcc.get(Z_VALUE));
+                bufferValueAfterAcc.clear();
+                bufferValueBeforeGyro = new ArrayList<>(3);
+                bufferValueBeforeGyro.add(X_VALUE, bufferValueAfterGyro.get(X_VALUE));
+                bufferValueBeforeGyro.add(Y_VALUE, bufferValueAfterGyro.get(Y_VALUE));
+                bufferValueBeforeGyro.add(Z_VALUE, bufferValueAfterGyro.get(Z_VALUE));
+                bufferValueAfterGyro.clear();
+
+                //ri-inizializzo i buffer
+                bufferValueFallAcc = new ArrayList<>(3);
+                bufferValueAfterAcc = new ArrayList<>(3);
+
+                bufferValueFallGyro = new ArrayList<>(3);
+                bufferValueAfterGyro = new ArrayList<>(3);
+
+                //buffer per l'accelerometro
+                bufferValueFallAcc.add(X_VALUE, new ArrayList<Float>());
+                bufferValueFallAcc.add(Y_VALUE, new ArrayList<Float>());
+                bufferValueFallAcc.add(Z_VALUE, new ArrayList<Float>());
+
+                bufferValueAfterAcc.add(X_VALUE, new ArrayList<Float>());
+                bufferValueAfterAcc.add(Y_VALUE, new ArrayList<Float>());
+                bufferValueAfterAcc.add(Z_VALUE, new ArrayList<Float>());
+
+                //buffer per il giroscopio
+                bufferValueFallGyro.add(X_VALUE, new ArrayList<Float>());
+                bufferValueFallGyro.add(Y_VALUE, new ArrayList<Float>());
+                bufferValueFallGyro.add(Z_VALUE, new ArrayList<Float>());
+
+                bufferValueAfterGyro.add(X_VALUE, new ArrayList<Float>());
+                bufferValueAfterGyro.add(Y_VALUE, new ArrayList<Float>());
+                bufferValueAfterGyro.add(Z_VALUE, new ArrayList<Float>());
             }
         }
     }
@@ -347,7 +342,7 @@ public class FallDetector extends IntentService implements SensorEventListener {
 
     public void falldetect(float x, float y, float z){
         try{
-            if(fallstate==NONE){
+            if(fallstate==NONE){//se non ho ancora rilevato possibili cadute, analizzo i dati per capire se potrebbe esserci un inizio.
                 /*
                 controllo se ho la risultante delle accellerazioni sia un valore di una potenziale caduta.
                 in quel caso mi metto in osservazione/studio dei prossimi valori impostando fallstate=IN_PROGRESS;
@@ -356,7 +351,7 @@ public class FallDetector extends IntentService implements SensorEventListener {
                     fallstate=IN_PROGRESS;
 
                     Log.println(Log.INFO,"caduta in progress", "");
-                    //aggiungo il valore nell'array con i valori di caduta
+                    //aggiungo il valore nell'array con i valori di caduta (nell'array dei dati precedenti alla caduta)
                     bufferValueFallGyro.get(X_VALUE).add(x);
                     bufferValueFallGyro.get(Y_VALUE).add(y);
                     bufferValueFallGyro.get(Z_VALUE).add(z);
@@ -380,11 +375,10 @@ public class FallDetector extends IntentService implements SensorEventListener {
             else{
                 if(fallstate==IN_PROGRESS){
                     /* controllo il numero di valori alti per dire se è effettivamente un urto se al
-                    raggiungimento del tempo statndard di impatto ho raggiunto un tot di valori sufficienti
+                    raggiungimento del tempo standard di impatto ho raggiunto un tot di valori sufficienti
                     a quel punto passo ad IDENTIFIED atrimenti a NONE ed i valori nel buffer di caduta
                     vengono spostati sul buffer di beforefall.*/
                     if(bufferValueFallGyro.get(X_VALUE).size()*tempocampionamento>DURATA_CADUTA_GYRO) {
-                        //TODO controllare anche se ho avuto un tot di valori (vedi commento sopra)
                         fallstate = IDENTIFIED;
 
                         Log.println(Log.INFO,"caduta identified", "");
@@ -404,7 +398,6 @@ public class FallDetector extends IntentService implements SensorEventListener {
                         fallstate=NONE;
                         countlifegyro=0;
                         Log.println(Log.INFO,"caduta terminata", "");
-                        tipoA=false;
 
                         for (int i =0;i<bufferValueAfterGyro.get(X_VALUE).size();i++) {
                             bufferValueBeforeGyro.get(X_VALUE).add(bufferValueAfterGyro.get(X_VALUE).get(i));
@@ -425,7 +418,7 @@ public class FallDetector extends IntentService implements SensorEventListener {
                 }
             }
         }catch (IndexOutOfBoundsException e ){
-            Log.println(Log.INFO, "BUGGGGGGGG", "IndexOutOfBoundsException");}
+            Log.println(Log.ERROR, "Errore", "IndexOutOfBoundsException");}
     }
 
     int countlifeacc=0;
