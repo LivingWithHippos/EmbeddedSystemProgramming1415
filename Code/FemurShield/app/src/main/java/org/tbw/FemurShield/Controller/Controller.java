@@ -84,7 +84,7 @@ public class Controller implements Observer {
     }
 
     public boolean isRecording(){
-        return SessionManager.getInstance().getActiveSession()==null;
+        return SessionManager.getInstance().getActiveSession()!=null;
     }
 
     public static NotificationFall getNotification(){

@@ -28,6 +28,34 @@ public class SessionCommandsFragment extends Fragment {
         return fragment;
     }
 
+    @Override
+    public void onResume(){
+        super.onResume();
+        Log.e("run", "" + Controller.getInstance().isRunning());
+        Log.e("rec",""+Controller.getInstance().isRecording());
+
+        if(Controller.getInstance().isRecording()) {
+            if (Controller.getInstance().isRunning()) {
+                rec.setVisibility(ImageView.INVISIBLE);
+                pause.setVisibility(ImageView.VISIBLE);
+                stop.setVisibility(ImageView.VISIBLE);
+                play.setVisibility(ImageView.INVISIBLE);
+            }
+            else{
+                rec.setVisibility(ImageView.INVISIBLE);
+                pause.setVisibility(ImageView.INVISIBLE);
+                stop.setVisibility(ImageView.VISIBLE);
+                play.setVisibility(ImageView.VISIBLE);
+            }
+        }
+        else{
+            rec.setVisibility(ImageView.VISIBLE);
+            pause.setVisibility(ImageView.INVISIBLE);
+            stop.setVisibility(ImageView.INVISIBLE);
+            play.setVisibility(ImageView.INVISIBLE);
+        }
+    }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
