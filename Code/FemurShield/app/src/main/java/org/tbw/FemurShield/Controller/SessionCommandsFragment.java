@@ -31,8 +31,6 @@ public class SessionCommandsFragment extends Fragment {
     @Override
     public void onResume(){
         super.onResume();
-        Log.e("run", "" + Controller.getInstance().isRunning());
-        Log.e("rec",""+Controller.getInstance().isRecording());
 
         if(Controller.getInstance().isRecording()) {
             if (Controller.getInstance().isRunning()) {
