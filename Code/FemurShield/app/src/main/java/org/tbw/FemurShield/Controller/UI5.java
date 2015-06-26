@@ -311,17 +311,6 @@ public class UI5 extends BaseActivity implements SettingsFragment.OnOptionSelect
             DurationFragment duration = new DurationFragment();
             duration.show(getFragmentManager(), "DurationPicker");
         }
-        if (s.title.equalsIgnoreCase(getString(R.string.title_email_recipient))) {
-            EmailFragment emailFragment = new EmailFragment();
-            FragmentTransaction transaction = getFragmentManager().beginTransaction();
-
-            // rimpiazza il fragment attuale e lo aggiunge allo stack in modo che premendo indietro ricompaia
-            transaction.replace(R.id.fragment_container_settings, emailFragment);
-            transaction.addToBackStack(null);
-
-            // Commit the transaction
-            transaction.commit();
-        }
         if (s.title.equalsIgnoreCase("Simula Caduta"))
         {
             final double[] position=new double[2];
@@ -340,6 +329,17 @@ public class UI5 extends BaseActivity implements SettingsFragment.OnOptionSelect
             LocationLocator myLocation = new LocationLocator();
             myLocation.getLocation(getApplicationContext(), locationResult);
             Controller.getNotification().NotifyFall(f);
+        }
+        if (s.title.equalsIgnoreCase(getString(R.string.title_email_recipient))) {
+            EmailFragment emailFragment = new EmailFragment();
+            FragmentTransaction transaction = getFragmentManager().beginTransaction();
+
+            // rimpiazza il fragment attuale e lo aggiunge allo stack in modo che premendo indietro ricompaia
+            transaction.replace(R.id.fragment_container_settings, emailFragment);
+            transaction.addToBackStack(null);
+
+            // Commit the transaction
+            transaction.commit();
         }
     }
 }
