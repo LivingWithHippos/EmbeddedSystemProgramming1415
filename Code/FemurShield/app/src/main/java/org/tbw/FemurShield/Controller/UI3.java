@@ -7,7 +7,6 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.Bundle;
-import android.os.SystemClock;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -66,15 +65,15 @@ public class UI3 extends BaseActivity implements org.tbw.FemurShield.Observer.Ob
         ((TextView)findViewById(R.id.session_date)).setText(SessionManager.getInstance().getActiveSession().getDataTime());
         //TODO timer nel controller che si stoppa e riparte a seconda degli eventi
         ((TextView)findViewById(R.id.num_fall)).setText("" + SessionManager.getInstance().getActiveSession().getFallsNumber());
+
+        ((Chronometer)findViewById(R.id.chronometerui3)).setBase(Controller.getInstance().getActualChronoBase());
         if(Controller.getInstance().isRunning()){
             ((ImageView)findViewById(R.id.pausebtnui3)).setVisibility(ImageView.VISIBLE);
             ((ImageView)findViewById(R.id.stopbntui3)).setVisibility(ImageView.VISIBLE);
-            ((Chronometer)findViewById(R.id.chronometerui3)).setBase(Controller.getInstance().getActualChronoBase());
             ((Chronometer)findViewById(R.id.chronometerui3)).start();
         }
         else {
             ((ImageView) findViewById(R.id.startbtnui3)).setVisibility(ImageView.VISIBLE);
-            ((Chronometer)findViewById(R.id.chronometerui3)).setBase(SystemClock.elapsedRealtime()+Controller.getInstance().durata);
 
         }
     }

@@ -72,7 +72,9 @@ public class Controller implements Observer {
     }
 
     public long getActualChronoBase(){
-        return crono.getBase();
+        if(isRunning())
+            return crono.getBase();
+        return SystemClock.elapsedRealtime()+Controller.getInstance().durata;
     }
 
     public boolean isRunning(){
