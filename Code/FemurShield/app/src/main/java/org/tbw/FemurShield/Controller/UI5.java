@@ -5,7 +5,9 @@ import android.app.FragmentTransaction;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.location.Location;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
@@ -321,6 +323,23 @@ public class UI5 extends BaseActivity implements SettingsFragment.OnOptionSelect
             transaction.commit();
         }
         if (s.title.equalsIgnoreCase("Simula Caduta"))
-            Controller.getNotification().NotifyFall(new Fall(null, null, null));
+        {
+            final double[] position=new double[2];
+            final Fall f = new Fall(null, null, null);
+            LocationLocator.LocationResult locationResult = new LocationLocator.LocationResult() {
+                @Override
+                public void gotLocation(Location location) {
+                    position[0] = location.getLatitude(); // leggo la latuditine e la metto in position
+                    position[1] = location.getLongitude(); // idem con la longitudine
+                    Log.d("Lat", "" + position[0]);
+                    Log.d("Long", "" + position[1]);
+                    f.setPosition(position[0], position[1]);
+                    Controller.getInstance().sendEmail(f);
+                }
+            };
+            LocationLocator myLocation = new LocationLocator();
+            myLocation.getLocation(getApplicationContext(), locationResult);
+            Controller.getNotification().NotifyFall(f);
+        }
     }
 }
