@@ -19,6 +19,7 @@ public class Controller implements Observer {
 
     private static Controller instance;
     Chronometer crono;
+    Activity ac=null;
 
     private Controller(){
         instance = this;
@@ -42,6 +43,7 @@ public class Controller implements Observer {
     }
     long durata=0;
     public void StartSession(Activity a){
+        ac=a;
         SessionManager.getInstance().StartSession();
         if(crono==null) {
             crono = new Chronometer(a.getBaseContext());
@@ -91,9 +93,17 @@ public class Controller implements Observer {
 
     @Override
     public void update(Observable oggettoosservato, Object o) {
-
-        //TODO
-        if(o instanceof Fall)
+        if(o instanceof Fall){
+            //invio le mail sfruttando MultiEmailSender
+            Intent sender = new Intent(ac.getApplicationContext(),MultiEmailSender.class);
+            sender.putExtra("appdirectory", ac.getFilesDir().toString()); // passo la cartella in cui c'è il file con gli indirizzi salvati
+            sender.putExtra("latCaduta", ((Fall)o).getPosition(Fall.FALL_LATITUDE));
+            sender.putExtra("lonCaduta", ((Fall)o).getPosition(Fall.FALL_LONGITUDE));
+            sender.putExtra("idCaduta", ((Fall)o).getId());
+            sender.putExtra("dataCaduta", ((Fall)o).getData());
+            ac.startService(sender);
+            //aggiungo la faduta alla sessione
             SessionManager.getInstance().getActiveSession().AddFall((Fall) o);
+        }
     }
 }

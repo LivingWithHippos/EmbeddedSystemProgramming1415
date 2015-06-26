@@ -9,6 +9,7 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.location.Location;
 import android.os.IBinder;
 import android.util.Log;
 
@@ -270,9 +271,22 @@ public class FallDetector extends IntentService implements SensorEventListener {
             //aggiungo la caduta
             //TODO inviare anche typeOfFall
 
-            Log.println(Log.INFO, "cadutaaaaa NOTIFY", Controller.getNotification().toString()+"   ");
-            Controller.getNotification().NotifyFall(new Fall(beforevalue, fallvalue, aftervalue, getBaseContext()));
+            Log.println(Log.INFO, "cadutaaaaa NOTIFY", Controller.getNotification().toString() + "   ");
 
+            final double[] position=new double[2];
+            LocationLocator.LocationResult locationResult = new LocationLocator.LocationResult(){
+                @Override
+                public void gotLocation(Location location)
+                {
+                    position[0] = location.getLatitude(); // leggo la latuditine e la metto in position
+                    position[1] = location.getLongitude(); // idem con la longitudine
+                }
+            };
+            LocationLocator myLocation = new LocationLocator();
+            myLocation.getLocation(getBaseContext(),locationResult);
+
+            Fall f =new Fall(beforevalue, fallvalue, aftervalue,position[0], position[1]);
+            Controller.getNotification().NotifyFall(f);
 
             //svuoto i buffer e i campi...e metto i valori di after in before
             fallstate=NONE;

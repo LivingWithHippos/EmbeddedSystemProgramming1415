@@ -1,12 +1,6 @@
 package org.tbw.FemurShield.Model;
 
-import android.content.Context;
-import android.content.Intent;
-import android.location.Location;
 import android.util.Log;
-
-import org.tbw.FemurShield.Controller.LocationLocator;
-import org.tbw.FemurShield.Controller.MultiEmailSender;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -33,9 +27,7 @@ public class Fall {
     private float[][] valuesFall= new float[3][];
     private float[][] valuesAfterFall= new float[3][];
 
-    private Context cont;
-
-    public Fall(float[][] beforeValues, float[][] FallValues, float[][] afterValues, Context contx)
+    public Fall(float[][] beforeValues, float[][] FallValues, float[][] afterValues,double lat,double longi)
     {
         Log.d("Fall", "Creating Fall Event");
         id=i++;
@@ -44,22 +36,21 @@ public class Fall {
         valuesFall=FallValues;
         valuesAfterFall=afterValues;
 
-        cont = contx;
-
         SimpleDateFormat sdf = new SimpleDateFormat(Session.datePattern);
         data=sdf.format(new Date());
-        setPostion();
+
+        position[FALL_LATITUDE] = lat;
+        position[FALL_LONGITUDE] = longi;
     }
 
     /**
      * da usare per il ripristino
      */
-    Fall(float[][] beforeValues, float[][] FallValues, float[][] afterValues, Context contx,int id,String data,double lat, double longi, boolean segnalato)
+    Fall(float[][] beforeValues, float[][] FallValues, float[][] afterValues, int id,String data,double lat, double longi, boolean segnalato)
     {
         this.valuesAfterFall=afterValues;
         this.valuesFall=FallValues;
         this.valuesBeforeFall=beforeValues;
-        cont=contx;
         this.id=id;
         this.data=data;
         this.position[this.FALL_LATITUDE]=lat;
@@ -91,34 +82,12 @@ public class Fall {
         return valuesFall;
     }
 
+    public double getPosition(int pos){
+        return position[pos];
+    }
+
     public int getId() { return id; }
 
     public String getData() { return data;}
 
-    private void setPostion()//serve per inizializzare i valori di position usando locationmanager
-    {
-        LocationLocator.LocationResult locationResult = new LocationLocator.LocationResult(){
-            @Override
-            public void gotLocation(Location location)
-            {
-                position[FALL_LATITUDE] = location.getLatitude(); // leggo la latuditine e la metto in position
-                position[FALL_LONGITUDE] = location.getLongitude(); // idem con la longitudine
-                sendEmail();
-            }
-        };
-        LocationLocator myLocation = new LocationLocator();
-        myLocation.getLocation(cont, locationResult);
-    }
-
-    private void sendEmail()
-    {
-
-        Intent sender = new Intent(cont.getApplicationContext(),MultiEmailSender.class);
-        sender.putExtra("appdirectory", cont.getFilesDir().toString()); // passo la cartella in cui c'è il file con gli indirizzi salvati
-        sender.putExtra("latCaduta", position[FALL_LATITUDE]);
-        sender.putExtra("lonCaduta", position[FALL_LONGITUDE]);
-        sender.putExtra("idCaduta", getId());
-        sender.putExtra("dataCaduta", getData());
-        cont.startService(sender);
-    }
 }
