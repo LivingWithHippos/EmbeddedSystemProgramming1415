@@ -32,16 +32,21 @@ public class MultiEmailSender extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        Log.d("MultiMailSender", "Service Mail Partito");
-        // per far partire il service e avvia metodo sendEmail
-        double la = intent.getDoubleExtra("latCaduta", 0.0);
-        double lo = intent.getDoubleExtra("lonCaduta", 0.0);
-        int i = intent.getIntExtra("idCaduta", 0);
-        da = intent.getStringExtra("dataCaduta");
-        String path = intent.getStringExtra("appdirectory");
-        getAdresses(path);
-        sendEmail(la, lo, i, da);
-        return Service.START_STICKY;
+        if(intent!=null) {
+            Log.d("MultiMailSender", "Service Mail Partito");
+            // per far partire il service e avvia metodo sendEmail
+            double la = intent.getDoubleExtra("latCaduta", 0.0);
+            double lo = intent.getDoubleExtra("lonCaduta", 0.0);
+            int i = intent.getIntExtra("idCaduta", 0);
+            da = intent.getStringExtra("dataCaduta");
+            String path = intent.getStringExtra("appdirectory");
+            getAdresses(path);
+            sendEmail(la, lo, i, da);
+            return Service.START_STICKY;
+        }else{
+            Log.e("MultiEmailSender","Intent nullo, impossibile recuiperare la caduta");
+            stopSelf();
+            return Service.START_NOT_STICKY;}
     }
 
     @Override
