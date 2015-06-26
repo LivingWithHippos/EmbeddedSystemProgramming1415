@@ -79,6 +79,29 @@ public class UI3 extends BaseActivity implements org.tbw.FemurShield.Observer.Ob
     }
 
     @Override
+    public void onResume(){
+        super.onResume();
+
+        if(Controller.getInstance().isRecording()) {
+            if (Controller.getInstance().isRunning()) {
+                ((ImageView)findViewById(R.id.pausebtnui3)).setVisibility(ImageView.VISIBLE);
+                ((ImageView)findViewById(R.id.stopbntui3)).setVisibility(ImageView.VISIBLE);
+                ((ImageView)findViewById(R.id.startbtnui3)).setVisibility(ImageView.INVISIBLE);
+            }
+            else{
+                ((ImageView)findViewById(R.id.pausebtnui3)).setVisibility(ImageView.INVISIBLE);
+                ((ImageView)findViewById(R.id.stopbntui3)).setVisibility(ImageView.VISIBLE);
+                ((ImageView)findViewById(R.id.startbtnui3)).setVisibility(ImageView.VISIBLE);
+            }
+        }
+        else{
+            ((ImageView)findViewById(R.id.pausebtnui3)).setVisibility(ImageView.INVISIBLE);
+            ((ImageView)findViewById(R.id.stopbntui3)).setVisibility(ImageView.INVISIBLE);
+            ((ImageView)findViewById(R.id.startbtnui3)).setVisibility(ImageView.INVISIBLE);
+        }
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_ui3, menu);
