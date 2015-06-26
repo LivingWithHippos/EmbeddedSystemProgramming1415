@@ -56,7 +56,8 @@
             android:name=".Controller.Reminder.ReminderService"
             android:enabled="true" />
 
-        <receiver android:name=".Controller.Reminder.BootReceiver" >
+        <receiver android:name=".Controller.Reminder.BootReceiver"
+            android:enabled="false">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
