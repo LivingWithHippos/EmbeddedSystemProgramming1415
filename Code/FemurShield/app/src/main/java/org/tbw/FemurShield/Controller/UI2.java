@@ -35,7 +35,7 @@ public class UI2 extends BaseActivity implements FallFragment.OnFallClickListene
 
 
         String thisData = getIntent().getExtras().getString(SESSION_DATA_STAMP);
-        SessionDetailsFragment sdf = SessionDetailsFragment.newIstance(thisData);
+        SessionDetailsFragment sdf = SessionDetailsFragment.newIstance(thisData,SessionDetailsFragment.SHOW_SIGNATURE);
         FallFragment ff = FallFragment.newInstance(thisData);
 
         getFragmentManager().beginTransaction().add(ll.getId(),sdf, "sessionDetails").commit();

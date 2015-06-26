@@ -27,16 +27,22 @@ import java.util.ArrayList;
 public class SessionDetailsFragment extends Fragment
 {
     private Session session;
+    private boolean showSignature;
+
+    public final static String SIGNATURE="signature";
+    public final static boolean SHOW_SIGNATURE=true;
+    public final static boolean DONT_SHOW_SIGNATURE=false;
 
     public SessionDetailsFragment()
     {
     }
 
-    public static SessionDetailsFragment newIstance(String datatime)
+    public static SessionDetailsFragment newIstance(String datatime,boolean showSignature)
     {
         SessionDetailsFragment fragment = new SessionDetailsFragment();
         Bundle b = new Bundle();
         b.putString(UI2.SESSION_DATA_STAMP, datatime);
+        b.putBoolean(SIGNATURE, showSignature);
         fragment.setArguments(b);
         return fragment;
     }
@@ -52,6 +58,7 @@ public class SessionDetailsFragment extends Fragment
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         String thisData = getArguments().getString(UI2.SESSION_DATA_STAMP);
+        showSignature=getArguments().getBoolean(SIGNATURE);
         setSession(thisData);
         startDetails();
     }
@@ -91,8 +98,10 @@ public class SessionDetailsFragment extends Fragment
             String se=((""+seconds).length()==1)?"0"+seconds: ""+seconds;
             String durata=""+h+":"+m+":"+se;
             tvDurata.setText(durata);
-            ivGrafico.setImageBitmap(session.getSignature().toBitmap());
-
+            if(showSignature==SHOW_SIGNATURE)
+                ivGrafico.setImageBitmap(session.getSignature().toBitmap());
+            else
+                ivGrafico.setVisibility(View.GONE);
             getView().invalidate();
         }
     }
