@@ -279,18 +279,20 @@ public class FallDetector extends IntentService implements SensorEventListener {
                 Log.println(Log.INFO, "cadutaaaaa NOTIFY", Controller.getNotification().toString() + "   ");
 
                 final double[] position = new double[2];
+                final Fall f = new Fall(beforevalue, fallvalue, aftervalue);
                 LocationLocator.LocationResult locationResult = new LocationLocator.LocationResult() {
                     @Override
                     public void gotLocation(Location location) {
                         position[0] = location.getLatitude(); // leggo la latuditine e la metto in position
                         position[1] = location.getLongitude(); // idem con la longitudine
+                        f.setPosition(position[0],position[1]);
+                        Controller.getNotification().NotifyFall(f);
                     }
                 };
                 LocationLocator myLocation = new LocationLocator();
                 myLocation.getLocation(getBaseContext(), locationResult);
 
-                Fall f = new Fall(beforevalue, fallvalue, aftervalue, position[0], position[1]);
-                Controller.getNotification().NotifyFall(f);
+
 
                 //svuoto i buffer e i campi...e metto i valori di after in before
                 fallstate = NONE;

@@ -43,6 +43,19 @@ public class Fall {
         position[FALL_LONGITUDE] = longi;
     }
 
+    public Fall(float[][] beforeValues, float[][] FallValues, float[][] afterValues)
+    {
+        Log.d("Fall", "Creating Fall Event");
+        id=i++;
+
+        valuesBeforeFall=beforeValues;
+        valuesFall=FallValues;
+        valuesAfterFall=afterValues;
+
+        SimpleDateFormat sdf = new SimpleDateFormat(Session.datePattern);
+        data=sdf.format(new Date());
+    }
+
     /**
      * da usare per il ripristino
      */
@@ -90,4 +103,8 @@ public class Fall {
 
     public String getData() { return data;}
 
+    public void setPosition(double latitude, double longitude) {
+        this.position[this.FALL_LATITUDE]=latitude;
+        this.position[this.FALL_LONGITUDE]=longitude;
+    }
 }
