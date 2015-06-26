@@ -285,14 +285,15 @@ public class FallDetector extends IntentService implements SensorEventListener {
                     public void gotLocation(Location location) {
                         position[0] = location.getLatitude(); // leggo la latuditine e la metto in position
                         position[1] = location.getLongitude(); // idem con la longitudine
-                        f.setPosition(position[0],position[1]);
-                        Controller.getNotification().NotifyFall(f);
+                        Log.d("Lat", "" + position[0]);
+                        Log.d("Long", "" + position[1]);
+                        f.setPosition(position[0], position[1]);
+                        Controller.getInstance().sendEmail(f);
                     }
                 };
                 LocationLocator myLocation = new LocationLocator();
                 myLocation.getLocation(getApplicationContext(), locationResult);
-                Log.d("Lat", "" + position[0]);
-                Log.d("Long",""+position[1]);
+                Controller.getNotification().NotifyFall(f);
 
 
 
