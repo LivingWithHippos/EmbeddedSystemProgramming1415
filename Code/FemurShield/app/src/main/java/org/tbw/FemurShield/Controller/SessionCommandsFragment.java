@@ -20,6 +20,8 @@ public class SessionCommandsFragment extends Fragment {
 
     private ImageView rec,pause,play,stop;
 
+    public final static int BUTTON_REC=0,BUTTON_PAUSE=1,BUTTON_PLAY=2,BUTTON_STOP=3;
+
     private OnCommandUpdatedListener mCallback;
 
     public static SessionCommandsFragment newInstance() {
@@ -80,7 +82,7 @@ public class SessionCommandsFragment extends Fragment {
         onPlayClick();
 
         //aggiorno la listView
-        mCallback.aggiornaLista();
+        mCallback.aggiornaLista(BUTTON_REC);
         Intent intent=new Intent(getActivity(),UI3.class);
         startActivity(intent);
     }
@@ -95,6 +97,8 @@ public class SessionCommandsFragment extends Fragment {
         stop.setVisibility(ImageView.VISIBLE);
         play.setVisibility(ImageView.VISIBLE);
 
+        mCallback.aggiornaLista(BUTTON_PAUSE);
+
     }
 
     public void onPlayClick(){
@@ -107,6 +111,7 @@ public class SessionCommandsFragment extends Fragment {
         stop.setVisibility(ImageView.VISIBLE);
         play.setVisibility(ImageView.INVISIBLE);
 
+        mCallback.aggiornaLista(BUTTON_PLAY);
     }
 
     public void onStopClick(){
@@ -120,7 +125,7 @@ public class SessionCommandsFragment extends Fragment {
         play.setVisibility(ImageView.INVISIBLE);
 
         //aggiorno la listView
-        mCallback.aggiornaLista();
+        mCallback.aggiornaLista(BUTTON_STOP);
     }
 
     @Override
@@ -153,6 +158,6 @@ public class SessionCommandsFragment extends Fragment {
 
     public interface OnCommandUpdatedListener
     {
-        public void aggiornaLista();
+        public void aggiornaLista(int buttonPressed);
     }
 }
