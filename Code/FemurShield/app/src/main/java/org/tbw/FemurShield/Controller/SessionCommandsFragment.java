@@ -5,7 +5,9 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -89,8 +91,8 @@ public class SessionCommandsFragment extends Fragment {
             for(ImageView iv:buttons)
             {
                 ViewGroup.LayoutParams params=iv.getLayoutParams();
-                params.width = 47;
-                params.height = 47;
+                params.width = convertDpToPx(47,iv);
+                params.height = convertDpToPx(47,iv);
                 iv.setLayoutParams(params);
             }
 
@@ -101,6 +103,13 @@ public class SessionCommandsFragment extends Fragment {
         stop.setOnClickListener(new CommandClickListener());
 
         return rootView;
+    }
+
+
+    private int convertDpToPx(int dp, View view) {
+        DisplayMetrics dm = view.getResources().getDisplayMetrics();
+        float pixels = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, dm);
+        return Math.round(pixels);
     }
 
     public void onRecClick(){
