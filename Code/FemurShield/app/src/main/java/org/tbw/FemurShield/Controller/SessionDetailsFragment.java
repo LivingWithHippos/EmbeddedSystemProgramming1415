@@ -27,11 +27,11 @@ import java.util.ArrayList;
 public class SessionDetailsFragment extends Fragment
 {
     private Session session;
-    private boolean showSignature;
+    private boolean ui_mode;
 
-    public final static String SIGNATURE="signature";
-    public final static boolean SHOW_SIGNATURE=true;
-    public final static boolean DONT_SHOW_SIGNATURE=false;
+    public final static String UI_MODE="signature";
+    public final static boolean UI_2_MODE=true;
+    public final static boolean UI_3_MODE=false;
 
     public SessionDetailsFragment()
     {
@@ -42,7 +42,7 @@ public class SessionDetailsFragment extends Fragment
         SessionDetailsFragment fragment = new SessionDetailsFragment();
         Bundle b = new Bundle();
         b.putString(UI2.SESSION_DATA_STAMP, datatime);
-        b.putBoolean(SIGNATURE, showSignature);
+        b.putBoolean(UI_MODE, showSignature);
         fragment.setArguments(b);
         return fragment;
     }
@@ -58,7 +58,7 @@ public class SessionDetailsFragment extends Fragment
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         String thisData = getArguments().getString(UI2.SESSION_DATA_STAMP);
-        showSignature=getArguments().getBoolean(SIGNATURE);
+        ui_mode=getArguments().getBoolean(UI_MODE);
         setSession(thisData);
         startDetails();
     }
@@ -89,19 +89,22 @@ public class SessionDetailsFragment extends Fragment
             ImageView ivGrafico = (ImageView) getView().findViewById(R.id.ivGraficoSessione);
 
             tvNome.setText(session.getName());
-            long timeElapsed=session.getDuration();
-            int hours = (int) (timeElapsed / 3600000);
-            String h=((""+hours).length()==1)?"0"+hours: ""+hours;
-            int minutes = (int) (timeElapsed - hours * 3600000) / 60000;
-            String m=((""+minutes).length()==1)?"0"+minutes: ""+minutes;
-            int seconds = (int) (timeElapsed - hours * 3600000 - minutes * 60000) / 1000;
-            String se=((""+seconds).length()==1)?"0"+seconds: ""+seconds;
-            String durata=""+h+":"+m+":"+se;
-            tvDurata.setText(durata);
-            if(showSignature==SHOW_SIGNATURE)
+            if(ui_mode==UI_2_MODE) {
+                long timeElapsed=session.getDuration();
+                int hours = (int) (timeElapsed / 3600000);
+                String h=((""+hours).length()==1)?"0"+hours: ""+hours;
+                int minutes = (int) (timeElapsed - hours * 3600000) / 60000;
+                String m=((""+minutes).length()==1)?"0"+minutes: ""+minutes;
+                int seconds = (int) (timeElapsed - hours * 3600000 - minutes * 60000) / 1000;
+                String se=((""+seconds).length()==1)?"0"+seconds: ""+seconds;
+                String durata=""+h+":"+m+":"+se;
+                tvDurata.setText(durata);
                 ivGrafico.setImageBitmap(session.getSignature().toBitmap());
-            else
+            }
+            else {
+                tvDurata.setVisibility(View.GONE);
                 ivGrafico.setVisibility(View.GONE);
+            }
             getView().invalidate();
         }
     }
