@@ -37,12 +37,12 @@ public class SessionDetailsFragment extends Fragment
     {
     }
 
-    public static SessionDetailsFragment newIstance(String datatime,boolean showSignature)
+    public static SessionDetailsFragment newIstance(String datatime,boolean ui_mode)
     {
         SessionDetailsFragment fragment = new SessionDetailsFragment();
         Bundle b = new Bundle();
         b.putString(UI2.SESSION_DATA_STAMP, datatime);
-        b.putBoolean(UI_MODE, showSignature);
+        b.putBoolean(UI_MODE, ui_mode);
         fragment.setArguments(b);
         return fragment;
     }

@@ -1,5 +1,6 @@
 package org.tbw.FemurShield.Controller;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.app.Fragment;
 import android.content.Intent;
@@ -9,6 +10,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 import org.tbw.FemurShield.R;
 
@@ -19,14 +22,22 @@ public class SessionCommandsFragment extends Fragment {
 
 
     private ImageView rec,pause,play,stop;
+    private ImageView[] buttons;
 
     public final static int BUTTON_REC=0,BUTTON_PAUSE=1,BUTTON_PLAY=2,BUTTON_STOP=3;
+    public static final String UI_MODE="ui_mode";
+    public static final boolean MODE_BIG=true,MODE_SMALL=false;
+
+    private boolean uiMode;
 
     private OnCommandUpdatedListener mCallback;
 
-    public static SessionCommandsFragment newInstance() {
+    public static SessionCommandsFragment newInstance(boolean uiMode) {
 
         SessionCommandsFragment fragment = new SessionCommandsFragment();
+        Bundle b = new Bundle();
+        b.putBoolean(UI_MODE, uiMode);
+        fragment.setArguments(b);
         return fragment;
     }
 
@@ -58,6 +69,12 @@ public class SessionCommandsFragment extends Fragment {
 
 
     @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        uiMode=getArguments().getBoolean(UI_MODE);
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
 
         View rootView = inflater.inflate(R.layout.fragment_session_commands, container, false);
@@ -66,7 +83,18 @@ public class SessionCommandsFragment extends Fragment {
         play= (ImageView) rootView.findViewById(R.id.startbtnui1);
         pause= (ImageView) rootView.findViewById(R.id.pausebtnui1);
         stop= (ImageView) rootView.findViewById(R.id.stopbntui1);
+        buttons=new ImageView[]{rec,play,pause,stop};
+        if(uiMode==MODE_SMALL)
+        {
+            for(ImageView iv:buttons)
+            {
+                ViewGroup.LayoutParams params=iv.getLayoutParams();
+                params.width = 47;
+                params.height = 47;
+                iv.setLayoutParams(params);
+            }
 
+        }
         rec.setOnClickListener(new CommandClickListener());
         play.setOnClickListener(new CommandClickListener());
         pause.setOnClickListener(new CommandClickListener());

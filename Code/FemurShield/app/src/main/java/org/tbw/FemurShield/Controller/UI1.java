@@ -36,7 +36,7 @@ public class UI1 extends BaseActivity implements SessionsListFragment.OnSessionC
             }
 
             SessionsListFragment sFragment=SessionsListFragment.newInstance();
-            SessionCommandsFragment cFragment=SessionCommandsFragment.newInstance();
+            SessionCommandsFragment cFragment=SessionCommandsFragment.newInstance(SessionCommandsFragment.MODE_BIG);
 
             // carico il gestore di fragment e mostro il fragment
             FragmentManager fragmentManager = getFragmentManager();
@@ -100,7 +100,7 @@ public class UI1 extends BaseActivity implements SessionsListFragment.OnSessionC
     @Override
     public void onSessionClick(String sessionID) {
         if(SessionManager.getInstance().getActiveSession()!=null && SessionManager.getInstance().getActiveSession().getId().equals(sessionID)){
-            Intent i = new Intent(getBaseContext(), UI3.class);
+            Intent i = new Intent(getBaseContext(), UI3Neo.class);
             startActivity(i);
         }
         else {
