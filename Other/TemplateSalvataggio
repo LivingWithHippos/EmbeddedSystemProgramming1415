@@ -1,25 +1,24 @@
 cosa serve salvare:
+numsess=5;
+nome0
+data0
+durata0
+pathimmagine0
 
-nome
-data
-durata
-numero cadute
-pathimmagine
-FALL{
-latitude
-longitude
-data
-segnalato
-lunghezzabefore
-xbefore1
-ybefore1
-zbefore1
-xbefore2
-ybefore2
-zbefore2
-....
+numfall0
 
-IDEM per fall e after
+latitude0/0=
+longitude0/0=
+data0/0=
+segnalato0/0=
+xvaluebefore0/0=34.5#45.7#56.8 …
+yvaluebefore0/0=34.5#45.7#56.8 …
+zvaluebefore0/0=34.5#45.7#56.8 …
+xvalueduring0/0=34.5#45.7#56.8 …
+yvalueduring0/0=34.5#45.7#56.8 …
+zvalueduring0/0=34.5#45.7#56.8 …
+xvalueafter0/0=34.5#45.7#56.8 …
+yvalueafter0/0=34.5#45.7#56.8 …
+zvalueafter0/0=34.5#45.7#56.8 …
 
-}
-....
+{numsess/numcaduta}
