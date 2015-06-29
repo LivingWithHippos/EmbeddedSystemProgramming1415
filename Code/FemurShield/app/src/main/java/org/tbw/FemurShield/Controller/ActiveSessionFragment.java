@@ -8,6 +8,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -45,7 +46,6 @@ public class ActiveSessionFragment extends Fragment implements org.tbw.FemurShie
 
     ImageView imageViewGraficoAcc;
 
-    OnFallListener fallCallback;
 
     public ActiveSessionFragment()
     {
@@ -76,23 +76,6 @@ public class ActiveSessionFragment extends Fragment implements org.tbw.FemurShie
     {
         ActiveSessionFragment fragment = new ActiveSessionFragment();
         return fragment;
-    }
-
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        try {
-            fallCallback = (OnFallListener) activity;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString()
-                    + " must implement OnFallListener");
-        }
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        fallCallback = null;
     }
 
     @Override
@@ -143,9 +126,6 @@ public class ActiveSessionFragment extends Fragment implements org.tbw.FemurShie
             float[] arg=(float[])o;
             DrawGraphSliceAcc(arg[0]*6, arg[1]*6, arg[2]*6);
         }
-        if(o instanceof Fall)
-            fallCallback.onFall();
-
     }
 
     public void DrawGraphSliceAcc(float newX, float newY, float newZ){
@@ -184,10 +164,5 @@ public class ActiveSessionFragment extends Fragment implements org.tbw.FemurShie
     private void DrawSegmentZAcc(float xStart, float yStart, float xStop, float yStop){
         canvasGraficoAcc.drawLine(xStart, yStart, xStop, yStop, paintZ);
         imageViewGraficoAcc.setImageBitmap(bitmapGraficoAcc);
-    }
-
-    public interface OnFallListener
-    {
-        public void onFall();
     }
 }
