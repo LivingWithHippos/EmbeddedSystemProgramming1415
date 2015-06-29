@@ -1,5 +1,6 @@
 package org.tbw.FemurShield.Controller;
 
+import android.app.Activity;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Intent;
@@ -15,7 +16,7 @@ import org.tbw.FemurShield.R;
 import java.util.Random;
 
 
-public class UI4 extends BaseActivity {
+public class UI4 extends Activity {
 
     public static final String ID_FALL = "ID_CADUTA";
     public static final String ID_SESSION = "ID_SESSIONE";

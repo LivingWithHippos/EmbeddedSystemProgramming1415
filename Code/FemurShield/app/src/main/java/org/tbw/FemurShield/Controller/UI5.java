@@ -1,5 +1,6 @@
 package org.tbw.FemurShield.Controller;
 
+import android.app.Activity;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.ComponentName;
@@ -34,7 +35,7 @@ import org.tbw.FemurShield.R;
  *
  * @author Marco Biasin
  */
-public class UI5 extends BaseActivity implements SettingsFragment.OnOptionSelectedListener, TimePickerFragment.OnAlarmChangedListener, DurationFragment.OnDurationChangedListener, EmailFragment.OnAddEmailButtonClickListener, AddContactFragment.OnUserInsertedListener, SampleRatePickerFragment.OnSamplingRateChangedListener, EmailFragment.OnClearEmailClickListener, EmailFragment.OnContactClickListener, ContactOptionsDialog.OnContactOptionsClickListener, AddContactFragment.OnUserToUpdateInsertedListener {
+public class UI5 extends Activity implements SettingsFragment.OnOptionSelectedListener, TimePickerFragment.OnAlarmChangedListener, DurationFragment.OnDurationChangedListener, EmailFragment.OnAddEmailButtonClickListener, AddContactFragment.OnUserInsertedListener, SampleRatePickerFragment.OnSamplingRateChangedListener, EmailFragment.OnClearEmailClickListener, EmailFragment.OnContactClickListener, ContactOptionsDialog.OnContactOptionsClickListener, AddContactFragment.OnUserToUpdateInsertedListener {
 
     private PreferencesEditor prefs;
 

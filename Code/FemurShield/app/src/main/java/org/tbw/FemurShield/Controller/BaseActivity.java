@@ -33,6 +33,12 @@ public class BaseActivity extends Activity {
 
     public void onDestroy() {
         super.onDestroy();
+        /*esagerato chiamarlo ogni volta che si chiude una activity
+        spostiamo sul sessionManager il metodo saveAll e lasciamo
+        che venga chiamato quando ci sono eventi:
+        -creazione nuova sessione
+        -modifica nome sessione
+        -caduta*/
         SaveAll();
     }
 
