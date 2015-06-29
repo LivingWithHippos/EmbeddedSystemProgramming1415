@@ -78,7 +78,7 @@ public class FallDetailsFragment extends Fragment {
         ivFallSignature = (ImageView) rootView.findViewById(R.id.ivFallSignature);
 
         ivSentSign = (ImageView) rootView.findViewById(R.id.ivSentSign);
-        loadBitmap(R.id.ivFallSignature);
+        loadFallBitmap(R.id.ivFallSignature);
 
         if (shownFall.isReported())
             ivSentSign.setImageResource(R.drawable.check);
@@ -110,7 +110,7 @@ public class FallDetailsFragment extends Fragment {
 
         //imposto la signature della sessione
         ivSessionSignature = (ImageView) rootView.findViewById(R.id.ivSessionSignatureInFallDetails);
-        ivSessionSignature.setImageBitmap(sessionSignature);
+        loadSessionBitmap(R.id.ivSessionSignatureInFallDetails);
 
 
         //setto il testo
@@ -125,9 +125,14 @@ public class FallDetailsFragment extends Fragment {
         return rootView;
     }
 
-    public void loadBitmap(int resId) {
+    public void loadFallBitmap(int resId) {
         FallBitmapCreator fbc = new FallBitmapCreator(ivFallSignature, shownFall, height, width, palette);
         fbc.execute(resId);
+    }
+
+    public void loadSessionBitmap(int resId) {
+        SignatureLoaderTask slt = new SignatureLoaderTask(ivSessionSignature,sessionID);
+        slt.execute(resId);
     }
 
     public FallDetailsFragment() {
@@ -163,7 +168,6 @@ public class FallDetailsFragment extends Fragment {
                 }
 
             if (shownFall != null) {
-                sessionSignature = shownSession.getSignature().toBitmap();
                 latitude = shownFall.getPosition()[0] + "";
                 longitude = shownFall.getPosition()[1] + "";
 

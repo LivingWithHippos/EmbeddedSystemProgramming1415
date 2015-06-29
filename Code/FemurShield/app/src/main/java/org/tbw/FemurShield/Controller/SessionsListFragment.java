@@ -46,7 +46,7 @@ public class SessionsListFragment extends ListFragment {
         //aggiungo la sessone attiva
         ActiveSession a =SessionManager.getInstance().getActiveSession();
         if(a!=null) {
-            SessionsListItem sli=new SessionsListItem(a.getSignature().toBitmap(),a.getName(),a.getDataTime(),a.getFallsNumber(),"",true);
+            SessionsListItem sli=new SessionsListItem(a.getName(),a.getDataTime(),a.getFallsNumber(),"",true);
             sItems.add(sli);
 
         }
@@ -63,7 +63,7 @@ public class SessionsListFragment extends ListFragment {
                 int seconds = (int) (timeElapsed - hours * 3600000 - minutes * 60000) / 1000;
                 String se=((""+seconds).length()==1)?"0"+seconds: ""+seconds;
                 String durata=""+h+":"+m+":"+se;
-                SessionsListItem sli = new SessionsListItem(s.getSignature().toBitmap(), s.getName(), s.getDataTime(), s.getFallsNumber(),durata, false);
+                SessionsListItem sli = new SessionsListItem(s.getName(), s.getDataTime(), s.getFallsNumber(),durata, false);
                 sItems.add(sli);
             }
         }

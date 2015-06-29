@@ -61,12 +61,15 @@ public class SessionsListAdapter extends ArrayAdapter{
         viewHolder.ivState.setImageResource(R.drawable.state);
         viewHolder.ivState.setVisibility(item.isRecording() ? View.VISIBLE : View.INVISIBLE);
 
-        viewHolder.ivSignature.setImageBitmap(item.signature);
+        //viewHolder.ivSignature.setImageBitmap(item.signature);
+        SignatureLoaderTask slt=new SignatureLoaderTask(viewHolder.ivSignature,item.getDataTime());
+        slt.execute(viewHolder.ivSignature.getId());
+
         viewHolder.tvName.setText(item.name);
         viewHolder.tvDate.setText(item.date);
         viewHolder.tvStartingTime.setText(item.startingTime);
         viewHolder.tvDuration.setText(item.duration);
-        viewHolder.tvFallsNumber.setText(item.falls+"");
+        viewHolder.tvFallsNumber.setText(item.falls + "");
 
         return convertView;
     }
@@ -91,8 +94,7 @@ class SessionsListItem{
 
     public static final boolean RECORDING_STATE=true;
     public static final boolean INACTIVE_STATE=false;
-
-    public final Bitmap signature;
+    
     public String name;
     public String date;
     public String startingTime;
@@ -101,8 +103,8 @@ class SessionsListItem{
     public boolean state;
     private String datetime;
 
-            public SessionsListItem(Bitmap signature,String name, String date,int fallsNumber,String duration,boolean state) {
-                this.signature = signature;
+            public SessionsListItem(String name, String date,int fallsNumber,String duration,boolean state) {
+
                 this.name = name;
                 this.falls = fallsNumber;
                 this.datetime=date;

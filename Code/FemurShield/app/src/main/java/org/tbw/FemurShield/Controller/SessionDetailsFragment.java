@@ -28,10 +28,13 @@ public class SessionDetailsFragment extends Fragment
 {
     private Session session;
     private boolean ui_mode;
+    private String thisData;
 
     public final static String UI_MODE="signature";
     public final static boolean UI_2_MODE=true;
     public final static boolean UI_3_MODE=false;
+
+    private ImageView ivGrafico;
 
     public SessionDetailsFragment()
     {
@@ -57,7 +60,7 @@ public class SessionDetailsFragment extends Fragment
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        String thisData = getArguments().getString(UI2.SESSION_DATA_STAMP);
+        thisData = getArguments().getString(UI2.SESSION_DATA_STAMP);
         ui_mode=getArguments().getBoolean(UI_MODE);
         setSession(thisData);
         startDetails();
@@ -86,7 +89,7 @@ public class SessionDetailsFragment extends Fragment
         {
             TextView tvNome = (TextView) getView().findViewById(R.id.tvSessionName); // è sia nome che data
             TextView tvDurata = (TextView) getView().findViewById(R.id.tvSessionDuration);
-            ImageView ivGrafico = (ImageView) getView().findViewById(R.id.ivGraficoSessione);
+            ivGrafico = (ImageView) getView().findViewById(R.id.ivGraficoSessione);
 
             tvNome.setText(session.getName());
             if(ui_mode==UI_2_MODE) {
@@ -99,7 +102,7 @@ public class SessionDetailsFragment extends Fragment
                 String se=((""+seconds).length()==1)?"0"+seconds: ""+seconds;
                 String durata=""+h+":"+m+":"+se;
                 tvDurata.setText(durata);
-                ivGrafico.setImageBitmap(session.getSignature().toBitmap());
+                loadSessionBitmap(R.id.ivGraficoSessione);
             }
             else {
                 tvDurata.setVisibility(View.GONE);
@@ -107,6 +110,11 @@ public class SessionDetailsFragment extends Fragment
             }
             getView().invalidate();
         }
+    }
+
+    public void loadSessionBitmap(int resId) {
+        SignatureLoaderTask slt = new SignatureLoaderTask(ivGrafico,thisData);
+        slt.execute(resId);
     }
 
     @Override

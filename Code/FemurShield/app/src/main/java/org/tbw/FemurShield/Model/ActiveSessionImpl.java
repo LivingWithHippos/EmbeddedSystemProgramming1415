@@ -7,6 +7,7 @@ class ActiveSessionImpl extends SessionImpl implements ActiveSession{
 
     public ActiveSessionImpl(){
         super();
+        SignatureImpl si=new SignatureImpl(getDataTime());
     }
 
     //TODO: dovranno modificare la durata della sessione ... fare differenza ora attuale ora partenza sessione...e modificare activestate
