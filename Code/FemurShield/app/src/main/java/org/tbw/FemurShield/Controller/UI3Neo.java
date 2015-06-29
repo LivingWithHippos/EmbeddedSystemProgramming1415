@@ -9,13 +9,17 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
 
+import org.tbw.FemurShield.Model.Fall;
 import org.tbw.FemurShield.Model.SessionManager;
+import org.tbw.FemurShield.Observer.Observable;
+import org.tbw.FemurShield.Observer.Observer;
 import org.tbw.FemurShield.R;
 
 /**
  * Created by Marco on 27/06/2015.
  */
-public class UI3Neo extends BaseActivity implements FallFragment.OnFallClickListener,SessionCommandsFragment.OnCommandUpdatedListener,ActiveSessionFragment.OnFallListener{
+
+public class UI3Neo extends BaseActivity implements FallFragment.OnFallClickListener,SessionCommandsFragment.OnCommandUpdatedListener,Observer{
 
     private String thisData;
     private int layoutID;
@@ -43,6 +47,8 @@ public class UI3Neo extends BaseActivity implements FallFragment.OnFallClickList
         getFragmentManager().beginTransaction().add(ll.getId(), ff, "fallsList_ui3").commit();
 
         fragContainer.addView(ll);
+        
+        Controller.getNotification().addObserver(this);
     }
 
     @Override
@@ -94,13 +100,19 @@ public class UI3Neo extends BaseActivity implements FallFragment.OnFallClickList
                 break;
             case SessionCommandsFragment.BUTTON_STOP:
                 ((ActiveSessionFragment)getFragmentManager().findFragmentByTag("activeSessionGraph")).stopChrono();
+                finish();
                 break;
         }
     }
 
     @Override
-    public void onFall() {
-        ((FallFragment) getFragmentManager().findFragmentByTag("fallsList_ui3")).startlist();
+    public void update(Observable oggettoosservato, Object o) {
+        if(o instanceof Fall)
+        {
+            FallFragment ff=((FallFragment) getFragmentManager().findFragmentByTag("fallsList_ui3"));
+                    if(ff!=null)
+                        ff.startlist();
+        }
     }
 }
 
