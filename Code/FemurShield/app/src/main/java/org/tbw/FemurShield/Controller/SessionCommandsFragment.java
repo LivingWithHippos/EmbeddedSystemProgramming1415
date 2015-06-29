@@ -121,6 +121,7 @@ public class SessionCommandsFragment extends Fragment {
         //aggiorno la listView
         mCallback.aggiornaLista(BUTTON_REC);
         Intent intent=new Intent(getActivity(),UI3.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT | Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
     }
 
@@ -175,6 +176,12 @@ public class SessionCommandsFragment extends Fragment {
             throw new ClassCastException(activity.toString()
                     + " must implement OnCommandUpdatedListener");
         }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mCallback = null;
     }
 
     class CommandClickListener implements ImageView.OnClickListener
