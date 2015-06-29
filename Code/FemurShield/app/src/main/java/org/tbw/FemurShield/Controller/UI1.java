@@ -70,6 +70,13 @@ public class UI1 extends BaseActivity implements SessionsListFragment.OnSessionC
         }
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        SessionsListFragment slf=(SessionsListFragment)getFragmentManager().findFragmentByTag("mSessionsListFragment");
+        slf.aggiornaLista();
+    }
+
     public void aggiornaLista(int buttonPressed){
         SessionsListFragment fragment = (SessionsListFragment) getFragmentManager().findFragmentById(R.id.listaSessioniUI1);
         fragment.aggiornaLista();
