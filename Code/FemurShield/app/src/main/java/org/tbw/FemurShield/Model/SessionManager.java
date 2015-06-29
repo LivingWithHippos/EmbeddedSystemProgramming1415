@@ -57,6 +57,30 @@ public class SessionManager {
         return ret;
     }
 
+    /**
+     * metodo per eliminare una sessione vecchia
+     * @param id id della sessione da eliminare
+     */
+    public void deleteOldSession(String id){
+        sessionivecchie.remove(id);
+    }
+
+    /**
+     * metodo per rinominare la sessione attiva
+     * @param newname nuovo nome della sessione
+     */
+    public void renameActiveSession(String newname){
+        sessioneattiva.setName(newname);
+    }
+
+    /**
+     * metodo per rinominare una vecchia sessione
+     * @param id id della sessione da rinominare
+     * @param newname nuovo nome della sessione
+     */
+    public void renameOldSession(String id, String newname){
+        sessionivecchie.get(id).setName(newname);
+    }
 
     /**
      * metodo get ritorna semplicemente un array list con tutte le sessioni terminate.
