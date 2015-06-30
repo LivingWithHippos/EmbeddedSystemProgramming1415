@@ -4,6 +4,7 @@
     <string name="action_settings">Impostazioni</string>
     <string name="action_all_sessions">Sessioni</string>
     <string name="action_active_session">Sessione Attiva</string>
+    <string name="rename_session">Rinomina sessione</string>
     <string name="title_activity_ui1">UI1</string>
     <string name="title_activity_ui2">UI2</string>
     <string name="title_activity_ui3">UI3</string>
@@ -43,5 +44,9 @@
     <string name="fall_longitude">Longitudine :</string>
     <string name="no_session_found">Sessione non trovata</string>
     <string name="title_activity_base">BaseActivity</string>
+
+<!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="rename_session_title">Rinomina sessione</string>
 
 </resources>

@@ -103,7 +103,7 @@ public class SessionManager {
      * @return array di interfacce alle sessioni vecchie (potrebbe esser vuoto)
      */
     public Session getSession(String id){
-        if(sessioneattiva.getId().equals(id))
+        if(sessioneattiva!=null&&sessioneattiva.getId().equals(id))
             return sessioneattiva;
         return sessionivecchie.get(id);
     }

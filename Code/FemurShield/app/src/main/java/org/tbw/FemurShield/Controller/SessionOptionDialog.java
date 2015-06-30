@@ -14,8 +14,8 @@ import org.tbw.FemurShield.R;
  */
 public class SessionOptionDialog extends DialogFragment {
 
-    public final static int RENAME_CONTACT=0;
-    public final static int DELETE_CONTACT=1;
+    public final static int RENAME_SESSION=0;
+    public final static int DELETE_SESSION=1;
     final static String RENAME="Rinomina";
     final static String DELETE="Elimina";
     public final static String SELECTED_DATA="selected_data";
@@ -28,7 +28,6 @@ public class SessionOptionDialog extends DialogFragment {
         Bundle bundle=getArguments();
         contactData=bundle.getString(SELECTED_DATA);
         AlertDialog.Builder alert = new AlertDialog.Builder(getActivity(), R.style.AppDialogTheme);
-        //attenzione! le opzioni devo essere inserite nell'ordine indicato dalle costanti EDIT_CONTACT,DELETE_CONTACT, etc...
         alert.setTitle(R.string.session_options_dialog_title)
                 .setItems(new String[]{RENAME, DELETE}, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {

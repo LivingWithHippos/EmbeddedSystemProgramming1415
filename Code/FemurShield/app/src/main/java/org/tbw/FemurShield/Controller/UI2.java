@@ -15,7 +15,7 @@ import org.tbw.FemurShield.Model.SessionManager;
 import org.tbw.FemurShield.R;
 
 
-public class UI2 extends Activity implements FallFragment.OnFallClickListener{
+public class UI2 extends Activity implements FallFragment.OnFallClickListener, EditSessionNameFragment.OnUserInsertedListener{
 
     private Session thisSession;
     public final static String SESSION_DATA_STAMP = "sessiondatastamp";
@@ -82,6 +82,13 @@ public class UI2 extends Activity implements FallFragment.OnFallClickListener{
                 } else
                     Toast.makeText(this, getString(R.string.no_active_session), Toast.LENGTH_LONG).show();
                 return true;
+            case R.id.rename_session:
+                EditSessionNameFragment sessionRenameFragment = new EditSessionNameFragment();
+                Bundle bundle = new Bundle();
+                bundle.putString(EditSessionNameFragment.SESSION_DATA, getIntent().getExtras().getString(SESSION_DATA_STAMP));
+                sessionRenameFragment.setArguments(bundle);
+                sessionRenameFragment.show(getFragmentManager(), "Edit Session Name Dialog");
+                return true;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -98,5 +105,11 @@ public class UI2 extends Activity implements FallFragment.OnFallClickListener{
         fallDetails.putExtra(UI4.ID_SESSION, sessionID);
         fallDetails.putExtra(UI4.ID_FALL, fallID);
         startActivity(fallDetails);
+    }
+
+    @Override
+    public void onUserInserted(String nome,String data) {
+        Controller.getInstance().renameEvent(data, nome);
+        //TODO aggiornare view dopo che il nome è cambiato
     }
 }

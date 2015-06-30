@@ -26,8 +26,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 
-public class UI3 extends Activity implements org.tbw.FemurShield.Observer.Observer {
-    private long duration=0;
+public class UI3 extends Activity implements org.tbw.FemurShield.Observer.Observer, EditSessionNameFragment.OnUserInsertedListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -118,8 +117,12 @@ public class UI3 extends Activity implements org.tbw.FemurShield.Observer.Observ
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        if (id == R.id.rename_session) {
+            EditSessionNameFragment sessionRenameFragment = new EditSessionNameFragment();
+            Bundle bundle = new Bundle();
+            bundle.putString(EditSessionNameFragment.SESSION_DATA, SessionManager.getInstance().getActiveSession().getId());
+            sessionRenameFragment.setArguments(bundle);
+            sessionRenameFragment.show(getFragmentManager(), "Edit Session Name Dialog");
         }
 
         return super.onOptionsItemSelected(item);
@@ -276,5 +279,11 @@ public class UI3 extends Activity implements org.tbw.FemurShield.Observer.Observ
         ((ListView)findViewById(R.id.listfallui3)).setAdapter(adapter);
 
         //TODO inviata non inviata mail
+    }
+
+    @Override
+    public void onUserInserted(String nome,String data) {
+        Controller.getInstance().renameEvent(data, nome);
+        //TODO aggiornare view dopo che il nome è cambiato
     }
 }

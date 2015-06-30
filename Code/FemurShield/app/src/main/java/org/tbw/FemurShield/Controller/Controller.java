@@ -166,4 +166,21 @@ public class Controller implements Observer {
         SessionManager.getInstance().deleteOldSession(data);
         SaveAll();
     }
+
+    public void renameEvent(String data, String newname) {
+        Log.e("rename session:",data+" con "+newname);
+        Session s;
+        if(SessionManager.getInstance().getActiveSession()!=null&&SessionManager.getInstance().getActiveSession().getId().equals(data)){
+            s=SessionManager.getInstance().getActiveSession();
+            SessionManager.getInstance().renameActiveSession(newname);
+        }
+        else {
+            s=SessionManager.getInstance().getSession(data);
+            SessionManager.getInstance().renameOldSession(data, newname);
+        }
+
+        Log.e("after rename session:",data+" con "+newname);
+        Log.e("after rename session:",s.getId()+" con "+s.getName());
+        SaveAll();
+    }
 }
