@@ -110,7 +110,11 @@ public class FallDetailsFragment extends Fragment {
 
         //imposto la signature della sessione
         ivSessionSignature = (ImageView) rootView.findViewById(R.id.ivSessionSignatureInFallDetails);
-        loadSessionBitmap(R.id.ivSessionSignatureInFallDetails);
+        Bitmap temp;
+        if((temp=BitmapCache.getInstance().getBitmapFromMemCache(sessionID))!=null)
+            ivSessionSignature.setImageBitmap(temp);
+        else
+            loadSessionBitmap(R.id.ivSessionSignatureInFallDetails);
 
 
         //setto il testo

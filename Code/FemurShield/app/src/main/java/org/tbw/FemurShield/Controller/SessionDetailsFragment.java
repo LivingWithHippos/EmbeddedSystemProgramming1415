@@ -1,6 +1,7 @@
 package org.tbw.FemurShield.Controller;
 
 import android.app.Fragment;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -102,6 +103,10 @@ public class SessionDetailsFragment extends Fragment
                 String se=((""+seconds).length()==1)?"0"+seconds: ""+seconds;
                 String durata=""+h+":"+m+":"+se;
                 tvDurata.setText(durata);
+                Bitmap temp;
+                if((temp=BitmapCache.getInstance().getBitmapFromMemCache(thisData))!=null)
+                    ivGrafico.setImageBitmap(temp);
+                else
                 loadSessionBitmap(R.id.ivGraficoSessione);
             }
             else {

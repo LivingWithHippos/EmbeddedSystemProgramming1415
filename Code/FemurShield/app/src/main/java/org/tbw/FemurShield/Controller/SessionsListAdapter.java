@@ -62,8 +62,13 @@ public class SessionsListAdapter extends ArrayAdapter{
         viewHolder.ivState.setVisibility(item.isRecording() ? View.VISIBLE : View.INVISIBLE);
 
         //viewHolder.ivSignature.setImageBitmap(item.signature);
-        SignatureLoaderTask slt=new SignatureLoaderTask(viewHolder.ivSignature,item.getDataTime());
-        slt.execute(viewHolder.ivSignature.getId());
+        Bitmap temp;
+        if((temp=BitmapCache.getInstance().getBitmapFromMemCache(item.getDataTime()))!=null)
+            viewHolder.ivSignature.setImageBitmap(temp);
+        else {
+            SignatureLoaderTask slt = new SignatureLoaderTask(viewHolder.ivSignature, item.getDataTime());
+            slt.execute(viewHolder.ivSignature.getId());
+        }
 
         viewHolder.tvName.setText(item.name);
         viewHolder.tvDate.setText(item.date);

@@ -61,6 +61,9 @@ public class SignatureLoaderTask  extends AsyncTask<Integer, Void, Bitmap> {
             } else {
                 Log.e(TAG, "Memoria non accessibile");
             }
+
+            if(signature!=null)
+                BitmapCache.getInstance().addBitmapToMemoryCache(sessionTimeStamp,signature);
             return signature;
         }
 
