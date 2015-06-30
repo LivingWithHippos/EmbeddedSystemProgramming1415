@@ -7,6 +7,7 @@ import android.graphics.Paint;
 import android.os.Environment;
 import android.util.Log;
 
+import org.tbw.FemurShield.Controller.BitmapCache;
 import org.tbw.FemurShield.Controller.ColorsPicker;
 import org.tbw.FemurShield.Controller.Controller;
 import org.tbw.FemurShield.Observer.Observable;
@@ -165,6 +166,7 @@ public class SignatureImpl implements Signature, org.tbw.FemurShield.Observer.Ob
                 FileOutputStream fos = new FileOutputStream(picture);
                 toBitmap().compress(Bitmap.CompressFormat.PNG, 90, fos);
                 fos.close();
+                BitmapCache.getInstance().addBitmapToMemoryCache(sessionID,toBitmap());
                 Log.d(TAG, "immagine scritta");
                 result = true;
             } catch (FileNotFoundException e) {
