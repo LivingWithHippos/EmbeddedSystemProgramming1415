@@ -1,9 +1,9 @@
 package org.tbw.FemurShield.Controller;
 
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -19,7 +19,7 @@ import org.tbw.FemurShield.R;
  * Created by Marco on 27/06/2015.
  */
 
-public class UI3Neo extends BaseActivity implements FallFragment.OnFallClickListener,SessionCommandsFragment.OnCommandUpdatedListener,Observer{
+public class UI3Neo extends Activity implements FallFragment.OnFallClickListener,SessionCommandsFragment.OnCommandUpdatedListener,Observer{
 
     private String thisData;
     private int layoutID;

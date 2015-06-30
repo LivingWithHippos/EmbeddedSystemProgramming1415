@@ -1,6 +1,7 @@
 package org.tbw.FemurShield.Controller;
 
 
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -24,7 +25,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 
-public class UI3 extends BaseActivity implements org.tbw.FemurShield.Observer.Observer {
+public class UI3 extends Activity implements org.tbw.FemurShield.Observer.Observer {
     private long duration=0;
 
     @Override

@@ -1,5 +1,6 @@
 package org.tbw.FemurShield.Controller;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -14,7 +15,7 @@ import org.tbw.FemurShield.Model.SessionManager;
 import org.tbw.FemurShield.R;
 
 
-public class UI2 extends BaseActivity implements FallFragment.OnFallClickListener{
+public class UI2 extends Activity implements FallFragment.OnFallClickListener{
 
     private Session thisSession;
     public final static String SESSION_DATA_STAMP = "sessiondatastamp";

@@ -68,10 +68,6 @@
         </receiver>
         <receiver android:name=".Controller.Reminder.SessionReminderReceiver" />
 
-        <activity
-            android:name=".Controller.BaseActivity"
-            android:label="@string/title_activity_base" >
-        </activity>
     </application>
 
 </manifest>

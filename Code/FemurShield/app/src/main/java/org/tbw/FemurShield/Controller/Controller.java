@@ -3,6 +3,7 @@ package org.tbw.FemurShield.Controller;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.SystemClock;
+import android.util.Log;
 import android.widget.Chronometer;
 
 import org.tbw.FemurShield.Model.ActiveSession;
@@ -11,6 +12,14 @@ import org.tbw.FemurShield.Model.Session;
 import org.tbw.FemurShield.Model.SessionManager;
 import org.tbw.FemurShield.Observer.Observable;
 import org.tbw.FemurShield.Observer.Observer;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.util.HashMap;
 
 /**
  * Created by Moro on 02/05/15.
@@ -71,6 +80,7 @@ public class Controller implements Observer {
         crono =null;
         Intent i=new Intent(a, FallDetector.class);
         a.stopService(i);
+        SaveAll();
     }
 
     public long getActualChronoBase(){
@@ -109,5 +119,46 @@ public class Controller implements Observer {
         sender.putExtra("idCaduta", fall.getId());
         sender.putExtra("dataCaduta", fall.getData());
         ac.startService(sender);
+    }
+
+    /**
+     * Tale metodo permette il salvataggio del modello in un xml
+     */
+    public void SaveAll(){
+        File file = new File(ac.getFilesDir().toString(), "backup.dat");
+        try {
+            ObjectOutputStream outputStream = new ObjectOutputStream(new FileOutputStream(file));
+            outputStream.writeObject(SessionManager.getInstance().createBackup());
+            outputStream.flush();
+            outputStream.close();
+            Log.d("FemurShield", "Salvataggio avvenuto con successo!");
+        } catch (Exception e) {
+            Log.e("FemurShield", "Errore salvataggio file : " + e.getMessage());
+        }
+    }
+
+    /**
+     * Tale metodo permette il ripristino del modello dall'XML salvato
+     */
+    public void RestoreAll(){
+        HashMap<String, String> backup = null;
+        try {
+            File file = new File(ac.getFilesDir().toString(), "backup.dat");
+            FileInputStream fileInputStream = new FileInputStream(file);
+
+            ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
+            backup = (HashMap) objectInputStream.readObject();
+            objectInputStream.close();
+            SessionManager.getInstance().applyBackup(backup);
+            Log.e("Backup", "Backup:" + backup.toString());
+        } catch (IOException e) {
+            Log.e("FemurShield", "Backup non trovato: " + e.getMessage());
+        } catch (ClassNotFoundException e) {
+        }
+    }
+
+    public void firstOpenEvent(Activity mainUI) {
+        ac=mainUI;
+        RestoreAll();
     }
 }

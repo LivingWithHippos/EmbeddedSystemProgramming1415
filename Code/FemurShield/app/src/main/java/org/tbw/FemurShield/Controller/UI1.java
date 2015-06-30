@@ -1,5 +1,6 @@
 package org.tbw.FemurShield.Controller;
 
+import android.app.Activity;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Intent;
@@ -14,18 +15,22 @@ import java.util.Calendar;
 import java.util.List;
 
 
-public class UI1 extends BaseActivity implements SessionsListFragment.OnSessionClickListener,SessionCommandsFragment.OnCommandUpdatedListener{
+public class UI1 extends Activity implements SessionsListFragment.OnSessionClickListener,SessionCommandsFragment.OnCommandUpdatedListener{
 
     protected Calendar calendar;
     private List<SessionsListItem> mItems;
     private SessionsListAdapter mAdapter;
+    private static int i=0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        RestoreAll();
         setContentView(R.layout.activity_ui1);
+        //avverto il controller che è avvenuta la prima appertura dell'activity e dovrà quindi fare il restore dei dati
+        if(i++==0){
+            Controller.getInstance().firstOpenEvent(this);
+        }
 
         if (findViewById(R.id.ui1rootLayout) != null) {
 
