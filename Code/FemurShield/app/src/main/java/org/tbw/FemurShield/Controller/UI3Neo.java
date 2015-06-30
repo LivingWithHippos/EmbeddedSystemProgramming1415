@@ -100,6 +100,9 @@ public class UI3Neo extends Activity implements FallFragment.OnFallClickListener
                 break;
             case SessionCommandsFragment.BUTTON_STOP:
                 ((ActiveSessionFragment)getFragmentManager().findFragmentByTag("activeSessionGraph")).stopChrono();
+                Intent i = new Intent(this, UI2.class);
+                i.putExtra(UI2.SESSION_DATA_STAMP, thisData);
+                startActivity(i);
                 finish();
                 break;
         }

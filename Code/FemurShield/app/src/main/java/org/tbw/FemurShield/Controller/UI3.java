@@ -220,14 +220,15 @@ public class UI3 extends Activity implements org.tbw.FemurShield.Observer.Observ
 
     public void onStopClick(View view){
         //TODO: business logic
-        Controller.getInstance().StopSession(this);
         ((Chronometer)findViewById(R.id.chronometerui3)).stop();
         //modifo le visibilità dei bottoni di controllo
         ((ImageView)findViewById(R.id.pausebtnui3)).setVisibility(ImageView.INVISIBLE);
         ((ImageView)findViewById(R.id.stopbntui3)).setVisibility(ImageView.INVISIBLE);
         ((ImageView)findViewById(R.id.startbtnui3)).setVisibility(ImageView.INVISIBLE);
-        Intent i = new Intent(this,UI1.class);
+        Intent i = new Intent(this,UI2.class);
+        i.putExtra(UI2.SESSION_DATA_STAMP, SessionManager.getInstance().getActiveSession().getDataTime());
         i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        Controller.getInstance().StopSession(this);
         startActivity(i);
     }
 
