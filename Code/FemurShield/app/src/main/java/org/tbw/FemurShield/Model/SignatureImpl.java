@@ -24,6 +24,8 @@ import java.io.ObjectInputStream;
  */
 public class SignatureImpl implements Signature, org.tbw.FemurShield.Observer.Observer {
 
+    private static SignatureImpl instance;
+    private static String lastSavedSession="";
     public static final String TAG = "SignatureImpl";
     private String sessionID;
     //variabili bitmap
@@ -42,25 +44,24 @@ public class SignatureImpl implements Signature, org.tbw.FemurShield.Observer.Ob
     private boolean invertSign = true;
 
 
-    public SignatureImpl(String sessionID) {
+    public static SignatureImpl getInstance(String sessionID)
+    {
+        if(instance!=null)
+        {
+            instance.setSession(sessionID);
+            return instance;
+        }
+
+        instance=new SignatureImpl(sessionID);
+        return instance;
+    }
+
+    private SignatureImpl(String sessionID) {
 
 
         this.sessionID = sessionID.replaceAll("/", "_");
 
-        signature = Bitmap.createBitmap(resolution, resolution, Bitmap.Config.ARGB_8888);
-        canvas = new Canvas(signature);
-        radius = resolution / 5;
-        beta = (float) 0.0;
-        setCirclesPaints();
-        finishPoint = new MPoint[3];
-
-        MCircle circleX = new MCircle((resolution / 6) * 3, (resolution / 6) * 2, radius);
-        MCircle circleY = new MCircle((resolution / 6) * 2, (resolution / 6) * 4, radius);
-        MCircle circleZ = new MCircle((resolution / 6) * 4, (resolution / 6) * 4, radius);
-        circles = new MCircle[]{circleX, circleY, circleZ};
-        startPoint = new MPoint[3];
-        firstPoint = new MPoint[3];
-        Controller.getNotification().addObserver(this);
+        startDrawing();
     }
 
 
@@ -118,10 +119,12 @@ public class SignatureImpl implements Signature, org.tbw.FemurShield.Observer.Ob
 
             }
         } else {
-            Controller.getNotification().deattach(this);
+
             //unisco l'ulitmo e il primo punto
             for (int i = 0; i < 3; i++)
                 canvas.drawLine(finishPoint[i].x, finishPoint[i].y, firstPoint[i].x, firstPoint[i].y, circlePaint[i]);
+            lastSavedSession=sessionID;
+            Controller.getNotification().deattach(this);
             saveSignature();
         }
 
@@ -140,6 +143,32 @@ public class SignatureImpl implements Signature, org.tbw.FemurShield.Observer.Ob
     @Override
     public Bitmap toBitmap() {
         return signature;
+    }
+
+    public void stopDrawing()
+    {
+        if(!lastSavedSession.equalsIgnoreCase(sessionID)) {
+            Controller.getNotification().deattach(this);
+            saveSignature();
+        }
+    }
+
+    public void startDrawing()
+    {
+        signature = Bitmap.createBitmap(resolution, resolution, Bitmap.Config.ARGB_8888);
+        canvas = new Canvas(signature);
+        radius = resolution / 5;
+        beta = (float) 0.0;
+        setCirclesPaints();
+        finishPoint = new MPoint[3];
+
+        MCircle circleX = new MCircle((resolution / 6) * 3, (resolution / 6) * 2, radius);
+        MCircle circleY = new MCircle((resolution / 6) * 2, (resolution / 6) * 4, radius);
+        MCircle circleZ = new MCircle((resolution / 6) * 4, (resolution / 6) * 4, radius);
+        circles = new MCircle[]{circleX, circleY, circleZ};
+        startPoint = new MPoint[3];
+        firstPoint = new MPoint[3];
+        Controller.getNotification().addObserver(this);
     }
 
     private boolean saveSignature() {
@@ -162,18 +191,20 @@ public class SignatureImpl implements Signature, org.tbw.FemurShield.Observer.Ob
             }
             //salvo la signature
             File picture = new File(appPath, "signature_" + sessionID + ".png");
-            try {
-                FileOutputStream fos = new FileOutputStream(picture);
-                toBitmap().compress(Bitmap.CompressFormat.PNG, 90, fos);
-                fos.close();
-                BitmapCache.getInstance().addBitmapToMemoryCache(sessionID,toBitmap());
-                Log.d(TAG, "immagine scritta");
-                result = true;
-            } catch (FileNotFoundException e) {
-                Log.d(TAG, "File not found: " + e.getMessage());
-            } catch (IOException e) {
-                Log.d(TAG, "Error accessing file: " + e.getMessage());
-            }
+            if(!picture.exists())
+                try {
+                    FileOutputStream fos = new FileOutputStream(picture);
+                    toBitmap().compress(Bitmap.CompressFormat.PNG, 90, fos);
+                    fos.close();
+                    BitmapCache.getInstance().addBitmapToMemoryCache(sessionID,toBitmap());
+                    Log.d(TAG, "immagine scritta");
+                    result = true;
+                } catch (FileNotFoundException e) {
+                    Log.d(TAG, "File not found: " + e.getMessage());
+                } catch (IOException e) {
+                    Log.d(TAG, "Error accessing file: " + e.getMessage());
+                }
+            else{result=true;}
         }
 
         return result;
@@ -257,7 +288,11 @@ public class SignatureImpl implements Signature, org.tbw.FemurShield.Observer.Ob
     }
 
 
+    public void setSession(String session) {
+        this.sessionID = session.replaceAll("/", "_");
+    }
 }
+
 
 class MPoint {
     public float x, y;

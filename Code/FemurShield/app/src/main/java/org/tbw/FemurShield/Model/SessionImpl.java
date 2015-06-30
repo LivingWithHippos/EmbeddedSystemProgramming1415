@@ -11,7 +11,6 @@ import java.util.Observable;
 public class SessionImpl extends Observable implements Session{
     protected ArrayList<Fall> cadute;
     protected long secondduration=0;
-    protected SignatureImpl signature;
     protected String name;
     protected String datetime;
     private String ID;
@@ -22,16 +21,14 @@ public class SessionImpl extends Observable implements Session{
         datetime = sdf.format(new Date());
         name="Sessione "+datetime;
         ID=datetime;
-        signature=new SignatureImpl(datetime);
     }
 
-    public SessionImpl(String nome,String datetime, ArrayList<Fall> falls,long duration,SignatureImpl sign){
+    public SessionImpl(String nome,String datetime, ArrayList<Fall> falls,long duration){
         this.name=nome;
         this.datetime=datetime;
         this.cadute=falls;
         this.secondduration=duration;
         this.ID=datetime;
-        this.signature=sign;
     }
 
     @Override

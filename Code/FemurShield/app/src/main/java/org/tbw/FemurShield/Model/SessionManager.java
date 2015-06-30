@@ -389,7 +389,7 @@ public class SessionManager {
                 //aggiungo la caduta alle cadute
                 falls.add(new Fall(before,during,after,id,datafall,lat,longi,segnalato));
             }
-            sessionivecchie.put(data,new OldSessionImpl(new SessionImpl(nome,data,falls,durata,null)));//TODO signature
+            sessionivecchie.put(data,new OldSessionImpl(new SessionImpl(nome,data,falls,durata)));//TODO signature
         }
     }
 }

@@ -6,6 +6,6 @@ package org.tbw.FemurShield.Model;
 class OldSessionImpl extends SessionImpl implements OldSession {
 
     public OldSessionImpl(SessionImpl o){
-        super(o.name,o.datetime,o.cadute,o.secondduration,o.signature);
+        super(o.name,o.datetime,o.cadute,o.secondduration);
     }
 }

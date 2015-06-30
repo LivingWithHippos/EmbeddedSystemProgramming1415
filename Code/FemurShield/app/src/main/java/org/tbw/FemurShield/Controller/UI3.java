@@ -19,6 +19,7 @@ import android.widget.TextView;
 
 import org.tbw.FemurShield.Model.Fall;
 import org.tbw.FemurShield.Model.SessionManager;
+import org.tbw.FemurShield.Model.SignatureImpl;
 import org.tbw.FemurShield.R;
 
 import java.util.ArrayList;
@@ -220,6 +221,8 @@ public class UI3 extends Activity implements org.tbw.FemurShield.Observer.Observ
 
     public void onStopClick(View view){
         //TODO: business logic
+        SignatureImpl si=SignatureImpl.getInstance(SessionManager.getInstance().getActiveSession().getDataTime());
+        si.stopDrawing();
         ((Chronometer)findViewById(R.id.chronometerui3)).stop();
         //modifo le visibilità dei bottoni di controllo
         ((ImageView)findViewById(R.id.pausebtnui3)).setVisibility(ImageView.INVISIBLE);

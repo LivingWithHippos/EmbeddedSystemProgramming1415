@@ -1,6 +1,5 @@
 package org.tbw.FemurShield.Controller;
 
-import android.app.ActionBar;
 import android.app.Activity;
 import android.app.Fragment;
 import android.content.Intent;
@@ -12,9 +11,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 
+import org.tbw.FemurShield.Model.SessionManager;
+import org.tbw.FemurShield.Model.SignatureImpl;
 import org.tbw.FemurShield.R;
 
 /**
@@ -154,6 +153,8 @@ public class SessionCommandsFragment extends Fragment {
 
     public void onStopClick(){
         //TODO: business logic
+        SignatureImpl si=SignatureImpl.getInstance(SessionManager.getInstance().getActiveSession().getDataTime());
+        si.stopDrawing();
         Controller.getInstance().StopSession(getActivity());
 
         //modifico le visibilita' dei bottoni di controllo
