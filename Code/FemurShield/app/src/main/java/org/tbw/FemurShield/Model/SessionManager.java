@@ -63,6 +63,7 @@ public class SessionManager {
      */
     public void deleteOldSession(String id){
         sessionivecchie.remove(id);
+        //TODO eliminare immagine signature
     }
 
     /**

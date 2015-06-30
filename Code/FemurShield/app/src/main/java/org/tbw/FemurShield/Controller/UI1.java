@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import org.tbw.FemurShield.Model.SessionManager;
 import org.tbw.FemurShield.R;
@@ -15,7 +16,7 @@ import java.util.Calendar;
 import java.util.List;
 
 
-public class UI1 extends Activity implements SessionsListFragment.OnSessionClickListener,SessionCommandsFragment.OnCommandUpdatedListener{
+public class UI1 extends Activity implements SessionsListFragment.OnSessionClickListener,SessionCommandsFragment.OnCommandUpdatedListener,SessionOptionDialog.OnSessionOptionsClickListener {
 
     protected Calendar calendar;
     private List<SessionsListItem> mItems;
@@ -53,6 +54,7 @@ public class UI1 extends Activity implements SessionsListFragment.OnSessionClick
         }
 
         instantiateColors();
+        registerForContextMenu(findViewById(R.id.listaSessioniUI1));
 
     }
 
@@ -119,6 +121,27 @@ public class UI1 extends Activity implements SessionsListFragment.OnSessionClick
             Intent i = new Intent(getBaseContext(), UI2.class);
             i.putExtra(UI2.SESSION_DATA_STAMP, sessionID);
             startActivity(i);
+        }
+    }
+
+    @Override
+    public void onSessionLongClick(String data) {
+        Toast.makeText(this,"DAAAAAAAAAAA"+data,Toast.LENGTH_SHORT).show();
+
+        SessionOptionDialog dialog = new SessionOptionDialog();
+        Bundle bundle = new Bundle();
+        bundle.putString(SessionOptionDialog.SELECTED_DATA, data);
+        dialog.setArguments(bundle);
+        dialog.show(getFragmentManager(), "Contact Options Menu");
+
+    }
+
+    @Override
+    public void onSessionOptionClick(String data, int type) {
+        if(type==SessionOptionDialog.DELETE_CONTACT){
+            Controller.getInstance().deleteEvent(data);
+            SessionsListFragment slf=(SessionsListFragment)getFragmentManager().findFragmentByTag("mSessionsListFragment");
+            slf.aggiornaLista();
         }
     }
 }

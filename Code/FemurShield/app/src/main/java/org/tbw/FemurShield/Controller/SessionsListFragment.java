@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import org.tbw.FemurShield.Model.ActiveSession;
@@ -100,5 +101,25 @@ public class SessionsListFragment extends ListFragment {
     public interface OnSessionClickListener
     {
         void onSessionClick(String sessionID);
+        void onSessionLongClick(String data);
     }
+
+    public class OnSessionLongClickListener implements ListView.OnItemLongClickListener
+    {
+        @Override
+        public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+
+            SessionsListItem sli=(SessionsListItem)parent.getItemAtPosition(position);
+            mListener.onSessionLongClick(sli.getDataTime());
+            return true;
+        }
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        ListView list=getListView();
+        list.setOnItemLongClickListener(new OnSessionLongClickListener());
+    }
+
 }

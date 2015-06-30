@@ -30,6 +30,7 @@
     <string name="action_clear_all_contacts">Cancella Contatti</string>
     <string name="no_active_session">Nessuna Sessione Attiva!</string>
     <string name="contact_options_dialog_title">Opzioni Contatto</string>
+    <string name="session_options_dialog_title">Opzioni Sessione</string>
     <string name="contact_deleted">Contatto Cancellato</string>
     <string name="contact_not_deleted">Problema di Cancellazione Contatto!</string>
     <string name="edit_contact_dialog_title">Modifica Contatto</string>

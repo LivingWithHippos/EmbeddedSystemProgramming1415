@@ -161,4 +161,9 @@ public class Controller implements Observer {
         ac=mainUI;
         RestoreAll();
     }
+
+    public void deleteEvent(String data) {
+        SessionManager.getInstance().deleteOldSession(data);
+        SaveAll();
+    }
 }
