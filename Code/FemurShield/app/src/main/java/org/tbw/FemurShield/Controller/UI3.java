@@ -230,6 +230,7 @@ public class UI3 extends Activity implements org.tbw.FemurShield.Observer.Observ
         i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         Controller.getInstance().StopSession(this);
         startActivity(i);
+        finish();
     }
 
     public void aggiornaListaCadute(){
