@@ -166,8 +166,8 @@ public class FallDetector extends IntentService implements SensorEventListener {
 
     private void startDetector(){
         PreferencesEditor pref=new PreferencesEditor(getBaseContext());
-        tempocampionamento= 20+(((65000-20)/100)*pref.getSamplingRate()) ;
-        Log.e("SAMPLING RATING",""+tempocampionamento);
+        tempocampionamento=205-(200*pref.getSamplingRate()/100);
+        Log.d("SAMPLING RATING",""+tempocampionamento);
         if(!isRunning) {
             isRunning=true;
             //costruisco la notifica da visualizzare
