@@ -48,26 +48,19 @@ public class SignatureImpl implements Signature, org.tbw.FemurShield.Observer.Ob
 
         signature = Bitmap.createBitmap(resolution, resolution, Bitmap.Config.ARGB_8888);
         canvas = new Canvas(signature);
-        if (!signatureExists()) {Log.d(TAG,"La sessione non seiste");}
-            //if (SessionManager.getInstance().getActiveSession()!=null) {
-                radius = resolution / 5;
-                beta = (float) 0.0;
-                setCirclesPaints();
-                finishPoint = new MPoint[3];
+        radius = resolution / 5;
+        beta = (float) 0.0;
+        setCirclesPaints();
+        finishPoint = new MPoint[3];
 
-                MCircle circleX = new MCircle((resolution / 6) * 3, (resolution / 6) * 2, radius);
-                MCircle circleY = new MCircle((resolution / 6) * 2, (resolution / 6) * 4, radius);
-                MCircle circleZ = new MCircle((resolution / 6) * 4, (resolution / 6) * 4, radius);
-                circles = new MCircle[]{circleX, circleY, circleZ};
-                startPoint = new MPoint[3];
-                firstPoint = new MPoint[3];
-                Controller.getNotification().addObserver(this);
-           // }else{Log.e(TAG,"immagine non trovata e sessione attiva non trovata");}
-        } /*else {
-            Log.d(TAG, "carico la signature dalla memoria");
-            loadSignature();
-        }*/
-
+        MCircle circleX = new MCircle((resolution / 6) * 3, (resolution / 6) * 2, radius);
+        MCircle circleY = new MCircle((resolution / 6) * 2, (resolution / 6) * 4, radius);
+        MCircle circleZ = new MCircle((resolution / 6) * 4, (resolution / 6) * 4, radius);
+        circles = new MCircle[]{circleX, circleY, circleZ};
+        startPoint = new MPoint[3];
+        firstPoint = new MPoint[3];
+        Controller.getNotification().addObserver(this);
+    }
 
 
     private void setCirclesPaints() {
@@ -172,7 +165,7 @@ public class SignatureImpl implements Signature, org.tbw.FemurShield.Observer.Ob
                 FileOutputStream fos = new FileOutputStream(picture);
                 toBitmap().compress(Bitmap.CompressFormat.PNG, 90, fos);
                 fos.close();
-                Log.d(TAG,"immagine scritta");
+                Log.d(TAG, "immagine scritta");
                 result = true;
             } catch (FileNotFoundException e) {
                 Log.d(TAG, "File not found: " + e.getMessage());
@@ -222,7 +215,7 @@ public class SignatureImpl implements Signature, org.tbw.FemurShield.Observer.Ob
     }
 
     /* Checks if external storage is available for read and write */
-    public boolean isExternalStorageWritable() {
+    public static boolean isExternalStorageWritable() {
         String state = Environment.getExternalStorageState();
         if (Environment.MEDIA_MOUNTED.equals(state)) {
             return true;
@@ -231,13 +224,26 @@ public class SignatureImpl implements Signature, org.tbw.FemurShield.Observer.Ob
     }
 
     /* Checks if external storage is available to at least read */
-    public boolean isExternalStorageReadable() {
+    public static boolean isExternalStorageReadable() {
         String state = Environment.getExternalStorageState();
         if (Environment.MEDIA_MOUNTED.equals(state) ||
                 Environment.MEDIA_MOUNTED_READ_ONLY.equals(state)) {
             return true;
         }
         return false;
+    }
+
+    public static boolean deleteSignature(String sessionDeleteDate) {
+        boolean result = false;
+        if (isExternalStorageWritable()) {
+            String filename = sessionDeleteDate.replaceAll("/", "_");
+            File appPath = new File(Environment.getExternalStorageDirectory(), "FemurShield");
+            File picture = new File(appPath, "signature_" + filename + ".png");
+            result = picture.delete();
+        } else {
+            Log.e(TAG, "Memoria non accessibile");
+        }
+        return result;
     }
 
     @Override
