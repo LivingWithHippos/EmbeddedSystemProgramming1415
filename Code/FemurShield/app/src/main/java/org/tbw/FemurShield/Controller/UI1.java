@@ -54,7 +54,6 @@ public class UI1 extends Activity implements SessionsListFragment.OnSessionClick
         }
 
         instantiateColors();
-        registerForContextMenu(findViewById(R.id.listaSessioniUI1));
 
     }
 
