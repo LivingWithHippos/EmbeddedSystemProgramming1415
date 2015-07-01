@@ -8,6 +8,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -26,7 +27,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 
-public class UI3 extends Activity implements org.tbw.FemurShield.Observer.Observer, EditSessionNameFragment.OnUserInsertedListener {
+public class UI3 extends Activity implements org.tbw.FemurShield.Observer.Observer, EditSessionNameFragment.OnSessionNameInsertedListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -282,7 +283,7 @@ public class UI3 extends Activity implements org.tbw.FemurShield.Observer.Observ
     }
 
     @Override
-    public void onUserInserted(String nome,String data) {
+    public void onSessionNameInserted(String nome,String data) {
         Controller.getInstance().renameEvent(data, nome);
         //TODO aggiornare view dopo che il nome è cambiato
     }

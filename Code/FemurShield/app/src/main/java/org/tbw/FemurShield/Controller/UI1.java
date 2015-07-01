@@ -13,7 +13,7 @@ import org.tbw.FemurShield.Model.SessionManager;
 import org.tbw.FemurShield.R;
 
 
-public class UI1 extends Activity implements SessionsListFragment.OnSessionClickListener,SessionCommandsFragment.OnCommandUpdatedListener,SessionOptionDialog.OnSessionOptionsClickListener, EditSessionNameFragment.OnUserInsertedListener {
+public class UI1 extends Activity implements SessionsListFragment.OnSessionClickListener,SessionCommandsFragment.OnCommandUpdatedListener,SessionOptionDialog.OnSessionOptionsClickListener, EditSessionNameFragment.OnSessionNameInsertedListener {
 
     private static int i=0;
     private final static String COMMAND_FRAGMENT_TAG="mSessionCommandsFragment";
@@ -154,7 +154,7 @@ public class UI1 extends Activity implements SessionsListFragment.OnSessionClick
     }
 
     @Override
-    public void onUserInserted(String nome,String data) {
+    public void onSessionNameInserted(String nome,String data) {
         Controller.getInstance().renameEvent(data, nome);
         SessionsListFragment slf = (SessionsListFragment) getFragmentManager().findFragmentByTag(SESSIONS_FRAGMENT_TAG);
         slf.aggiornaLista();

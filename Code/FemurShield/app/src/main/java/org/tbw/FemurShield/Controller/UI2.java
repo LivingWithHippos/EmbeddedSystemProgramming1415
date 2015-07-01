@@ -15,7 +15,7 @@ import org.tbw.FemurShield.Model.SessionManager;
 import org.tbw.FemurShield.R;
 
 
-public class UI2 extends Activity implements FallFragment.OnFallClickListener, EditSessionNameFragment.OnUserInsertedListener{
+public class UI2 extends Activity implements FallFragment.OnFallClickListener, EditSessionNameFragment.OnSessionNameInsertedListener{
 
     private Session thisSession;
     public final static String SESSION_DATA_STAMP = "sessiondatastamp";
@@ -109,7 +109,7 @@ public class UI2 extends Activity implements FallFragment.OnFallClickListener, E
     }
 
     @Override
-    public void onUserInserted(String nome,String data) {
+    public void onSessionNameInserted(String nome,String data) {
         Controller.getInstance().renameEvent(data, nome);
         //TODO aggiornare view dopo che il nome è cambiato
     }

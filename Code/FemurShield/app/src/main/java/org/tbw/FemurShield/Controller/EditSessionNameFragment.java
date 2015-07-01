@@ -16,12 +16,12 @@ import org.tbw.FemurShield.R;
 
 public class EditSessionNameFragment extends DialogFragment implements DialogInterface.OnClickListener{
 
-    private OnUserInsertedListener mCallback;
+    private OnSessionNameInsertedListener mCallback;
     public final static String SESSION_DATA="session_data";
     private String sessiondata="";
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        mCallback=(OnUserInsertedListener)getActivity();
+        mCallback=(OnSessionNameInsertedListener)getActivity();
 
         AlertDialog.Builder alert = new AlertDialog.Builder(getActivity(), R.style.AppDialogTheme);
         final Context themeContext = getActivity();
@@ -42,7 +42,7 @@ public class EditSessionNameFragment extends DialogFragment implements DialogInt
             case AlertDialog.BUTTON_POSITIVE:
                 if (mCallback != null) {
                     EditText nome = (EditText) getDialog().findViewById(R.id.etSessionName);
-                    mCallback.onUserInserted(nome.getText().toString(),sessiondata);
+                    mCallback.onSessionNameInserted(nome.getText().toString(),sessiondata);
                 }
                 break;
         }
@@ -54,22 +54,22 @@ public class EditSessionNameFragment extends DialogFragment implements DialogInt
         super.onAttach(activity);
 
         try {
-            mCallback = (OnUserInsertedListener) activity;
+            mCallback = (OnSessionNameInsertedListener) activity;
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString()
-                    + " must implement OnUserInsertedListener");
+                    + " must implement OnSessionNameInsertedListener");
         }
     }
 
     /**
      * Interfaccia di callback per quando l'utente ha finito premendo il bottone ok
      */
-    public interface OnUserInsertedListener {
+    public interface OnSessionNameInsertedListener {
 
         /**
          * @param nuovonome EditText in cui e stato inserito il nome
          */
-        void onUserInserted(String nuovonome, String data);
+        void onSessionNameInserted(String nuovonome, String data);
     }
 
 }
