@@ -169,11 +169,6 @@ public class Controller implements Observer {
     }
 
     public void renameEvent(String data, String newname) {
-        Log.d(TAG,"rename session: "+data+" con "+newname);
-        Session before=SessionManager.getInstance().getAllSessionsById().get(data);
-        if(before!=null)
-            Log.d(TAG,"after rename session: "+before.getDataTime()+" con "+before.getName());
-        Session s=SessionManager.getInstance().renameSession(data,newname);
-        Log.d(TAG,"after rename session:"+s.getId()+" con "+s.getName());
+        SessionManager.getInstance().renameSession(data,newname);
     }
 }
