@@ -19,6 +19,7 @@ public class UI2 extends Activity implements FallFragment.OnFallClickListener, E
 
     private Session thisSession;
     public final static String SESSION_DATA_STAMP = "sessiondatastamp";
+    private String thisData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,7 +36,7 @@ public class UI2 extends Activity implements FallFragment.OnFallClickListener, E
         ll.setId(View.generateViewId());
 
 
-        String thisData = getIntent().getExtras().getString(SESSION_DATA_STAMP);
+        thisData = getIntent().getExtras().getString(SESSION_DATA_STAMP);
         SessionDetailsFragment sdf = SessionDetailsFragment.newIstance(thisData,SessionDetailsFragment.UI_2_MODE);
         FallFragment ff = FallFragment.newInstance(thisData);
 
@@ -85,7 +86,7 @@ public class UI2 extends Activity implements FallFragment.OnFallClickListener, E
             case R.id.rename_session:
                 EditSessionNameFragment sessionRenameFragment = new EditSessionNameFragment();
                 Bundle bundle = new Bundle();
-                bundle.putString(EditSessionNameFragment.SESSION_DATA, getIntent().getExtras().getString(SESSION_DATA_STAMP));
+                bundle.putString(EditSessionNameFragment.SESSION_DATA, thisData);
                 sessionRenameFragment.setArguments(bundle);
                 sessionRenameFragment.show(getFragmentManager(), "Edit Session Name Dialog");
                 return true;
