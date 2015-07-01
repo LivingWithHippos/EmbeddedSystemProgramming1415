@@ -281,7 +281,7 @@ public class UI5 extends Activity implements SettingsFragment.OnOptionSelectedLi
                 }
                 break;
             case ContactOptionsDialog.EDIT_CONTACT:
-                EditSessionNameFragment emailFragment = new EditSessionNameFragment();
+                AddContactFragment emailFragment = new AddContactFragment();
                 Bundle bundle = new Bundle();
                 bundle.putBoolean(AddContactFragment.CONTACT_MODE, AddContactFragment.MODE_EDIT_USER);
                 bundle.putString(AddContactFragment.OLD_EMAIL, emailAddress);
