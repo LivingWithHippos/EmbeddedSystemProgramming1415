@@ -33,20 +33,21 @@
 
         <LinearLayout
             android:orientation="horizontal"
+            android:weightSum="2"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/sessiondateui1"
+                android:id="@+id/sessionstartingdateui1"
                 android:textSize="@dimen/testo_lista"
                 android:textColor="#ff000000"
                 android:layout_weight="1"/>
 
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/sessionstartingtimeui1"
                 android:textSize="@dimen/testo_lista"

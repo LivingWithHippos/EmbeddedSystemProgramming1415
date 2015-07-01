@@ -2,6 +2,7 @@ package org.tbw.FemurShield.Controller;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,7 +46,7 @@ public class SessionsListAdapter extends ArrayAdapter{
             viewHolder.ivSignature = (ImageView) convertView.findViewById(R.id.sessionsignatureui1);
             viewHolder.ivState = (ImageView) convertView.findViewById(R.id.sessionstateimgui1);
             viewHolder.tvName = (TextView) convertView.findViewById(R.id.sessionnameui1);
-            viewHolder.tvDate = (TextView) convertView.findViewById(R.id.sessiondateui1);
+            viewHolder.tvStartingDate= (TextView) convertView.findViewById(R.id.sessionstartingdateui1);
             viewHolder.tvStartingTime = (TextView) convertView.findViewById(R.id.sessionstartingtimeui1);
             viewHolder.tvDuration = (TextView) convertView.findViewById(R.id.sessiondurationui1);
             viewHolder.tvFallsNumber = (TextView) convertView.findViewById(R.id.sessionfallsui1);
@@ -71,11 +72,13 @@ public class SessionsListAdapter extends ArrayAdapter{
         }
 
         viewHolder.tvName.setText(item.name);
-        viewHolder.tvDate.setText(item.date);
+        viewHolder.tvStartingDate.setText(item.startingDate);
         viewHolder.tvStartingTime.setText(item.startingTime);
-        viewHolder.tvDuration.setText(item.duration);
-        viewHolder.tvFallsNumber.setText(item.falls + "");
-
+        if(item.duration.length()>2)
+            viewHolder.tvDuration.setText("Durata Sessione: "+item.duration);
+        else
+            viewHolder.tvDuration.setText(item.duration);
+        viewHolder.tvFallsNumber.setText("# cadute: " + item.falls);
         return convertView;
     }
 
@@ -88,7 +91,7 @@ public class SessionsListAdapter extends ArrayAdapter{
         ImageView ivSignature;
         ImageView ivState;
         TextView tvName;
-        TextView tvDate;
+        TextView tvStartingDate;
         TextView tvStartingTime;
         TextView tvDuration;
         TextView tvFallsNumber;
@@ -101,7 +104,7 @@ class SessionsListItem{
     public static final boolean INACTIVE_STATE=false;
     
     public String name;
-    public String date;
+    public String startingDate;
     public String startingTime;
     public String duration;
     public int falls;
@@ -125,37 +128,13 @@ class SessionsListItem{
                     //scrive mesi giorni e ore ad una cifra come 0x invece di x
                     DecimalFormat formatter = new DecimalFormat("00");
                     //il mese parte da zero non da uno
-                    this.date=formatter.format(calendar.get(Calendar.DAY_OF_MONTH))+"/"+formatter.format(calendar.get(Calendar.MONTH)+1)+"/"+calendar.get(Calendar.YEAR);
+                    this.startingDate=formatter.format(calendar.get(Calendar.DAY_OF_MONTH))+"/"+formatter.format(calendar.get(Calendar.MONTH)+1)+"/"+calendar.get(Calendar.YEAR);
                     this.startingTime = formatter.format(calendar.get(Calendar.HOUR_OF_DAY))+":"+formatter.format(calendar.get(Calendar.MINUTE))+":"+formatter.format(calendar.get(Calendar.SECOND));
                 }catch (ParseException pe){
-                    this.date="0";this.startingTime="0";
+                    this.startingDate="0";this.startingTime="0";
                 }
             }
 
-    /**
-     * aggiunge uno al numero di cadute da mostrare
-     * */
-    public void addFall()
-    {
-        this.falls++;
-    }
-    /**
-     * @param falls il numero di cadute da impostare
-     * */
-    public void setFallsNumber(int falls)
-    {
-        this.falls=falls;
-    }
-    /**
-     * @param state indica se la sessione rappresentatae' attiva o no
-     * */
-    public void setState(boolean state)
-    {
-        this.state=state;
-    }
-    /**
-     * @return  se la sessione rappresentata sta registrando o no
-     * */
     public boolean isRecording() {
         return state;
     }
