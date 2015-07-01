@@ -67,23 +67,20 @@ public class SessionManager {
     }
 
     /**
-     * metodo per rinominare una  sessione
+     * metodo per rinominare la sessione attiva
+     * @param newname nuovo nome della sessione
+     */
+    public void renameActiveSession(String newname){
+        sessioneattiva.setName(newname);
+    }
+
+    /**
+     * metodo per rinominare una vecchia sessione
      * @param id id della sessione da rinominare
      * @param newname nuovo nome della sessione
-     * @return la sessione modificata o null se non l'ha trovata
      */
-    public Session renameSession(String id,String newname)
-    {
-        if(sessioneattiva!=null&sessioneattiva.getId().equalsIgnoreCase(id)) {
-            sessioneattiva.setName(newname);
-            return sessioneattiva;
-        }
-        else
-            if(sessionivecchie.get(id)!=null) {
-                sessionivecchie.get(id).setName(newname);
-                return sessionivecchie.get(id);
-            }
-        return null;
+    public void renameOldSession(String id, String newname){
+        sessionivecchie.get(id).setName(newname);
     }
 
     /**

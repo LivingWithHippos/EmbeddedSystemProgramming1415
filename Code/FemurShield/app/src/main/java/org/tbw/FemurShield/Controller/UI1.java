@@ -122,16 +122,21 @@ public class UI1 extends Activity implements SessionsListFragment.OnSessionClick
         Bundle bundle = new Bundle();
         bundle.putString(SessionOptionDialog.SELECTED_DATA, data);
         dialog.setArguments(bundle);
-        dialog.show(getFragmentManager(), "Session Options Menu");
+        dialog.show(getFragmentManager(), "Contact Options Menu");
+    }
+
+    @Override
+    public void onActiveSessionLongClick(String data) {
+        EditSessionNameFragment sessionRenameFragment = new EditSessionNameFragment();
+        Bundle bundle = new Bundle();
+        bundle.putString(EditSessionNameFragment.SESSION_DATA, data);
+        sessionRenameFragment.setArguments(bundle);
+        sessionRenameFragment.show(getFragmentManager(), "Edit Session Name Dialog");
     }
 
     @Override
     public void onSessionOptionClick(String data, int type) {
         if(type==SessionOptionDialog.DELETE_SESSION){
-            if(SessionManager.getInstance().getActiveSession()!=null&SessionManager.getInstance().getActiveSession().getId().equalsIgnoreCase(data))
-            {
-                Controller.getInstance().StopSession(this);
-            }
             Controller.getInstance().deleteEvent(data);
             SessionsListFragment slf=(SessionsListFragment)getFragmentManager().findFragmentByTag("mSessionsListFragment");
             slf.aggiornaLista();
