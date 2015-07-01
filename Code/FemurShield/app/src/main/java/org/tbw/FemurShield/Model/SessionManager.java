@@ -75,7 +75,7 @@ public class SessionManager {
     public Session renameSession(String id,String newname)
     {
         Session temp=null;
-        if(sessioneattiva!=null&sessioneattiva.getId().equalsIgnoreCase(id)) {
+        if(sessioneattiva!=null&&sessioneattiva.getId().equalsIgnoreCase(id)) {
             sessioneattiva.setName(newname);
             return sessioneattiva;
         }
