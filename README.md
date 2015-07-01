@@ -1,4 +1,7 @@
 # EmbeddedSystemProgramming1415
+
+Link checkboxes: https://www.wunderlist.com/#/lists/164795102
+
 ___Fall Detector___
 Design and implement an app that records data coming from the accelerometer in your device, and uses them to detect when the user of the device falls. When a “fall” event is detected, the app retrieves the location of the user and notifies a pre-established list of people by email. Fall detection for elderly people has been an area of active research in recent years. The app should manage and store multiple activity sessions; each session may contain zero, one or multiple “fall” events. The app should provide at least the following user interfaces (UIs) and functions.
 
