@@ -27,6 +27,7 @@ import java.util.HashMap;
 public class Controller implements Observer {
 
     private static Controller instance;
+    private static final String TAG="Controller";
     Chronometer crono;
     Activity ac=null;
 
@@ -131,9 +132,9 @@ public class Controller implements Observer {
             outputStream.writeObject(SessionManager.getInstance().createBackup());
             outputStream.flush();
             outputStream.close();
-            Log.d("FemurShield", "Salvataggio avvenuto con successo!");
+            Log.d(TAG, "Salvataggio sessioni avvenuto con successo!");
         } catch (Exception e) {
-            Log.e("FemurShield", "Errore salvataggio file : " + e.getMessage());
+            Log.e(TAG, "Errore salvataggio file sessioni: " + e.getMessage());
         }
     }
 
@@ -150,9 +151,9 @@ public class Controller implements Observer {
             backup = (HashMap) objectInputStream.readObject();
             objectInputStream.close();
             SessionManager.getInstance().applyBackup(backup);
-            Log.e("Backup", "Backup:" + backup.toString());
+            Log.d(TAG, "Backup:" + backup.toString());
         } catch (IOException e) {
-            Log.e("FemurShield", "Backup non trovato: " + e.getMessage());
+            Log.e(TAG, "Backup non trovato: " + e.getMessage());
         } catch (ClassNotFoundException e) {
         }
     }
@@ -168,19 +169,11 @@ public class Controller implements Observer {
     }
 
     public void renameEvent(String data, String newname) {
-        Log.e("rename session:",data+" con "+newname);
-        Session s;
-        if(SessionManager.getInstance().getActiveSession()!=null&&SessionManager.getInstance().getActiveSession().getId().equals(data)){
-            s=SessionManager.getInstance().getActiveSession();
-            SessionManager.getInstance().renameActiveSession(newname);
-        }
-        else {
-            s=SessionManager.getInstance().getSession(data);
-            SessionManager.getInstance().renameOldSession(data, newname);
-        }
-
-        Log.e("after rename session:",data+" con "+newname);
-        Log.e("after rename session:",s.getId()+" con "+s.getName());
-        SaveAll();
+        Log.d(TAG,"rename session: "+data+" con "+newname);
+        Session before=SessionManager.getInstance().getAllSessionsById().get(data);
+        if(before!=null)
+            Log.d(TAG,"after rename session: "+before.getDataTime()+" con "+before.getName());
+        Session s=SessionManager.getInstance().renameSession(data,newname);
+        Log.d(TAG,"after rename session:"+s.getId()+" con "+s.getName());
     }
 }

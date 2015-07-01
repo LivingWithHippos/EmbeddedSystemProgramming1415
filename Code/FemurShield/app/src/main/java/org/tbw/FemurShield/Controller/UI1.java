@@ -5,6 +5,7 @@ import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -15,6 +16,8 @@ import org.tbw.FemurShield.R;
 public class UI1 extends Activity implements SessionsListFragment.OnSessionClickListener,SessionCommandsFragment.OnCommandUpdatedListener,SessionOptionDialog.OnSessionOptionsClickListener, EditSessionNameFragment.OnUserInsertedListener {
 
     private static int i=0;
+    private final static String COMMAND_FRAGMENT_TAG="mSessionCommandsFragment";
+    private final static String SESSIONS_FRAGMENT_TAG="mSessionListFragment";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,8 +44,8 @@ public class UI1 extends Activity implements SessionsListFragment.OnSessionClick
             FragmentManager fragmentManager = getFragmentManager();
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
-            fragmentTransaction.add(R.id.listaSessioniUI1, sFragment, "mSessionsListFragment");
-            fragmentTransaction.add(R.id.comandiSessioniUI1, cFragment, "mSessionCommandsFragment");
+            fragmentTransaction.add(R.id.listaSessioniUI1, sFragment, SESSIONS_FRAGMENT_TAG);
+            fragmentTransaction.add(R.id.comandiSessioniUI1, cFragment, COMMAND_FRAGMENT_TAG);
             fragmentTransaction.commit();
         }
 
@@ -72,7 +75,7 @@ public class UI1 extends Activity implements SessionsListFragment.OnSessionClick
     @Override
     protected void onResume() {
         super.onResume();
-        SessionsListFragment slf=(SessionsListFragment)getFragmentManager().findFragmentByTag("mSessionsListFragment");
+        SessionsListFragment slf=(SessionsListFragment)getFragmentManager().findFragmentByTag(SESSIONS_FRAGMENT_TAG);
         slf.aggiornaLista();
     }
 
@@ -126,19 +129,17 @@ public class UI1 extends Activity implements SessionsListFragment.OnSessionClick
     }
 
     @Override
-    public void onActiveSessionLongClick(String data) {
-        EditSessionNameFragment sessionRenameFragment = new EditSessionNameFragment();
-        Bundle bundle = new Bundle();
-        bundle.putString(EditSessionNameFragment.SESSION_DATA, data);
-        sessionRenameFragment.setArguments(bundle);
-        sessionRenameFragment.show(getFragmentManager(), "Edit Session Name Dialog");
-    }
-
-    @Override
     public void onSessionOptionClick(String data, int type) {
         if(type==SessionOptionDialog.DELETE_SESSION){
+            //la sessione attiva non ritorna null ma il getdatatime si'... boh
+            Log.d("UI1","seeeione attiva: "+SessionManager.getInstance().isRunning());
+            if(SessionManager.getInstance().isRunning()&&
+                    SessionManager.getInstance().getActiveSession().getDataTime().equalsIgnoreCase(data)) {
+                SessionCommandsFragment scf = (SessionCommandsFragment) getFragmentManager().findFragmentByTag(COMMAND_FRAGMENT_TAG);
+                scf.onStopClick();
+            }
             Controller.getInstance().deleteEvent(data);
-            SessionsListFragment slf=(SessionsListFragment)getFragmentManager().findFragmentByTag("mSessionsListFragment");
+            SessionsListFragment slf=(SessionsListFragment)getFragmentManager().findFragmentByTag(SESSIONS_FRAGMENT_TAG);
             slf.aggiornaLista();
         }
         else {
@@ -155,7 +156,7 @@ public class UI1 extends Activity implements SessionsListFragment.OnSessionClick
     @Override
     public void onUserInserted(String nome,String data) {
         Controller.getInstance().renameEvent(data, nome);
-        SessionsListFragment slf = (SessionsListFragment) getFragmentManager().findFragmentByTag("mSessionsListFragment");
+        SessionsListFragment slf = (SessionsListFragment) getFragmentManager().findFragmentByTag(SESSIONS_FRAGMENT_TAG);
         slf.aggiornaLista();
     }
 }

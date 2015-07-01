@@ -102,22 +102,16 @@ public class SessionsListFragment extends ListFragment {
     {
         void onSessionClick(String sessionID);
         void onSessionLongClick(String data);
-        void onActiveSessionLongClick(String data);
     }
 
     public class OnSessionLongClickListener implements ListView.OnItemLongClickListener
     {
         @Override
         public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-            if(SessionManager.getInstance().isRunning()&&position==0) {
-                //ho cliccato la sessione attiva
-                SessionsListItem sli = (SessionsListItem) parent.getItemAtPosition(position);
-                mListener.onActiveSessionLongClick(sli.getDataTime());
-            }
-            else{
-                SessionsListItem sli = (SessionsListItem) parent.getItemAtPosition(position);
-                mListener.onSessionLongClick(sli.getDataTime());
-            }
+
+            SessionsListItem sli = (SessionsListItem) parent.getItemAtPosition(position);
+            mListener.onSessionLongClick(sli.getDataTime());
+
             return true;
         }
     }
