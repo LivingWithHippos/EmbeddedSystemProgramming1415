@@ -11,6 +11,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 import org.tbw.FemurShield.Model.Fall;
 import org.tbw.FemurShield.Model.SessionManager;
@@ -26,61 +27,41 @@ public class UI3Neo extends Activity implements EditSessionNameFragment.OnSessio
 
     private String thisData;
     private int layoutID;
+    private int lastOrientation=-1;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ui3neo);
+        if (findViewById(R.id.ui3rootLayout) != null) {
 
-        int orientation=this.getResources().getConfiguration().orientation;
-        thisData= SessionManager.getInstance().getActiveSession().getDataTime();
 
-        SessionDetailsFragment sdf = SessionDetailsFragment.newIstance(thisData,SessionDetailsFragment.UI_3_MODE);
-        ActiveSessionFragment asf= ActiveSessionFragment.newIstance();
-        SessionCommandsFragment scf=SessionCommandsFragment.newInstance(SessionCommandsFragment.MODE_SMALL);
-        FallFragment ff = FallFragment.newInstance(thisData);
 
-        LinearLayout fragContainer = (LinearLayout) findViewById(R.id.ui3rootLayout);
+            int orientation = this.getResources().getConfiguration().orientation;
 
-        LinearLayout containerLayout=new LinearLayout(this);
-        containerLayout.setId(View.generateViewId());
-        LinearLayout firstLayout = new LinearLayout(this);
-        firstLayout.setOrientation(LinearLayout.VERTICAL);
-        firstLayout.setId(View.generateViewId());
-        LinearLayout secondLayout = new LinearLayout(this);
-        secondLayout.setOrientation(LinearLayout.VERTICAL);
-        secondLayout.setId(View.generateViewId());
 
-        if(orientation== Configuration.ORIENTATION_PORTRAIT)
-        {
-            containerLayout.setOrientation(LinearLayout.VERTICAL);
-            containerLayout.addView(firstLayout);
-            containerLayout.addView(secondLayout);
-            getFragmentManager().beginTransaction().add(firstLayout.getId(),sdf, "sessionDetails").commit();
-            getFragmentManager().beginTransaction().add(firstLayout.getId(),asf, "activeSessionGraph").commit();
-            getFragmentManager().beginTransaction().add(secondLayout.getId(), scf, "sessionCommand").commit();
-            getFragmentManager().beginTransaction().add(secondLayout.getId(), ff, "fallsList_ui3").commit();
+
+            thisData = SessionManager.getInstance().getActiveSession().getDataTime();
+
+            SessionDetailsFragment sdf = SessionDetailsFragment.newIstance(thisData, SessionDetailsFragment.UI_3_MODE);
+            ActiveSessionFragment asf = ActiveSessionFragment.newIstance();
+            SessionCommandsFragment scf = SessionCommandsFragment.newInstance(SessionCommandsFragment.MODE_SMALL);
+            FallFragment ff = FallFragment.newInstance(thisData);
+
+
+            if (orientation == Configuration.ORIENTATION_PORTRAIT) {
+                getFragmentManager().beginTransaction().replace(R.id.sessionDetailLayout, sdf, "sessionDetails").commit();
+                getFragmentManager().beginTransaction().replace(R.id.sessionGraphLayout, asf, "activeSessionGraph").commit();
+                getFragmentManager().beginTransaction().replace(R.id.fallListLayout, ff, "fallsList_ui3").commit();
+                getFragmentManager().beginTransaction().replace(R.id.commandLayout, scf, "sessionCommand").commit();
+            } else {
+                getFragmentManager().beginTransaction().replace(R.id.sessionDetailLayout, sdf, "sessionDetails").commit();
+                getFragmentManager().beginTransaction().replace(R.id.fallListLayout, ff, "fallsList_ui3").commit();
+                getFragmentManager().beginTransaction().replace(R.id.sessionGraphLayout, asf, "activeSessionGraph").commit();
+                getFragmentManager().beginTransaction().replace(R.id.commandLayout, scf, "sessionCommand").commit();
+            }
+
+            Controller.getNotification().addObserver(this);
         }
-        else
-        {
-            containerLayout.setOrientation(LinearLayout.HORIZONTAL);
-            LinearLayout.LayoutParams cllp=new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,LinearLayout.LayoutParams.WRAP_CONTENT);
-            containerLayout.setLayoutParams(cllp);
-            containerLayout.setWeightSum(1);
-            LinearLayout.LayoutParams fllp=new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,LinearLayout.LayoutParams.WRAP_CONTENT,0.5f);
-            firstLayout.setLayoutParams(fllp);
-            LinearLayout.LayoutParams sllp=new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,LinearLayout.LayoutParams.WRAP_CONTENT,0.5f);
-            secondLayout.setLayoutParams(sllp);
-            containerLayout.addView(firstLayout);
-            containerLayout.addView(secondLayout);
-            getFragmentManager().beginTransaction().add(firstLayout.getId(),sdf, "sessionDetails").commit();
-            getFragmentManager().beginTransaction().add(firstLayout.getId(), ff, "fallsList_ui3").commit();
-            getFragmentManager().beginTransaction().add(secondLayout.getId(),asf, "activeSessionGraph").commit();
-            getFragmentManager().beginTransaction().add(secondLayout.getId(), scf, "sessionCommand").commit();
-        }
-
-        fragContainer.addView(containerLayout);
-        
-        Controller.getNotification().addObserver(this);
     }
 
     @Override
@@ -123,10 +104,6 @@ public class UI3Neo extends Activity implements EditSessionNameFragment.OnSessio
         fallDetails.putExtra(UI4.ID_FALL, fallID);
         startActivity(fallDetails);
         }
-
-    public void aggiornaLista(){
-        //do nothing
-    }
 
     @Override
     public void aggiornaLista(int buttonPressed) {
