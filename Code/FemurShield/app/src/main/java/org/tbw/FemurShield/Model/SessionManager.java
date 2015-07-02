@@ -1,5 +1,7 @@
 package org.tbw.FemurShield.Model;
 
+import org.tbw.FemurShield.Controller.Controller;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -77,11 +79,13 @@ public class SessionManager {
         Session temp=null;
         if(sessioneattiva!=null&&sessioneattiva.getId().equalsIgnoreCase(id)) {
             sessioneattiva.setName(newname);
+            Controller.getInstance().SaveAll();
             return sessioneattiva;
         }
         else
         if((temp=sessionivecchie.get(id))!=null) {
             temp.setName(newname);
+            Controller.getInstance().SaveAll();
             return temp;
         }
         return null;
