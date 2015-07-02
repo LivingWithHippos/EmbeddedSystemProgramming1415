@@ -11,19 +11,26 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true">
         </FrameLayout>
+
+    <LinearLayout
+        android:id="@+id/sessiongGraphContainer"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/altezza_grafico"
+        android:layout_below="@+id/sessionDetailLayout">
     <FrameLayout
         android:id="@+id/sessionGraphLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/sessionDetailLayout">
+        android:layout_height="match_parent">
 
     </FrameLayout>
+    </LinearLayout>
+
     <FrameLayout
         android:id="@+id/fallListLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="112dp"
-        android:layout_below="@+id/sessionGraphLayout">
+        android:layout_below="@+id/sessiongGraphContainer">
 
     </FrameLayout>
 

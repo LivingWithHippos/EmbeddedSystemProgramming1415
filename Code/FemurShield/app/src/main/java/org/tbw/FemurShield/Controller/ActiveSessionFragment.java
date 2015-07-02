@@ -1,39 +1,36 @@
 package org.tbw.FemurShield.Controller;
 
-import android.app.Activity;
 import android.app.Fragment;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.Bundle;
-import android.util.DisplayMetrics;
 import android.util.Log;
-import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.Chronometer;
 import android.widget.ImageView;
-import android.widget.TextView;
 
-import org.tbw.FemurShield.Model.Fall;
-import org.tbw.FemurShield.Model.SessionManager;
 import org.tbw.FemurShield.Observer.Observable;
 import org.tbw.FemurShield.R;
 
 /**
- * Created by Marco on 26/06/2015.
+ * Created by Moro on 26/06/2015.
  */
 public class ActiveSessionFragment extends Fragment implements org.tbw.FemurShield.Observer.Observer{
 
-    float distCentro=400.0f;
-    float larghezzachart;
+    //float distCentro=400.0f;
+    int finalWidth;
+    int finalHeight;
+    int sizeCoefficient=2;
 
-    float yIndexAcc= 0.0f;
-    float xOldXAcc=distCentro;
-    float xOldYAcc=distCentro;
-    float xOldZAcc=distCentro;
+    float xIndexAcc = 0.0f;
+    float yOldXAcc;
+    float yOldYAcc;
+    float yOldZAcc;
 
     Canvas canvasGraficoAcc;
     Bitmap bitmapGraficoAcc;
@@ -53,6 +50,8 @@ public class ActiveSessionFragment extends Fragment implements org.tbw.FemurShie
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        setRetainInstance(false);
+
         super.onCreate(savedInstanceState);
         paintX.setColor(Color.BLACK);
         paintX.setStrokeWidth(6.0f);
@@ -79,23 +78,39 @@ public class ActiveSessionFragment extends Fragment implements org.tbw.FemurShie
     }
 
     @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
         View rootView = inflater.inflate(R.layout.fragment_active_session, container,false);
 
 
         imageViewGraficoAcc= (ImageView)rootView.findViewById(R.id.graficoacc);
-        bitmapGraficoAcc = Bitmap.createBitmap( getActivity().getWindowManager()
-                .getDefaultDisplay().getWidth(), getActivity().getWindowManager()
-                .getDefaultDisplay().getHeight()/2, Bitmap.Config.ARGB_8888);
-        canvasGraficoAcc = new Canvas(bitmapGraficoAcc);
+        ViewTreeObserver vto = imageViewGraficoAcc.getViewTreeObserver();
+        vto.addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+            public boolean onPreDraw() {
+                imageViewGraficoAcc.getViewTreeObserver().removeOnPreDrawListener(this);
+                finalHeight = imageViewGraficoAcc.getMeasuredHeight();
+                finalWidth = imageViewGraficoAcc.getMeasuredWidth();
+                Log.d("UI3", "Height: " + finalHeight + " Width: " + finalWidth);
+                yOldXAcc =finalHeight/2;
+                yOldYAcc =finalHeight/2;
+                yOldZAcc =finalHeight/2;
 
-        canvasGraficoAcc.drawLine(0, distCentro, getActivity().getWindowManager()
-                .getDefaultDisplay().getWidth(), distCentro, line);
-        imageViewGraficoAcc.setImageBitmap(bitmapGraficoAcc);
-        imageViewGraficoAcc.draw(canvasGraficoAcc);
-        larghezzachart=getActivity().getWindowManager().getDefaultDisplay().getWidth();
-        Controller.getNotification().addObserver(this);
+                bitmapGraficoAcc = Bitmap.createBitmap(finalWidth, finalHeight, Bitmap.Config.ARGB_8888);
+                canvasGraficoAcc = new Canvas(bitmapGraficoAcc);
+
+                canvasGraficoAcc.drawLine(0, finalHeight / 2, finalWidth, finalHeight / 2, line);
+                imageViewGraficoAcc.setImageBitmap(bitmapGraficoAcc);
+                imageViewGraficoAcc.draw(canvasGraficoAcc);
+                attachObserver();
+
+                return true;
+            }
+        });
 
         Chronometer chrono=(Chronometer) rootView.findViewById(R.id.chronometerui3);
         chrono.setBase(Controller.getInstance().getActualChronoBase());
@@ -104,6 +119,11 @@ public class ActiveSessionFragment extends Fragment implements org.tbw.FemurShie
         }
 
         return rootView;
+    }
+
+    private void attachObserver()
+    {
+        Controller.getNotification().addObserver(this);
     }
 
 
@@ -123,32 +143,35 @@ public class ActiveSessionFragment extends Fragment implements org.tbw.FemurShie
     @Override
     public void update(Observable oggettoosservato, Object o) {
         if(o instanceof float[]){
-            float[] arg=(float[])o;
-            DrawGraphSliceAcc(arg[0]*6, arg[1]*6, arg[2]*6);
+            if(bitmapGraficoAcc!=null) {
+                float[] arg = (float[]) o;
+                DrawGraphSliceAcc(arg[0] * sizeCoefficient, arg[1] * sizeCoefficient, arg[2] * sizeCoefficient);
+            }
         }
     }
 
     public void DrawGraphSliceAcc(float newX, float newY, float newZ){
-        EraseNextAcc(yIndexAcc+1.0f);
-        DrawSegmentXAcc(yIndexAcc, xOldXAcc, yIndexAcc + 1.0f, newX + distCentro);
-        xOldXAcc=newX+distCentro;
-        DrawSegmentYAcc(yIndexAcc, xOldYAcc, yIndexAcc + 1.0f, newY + distCentro);
-        xOldYAcc=newY+distCentro;
-        DrawSegmentZAcc(yIndexAcc, xOldZAcc, yIndexAcc + 1.0f, newZ + distCentro);
-        xOldZAcc=newZ+distCentro;
+        EraseNextAcc(xIndexAcc +1.0f);
+        DrawSegmentXAcc(xIndexAcc, yOldXAcc, xIndexAcc + 1.0f, newX + (finalHeight/2));
+        yOldXAcc =newX+(finalHeight/2);
+        DrawSegmentYAcc(xIndexAcc, yOldYAcc, xIndexAcc + 1.0f, newY + (finalHeight/2));
+        yOldYAcc =newY+(finalHeight/2);
+        DrawSegmentZAcc(xIndexAcc, yOldZAcc, xIndexAcc + 1.0f, newZ + (finalHeight/2));
+        yOldZAcc =newZ+(finalHeight/2);
         imageViewGraficoAcc.invalidate();
 
 
-        if(yIndexAcc>=larghezzachart){
-            yIndexAcc=0;
+        if(xIndexAcc >=finalWidth){
+            xIndexAcc =0;
         }
         else{
-            yIndexAcc+=1;
+            xIndexAcc +=1;
         }
     }
 
     private void EraseNextAcc(float v) {
-        canvasGraficoAcc.drawRect(v, 0, v + 15.0f, 3000, paintCanc);
+        //larghezza modifica
+        canvasGraficoAcc.drawRect(v, 0, v + (sizeCoefficient*2), finalHeight, paintCanc);
     }
 
     private void DrawSegmentXAcc( float xStart, float yStart, float xStop, float yStop){
