@@ -72,13 +72,14 @@ public class SessionsListAdapter extends ArrayAdapter{
         }
 
         viewHolder.tvName.setText(item.name);
-        viewHolder.tvStartingDate.setText(item.startingDate);
-        viewHolder.tvStartingTime.setText(item.startingTime);
+        viewHolder.tvStartingDate.setText("Iniziata il "+item.startingDate+" ");
+        viewHolder.tvStartingTime.setText("alle ore "+item.startingTime);
         if(item.duration.length()>2)
-            viewHolder.tvDuration.setText("Durata Sessione: "+item.duration);
+            viewHolder.tvDuration.setText("Durata: "+item.duration);
         else
             viewHolder.tvDuration.setText(item.duration);
-        viewHolder.tvFallsNumber.setText("# cadute: " + item.falls);
+        String cadute=item.falls==1?" caduta":" cadute";
+        viewHolder.tvFallsNumber.setText(item.falls+cadute);
         return convertView;
     }
 

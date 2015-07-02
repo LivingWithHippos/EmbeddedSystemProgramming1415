@@ -47,19 +47,19 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:id="@+id/sessionstartingtimeui1"
                 android:textSize="@dimen/testo_lista"
                 android:layout_weight="1"
-                android:layout_toRightOf="@+id/sessionstateimgui1"
-                android:layout_below="@+id/sessionstartingdateui1"
-                android:textColor="#ff000000"
-                android:id="@+id/sessionstartingtimeui1" />
+                android:layout_toRightOf="@+id/sessionstartingdateui1"
+                android:layout_below="@+id/sessionnameui1"
+                android:textColor="#ff000000" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/sessionfallsui1"
             android:textSize="@dimen/testo_lista"
-            android:layout_below="@+id/sessionstartingtimeui1"
+            android:layout_below="@+id/sessionstartingdateui1"
             android:layout_toRightOf="@+id/sessionstateimgui1"
             android:textColor="#ff000000" />
 
