@@ -36,7 +36,6 @@
         android:layout_width="match_parent"
         android:layout_height="fill_parent"
         android:orientation="vertical"
-        android:background="#fff2ff49"
         android:layout_toRightOf="@+id/separatorView">
         <LinearLayout
             android:orientation="vertical"
@@ -51,7 +50,6 @@
         <LinearLayout
             android:orientation="vertical"
             android:id="@+id/commandLayout"
-            android:background="#ffff5dae"
             android:layout_alignParentBottom="true"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">

@@ -38,7 +38,6 @@
         android:id="@+id/commandLayout"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:background="#ffff618d"
         android:layout_alignParentBottom="true">
     </FrameLayout>
 
