@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import org.tbw.FemurShield.R;
 
@@ -42,7 +43,11 @@ public class EditSessionNameFragment extends DialogFragment implements DialogInt
             case AlertDialog.BUTTON_POSITIVE:
                 if (mCallback != null) {
                     EditText nome = (EditText) getDialog().findViewById(R.id.etSessionName);
-                    mCallback.onSessionNameInserted(nome.getText().toString(),sessiondata);
+                    String temp=nome.getText().toString();
+                    if(temp.length()>0)
+                        mCallback.onSessionNameInserted(nome.getText().toString(),sessiondata);
+                    else
+                        Toast.makeText(getActivity(),getString(R.string.session_name_too_short),Toast.LENGTH_LONG).show();
                 }
                 break;
         }

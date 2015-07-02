@@ -48,5 +48,6 @@
 <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="rename_session_title">Rinomina sessione</string>
+    <string name="session_name_too_short">Nome inserito troppo corto!</string>
 
 </resources>
