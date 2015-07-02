@@ -136,6 +136,7 @@ public class ActiveSessionFragment extends Fragment implements org.tbw.FemurShie
         xOldYAcc=newY+distCentro;
         DrawSegmentZAcc(yIndexAcc, xOldZAcc, yIndexAcc + 1.0f, newZ + distCentro);
         xOldZAcc=newZ+distCentro;
+        imageViewGraficoAcc.invalidate();
 
 
         if(yIndexAcc>=larghezzachart){
@@ -148,21 +149,17 @@ public class ActiveSessionFragment extends Fragment implements org.tbw.FemurShie
 
     private void EraseNextAcc(float v) {
         canvasGraficoAcc.drawRect(v, 0, v + 15.0f, 3000, paintCanc);
-        imageViewGraficoAcc.setImageBitmap(bitmapGraficoAcc);
     }
 
     private void DrawSegmentXAcc( float xStart, float yStart, float xStop, float yStop){
         canvasGraficoAcc.drawLine(xStart, yStart, xStop, yStop, paintX);
-        imageViewGraficoAcc.setImageBitmap(bitmapGraficoAcc);
     }
 
     private void DrawSegmentYAcc(float xStart, float yStart, float xStop, float yStop){
         canvasGraficoAcc.drawLine(xStart, yStart, xStop, yStop, paintY);
-        imageViewGraficoAcc.setImageBitmap(bitmapGraficoAcc);
     }
 
     private void DrawSegmentZAcc(float xStart, float yStart, float xStop, float yStop){
         canvasGraficoAcc.drawLine(xStart, yStart, xStop, yStop, paintZ);
-        imageViewGraficoAcc.setImageBitmap(bitmapGraficoAcc);
     }
 }
