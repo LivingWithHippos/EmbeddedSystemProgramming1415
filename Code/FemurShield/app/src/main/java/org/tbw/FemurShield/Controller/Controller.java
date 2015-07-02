@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.SystemClock;
 import android.util.Log;
 import android.widget.Chronometer;
+import android.widget.Toast;
 
 import org.tbw.FemurShield.Model.ActiveSession;
 import org.tbw.FemurShield.Model.Fall;
@@ -30,6 +31,7 @@ public class Controller implements Observer {
     private static final String TAG="Controller";
     Chronometer crono;
     Activity ac=null;
+    StopperTimer stopper;
 
     private Controller(){
         instance = this;
@@ -60,6 +62,8 @@ public class Controller implements Observer {
         }
         crono.setBase(SystemClock.elapsedRealtime() + durata);
         crono.start();
+        stopper=new StopperTimer();
+        stopper.start();
         Intent i = new Intent(a,FallDetector.class);
         a.startService(i);
     }
@@ -69,8 +73,15 @@ public class Controller implements Observer {
         durata=crono.getBase()-SystemClock.elapsedRealtime();
         SessionManager.getInstance().getActiveSession().setDuration(-durata);
         crono.stop();
+        stopper.interrupt();Log.d("INTERRUPt","segnato");
         Intent i=new Intent(a, FallDetector.class);
         a.stopService(i);
+    }
+
+    public long getDurate(){
+        if(crono!=null)
+            return -crono.getBase()+SystemClock.elapsedRealtime();
+        return 0;
     }
 
     public void StopSession(Activity a){
@@ -79,6 +90,7 @@ public class Controller implements Observer {
         durata=0;
         crono.stop();
         crono =null;
+        stopper.interrupt();
         Intent i=new Intent(a, FallDetector.class);
         a.stopService(i);
         SaveAll();
@@ -170,5 +182,33 @@ public class Controller implements Observer {
 
     public void renameEvent(String data, String newname) {
         SessionManager.getInstance().renameSession(data,newname);
+    }
+
+    private class StopperTimer extends Thread{
+        @Override
+        public void run(){
+            //ricavo il numero di ore di scadenza
+            PreferencesEditor pref=new PreferencesEditor(ac.getBaseContext());
+            int scadenza=pref.getSessionDuration();
+            while((!interrupted())&&getDurate()<3600000*scadenza) {//se scade è vinene interrotto esce
+                try {
+                    Thread.sleep(36000000);//ricontrollo tra un'ora
+                } catch (InterruptedException e) {}
+            }
+            if (interrupted()) return;
+            Controller.getInstance().InterruptSession();//se non è stato interroto ma è scaduto il tempo interrompe la sessione
+        }
+    }
+
+    private void InterruptSession() {
+        Controller.getInstance().StopSession(ac);
+        Intent i = new Intent(ac.getBaseContext(),UI1.class);
+        ac.startActivity(i);
+        ac.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(ac.getBaseContext(),"La sessione è stata stoppata come impostato.",Toast.LENGTH_LONG).show();
+            }
+        });
     }
 }
