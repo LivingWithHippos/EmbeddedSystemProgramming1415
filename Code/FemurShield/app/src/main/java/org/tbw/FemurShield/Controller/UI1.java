@@ -44,8 +44,8 @@ public class UI1 extends Activity implements SessionsListFragment.OnSessionClick
             FragmentManager fragmentManager = getFragmentManager();
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
-            fragmentTransaction.add(R.id.listaSessioniUI1, sFragment, SESSIONS_FRAGMENT_TAG);
-            fragmentTransaction.add(R.id.comandiSessioniUI1, cFragment, COMMAND_FRAGMENT_TAG);
+            fragmentTransaction.replace(R.id.listaSessioniUI1, sFragment, SESSIONS_FRAGMENT_TAG);
+            fragmentTransaction.replace(R.id.comandiSessioniUI1, cFragment, COMMAND_FRAGMENT_TAG);
             fragmentTransaction.commit();
         }
 
