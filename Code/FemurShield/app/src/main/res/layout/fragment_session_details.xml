@@ -1,31 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_marginTop="15dp"
+    android:layout_marginLeft="15dp"
     android:id="@+id/DetailsFragment">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Dettagli Sessione"
-        android:id="@+id/titoloFragmentSessione" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Sessione data"
-        android:layout_marginTop="15dp"
-        android:layout_marginLeft="15dp"
+        android:layout_alignParentTop="true"
         android:id="@+id/tvSessionName" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Durata: xx:xx:xx"
-        android:layout_marginLeft="15dp"
+        android:layout_marginTop="10dp"
+        android:layout_below="@+id/tvSessionName"
+        android:id="@+id/tvSessionStart" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:layout_below="@+id/tvSessionName"
         android:layout_marginBottom="15dp"
         android:id="@+id/tvSessionDuration" />
 
@@ -34,8 +34,10 @@
         android:layout_height="180dp"
         android:scaleType="fitXY"
         android:layout_gravity="center"
-        android:src="@drawable/check"
+        android:layout_centerInParent="true"
+        android:layout_below="@+id/tvSessionDuration"
+        android:src="@drawable/logo_stripped"
         android:id="@+id/ivGraficoSessione" />
 
 
-</LinearLayout>
+</RelativeLayout>

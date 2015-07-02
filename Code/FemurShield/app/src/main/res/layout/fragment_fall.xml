@@ -1,8 +1,12 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
-    android:id="@+id/fall_container_fragment" android:layout_width="wrap_content"
-    android:layout_height="match_parent" tools:context="org.tbw.FemurShield.Controller.FallFragment">
+    android:id="@+id/fall_container_fragment"
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent"
+    android:layout_marginTop="15dp"
+    android:layout_marginLeft="15dp"
+    tools:context="org.tbw.FemurShield.Controller.FallFragment">
 
     <TextView
         android:layout_width="wrap_content"

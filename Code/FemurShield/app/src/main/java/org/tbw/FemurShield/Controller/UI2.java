@@ -19,6 +19,7 @@ public class UI2 extends Activity implements FallFragment.OnFallClickListener, E
 
     private Session thisSession;
     public final static String SESSION_DATA_STAMP = "sessiondatastamp";
+    public final static String SESSION_DETAILS_FRAGMENT_TAG = "sessionDetails";
     private String thisData;
 
     @Override
@@ -26,34 +27,20 @@ public class UI2 extends Activity implements FallFragment.OnFallClickListener, E
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ui2);
 
+        if(findViewById(R.id.ui2rootLayout)!=null) {
+            /*Se stiamo tornando indietro non abbiamo bisogno di ricaricarlo
+            * rischiamo di ritrovarci con un secondo fragment sovrapposto*/
+            if (savedInstanceState != null) {
+                return;
+            }
 
-        LinearLayout fragContainer = (LinearLayout) findViewById(R.id.ui2rootLayout);
+            thisData = getIntent().getExtras().getString(SESSION_DATA_STAMP);
+            SessionDetailsFragment sdf = SessionDetailsFragment.newIstance(thisData, SessionDetailsFragment.UI_2_MODE);
+            FallFragment ff = FallFragment.newInstance(thisData);
 
-        LinearLayout ll = new LinearLayout(this);
-        int orientation=this.getResources().getConfiguration().orientation;
-        ll.setOrientation(orientation== Configuration.ORIENTATION_PORTRAIT?LinearLayout.VERTICAL:LinearLayout.HORIZONTAL);
-
-        ll.setId(View.generateViewId());
-
-
-        thisData = getIntent().getExtras().getString(SESSION_DATA_STAMP);
-        SessionDetailsFragment sdf = SessionDetailsFragment.newIstance(thisData,SessionDetailsFragment.UI_2_MODE);
-        FallFragment ff = FallFragment.newInstance(thisData);
-
-        getFragmentManager().beginTransaction().add(ll.getId(),sdf, "sessionDetails").commit();
-        getFragmentManager().beginTransaction().add(ll.getId(), ff, "FallDetails").commit();
-
-        fragContainer.addView(ll);
-
-        /*
-        FallFragment ff = FallFragment.newInstance();
-        SessionDetailsFragment sdf = SessionDetailsFragment.newIstance();
-        FragmentManager fm = getFragmentManager();
-        FragmentTransaction ft = fm.beginTransaction();
-        ft.add(ff, "cadutalista");
-        ft.add(sdf, "dettaglicaduta");
-        ft.commit();
-        */
+            getFragmentManager().beginTransaction().replace(R.id.sessionDetailsUI2, sdf,SESSION_DETAILS_FRAGMENT_TAG ).commit();
+            getFragmentManager().beginTransaction().replace(R.id.fallsListUI2, ff, "FallDetails").commit();
+        }
     }
 
 
@@ -111,6 +98,8 @@ public class UI2 extends Activity implements FallFragment.OnFallClickListener, E
     @Override
     public void onSessionNameInserted(String nome,String data) {
         Controller.getInstance().renameEvent(data, nome);
+        SessionDetailsFragment sdf=(SessionDetailsFragment)getFragmentManager().findFragmentByTag(SESSION_DETAILS_FRAGMENT_TAG);
+        sdf.updateNameView(nome);
         //TODO aggiornare view dopo che il nome è cambiato
     }
 }

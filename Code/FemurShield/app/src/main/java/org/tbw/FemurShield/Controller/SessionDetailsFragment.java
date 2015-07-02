@@ -3,6 +3,7 @@ package org.tbw.FemurShield.Controller;
 import android.app.Fragment;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,6 +37,7 @@ public class SessionDetailsFragment extends Fragment
     public final static boolean UI_3_MODE=false;
 
     private ImageView ivGrafico;
+    private TextView tvNome;
 
     public SessionDetailsFragment()
     {
@@ -88,12 +90,13 @@ public class SessionDetailsFragment extends Fragment
     {
         if(session!=null)
         {
-            TextView tvNome = (TextView) getView().findViewById(R.id.tvSessionName); // è sia nome che data
+            tvNome = (TextView) getView().findViewById(R.id.tvSessionName); // è sia nome che data
             TextView tvDurata = (TextView) getView().findViewById(R.id.tvSessionDuration);
             ivGrafico = (ImageView) getView().findViewById(R.id.ivGraficoSessione);
 
             tvNome.setText(session.getName());
-            if(ui_mode==UI_2_MODE) {
+            if(ui_mode==UI_2_MODE)
+            {
                 long timeElapsed=session.getDuration();
                 int hours = (int) (timeElapsed / 3600000);
                 String h=((""+hours).length()==1)?"0"+hours: ""+hours;
@@ -107,7 +110,7 @@ public class SessionDetailsFragment extends Fragment
                 if((temp=BitmapCache.getInstance().getBitmapFromMemCache(thisData))!=null)
                     ivGrafico.setImageBitmap(temp);
                 else
-                loadSessionBitmap(R.id.ivGraficoSessione);
+                    loadSessionBitmap(R.id.ivGraficoSessione);
             }
             else {
                 tvDurata.setVisibility(View.GONE);
@@ -120,6 +123,13 @@ public class SessionDetailsFragment extends Fragment
     public void loadSessionBitmap(int resId) {
         SignatureLoaderTask slt = new SignatureLoaderTask(ivGrafico,thisData);
         slt.execute(resId);
+    }
+
+    public void updateNameView(String nome)
+    {
+        if(tvNome!=null) {
+            tvNome.setText(nome);
+        }
     }
 
     @Override
