@@ -14,7 +14,10 @@ import org.tbw.FemurShield.Model.Session;
 import org.tbw.FemurShield.Model.SessionManager;
 import org.tbw.FemurShield.R;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 /**
  * Created by Vianello on 21/05/15.
@@ -28,6 +31,7 @@ import java.util.ArrayList;
 
 public class SessionDetailsFragment extends Fragment
 {
+    private static final String TAG = "SessionDetailsFragment";
     private Session session;
     private boolean ui_mode;
     private String thisData;
@@ -36,8 +40,17 @@ public class SessionDetailsFragment extends Fragment
     public final static boolean UI_2_MODE=true;
     public final static boolean UI_3_MODE=false;
 
+    private String datePattern="dd/MM/yyyy";
+    private String hourPattern="HH:mm:ss";
+    private SimpleDateFormat dateFormat;
+    private SimpleDateFormat hourFormat;
+    private SimpleDateFormat sdf;
+
     private ImageView ivGrafico;
     private TextView tvNome;
+    private TextView tvData;
+    private TextView tvOra;
+    private TextView tvDurata;
 
     public SessionDetailsFragment()
     {
@@ -58,6 +71,8 @@ public class SessionDetailsFragment extends Fragment
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
+        dateFormat = new SimpleDateFormat(datePattern);
+        hourFormat = new SimpleDateFormat(hourPattern);
     }
 
     @Override
@@ -90,11 +105,24 @@ public class SessionDetailsFragment extends Fragment
     {
         if(session!=null)
         {
-            tvNome = (TextView) getView().findViewById(R.id.tvSessionName); // è sia nome che data
-            TextView tvDurata = (TextView) getView().findViewById(R.id.tvSessionDuration);
+            tvNome = (TextView) getView().findViewById(R.id.tvSessionName);
+            tvData=(TextView) getView().findViewById(R.id.tvSessionDate);
+            tvOra=(TextView) getView().findViewById(R.id.tvSessionTime);
+            tvDurata = (TextView) getView().findViewById(R.id.tvSessionDuration);
             ivGrafico = (ImageView) getView().findViewById(R.id.ivGraficoSessione);
 
             tvNome.setText(session.getName());
+
+
+            try {
+                sdf = new SimpleDateFormat(Session.datePattern);
+                Date timestamp = sdf.parse(session.getDataTime());
+                tvData.setText("Iniziata il "+dateFormat.format(timestamp)+" ");
+                tvOra.setText("alle ore "+hourFormat.format(timestamp));
+            } catch (ParseException e) {
+                Log.e(TAG, "Errore recupero data sessione ");
+            }
+
             if(ui_mode==UI_2_MODE)
             {
                 long timeElapsed=session.getDuration();
@@ -105,7 +133,8 @@ public class SessionDetailsFragment extends Fragment
                 int seconds = (int) (timeElapsed - hours * 3600000 - minutes * 60000) / 1000;
                 String se=((""+seconds).length()==1)?"0"+seconds: ""+seconds;
                 String durata=""+h+":"+m+":"+se;
-                tvDurata.setText(durata);
+                tvDurata.setText("Durata Sessione: "+durata);
+
                 Bitmap temp;
                 if((temp=BitmapCache.getInstance().getBitmapFromMemCache(thisData))!=null)
                     ivGrafico.setImageBitmap(temp);

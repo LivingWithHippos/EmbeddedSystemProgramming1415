@@ -26,23 +26,23 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:layout_marginTop="10dp"
-        android:layout_below="@+id/tvSessionName"
-        android:layout_toRightOf="@+id/tvSessionDate"
+        android:layout_below="@+id/tvSessionDate"
         android:id="@+id/tvSessionTime" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:layout_below="@+id/tvSessionDate"
-        android:layout_marginBottom="15dp"
+        android:layout_below="@+id/tvSessionTime"
         android:id="@+id/tvSessionDuration" />
 
     <ImageView
-        android:layout_width="180dp"
-        android:layout_height="180dp"
-        android:scaleType="fitXY"
-        android:layout_gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:maxWidth="190dp"
+        android:maxHeight="190dp"
+        android:adjustViewBounds="true"
+        android:scaleType="fitCenter"
         android:layout_centerInParent="true"
         android:layout_below="@+id/tvSessionDuration"
         android:src="@drawable/logo_stripped"
