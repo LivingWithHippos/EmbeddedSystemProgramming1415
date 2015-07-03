@@ -97,6 +97,7 @@ public class SessionDetailsFragment extends Fragment
                 if(sex.getDataTime().equalsIgnoreCase(date))
                 {
                     session = sex;
+                    thisData=date;
                     break;
                 }
             }
