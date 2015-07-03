@@ -11,6 +11,10 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:layout_alignParentTop="true"
+        android:singleLine="true"
+        android:ellipsize="end"
+        android:lines="1"
+        android:scrollHorizontally="true"
         android:id="@+id/tvSessionName" />
 
     <TextView
