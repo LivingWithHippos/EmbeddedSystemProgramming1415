@@ -81,18 +81,19 @@ public class FallFragment extends ListFragment
         {
             fItems = new ArrayList<>();
             falls = session.getFalls();
-            if(falls!=null)
+            if(session.getFallsNumber()>0)
             {
-                for (int i = 0; i < session.getFallsNumber(); i++) {
-                    int num = falls.get(i).getId();
-                    String n = "Caduta N°" + num;
-                    String d = falls.get(i).getData();
-                    boolean s = falls.get(i).isReported();
+                    for (int i = 0; i < session.getFallsNumber(); i++)
+                    {
+                        int num = falls.get(i).getId();
+                        String n = "Caduta N°" + num;
+                        String d = falls.get(i).getData();
+                        boolean s = falls.get(i).isReported();
 
-                    fItems.add(new FallListItem(n, d, s));
-                }
-                fAdapter = new FallListAdapter(getActivity(), fItems);
-                setListAdapter(fAdapter);
+                        fItems.add(new FallListItem(n, d, s));
+                    }
+                    fAdapter = new FallListAdapter(getActivity(), fItems);
+                    setListAdapter(fAdapter);
             }
         }
     }
