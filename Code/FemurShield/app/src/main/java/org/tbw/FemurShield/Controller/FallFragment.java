@@ -6,8 +6,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 
 import org.tbw.FemurShield.Model.Fall;
@@ -29,7 +27,6 @@ public class FallFragment extends ListFragment
     private Session session;
 
     private OnFallClickListener mListener;
-    private ListView list;
 
     public FallFragment()
     {
@@ -81,12 +78,12 @@ public class FallFragment extends ListFragment
         {
             fItems = new ArrayList<>();
             falls = session.getFalls();
+            int fallIndex=1;
             if(session.getFallsNumber()>0)
             {
                     for (int i = 0; i < session.getFallsNumber(); i++)
                     {
-                        int num = falls.get(i).getId();
-                        String n = "Caduta N°" + num;
+                        String n = "#." + (fallIndex++);
                         String d = falls.get(i).getData();
                         boolean s = falls.get(i).isReported();
 
