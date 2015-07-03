@@ -45,8 +45,10 @@ public class FallFragment extends ListFragment
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         String thisData = getArguments().getString(UI2.SESSION_DATA_STAMP);
-        setSession(thisData);
-        startlist();
+        if(!thisData.equalsIgnoreCase(UI1.SESSION_EMPTY)) {
+            setSession(thisData);
+            startlist();
+        }
     }
 
     @Override

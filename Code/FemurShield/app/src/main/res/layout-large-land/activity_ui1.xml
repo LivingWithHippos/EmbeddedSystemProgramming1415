@@ -1,0 +1,47 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/ui1rootLayout"
+    tools:context="org.tbw.FemurShield.Controller.UI1">
+
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentStart="true"
+        android:layout_above="@id/comandiSessioniUI1"
+        android:layout_toLeftOf="@+id/separatorView"
+        android:id="@+id/listaSessioniUI1"
+        >
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/comandiSessioniUI1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true">
+    </FrameLayout>
+
+    <View
+        android:id="@+id/separatorView"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_centerHorizontal="true"
+        android:layout_above="@+id/comandiSessioniUI1"/>
+
+    <FrameLayout
+        android:id="@+id/sessionDetailsUI1"
+        android:layout_width="match_parent"
+        android:layout_toRightOf="@id/separatorView"
+        android:layout_alignParentTop="true"
+        android:layout_height="wrap_content"></FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/fallsListUI1"
+        android:layout_below="@+id/sessionDetailsUI1"
+        android:layout_toRightOf="@id/separatorView"
+        android:layout_above="@id/comandiSessioniUI1"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"></FrameLayout>
+</RelativeLayout>

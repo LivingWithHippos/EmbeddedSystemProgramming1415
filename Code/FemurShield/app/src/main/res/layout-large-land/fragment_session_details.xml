@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="15dp"
+    android:layout_marginLeft="15dp"
+    android:id="@+id/DetailsFragment">
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:maxWidth="150dp"
+        android:scaleType="fitCenter"
+        android:adjustViewBounds="true"
+        android:src="@drawable/logo_stripped"
+        android:layout_alignParentStart="true"
+        android:id="@+id/ivGraficoSessione" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:singleLine="true"
+        android:ellipsize="end"
+        android:lines="1"
+        android:scrollHorizontally="true"
+        android:layout_toRightOf="@+id/ivGraficoSessione"
+        android:id="@+id/tvSessionName" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:layout_marginTop="10dp"
+        android:layout_toRightOf="@+id/ivGraficoSessione"
+        android:layout_below="@+id/tvSessionName"
+        android:id="@+id/tvSessionDate" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:layout_toRightOf="@+id/ivGraficoSessione"
+        android:layout_below="@+id/tvSessionDate"
+        android:id="@+id/tvSessionTime" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:layout_toRightOf="@+id/ivGraficoSessione"
+        android:layout_below="@+id/tvSessionTime"
+        android:id="@+id/tvSessionDuration" />
+
+
+</RelativeLayout>

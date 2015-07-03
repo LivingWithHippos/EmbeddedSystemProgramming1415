@@ -80,8 +80,10 @@ public class SessionDetailsFragment extends Fragment
         super.onViewCreated(view, savedInstanceState);
         thisData = getArguments().getString(UI2.SESSION_DATA_STAMP);
         ui_mode=getArguments().getBoolean(UI_MODE);
-        setSession(thisData);
-        startDetails();
+        if(!thisData.equalsIgnoreCase(UI1.SESSION_EMPTY)) {
+            setSession(thisData);
+            startDetails();
+        }
     }
 
 
@@ -101,7 +103,7 @@ public class SessionDetailsFragment extends Fragment
         }
     }
 
-    private void startDetails()
+    public void startDetails()
     {
         if(session!=null)
         {
