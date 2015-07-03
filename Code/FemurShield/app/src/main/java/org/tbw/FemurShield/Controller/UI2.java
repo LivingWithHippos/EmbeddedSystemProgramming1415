@@ -100,6 +100,5 @@ public class UI2 extends Activity implements FallFragment.OnFallClickListener, E
         Controller.getInstance().renameEvent(data, nome);
         SessionDetailsFragment sdf=(SessionDetailsFragment)getFragmentManager().findFragmentByTag(SESSION_DETAILS_FRAGMENT_TAG);
         sdf.updateNameView(nome);
-        //TODO aggiornare view dopo che il nome è cambiato
     }
 }
