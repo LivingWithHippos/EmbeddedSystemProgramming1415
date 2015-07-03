@@ -68,10 +68,11 @@ public class FallFragment extends ListFragment
                 if(sex.getDataTime().equalsIgnoreCase(date))
                 {
                     session = sex;
-                    break;
+                    return;
                 }
             }
         }
+
     }
 
     public void startlist()
@@ -93,7 +94,16 @@ public class FallFragment extends ListFragment
                     }
                     fAdapter = new FallListAdapter(getActivity(), fItems);
                     setListAdapter(fAdapter);
+            }else
+            {
+                if(fAdapter!=null)
+                    fAdapter.clear();
             }
+        }
+        else
+        {
+            if(fAdapter!=null)
+                fAdapter.clear();
         }
     }
 
