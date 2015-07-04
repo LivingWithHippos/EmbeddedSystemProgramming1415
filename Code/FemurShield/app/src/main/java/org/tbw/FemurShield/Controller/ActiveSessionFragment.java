@@ -157,11 +157,13 @@ public class ActiveSessionFragment extends Fragment implements org.tbw.FemurShie
         else
             if(o instanceof Fall)
             {
+                if(isAdded())
                  fallCallback.onFallDetect();
              }
             else
                 if(o instanceof EmailSentSegnalation){
-                    emailCallback.onEmailSent();
+                    if(isAdded())
+                        emailCallback.onEmailSent();
             }
     }
 
@@ -212,7 +214,6 @@ public class ActiveSessionFragment extends Fragment implements org.tbw.FemurShie
         }
         try {
             fallCallback = (OnFallDetectedListener) activity;
-            Log.d(TAG,"onAttach partto");
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString()
                     + " must implement OnFallDetectedListener");
