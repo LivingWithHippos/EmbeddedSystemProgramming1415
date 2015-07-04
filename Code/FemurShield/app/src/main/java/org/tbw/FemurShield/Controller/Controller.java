@@ -153,6 +153,7 @@ public class Controller implements Observer {
         }
     }
 
+    // creato da Vianello
     public void sendEmail(Fall fall) {
     //invio le mail sfruttando MultiEmailSender
         Intent sender = new Intent(ac.getApplicationContext(),MultiEmailSender.class);

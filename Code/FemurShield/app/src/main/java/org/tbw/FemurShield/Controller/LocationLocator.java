@@ -12,6 +12,7 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 
+// classe di supporto per ricavare la posizione
 public class LocationLocator
 {
     Timer timer1;
@@ -28,7 +29,7 @@ public class LocationLocator
         if(lm==null)
             lm = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
 
-        // lancio exeption se non disponibili
+        // lancio exeption se gps o network non disponibili
         try
         {
             gps_on=lm.isProviderEnabled(LocationManager.GPS_PROVIDER);

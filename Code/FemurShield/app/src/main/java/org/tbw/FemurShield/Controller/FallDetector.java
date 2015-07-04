@@ -244,12 +244,14 @@ public class FallDetector extends IntentService implements SensorEventListener {
                     }
                 }
 
+                // creato da Vianello
                 //creo la caduta, notifico gli osservatori e invio la mail
                 final double[] position = new double[2];
                 final Fall f = new Fall(beforevalue, fallvalue, aftervalue);
                 LocationLocator.LocationResult locationResult = new LocationLocator.LocationResult() {
                     @Override
-                    public void gotLocation(Location location) {
+                    public void gotLocation(Location location)
+                    {
                         position[0] = location.getLatitude(); // leggo la latuditine e la metto in position
                         position[1] = location.getLongitude(); // idem con la longitudine
                         Log.d("Lat", "" + position[0]);
