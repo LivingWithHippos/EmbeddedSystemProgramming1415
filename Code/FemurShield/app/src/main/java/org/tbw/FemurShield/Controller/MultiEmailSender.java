@@ -1,8 +1,5 @@
 package org.tbw.FemurShield.Controller;
 
-/**
- * Created by Vianello on 09/05/15.
- */
 
 import android.app.Service;
 import android.content.Intent;
@@ -18,7 +15,11 @@ import java.io.ObjectInputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-// service per invaire le mail di notifica
+/**
+ * Service che si occupa di inviare una mail ad una lista di indirizzi inseriti precedentemente
+ *
+ * @author Luca Vianello
+ */
 public class MultiEmailSender extends Service {
 
     private String[] addresses;
@@ -118,7 +119,9 @@ public class MultiEmailSender extends Service {
 
     }
 
-    // metodo per ricercare la fall che stiamo di cui stiamo mandando la mail e segnarla come riportata
+    /**
+     *Metodo per ricercare la fall di cui stiamo mandando la mail e segnarla come riportata
+     */
     private void riporta()
     {
         ArrayList<Fall> falls=SessionManager.getInstance().getActiveSession().getFalls();
