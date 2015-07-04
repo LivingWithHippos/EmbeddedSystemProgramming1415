@@ -301,6 +301,7 @@ public class SignatureImpl implements Signature, org.tbw.FemurShield.Observer.Ob
         return result;
     }
 
+    //ottiene i dati dall'accelererometro
     @Override
     public void update(Observable oggettoosservato, Object o) {
         if (o instanceof float[]) {
@@ -310,12 +311,18 @@ public class SignatureImpl implements Signature, org.tbw.FemurShield.Observer.Ob
     }
 
 
+    /**
+     * Imposta la sessione da disegnare
+     * @param session l'ID della sessione
+     */
     public void setSession(String session) {
         this.sessionID = session.replaceAll("/", "_");
     }
 }
 
-
+/**
+ * Classe interna per la gestione di elementi geometrici
+ */
 class MPoint {
     public float x, y;
 
@@ -338,7 +345,9 @@ class MPoint {
 
 }
 
-
+/**
+ * Classe interna per la gestione di elementi geometrici
+ */
 class MCircle {
     int xCenter, yCenter;
     int radius;
