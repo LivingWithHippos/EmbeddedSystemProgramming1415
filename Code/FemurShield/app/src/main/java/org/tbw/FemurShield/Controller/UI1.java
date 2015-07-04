@@ -6,7 +6,9 @@ import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Toast;
 
@@ -92,6 +94,13 @@ public class UI1 extends Activity implements FallFragment.OnFallClickListener,Se
         switch (item.getItemId()) {
             case R.id.action_settings:
                 openSettings();
+                return true;
+            case R.id.action_active_session:
+                if (SessionManager.getInstance().getActiveSession() != null) {
+                    Intent ui3 = new Intent(this, UI3.class);
+                    startActivity(ui3);
+                } else
+                    Toast.makeText(this, getString(R.string.no_active_session), Toast.LENGTH_LONG).show();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
