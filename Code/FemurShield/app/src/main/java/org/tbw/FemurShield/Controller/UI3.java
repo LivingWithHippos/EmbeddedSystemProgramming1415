@@ -16,7 +16,7 @@ import org.tbw.FemurShield.R;
  * Created by Marco on 27/06/2015.
  */
 
-public class UI3 extends Activity implements ActiveSessionFragment.OnFallDetectedListener,EditSessionNameFragment.OnSessionNameInsertedListener,FallFragment.OnFallClickListener,SessionCommandsFragment.OnCommandUpdatedListener{
+public class UI3 extends Activity implements ActiveSessionFragment.OnEmailSentListener,EditSessionNameFragment.OnSessionNameInsertedListener,FallFragment.OnFallClickListener,SessionCommandsFragment.OnCommandUpdatedListener{
 
 
     public final static String ACTIVE_SESSION_FRAGMENT_TAG = "mActiveSessionFragment";
@@ -122,7 +122,7 @@ public class UI3 extends Activity implements ActiveSessionFragment.OnFallDetecte
     }
 
     @Override
-    public void onFallDetected() {
+    public void onEmailSent() {
         FallFragment ff=(FallFragment)getFragmentManager().findFragmentByTag(FALLS_LIST_FRAGMENT_TAG);
         if(ff!=null)
             ff.startlist();

@@ -23,7 +23,7 @@ import org.tbw.FemurShield.R;
  */
 public class ActiveSessionFragment extends Fragment implements org.tbw.FemurShield.Observer.Observer{
 
-    private OnFallDetectedListener fallCallback;
+    private OnEmailSentListener emailCallback;
 
     private static final String TAG="ActiveSessionFragment";
 
@@ -150,13 +150,11 @@ public class ActiveSessionFragment extends Fragment implements org.tbw.FemurShie
                 float[] arg = (float[]) o;
                 DrawGraphSliceAcc(arg[0] * sizeCoefficient, arg[1] * sizeCoefficient, arg[2] * sizeCoefficient);
             }
-        }else{if(o instanceof Fall)
-            {
-                fallCallback.onFallDetected();
-            }else if(o instanceof EmailSentSegnalation){
-            //TODO aggiorna view lista cadute
-        }
-        }
+        }else
+           if(o instanceof EmailSentSegnalation){
+                emailCallback.onEmailSent();
+            }
+        
     }
 
     public void DrawGraphSliceAcc(float newX, float newY, float newZ){
@@ -199,21 +197,21 @@ public class ActiveSessionFragment extends Fragment implements org.tbw.FemurShie
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         try {
-            fallCallback = (OnFallDetectedListener) activity;
+            emailCallback = (OnEmailSentListener) activity;
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString()
-                    + " must implement OnFallDetectedListener");
+                    + " must implement OnEmailSentListener");
         }
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-        fallCallback = null;
+        emailCallback = null;
     }
 
-    public interface OnFallDetectedListener
+    public interface OnEmailSentListener
     {
-        public void onFallDetected();
+        public void onEmailSent();
     }
 }
