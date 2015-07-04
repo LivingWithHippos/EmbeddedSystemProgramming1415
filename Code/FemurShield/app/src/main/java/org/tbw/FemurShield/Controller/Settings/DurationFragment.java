@@ -19,8 +19,9 @@ import org.tbw.FemurShield.Controller.PreferencesEditor;
 import org.tbw.FemurShield.R;
 
 /**
- * Created by Marco on 05/05/2015.
- * Questa classe gestisce l'interfaccia in cui l'utente immette la durata massima della sessione
+ * Questa classe gestisce il Dialog che permette di impostare la durata massima di una sessione
+ *
+ * @author Marco Biasin
  */
 public class DurationFragment extends DialogFragment implements DialogInterface.OnClickListener{
 
@@ -47,8 +48,10 @@ public class DurationFragment extends DialogFragment implements DialogInterface.
     }
 
     /**
+     * con onClick comunico tramite callback all'attivita' che l'utente ha premuto ok e che durata ha scelto
+     *
      * @param which il tasto premuto (ok o cancella)
-     * con onClick comunico tramite callback all'attivita' che l'utente ha premuto ok*/
+     * */
     @Override
     public void onClick(DialogInterface dialog, int which) {
         switch (which) {
@@ -82,7 +85,7 @@ public class DurationFragment extends DialogFragment implements DialogInterface.
         }
     }
 
-    /* Questo metodo controlla che l'attivita' abbia implementato l'interfaccia per il callback*/
+    /** Questo metodo controlla che l'attivita' abbia implementato l'interfaccia per il callback*/
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
@@ -101,7 +104,12 @@ public class DurationFragment extends DialogFragment implements DialogInterface.
         mCallback = null;
     }
 
-    //metodo che converte da pixel a dp
+    /**
+     * Metodo per convertire i dp in pixel
+     * @param dp i dp da convertire
+     * @param view una view qualunque per ottenere un riferimento alle proprietà dello schermo
+     * @return i pixel corispondenti
+     */
     private int convertDpToPx(int dp, View view) {
         DisplayMetrics dm = view.getResources().getDisplayMetrics();
         float pixels = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, dm);

@@ -291,7 +291,7 @@ public class UI5 extends Activity implements SettingsFragment.OnOptionSelectedLi
     }
 
     /**
-     * Metodo che gestisce le voci scelte nel menu {@link SettingsFragment}
+     * Metodo che gestisce le voci scelte nella lista opzioni su {@link SettingsFragment}
      *
      * @param s l'opzione scelta dalla lista
      */
@@ -317,7 +317,7 @@ public class UI5 extends Activity implements SettingsFragment.OnOptionSelectedLi
             Controller.getNotification().NotifyFall(f);
         }
         if (s.title.equalsIgnoreCase(getString(R.string.title_email_recipient))) {
-            EmailFragment emailFragment = new EmailFragment();
+            EmailFragment emailFragment = EmailFragment.newInstance();
             FragmentTransaction transaction = getFragmentManager().beginTransaction();
 
             // rimpiazza il fragment attuale e lo aggiunge allo stack in modo che premendo indietro ricompaia

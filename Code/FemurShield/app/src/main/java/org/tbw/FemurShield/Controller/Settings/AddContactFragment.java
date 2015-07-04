@@ -17,7 +17,8 @@ import android.widget.TextView;
 import org.tbw.FemurShield.R;
 
 /**
- * Created by Marco on 08/05/2015.
+ * Questa classe gestisce il Dialog che permette l'aggiunta di un contatto email
+ * @author Marco Biasin
  */
 public class AddContactFragment extends DialogFragment implements DialogInterface.OnClickListener{
 
@@ -57,6 +58,12 @@ public class AddContactFragment extends DialogFragment implements DialogInterfac
         return alert.create();
     }
 
+    /**
+     * Gestisce la pressione sul tasto OK o ANNULLA del Dialog, salva il contatto se tutto e' corretto
+     * riferendolo alla UI5 tramite metodo di callback {@link org.tbw.FemurShield.Controller.Settings.AddContactFragment.OnUserInsertedListener#onUserInserted(EditText, EditText)}
+     * @param dialog il dialog mostrato
+     * @param which il bottone premuto
+     */
     @Override
     public void onClick(DialogInterface dialog, int which) {
         switch (which) {
@@ -83,7 +90,9 @@ public class AddContactFragment extends DialogFragment implements DialogInterfac
         }
     }
 
-    /* Questo metodo controlla che l'attivita' abbia implementato l'interfaccia per il callback*/
+    /**
+     *  Questo metodo controlla che l'attivita' abbia implementato l'interfaccia per il callback
+     */
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
@@ -102,6 +111,9 @@ public class AddContactFragment extends DialogFragment implements DialogInterfac
         }
     }
 
+    /**
+     * Disattiva i callback per evitare errori
+     */
     @Override
     public void onDetach() {
         super.onDetach();
@@ -120,6 +132,9 @@ public class AddContactFragment extends DialogFragment implements DialogInterfac
         boolean onUserInserted(EditText nome,EditText indirizzo);
     }
 
+    /**
+     * Metodo di callback per quando un contatto viene modificato
+     */
     public interface OnUserToUpdateInsertedListener
     {
         boolean onUserToUpdateInserted(EditText nome,EditText indirizzo,String oldEmail);

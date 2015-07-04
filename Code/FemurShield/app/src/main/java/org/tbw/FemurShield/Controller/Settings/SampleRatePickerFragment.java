@@ -15,9 +15,9 @@ import org.tbw.FemurShield.Controller.PreferencesEditor;
 import org.tbw.FemurShield.R;
 
 /**
- * Created by Marco on 04/05/2015.
- * Fragment che contiene lo slider
- * per determinare la frequenza di campionamento
+ * @author Marco Biasin
+ *
+ * Fragment che contiene lo slider per decidere la frequenza di campionamento del sensore.
  */
 public class SampleRatePickerFragment extends DialogFragment implements DialogInterface.OnClickListener{
 
@@ -50,8 +50,6 @@ public class SampleRatePickerFragment extends DialogFragment implements DialogIn
     public void onAttach(Activity activity) {
         super.onAttach(activity);
 
-        // This makes sure that the container activity has implemented
-        // the callback interface. If not, it throws an exception
         try {
             mCallback = (OnSamplingRateChangedListener) activity;
         } catch (ClassCastException e) {
@@ -66,6 +64,11 @@ public class SampleRatePickerFragment extends DialogFragment implements DialogIn
         mCallback=null;
     }
 
+    /**
+     * Gestisce il click sul bottone OK o ANNULLA
+     * @param dialog
+     * @param which il bottone premuto
+     */
     @Override
     public void onClick(DialogInterface dialog, int which) {
         switch (which) {
@@ -82,6 +85,10 @@ public class SampleRatePickerFragment extends DialogFragment implements DialogIn
     }
 
     public interface OnSamplingRateChangedListener {
+        /**
+         * notifica l'activity che e' stata impostata una nuova frequenza di campionamento
+         * @param newRate la nuova frequenza di campionamento
+         */
         void onSamplingRateChanged(int newRate);
     }
 }

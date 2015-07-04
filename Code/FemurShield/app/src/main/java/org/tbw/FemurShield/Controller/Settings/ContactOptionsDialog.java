@@ -10,7 +10,9 @@ import android.os.Bundle;
 import org.tbw.FemurShield.R;
 
 /**
- * Created by Marco on 09/06/2015.
+ * Questa classe gestisce il Dialog che permette di scegliere se cancellare o modificare un contatto
+ *
+ * @author Marco Biasin
  */
 public class ContactOptionsDialog extends DialogFragment {
 
@@ -57,8 +59,17 @@ public class ContactOptionsDialog extends DialogFragment {
         mCallback = null;
     }
 
+    /**
+     *
+     */
     public interface OnContactOptionsClickListener {
 
+        /**
+         * Metodo per il callback con cui avvertire l'activity che e' stato premuto su modifica o elimina di un dialog
+         * @param emailAddress l'indirizzo email del contatto
+         * @param name il nome del contatto
+         * @param type se il contatto e' da eliminare o modificare
+         */
         public void onContactOptionClick(String emailAddress,String name,int type);
     }
 }

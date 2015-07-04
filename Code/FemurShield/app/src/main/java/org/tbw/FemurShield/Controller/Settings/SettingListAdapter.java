@@ -14,8 +14,9 @@ import org.tbw.FemurShield.R;
 import java.util.List;
 
 /**
- * Created by Marco on 04/05/2015.
- * adapter per gestire gli elementi della lista impostazioni
+ * @author Marco Biasin
+ *
+ * Adapter per gestire gli elementi della lista impostazioni sfruttando il pattern View Holder
  */
 public class SettingListAdapter extends ArrayAdapter {
 
@@ -55,7 +56,6 @@ public class SettingListAdapter extends ArrayAdapter {
 
     /**
      * Implementa il pattern View-Holder
-     * poco utile visto che abbiamo poche voci ma in futuro non si sa mai
      *
      * vedi http://developer.android.com/training/improving-layouts/smooth-scrolling.html#ViewHolder
      */

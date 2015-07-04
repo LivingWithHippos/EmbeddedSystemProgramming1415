@@ -1,7 +1,9 @@
 package org.tbw.FemurShield.Controller.Settings;
 
 /**
- * Created by Marco on 08/06/2015.
+ * Semplice classe per contenere un oggetto della lista contatti
+ *
+ * @author Marco Biasin
  */
 public class EmailListItem {
     public final String name;

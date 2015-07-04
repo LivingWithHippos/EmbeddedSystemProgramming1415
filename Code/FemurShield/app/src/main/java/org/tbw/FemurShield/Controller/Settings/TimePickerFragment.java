@@ -12,7 +12,8 @@ import org.tbw.FemurShield.Controller.PreferencesEditor;
 import org.tbw.FemurShield.R;
 
 /**
- * Created by Marco on 03/05/2015.
+ * Dialog che permette la scelta di un orario per l'allarme e ne notifica il cambiamento tramite callback
+ *
  */
 public class TimePickerFragment extends DialogFragment
         implements TimePickerDialog.OnTimeSetListener {
@@ -49,6 +50,8 @@ public class TimePickerFragment extends DialogFragment
         super.onDetach();
         mCallback = null;
     }
+
+    @Override
     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
 
         // salva l'orario selezionato
@@ -60,6 +63,11 @@ public class TimePickerFragment extends DialogFragment
 
     public interface OnAlarmChangedListener{
 
+        /**
+         * Indica all'activity che l'orario dell'allarme e' stato modificato
+         * @param hourOfDay l'ora dell'allarme
+         * @param minute il minuto dell'allarme
+         */
         public void OnAlarmChanged(int hourOfDay, int minute);
     }
 }

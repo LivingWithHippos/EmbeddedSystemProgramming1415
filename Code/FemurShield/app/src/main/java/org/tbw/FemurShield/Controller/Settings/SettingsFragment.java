@@ -21,9 +21,8 @@ import java.util.List;
 
 
 /**
- * Classe Fragment che implementa l'interfaccia
- * {@link SettingsFragment.OnOptionSelectedListener}
- * che gestisce l'interazione con le voci della lista.
+ * Fragment che contiene la lista delle opzioni e ne gestisce gli effetti,
+ * usa l'adapter {@link SettingListAdapter}
  */
 public class SettingsFragment extends ListFragment {
 
@@ -32,10 +31,7 @@ public class SettingsFragment extends ListFragment {
     private OnOptionSelectedListener mListener;
     private SettingListAdapter mAdapter;
 
-
-
     public SettingsFragment() {
-        // Required empty public constructor
     }
 
     @Override
@@ -88,6 +84,10 @@ public class SettingsFragment extends ListFragment {
         setListAdapter(mAdapter);
     }
 
+    /**
+     * Controlla che il servizio di allarme sia attivo.
+     * @return true se e' attivo, false altrimenti
+     */
     private boolean isAlarmEnabled()
     {
         ComponentName receiver = new ComponentName(getActivity(), BootReceiver.class);
@@ -109,7 +109,6 @@ public class SettingsFragment extends ListFragment {
         {
             if(s.title.equalsIgnoreCase(getString(R.string.title_email_recipient)))
             {
-
                 //aggiorna la descrizione email
                 int temp=prefs.getEmailContactsNumber();
                 s.setDescription(temp+" "+(temp==1?"contatto presente":"contatti presenti"));
@@ -151,6 +150,13 @@ public class SettingsFragment extends ListFragment {
         getListView().setDivider(null);
     }
 
+    /**
+     * Rileva il click su un opzione e lo gestisce tramite callback
+     * @param l
+     * @param v
+     * @param position
+     * @param id
+     */
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
         // recupera l'elemento cliccato
@@ -160,6 +166,11 @@ public class SettingsFragment extends ListFragment {
             mListener.onOptionSelected(item);
     }
 
+    /**
+     * Aggiorna la descrizione dell'allarme dopo una sua modifica
+     * @param hour l'ora dell'allarme impostato
+     * @param minute i minuti dell'allarme impostato
+     */
     public void updateAlarmTime(int hour,int minute)
     {
         for(SettingListItem s:mItems)
@@ -178,6 +189,10 @@ public class SettingsFragment extends ListFragment {
         }
     }
 
+    /**
+     * Aggiorna la descrizione della durata sessione
+     * @param newDuration la nuova durata massima delle sessioni
+     */
     public void updateSessionDuration(int newDuration)
     {
         for(SettingListItem s:mItems)
@@ -193,6 +208,10 @@ public class SettingsFragment extends ListFragment {
         }
     }
 
+    /**
+     * Aggiorna la descrizione del sampling rate
+     * @param newRate la nouva frequenza di campionamento
+     */
     public void updateSamplingRate(int newRate)
     {
         for(SettingListItem s:mItems)
@@ -208,18 +227,11 @@ public class SettingsFragment extends ListFragment {
         }
     }
 
-
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p/>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
     public interface OnOptionSelectedListener {
+        /**
+         * Gestisce la voce premuta
+         * @param s la voce premuta
+         */
         public void onOptionSelected(SettingListItem s);
     }
 

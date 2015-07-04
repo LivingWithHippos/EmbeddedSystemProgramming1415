@@ -25,15 +25,12 @@ import java.util.HashMap;
 import java.util.List;
 
 /**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * to handle interaction events.
- * Use the {@link EmailFragment#newInstance} factory method to
- * create an instance of this fragment.
+ * Questa classe gestisce la lista dei contatti, inclusi i metodi di callback per aggingerli, modificarli o eliminarli.
+ * Si appoggia a {@link EmailListAdapter} per formare la lista
+ *
+ * @author Marco Biasin
  */
 public class EmailFragment extends ListFragment implements Button.OnClickListener{
-
-
 
     private List<EmailListItem> mItems;
     private OnAddEmailButtonClickListener aEmailCallback;
@@ -43,21 +40,12 @@ public class EmailFragment extends ListFragment implements Button.OnClickListene
     private Button addEmail;
     private HashMap<String,String> emailContacts;
 
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @return A new instance of fragment EmailFragment.
-     */
-
     public static EmailFragment newInstance() {
         EmailFragment fragment = new EmailFragment();
         return fragment;
     }
 
     public EmailFragment() {
-        // Required empty public constructor
     }
 
     @Override
@@ -65,9 +53,11 @@ public class EmailFragment extends ListFragment implements Button.OnClickListene
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
         initializeList();
-       // getListView().setOnItemLongClickListener();
     }
 
+    /**
+     * Metodo interno per la creazione della lista contatti
+     */
     private void initializeList()
     {
         mItems=new ArrayList<>();
@@ -146,6 +136,9 @@ public class EmailFragment extends ListFragment implements Button.OnClickListene
 
     }
 
+    /**
+     * svuota la lista in caso di eliminazione totale contatti
+     */
     public void clearList()
     {
         if(mAdapter!=null) {
@@ -158,7 +151,6 @@ public class EmailFragment extends ListFragment implements Button.OnClickListene
         }
 
     }
-
 
     @Override
     public void onClick(View v) {
@@ -185,35 +177,41 @@ public class EmailFragment extends ListFragment implements Button.OnClickListene
         super.onCreateOptionsMenu(menu, inflater);
     }
 
+    /**
+     * aggiorna la lista contatti
+     */
     public void updateList() {
         initializeList();
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p/>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-
     public interface OnAddEmailButtonClickListener {
 
+        /**
+         *callback dopo pressione tasto "+"
+         */
         public void onAddEmailButtonClick();
     }
     public interface OnClearEmailClickListener {
 
+        /**
+         * callback dopo svuotamento lista
+         */
         public void onClearEmail();
     }
     public interface OnContactClickListener {
 
+        /**
+         * callback pressione prolungata su di un contatto
+         * @param emailAddress l'indirizzo del contatto selezionato
+         * @param name il nome del contatto selezionato
+         */
         public void onContactLongClick(String emailAddress,String name);
     }
 
 
+    /**
+     * Listener per la pressione lunga su di un contatto
+     */
     public class OnContactLongClickListener implements ListView.OnItemLongClickListener
     {
         @Override

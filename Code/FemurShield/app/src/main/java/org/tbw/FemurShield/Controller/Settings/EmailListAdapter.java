@@ -12,7 +12,9 @@ import org.tbw.FemurShield.R;
 import java.util.List;
 
 /**
- * Created by Marco on 07/05/2015.
+ * Estensione della classe adapter per poter utilizzare il pattern View-Holder sulla lista contatti
+ *
+ *@author Marco Biasin
  */
 public class EmailListAdapter extends ArrayAdapter {
 
@@ -26,21 +28,21 @@ public class EmailListAdapter extends ArrayAdapter {
         ViewHolder viewHolder;
 
         if(convertView == null) {
-            // inflate the GridView item layout
+            // inflate del layout degli oggetti della lista
             LayoutInflater inflater = LayoutInflater.from(getContext());
             convertView = inflater.inflate(R.layout.email_list_item, parent, false);
 
-            // initialize the view holder
+            // inizializzo la view holder
             viewHolder = new ViewHolder();
             viewHolder.tvName = (TextView) convertView.findViewById(R.id.tvEmailItemName);
             viewHolder.tvAddress = (TextView) convertView.findViewById(R.id.tvEmailItemAddress);
             convertView.setTag(viewHolder);
         } else {
-            // recycle the already inflated view
+            // riciclo la view holder gia' pronta
             viewHolder = (ViewHolder) convertView.getTag();
         }
 
-        // update the item view
+        // aggiorno la item view
         EmailListItem item =(EmailListItem) getItem(position);
         viewHolder.tvName.setText(item.name);
         viewHolder.tvAddress.setText(item.address);
@@ -49,10 +51,9 @@ public class EmailListAdapter extends ArrayAdapter {
     }
 
     /**
-     * Implementa il pattern View-Holder
-     * poco utile visto che abbiamo poche voci ma in futuro non si sa mai
+     * Implementa il pattern View-Holder per la lista di contatti
      *
-     * vedi http://developer.android.com/training/improving-layouts/smooth-scrolling.html#ViewHolder
+     * vedi {@see http://developer.android.com/training/improving-layouts/smooth-scrolling.html#ViewHolder}
      */
     private static class ViewHolder {
         TextView tvName;
