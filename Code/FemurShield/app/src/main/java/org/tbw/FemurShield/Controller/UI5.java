@@ -189,7 +189,7 @@ public class UI5 extends Activity implements SettingsFragment.OnOptionSelectedLi
                     EmailFragment ef = (EmailFragment) getFragmentManager().findFragmentById(R.id.fragment_container_settings);
                     ef.updateList();
                 } else
-                    Toast.makeText(getApplicationContext(), getString(R.string.wrong_email_message), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), getString(R.string.already_added_email_message), Toast.LENGTH_SHORT).show();
 
             } else {
                 result = false;
