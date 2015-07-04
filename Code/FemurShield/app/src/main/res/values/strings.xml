@@ -53,5 +53,6 @@
     <string name="no_contacts_warning">Attenzione! Nessun Contatto Inserito</string>
     <string name="add_contact_tip">Premi sul \"+\" per aggiungere un contatto</string>
     <string name="already_added_email_message">Indirizzo email già inserito</string>
+    <string name="no_fall_found">Caduta non trovata!</string>
 
 </resources>

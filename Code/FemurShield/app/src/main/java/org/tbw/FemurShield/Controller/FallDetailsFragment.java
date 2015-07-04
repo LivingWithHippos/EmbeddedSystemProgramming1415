@@ -13,7 +13,6 @@ import android.view.View;
 import android.view.ViewAnimationUtils;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,10 +24,9 @@ import org.tbw.FemurShield.R;
 import java.util.ArrayList;
 
 /**
- * A simple {@link Fragment} subclass.
- * to handle interaction events.
- * Use the {@link FallDetailsFragment#newInstance} factory method to
- * create an instance of this fragment.
+ * Fragment che contiene le informazioni su una caduta e la sua rappresentazione grafica
+ *
+ * @author Marco Biasin
  */
 public class FallDetailsFragment extends Fragment {
 
@@ -36,13 +34,11 @@ public class FallDetailsFragment extends Fragment {
     private String fallID;
     private String latitude, longitude;
 
-    private LinearLayout ll;
     private int width, height;
 
     private Session shownSession;
     private Fall shownFall;
 
-    private Bitmap sessionSignature;
     private ImageView ivSentSign;
     private ImageView ivFallSignature;
     private ImageView ivSessionSignature;
@@ -53,6 +49,14 @@ public class FallDetailsFragment extends Fragment {
     private String[] palette;
 
 
+    /**
+     * Metodo da usare invece del costruttore
+     *
+     * @param sessionID la sessione a cui appartiene la caduta
+     * @param fallID    l'ID della caduta
+     * @param palette   i colori da utilizzare nel disegno
+     * @return una nuova istanza
+     */
     public static FallDetailsFragment newInstance(String sessionID, String fallID, String[] palette) {
         FallDetailsFragment fragment = new FallDetailsFragment();
         Bundle args = new Bundle();
@@ -69,7 +73,7 @@ public class FallDetailsFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         View rootView = inflater.inflate(R.layout.fragment_fall_details, container, false);
-
+        //recupero le dimensioni dello schermo
         DisplayMetrics displayMetrics = new DisplayMetrics();
         getActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
         height = displayMetrics.heightPixels;
@@ -78,8 +82,9 @@ public class FallDetailsFragment extends Fragment {
         ivFallSignature = (ImageView) rootView.findViewById(R.id.ivFallSignature);
 
         ivSentSign = (ImageView) rootView.findViewById(R.id.ivSentSign);
+        //comincio a creare l'immagine della caduta
         loadFallBitmap(R.id.ivFallSignature);
-
+        //segno se la caduta è stata segnalata o no
         if (shownFall.isReported())
             ivSentSign.setImageResource(R.drawable.check);
         else
@@ -87,7 +92,7 @@ public class FallDetailsFragment extends Fragment {
 
         //mettendo il metodo dentro a questo listener ci si assicura di risolvere
         //un errore che compare se l'interfaccia non è pronta
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             rootView.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
                 @TargetApi(Build.VERSION_CODES.LOLLIPOP)
                 @Override
@@ -111,7 +116,7 @@ public class FallDetailsFragment extends Fragment {
         //imposto la signature della sessione
         ivSessionSignature = (ImageView) rootView.findViewById(R.id.ivSessionSignatureInFallDetails);
         Bitmap temp;
-        if((temp=BitmapCache.getInstance().getBitmapFromMemCache(sessionID))!=null)
+        if ((temp = BitmapCache.getInstance().getBitmapFromMemCache(sessionID)) != null)
             ivSessionSignature.setImageBitmap(temp);
         else
             loadSessionBitmap(R.id.ivSessionSignatureInFallDetails);
@@ -125,17 +130,26 @@ public class FallDetailsFragment extends Fragment {
         tvFallLongitude = (TextView) rootView.findViewById(R.id.tvFallLongitude);
         tvFallLongitude.setText(getString(R.string.fall_longitude) + " " + longitude);
 
-
         return rootView;
     }
 
+    /**
+     * Carico il grafico della caduta, vedi {@link FallBitmapCreator}
+     *
+     * @param resId
+     */
     public void loadFallBitmap(int resId) {
         FallBitmapCreator fbc = new FallBitmapCreator(ivFallSignature, shownFall, height, width, palette);
         fbc.execute(resId);
     }
 
+    /**
+     * Carico la signature della sessione tramite asynctask per non fare laggare l'interfaccia
+     *
+     * @param resId l'ID della sessione da mostrare
+     */
     public void loadSessionBitmap(int resId) {
-        SignatureLoaderTask slt = new SignatureLoaderTask(ivSessionSignature,sessionID);
+        SignatureLoaderTask slt = new SignatureLoaderTask(ivSessionSignature, sessionID);
         slt.execute(resId);
     }
 
@@ -146,7 +160,6 @@ public class FallDetailsFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
     }
 
 
@@ -174,11 +187,8 @@ public class FallDetailsFragment extends Fragment {
             if (shownFall != null) {
                 latitude = shownFall.getPosition()[0] + "";
                 longitude = shownFall.getPosition()[1] + "";
-
-            } else {
-                Toast.makeText(activity, getString(R.string.no_session_found), Toast.LENGTH_LONG).show();
-            }
-
+            } else
+                Toast.makeText(activity, getString(R.string.no_fall_found), Toast.LENGTH_LONG).show();
 
         } else {
             Toast.makeText(activity, getString(R.string.no_session_found), Toast.LENGTH_LONG).show();
