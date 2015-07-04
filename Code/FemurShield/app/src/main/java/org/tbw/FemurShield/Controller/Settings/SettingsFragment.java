@@ -134,8 +134,14 @@ public class SettingsFragment extends ListFragment {
             mListener = (OnOptionSelectedListener) activity;
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString()
-                    + " must implement OnOptionSelectedListener");
+                    + " deve implementare OnOptionSelectedListener");
         }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mListener = null;
     }
 
     @Override
@@ -143,12 +149,6 @@ public class SettingsFragment extends ListFragment {
         super.onViewCreated(view, savedInstanceState);
         // tolgo i divisori tra le voci
         getListView().setDivider(null);
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
     }
 
     @Override

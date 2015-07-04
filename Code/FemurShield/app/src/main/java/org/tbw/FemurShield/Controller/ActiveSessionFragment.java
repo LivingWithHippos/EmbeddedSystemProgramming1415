@@ -210,13 +210,13 @@ public class ActiveSessionFragment extends Fragment implements org.tbw.FemurShie
             emailCallback = (OnEmailSentListener) activity;
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString()
-                    + " must implement OnEmailSentListener");
+                    + " deve implementare OnEmailSentListener");
         }
         try {
             fallCallback = (OnFallDetectedListener) activity;
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString()
-                    + " must implement OnFallDetectedListener");
+                    + " deve implementare OnFallDetectedListener");
         }
     }
 

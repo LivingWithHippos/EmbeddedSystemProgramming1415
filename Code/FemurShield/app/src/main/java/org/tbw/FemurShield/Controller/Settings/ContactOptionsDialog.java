@@ -47,7 +47,7 @@ public class ContactOptionsDialog extends DialogFragment {
             mCallback = (OnContactOptionsClickListener) activity;
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString()
-                    + " must implement OnContactOptionsClickListener");
+                    + " deve implementare OnContactOptionsClickListener");
         }
     }
 

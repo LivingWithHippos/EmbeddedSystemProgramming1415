@@ -53,14 +53,21 @@ public class SessionReminderDialog extends DialogFragment implements DialogInter
             mCallback = (OnSessionStartingListener) activity;
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString()
-                    + " must implement OnSessionStartingListener");
+                    + " deve implementare OnSessionStartingListener");
         }
         try {
             cDialogCallback = (OnDialogClosedListener) activity;
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString()
-                    + " must implement OnDialogClosedListener");
+                    + " deve implementare OnDialogClosedListener");
         }
+    }
+
+    @Override
+     public void onDetach() {
+        super.onDetach();
+        mCallback = null;
+        cDialogCallback = null;
     }
 
     @Override

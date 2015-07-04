@@ -118,7 +118,8 @@ public class SessionCommandsFragment extends Fragment {
         onPlayClick();
 
         //aggiorno la listView
-        mCallback.aggiornaLista(BUTTON_REC);
+        if(isAdded())
+            mCallback.aggiornaLista(BUTTON_REC);
         Intent intent=new Intent(getActivity(),UI3.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT | Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
@@ -133,8 +134,8 @@ public class SessionCommandsFragment extends Fragment {
         pause.setVisibility(ImageView.INVISIBLE);
         stop.setVisibility(ImageView.VISIBLE);
         play.setVisibility(ImageView.VISIBLE);
-
-        mCallback.aggiornaLista(BUTTON_PAUSE);
+        if(isAdded())
+            mCallback.aggiornaLista(BUTTON_PAUSE);
 
     }
 
@@ -147,8 +148,8 @@ public class SessionCommandsFragment extends Fragment {
         pause.setVisibility(ImageView.VISIBLE);
         stop.setVisibility(ImageView.VISIBLE);
         play.setVisibility(ImageView.INVISIBLE);
-
-        mCallback.aggiornaLista(BUTTON_PLAY);
+        if(isAdded())
+            mCallback.aggiornaLista(BUTTON_PLAY);
     }
 
     public void onStopClick(){
@@ -164,7 +165,8 @@ public class SessionCommandsFragment extends Fragment {
         play.setVisibility(ImageView.INVISIBLE);
 
         //aggiorno la listView
-        mCallback.aggiornaLista(BUTTON_STOP);
+        if(isAdded())
+            mCallback.aggiornaLista(BUTTON_STOP);
     }
 
     @Override
@@ -175,7 +177,7 @@ public class SessionCommandsFragment extends Fragment {
             mCallback = (OnCommandUpdatedListener) activity;
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString()
-                    + " must implement OnCommandUpdatedListener");
+                    + " deve implementare  OnCommandUpdatedListener");
         }
     }
 

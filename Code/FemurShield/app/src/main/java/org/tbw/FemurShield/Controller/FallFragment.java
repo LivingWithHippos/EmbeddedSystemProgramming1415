@@ -55,7 +55,8 @@ public class FallFragment extends ListFragment
     public void onListItemClick(ListView l, View v, int position, long id) {
         super.onListItemClick(l, v, position, id);
         FallListItem fall=(FallListItem)l.getItemAtPosition(position);
-        mListener.onFallClick(session.getDataTime(), fall.date);
+        if(isAdded())
+            mListener.onFallClick(session.getDataTime(), fall.date);
     }
 
     public void setSession(String date)
@@ -121,7 +122,7 @@ public class FallFragment extends ListFragment
             mListener = (OnFallClickListener) activity;
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString()
-                    + " must implement OnFallClickListener");
+                    + " deve implementare OnFallClickListener");
         }
     }
 

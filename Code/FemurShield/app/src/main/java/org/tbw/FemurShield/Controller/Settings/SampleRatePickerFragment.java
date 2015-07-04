@@ -56,10 +56,15 @@ public class SampleRatePickerFragment extends DialogFragment implements DialogIn
             mCallback = (OnSamplingRateChangedListener) activity;
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString()
-                    + " must implement OnSamplingRateChangedListener");
+                    + " deve implementare OnSamplingRateChangedListener");
         }
     }
 
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mCallback=null;
+    }
 
     @Override
     public void onClick(DialogInterface dialog, int which) {

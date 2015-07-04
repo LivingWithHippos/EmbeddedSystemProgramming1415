@@ -80,15 +80,22 @@ public class SessionsListFragment extends ListFragment {
             mListener = (OnSessionClickListener) activity;
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString()
-                    + " must implement OnSessionClickListener");
+                    + " deve implementare OnSessionClickListener");
         }
+    }
+
+    @Override
+     public void onDetach() {
+        super.onDetach();
+        mListener = null;
     }
 
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
         super.onListItemClick(l, v, position, id);
         SessionsListItem session=(SessionsListItem)l.getItemAtPosition(position);
-        mListener.onSessionClick(session.getDataTime());
+        if(isAdded())
+            mListener.onSessionClick(session.getDataTime());
     }
 
     @Override
@@ -110,7 +117,8 @@ public class SessionsListFragment extends ListFragment {
         public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
 
             SessionsListItem sli = (SessionsListItem) parent.getItemAtPosition(position);
-            mListener.onSessionLongClick(sli.getDataTime());
+            if(isAdded())
+                mListener.onSessionLongClick(sli.getDataTime());
 
             return true;
         }

@@ -44,8 +44,10 @@ public class EditSessionNameFragment extends DialogFragment implements DialogInt
                 if (mCallback != null) {
                     EditText nome = (EditText) getDialog().findViewById(R.id.etSessionName);
                     String temp=nome.getText().toString();
-                    if(temp.length()>0)
-                        mCallback.onSessionNameInserted(nome.getText().toString(),sessiondata);
+                    if(temp.length()>0) {
+                        if(isAdded())
+                            mCallback.onSessionNameInserted(nome.getText().toString(), sessiondata);
+                    }
                     else
                         Toast.makeText(getActivity(),getString(R.string.session_name_too_short),Toast.LENGTH_LONG).show();
                 }
@@ -62,8 +64,14 @@ public class EditSessionNameFragment extends DialogFragment implements DialogInt
             mCallback = (OnSessionNameInsertedListener) activity;
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString()
-                    + " must implement OnSessionNameInsertedListener");
+                    + " deve implementare OnSessionNameInsertedListener");
         }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mCallback = null;
     }
 
     /**

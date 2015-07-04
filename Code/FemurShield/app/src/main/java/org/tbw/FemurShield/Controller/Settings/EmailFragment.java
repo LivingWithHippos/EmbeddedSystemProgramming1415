@@ -78,9 +78,8 @@ public class EmailFragment extends ListFragment implements Button.OnClickListene
                 mItems.add(new EmailListItem(pair.getKey(),pair.getValue()));
         }
         else
-        {
-            //mItems.add(new EmailListItem("dummy@email.it","dummy"));
-        }
+            Toast.makeText(getActivity(),getString(R.string.add_contact_tip),Toast.LENGTH_SHORT).show();
+
         //imposto l'adapter
         mAdapter=new EmailListAdapter(getActivity(), mItems);
         setListAdapter(mAdapter);
@@ -112,19 +111,19 @@ public class EmailFragment extends ListFragment implements Button.OnClickListene
             aEmailCallback = (OnAddEmailButtonClickListener) activity;
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString()
-                    + " must implement OnAddEmailButtonClickListener");
+                    + " deve implementare OnAddEmailButtonClickListener");
         }
         try {
             mClearCallback = (OnClearEmailClickListener) activity;
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString()
-                    + " must implement OnClearEmailClickListener");
+                    + " deve implementare OnClearEmailClickListener");
         }
         try {
             mContactClickCallback = (OnContactClickListener) activity;
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString()
-                    + " must implement OnContactClickListener");
+                    + " deve implementare OnContactClickListener");
         }
 
     }

@@ -31,7 +31,8 @@ public class SessionOptionDialog extends DialogFragment {
         alert.setTitle(R.string.session_options_dialog_title)
                 .setItems(new String[]{RENAME, DELETE}, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-                        mCallback.onSessionOptionClick(contactData, which);
+                        if(isAdded())
+                            mCallback.onSessionOptionClick(contactData, which);
                     }
                 });
         return alert.create();
@@ -44,7 +45,7 @@ public class SessionOptionDialog extends DialogFragment {
             mCallback = (OnSessionOptionsClickListener) activity;
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString()
-                    + " must implement OnSessionOptionsClickListener");
+                    + " deve implementare OnSessionOptionsClickListener");
         }
     }
 

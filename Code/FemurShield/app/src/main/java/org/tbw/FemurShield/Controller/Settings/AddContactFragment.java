@@ -32,7 +32,6 @@ public class AddContactFragment extends DialogFragment implements DialogInterfac
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        mCallback=(OnUserInsertedListener)getActivity();
 
         AlertDialog.Builder alert = new AlertDialog.Builder(getActivity(), R.style.AppDialogTheme);
         final Context themeContext = getActivity();
@@ -66,7 +65,8 @@ public class AddContactFragment extends DialogFragment implements DialogInterfac
                     if (mCallback != null) {
                         EditText nome = (EditText) getDialog().findViewById(R.id.etEmailName);
                         EditText indirizzo = (EditText) getDialog().findViewById(R.id.etEmailAddress);
-                        mCallback.onUserInserted(nome, indirizzo);
+                        if(isAdded())
+                            mCallback.onUserInserted(nome, indirizzo);
                     }
                 }
                 else
@@ -75,7 +75,8 @@ public class AddContactFragment extends DialogFragment implements DialogInterfac
                             EditText nome=(EditText)getDialog().findViewById(R.id.etEmailName);
                             EditText indirizzo=(EditText)getDialog().findViewById(R.id.etEmailAddress);
                             String oldEmail=getArguments().getString(OLD_EMAIL);
-                            mUpdateCallback.onUserToUpdateInserted(nome,indirizzo,oldEmail);
+                            if(isAdded())
+                                mUpdateCallback.onUserToUpdateInserted(nome,indirizzo,oldEmail);
                         }
                     }
                 break;
@@ -91,16 +92,22 @@ public class AddContactFragment extends DialogFragment implements DialogInterfac
             mCallback = (OnUserInsertedListener) activity;
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString()
-                    + " must implement OnUserInsertedListener");
+                    + " deve implementare OnUserInsertedListener");
         }
         try {
             mUpdateCallback = (OnUserToUpdateInsertedListener) activity;
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString()
-                    + " must implement OnUserToUpdateInsertedListener");
+                    + " deve implementare OnUserToUpdateInsertedListener");
         }
     }
 
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mCallback = null;
+        mUpdateCallback = null;
+    }
     /**
      * Interfaccia di callback per quando l'utente ha finito premendo il bottone ok
      */

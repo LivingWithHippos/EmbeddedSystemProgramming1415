@@ -36,16 +36,19 @@ public class TimePickerFragment extends DialogFragment
     public void onAttach(Activity activity) {
         super.onAttach(activity);
 
-        // This makes sure that the container activity has implemented
-        // the callback interface. If not, it throws an exception
         try {
             mCallback = (OnAlarmChangedListener) activity;
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString()
-                    + " must implement OnAlarmChangedListener");
+                    + " deve implementare OnAlarmChangedListener");
         }
     }
 
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mCallback = null;
+    }
     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
 
         // salva l'orario selezionato

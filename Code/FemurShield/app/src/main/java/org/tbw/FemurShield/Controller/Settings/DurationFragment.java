@@ -91,8 +91,14 @@ public class DurationFragment extends DialogFragment implements DialogInterface.
             mCallback = (OnDurationChangedListener) activity;
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString()
-                    + " must implement OnDurationChangedListener");
+                    + " deve implementare OnDurationChangedListener");
         }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mCallback = null;
     }
 
     //metodo che converte da pixel a dp
