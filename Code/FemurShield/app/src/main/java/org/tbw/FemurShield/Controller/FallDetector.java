@@ -43,10 +43,10 @@ public class FallDetector extends IntentService implements SensorEventListener {
     private int tempovalori=500;
 
 
-    //costanti per la posizione dell'array
-    private static final int X_VALUE=0;
-    private static final int Y_VALUE=1;
-    private static final int Z_VALUE=2;
+    //costanti per la posizione dell'array dei dati
+    public static final int X_VALUE=0;//rappresenta la posizione dei valori delle x nell'array dei valori di una caduta
+    public static final int Y_VALUE=1;//rappresenta la posizione dei valori delle y nell'array dei valori di una caduta
+    public static final int Z_VALUE=2;//rappresenta la posizione dei valori delle z nell'array dei valori di una caduta
 
     /* costanti che identificano lo stato di un rilevamento di caduta o impatto
     "IN_PROGRESS" per dire che sta cercando di capire se è un impatto o una caduta.
@@ -61,11 +61,12 @@ public class FallDetector extends IntentService implements SensorEventListener {
     private int fallstate=NONE;
     private int impactstate=NONE;
 
-    //elenco buffer di dati
+    //elenco buffer di dati dell'accelerometro
     private ArrayList<ArrayList<Float>> bufferValueBeforeAcc =new ArrayList<>(3);
     private ArrayList<ArrayList<Float>> bufferValueFallAcc =new ArrayList<>(3);
     private ArrayList<ArrayList<Float>> bufferValueAfterAcc =new ArrayList<>(3);
 
+    //elenco buffer di dati del giroscopio
     private ArrayList<ArrayList<Float>> bufferValueBeforeGyro =new ArrayList<>(3);
     private ArrayList<ArrayList<Float>> bufferValueFallGyro =new ArrayList<>(3);
     private ArrayList<ArrayList<Float>> bufferValueAfterGyro =new ArrayList<>(3);
@@ -98,32 +99,22 @@ public class FallDetector extends IntentService implements SensorEventListener {
         bufferValueAfterGyro.add(Z_VALUE, new ArrayList<Float>());
     }
 
-    /**
-     * Creates an IntentService.  Invoked by your subclass's constructor.
-     *
-     * @param name Used to name the worker thread, important only for debugging.
-     */
-    public FallDetector(String name) {
-        super(name);
-    }
-
     public FallDetector() {
         super("FallDetector");
     }
 
     @Override
     protected void onHandleIntent(Intent intent) {
-        Log.println(Log.INFO, "onHandleIntent", "fefwef");
     }
 
     @Override
     public void onCreate() {
-        Log.println(Log.INFO, "Service onCreate", "fefwef");
+        super.onCreate();
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        Log.println(Log.INFO, "Start FallDetector", "Helloworld...");
+        //avvia il detector
         startDetector();
         return Service.START_STICKY;
     }
@@ -135,27 +126,15 @@ public class FallDetector extends IntentService implements SensorEventListener {
 
     @Override
     public void onDestroy() {
-        Log.println(Log.INFO, "Stop FallDetector","bye...");
+        //stoppa il detector
         stopDetector();
     }
 
     @Override
     public void onSensorChanged(SensorEvent event) {
-        float x=event.values[0];
-        float y=event.values[1];
-        float z=event.values[2];
-        double result=Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2) + Math.pow(z, 2));
-
-        if(event.sensor.getType() == Sensor.TYPE_GYROSCOPE)
-            if(result>LIMITE_MINIMO_CADUTA_GYRO)
-                Log.println(Log.DEBUG, "Giroscopio: ", "" + result);
-        if(event.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
-            if (result > LIMITE_MINIMO_IMPATTO_ACC)
-                Log.println(Log.DEBUG, "Accelerometro: ", "" + result);
-
+        //se è un sato dell'accelerometro notifico gli osservatori (la ui3 in particolare per la rappresentazione in RT del grafico)
+        if(event.sensor.getType() == Sensor.TYPE_ACCELEROMETER)
             Controller.getNotification().NotifyAccData(event.values[0], event.values[1], event.values[2]);
-        }
-
         fallAlgorithm(event);
     }
 
@@ -165,11 +144,10 @@ public class FallDetector extends IntentService implements SensorEventListener {
     }
 
     private void startDetector(){
-        PreferencesEditor pref=new PreferencesEditor(getBaseContext());
-        tempocampionamento=205-(200*pref.getSamplingRate()/100);
-        float samplingrating=1f/(((float)tempocampionamento)/1000);
-        Log.d("SAMPLING RATING",""+samplingrating);
         if(!isRunning) {
+            //ottengo il tempo di campionamento salvato nelle impostazioni
+            PreferencesEditor pref=new PreferencesEditor(getBaseContext());
+            tempocampionamento=205-(200*pref.getSamplingRate()/100);
             isRunning=true;
             //costruisco la notifica da visualizzare
             Notification notification = new Notification.Builder(getApplicationContext())
@@ -207,33 +185,28 @@ public class FallDetector extends IntentService implements SensorEventListener {
 
     public void fallAlgorithm(SensorEvent event){
         /*
-        Una caduta può essere di due tipologie:
-        A) per impatto;
-        B) per malore o inciampo;
-
         L'algoritmo consiste nel salvare i dati provenienti da giroscopio e accelerometro in un buffer e localizzare
         quando è avvenuta una caduta.
 
-        la caduta si può individuare in due modi (rispettivamente relativi alle tipologie sopra elencate):
+        la caduta si può individuare nel seguente modo:
         Quando l'algoritmo rileva un impatto (alti valori dell'accelerometro) controlla se precedentemente
         la persona stava cadendo (cambiamento di almeno uno dei valori del giroscopio rispetto a quelli
         abituali nel passato più vicino). Se non risultano cadute (inclinazioni) si presuppone che la caduta
-        sia di tipo A e si andrà a controllare se ci sarà un'inclinazione e un impatto finale (atterramento),
-        altrimenti si presuppone che la caduta si di tipologia B dove l'impatto rilevato è l'atterramento
-        dell'utente.
+        non stia avvenendo o verrà localizzata al secondo impatto se l'impatto rilevato era un urto pre caduta.
          */
 
         float x=event.values[0];
         float y=event.values[1];
         float z=event.values[2];
 
+        //se i dati dell'evento riguardano il giroscopio allora cerco di localizzare l'inclinazione dell'utente
         if(event.sensor.getType() == Sensor.TYPE_GYROSCOPE)
             falldetect(x,y,z);
-        else
+        else //se i dati dell'evento riguardano l'accelerometro allora cerco di localizzare l'impatto
             if(event.sensor.getType() == Sensor.TYPE_ACCELEROMETER)
                 impactdetect(x,y,z);
 
-        if(fall){
+        if(fall){ //attendo che i valori di rumore della caduta si stabilizzino (qualche millisecondo)
             cycleAfterFall++;
             if(cycleAfterFall>70) {
                 fall = false;
@@ -241,15 +214,10 @@ public class FallDetector extends IntentService implements SensorEventListener {
             }
         }
         else {
+            //se ho identificato sia un impatto che una caduta ho localizzato una Fall
             if (fallstate == IDENTIFIED && impactstate == IDENTIFIED) {
                 fall = true;
-                Log.println(Log.INFO, "CADUTAAAAAAAAAAAAAAAAA", "");
-                //trasformo i dati del buffer nel formato richiesto ovvero fall[3][]
-
-                //TODO per ogni buffer da inviare (da chiedere quali valori devono esser visualizzati giro o acc)
-
-
-                Log.println(Log.INFO, "CANCELLOOOOOOOOOO", "");
+                //trasformo i dati del buffer nel formato richiesto ovvero float[3][]
                 //valori prima della caduta
                 float[][] beforevalue = new float[3][];
                 for (int i = 0; i < 3; i++) {
@@ -259,7 +227,6 @@ public class FallDetector extends IntentService implements SensorEventListener {
                     }
                 }
                 //valori della caduta
-
                 float[][] fallvalue = new float[3][];
                 for (int i = 0; i < 3; i++) {
                     fallvalue[i] = new float[bufferValueFallGyro.get(i).size()];
@@ -277,8 +244,7 @@ public class FallDetector extends IntentService implements SensorEventListener {
                     }
                 }
 
-                Log.println(Log.INFO, "cadutaaaaa NOTIFY", Controller.getNotification().toString() + "   ");
-
+                //creo la caduta, notifico gli osservatori e invio la mail
                 final double[] position = new double[2];
                 final Fall f = new Fall(beforevalue, fallvalue, aftervalue);
                 LocationLocator.LocationResult locationResult = new LocationLocator.LocationResult() {
@@ -289,7 +255,7 @@ public class FallDetector extends IntentService implements SensorEventListener {
                         Log.d("Lat", "" + position[0]);
                         Log.d("Long", "" + position[1]);
                         f.setPosition(position[0], position[1]);
-                        Controller.getInstance().sendEmail(f);
+                        Controller.getInstance().sendEmail(f);//attendo prima che sia stata localizzata la caduta
                     }
                 };
                 LocationLocator myLocation = new LocationLocator();
