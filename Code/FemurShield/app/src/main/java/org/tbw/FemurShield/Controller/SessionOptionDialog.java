@@ -10,7 +10,9 @@ import android.os.Bundle;
 import org.tbw.FemurShield.R;
 
 /**
- * Created by Moro on 30/06/15.
+ * Dialog che presenta le opzioni per modificare o eliminare una sessione,
+ * compare dopo la pressione prolungata su {@link SessionsListFragment} o sulla voce delle opzioni
+ * @author Alessandro Moro
  */
 public class SessionOptionDialog extends DialogFragment {
 
@@ -57,6 +59,11 @@ public class SessionOptionDialog extends DialogFragment {
 
     public interface OnSessionOptionsClickListener {
 
+        /**
+         * Metodo per notificare all'activity che c'è stata una scelta dal menu
+         * @param data il timestamp della sessione da modificare
+         * @param type se eliminarla o rinominarla
+         */
         public void onSessionOptionClick(String data,int type);
     }
 }
