@@ -15,7 +15,11 @@ import org.tbw.FemurShield.R;
 
 import java.util.Random;
 
-
+/**
+ * La UI4 rappresenta i dettagli di una caduta specifica sul Fragment {@link FallDetailsFragment},
+ * incluso un  grafico create tramite {@link FallBitmapCreator}
+ * che mostra i dati rilevati dall'accelerometro.
+ */
 public class UI4 extends Activity {
 
     public static final String ID_FALL = "ID_CADUTA";
@@ -30,10 +34,10 @@ public class UI4 extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ui4);
         rand=new Random();
-
+        //reupero l'ID della sessione e dell caduta
         sessionID = getIntent().getExtras().getString(ID_SESSION);
         fallID = getIntent().getExtras().getString(ID_FALL);
-
+        //creo il fragment
         FallDetailsFragment fdf = FallDetailsFragment.newInstance(sessionID, fallID,ColorsPicker.pickRandomColors());
 
         FragmentManager fragmentManager = getFragmentManager();
