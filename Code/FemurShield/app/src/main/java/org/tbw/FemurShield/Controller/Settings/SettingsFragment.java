@@ -45,7 +45,7 @@ public class SettingsFragment extends ListFragment {
         mItems = new ArrayList<SettingListItem>();
         //mi serve per ottenere le icone
         Resources resources = getResources();
-        //TODO: impostare icone di dimensioni diverse a seconda della dimensione dello schermo?
+
         // prefs serve a caricare le impostazioni salvate
         prefs=new PreferencesEditor(getActivity());
 

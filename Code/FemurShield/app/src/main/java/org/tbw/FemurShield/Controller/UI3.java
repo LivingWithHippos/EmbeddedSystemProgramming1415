@@ -119,7 +119,6 @@ public class UI3 extends Activity implements ActiveSessionFragment.OnFallDetecte
     @Override
     public void onSessionNameInserted(String nuovonome, String data) {
         Controller.getInstance().renameEvent(data, nuovonome);
-        //TODO aggiornare view dopo che il nome e' cambiato
     }
 
     @Override

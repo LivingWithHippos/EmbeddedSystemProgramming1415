@@ -1,5 +1,7 @@
 package org.tbw.FemurShield.Model;
 
+import android.util.Log;
+
 import org.tbw.FemurShield.Controller.Controller;
 
 import java.util.ArrayList;
@@ -159,7 +161,7 @@ public class SessionManager {
         if(sessioneattiva==null)
             return false;
         running=true;
-        return sessioneattiva.Start();
+        return true;
     }
 
     /**
@@ -170,7 +172,7 @@ public class SessionManager {
         if(sessioneattiva==null)
             return false;
         running=false;
-        return sessioneattiva.Pause();
+        return true;
     }
 
     /**
@@ -180,7 +182,7 @@ public class SessionManager {
     public boolean StopSession(long duration){
         if(sessioneattiva==null)
             return false;
-        sessioneattiva.Stop(); //TODO: maggiore controllo magari
+
         OldSessionImpl nuovavecchia=new OldSessionImpl(sessioneattiva);
         nuovavecchia.setDuration(duration);
         sessionivecchie.put(sessioneattiva.getId(),nuovavecchia); //sfrutto con polimorfismo il costruttore OldSessionImpl(SessionImpl o)
@@ -208,7 +210,6 @@ public class SessionManager {
             //salvo la durata della sessione i
             backup.put("durata" + i, ""+old.getDuration());
             //salvo il path dell'immagine della firma della sessione i
-            //TODO backup.put("pathimg" + i, old.getName());
 
             ArrayList<Fall> falls=old.getFalls();
             int numfall=falls.size();
@@ -325,7 +326,6 @@ public class SessionManager {
             String nome=backup.get("nome"+i);
             String data = backup.get("data" +i);
             long durata = Long.parseLong(backup.get("durata" + i));
-            //TODO backup.put("pathimg" + i, old.getName());
             ArrayList<Fall> falls=new ArrayList<>();
             int numfall=Integer.parseInt(backup.get("numfall" + i));
             for(int j=0;j<numfall;j++){
@@ -377,27 +377,38 @@ public class SessionManager {
 
                 float[][] after=new float[3][];
                 //recupero i valori delle x dopo la caduta
-                String[] xvalafterstring= backup.get("xvalueafter" + i+"/"+j).split("#");
-                float[] xvalafter=new float[xvalafterstring.length];
-                for(int k=0;k<xvalafterstring.length;k++)
-                    xvalafter[k]=Float.parseFloat(xvalafterstring[k]);
-                after[Fall.X_INDEX]=xvalafter;
+                String xvalafterTemp=backup.get("xvalueafter" + i+"/"+j);
+                if(xvalafterTemp.length()>1) {
+                String[] xvalafterstring= xvalafterTemp.split("#");
+
+                    float[] xvalafter = new float[xvalafterstring.length];
+                        for (int k = 0; k < xvalafterstring.length; k++)
+                            xvalafter[k] = Float.parseFloat(xvalafterstring[k]);
+                    after[Fall.X_INDEX] = xvalafter;
+                }
                 //recupero i valori delle y dopo la caduta
-                String[] yvalafterstring= backup.get("yvalueafter" + i+"/"+j).split("#");
-                float[] yvalafter=new float[yvalafterstring.length];
-                for(int k=0;k<yvalafterstring.length;k++)
-                    yvalafter[k]=Float.parseFloat(yvalafterstring[k]);
-                after[Fall.Y_INDEX]=yvalafter;
+                String yvalafterTemp=backup.get("yvalueafter" + i+"/"+j);
+                if(yvalafterTemp.length()>1) {
+                    String[] yvalafterstring = yvalafterTemp.split("#");
+                    float[] yvalafter = new float[yvalafterstring.length];
+                    for (int k = 0; k < yvalafterstring.length; k++)
+                        yvalafter[k] = Float.parseFloat(yvalafterstring[k]);
+                    after[Fall.Y_INDEX] = yvalafter;
+                }
                 //recupero i valori delle z dopo la caduta
-                String[] zvalafterstring= backup.get("zvalueafter" + i+"/"+j).split("#");
-                float[] zvalafter=new float[zvalafterstring.length];
-                for(int k=0;k<zvalafterstring.length;k++)
-                    zvalafter[k]=Float.parseFloat(zvalafterstring[k]);
-                after[Fall.Z_INDEX]=zvalafter;
+                String zvalafterTemp=backup.get("zvalueafter" + i + "/" + j);
+                if(zvalafterTemp.length()>1) {
+                    String[] zvalafterstring = backup.get("zvalueafter" + i + "/" + j).split("#");
+                    float[] zvalafter = new float[zvalafterstring.length];
+                    for (int k = 0; k < zvalafterstring.length; k++)
+                        zvalafter[k] = Float.parseFloat(zvalafterstring[k]);
+                    after[Fall.Z_INDEX] = zvalafter;
+                }
                 //aggiungo la caduta alle cadute
-                falls.add(new Fall(before,during,after,id,datafall,lat,longi,segnalato));
+                if(xvalafterTemp.length()>1&&yvalafterTemp.length()>1&&zvalafterTemp.length()>1)
+                    falls.add(new Fall(before, during, after, id, datafall, lat, longi, segnalato));
             }
-            sessionivecchie.put(data,new OldSessionImpl(new SessionImpl(nome,data,falls,durata)));//TODO signature
+            sessionivecchie.put(data, new OldSessionImpl(new SessionImpl(nome, data, falls, durata)));
         }
     }
 }

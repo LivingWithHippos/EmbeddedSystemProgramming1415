@@ -46,7 +46,6 @@ public class AddContactFragment extends DialogFragment implements DialogInterfac
         mode=bundle.getBoolean(CONTACT_MODE);
         if(mode==MODE_EDIT_USER)
         {
-            //TODO: stiamo modificando un utente
             String oldName=bundle.getString(OLD_NAME);
             String oldEmail=bundle.getString(OLD_EMAIL);
             TextView title=(TextView)view.findViewById(R.id.tvAddContactTitle);

@@ -24,7 +24,6 @@ public class ColorsPicker {
 
     public static String[] pickRandomColors()
     {
-        //TODO: tenere aggiornati i cambiamenti
         if(palettes!=null)
         {
             int[] index=new int[3];

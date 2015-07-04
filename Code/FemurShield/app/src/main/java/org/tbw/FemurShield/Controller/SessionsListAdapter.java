@@ -117,7 +117,6 @@ class SessionsListItem{
                 this.name = name;
                 this.falls = fallsNumber;
                 this.datetime=date;
-                //TODO: ricevere durata
                 this.duration=duration;
                 this.state=state;
 
