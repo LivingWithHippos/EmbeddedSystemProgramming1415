@@ -129,9 +129,8 @@ public class UI1 extends Activity implements FallFragment.OnFallClickListener,Se
 
     /**
      * Forza un aggiornamento della lista delle sessioni
-     * @param buttonPressed il bottone che ha causato l'aggiornamento,
-     *                      vedi {@value SessionCommandsFragment#BUTTON_STOP}, {@value SessionCommandsFragment#BUTTON_PLAY}, {@value SessionCommandsFragment#BUTTON_PAUSE}, {@value SessionCommandsFragment#BUTTON_REC}
-     */
+     * @param buttonPressed il bottone che ha causato l'aggiornamento, ma nella UI1 il suo unico effetto e' l'aggiornamento della lista, quindi rimane inutilizzato
+     *  */
     public void aggiornaLista(int buttonPressed){
         SessionsListFragment fragment = (SessionsListFragment) getFragmentManager().findFragmentById(R.id.listaSessioniUI1);
         fragment.aggiornaLista();
