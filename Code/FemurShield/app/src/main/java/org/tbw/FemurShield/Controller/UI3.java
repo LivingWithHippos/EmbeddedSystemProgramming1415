@@ -109,7 +109,7 @@ public class UI3 extends Activity implements ActiveSessionFragment.OnFallDetecte
     }
 
     /**
-     * Forza un aggiornamento della lista delle sessioni
+     * Chiamato quando un bottone di comando viene premuto
      * @param buttonPressed il bottone che ha causato l'aggiornamento,
      *                      vedi {@value SessionCommandsFragment#BUTTON_STOP}, {@value SessionCommandsFragment#BUTTON_PLAY}, {@value SessionCommandsFragment#BUTTON_PAUSE}, {@value SessionCommandsFragment#BUTTON_REC}
      */
@@ -141,6 +141,8 @@ public class UI3 extends Activity implements ActiveSessionFragment.OnFallDetecte
     @Override
     public void onSessionNameInserted(String nome, String sessionID) {
         Controller.getInstance().renameEvent(sessionID, nome);
+        SessionDetailsFragment sdf=(SessionDetailsFragment )getFragmentManager().findFragmentByTag(SESSION_DETAILS_FRAGMENT_TAG);
+        sdf.updateNameView(nome);
     }
 
     /**
