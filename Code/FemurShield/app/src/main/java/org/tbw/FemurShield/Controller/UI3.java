@@ -39,26 +39,28 @@ public class UI3 extends Activity implements ActiveSessionFragment.OnFallDetecte
         if (findViewById(R.id.ui3rootLayout) != null) {
 
             int orientation = this.getResources().getConfiguration().orientation;
-            thisData = SessionManager.getInstance().getActiveSession().getDataTime();
+            if (SessionManager.getInstance().getActiveSession() != null) {
+                thisData = SessionManager.getInstance().getActiveSession().getDataTime();
 
-            SessionDetailsFragment sdf = SessionDetailsFragment.newIstance(thisData, SessionDetailsFragment.UI_3_MODE);
-            ActiveSessionFragment asf = ActiveSessionFragment.newIstance();
-            SessionCommandsFragment scf = SessionCommandsFragment.newInstance(SessionCommandsFragment.MODE_SMALL);
-            FallFragment ff = FallFragment.newInstance(thisData);
+                SessionDetailsFragment sdf = SessionDetailsFragment.newIstance(thisData, SessionDetailsFragment.UI_3_MODE);
+                ActiveSessionFragment asf = ActiveSessionFragment.newIstance();
+                SessionCommandsFragment scf = SessionCommandsFragment.newInstance(SessionCommandsFragment.MODE_SMALL);
+                FallFragment ff = FallFragment.newInstance(thisData);
 
 
-            if (orientation == Configuration.ORIENTATION_PORTRAIT) {
-                getFragmentManager().beginTransaction().replace(R.id.sessionDetailLayout, sdf, SESSION_DETAILS_FRAGMENT_TAG).commit();
-                getFragmentManager().beginTransaction().replace(R.id.sessionGraphLayout, asf, ACTIVE_SESSION_FRAGMENT_TAG).commit();
-                getFragmentManager().beginTransaction().replace(R.id.fallListLayout, ff, FALLS_LIST_FRAGMENT_TAG).commit();
-                getFragmentManager().beginTransaction().replace(R.id.commandLayout, scf, SESSION_COMMANDS_FRAGMENT_TAG).commit();
-            } else {
-                getFragmentManager().beginTransaction().replace(R.id.sessionDetailLayout, sdf, SESSION_DETAILS_FRAGMENT_TAG).commit();
-                getFragmentManager().beginTransaction().replace(R.id.fallListLayout, ff, FALLS_LIST_FRAGMENT_TAG).commit();
-                getFragmentManager().beginTransaction().replace(R.id.sessionGraphLayout, asf, ACTIVE_SESSION_FRAGMENT_TAG).commit();
-                getFragmentManager().beginTransaction().replace(R.id.commandLayout, scf, SESSION_COMMANDS_FRAGMENT_TAG).commit();
-            }
+                if (orientation == Configuration.ORIENTATION_PORTRAIT) {
+                    getFragmentManager().beginTransaction().replace(R.id.sessionDetailLayout, sdf, SESSION_DETAILS_FRAGMENT_TAG).commit();
+                    getFragmentManager().beginTransaction().replace(R.id.sessionGraphLayout, asf, ACTIVE_SESSION_FRAGMENT_TAG).commit();
+                    getFragmentManager().beginTransaction().replace(R.id.fallListLayout, ff, FALLS_LIST_FRAGMENT_TAG).commit();
+                    getFragmentManager().beginTransaction().replace(R.id.commandLayout, scf, SESSION_COMMANDS_FRAGMENT_TAG).commit();
+                } else {
+                    getFragmentManager().beginTransaction().replace(R.id.sessionDetailLayout, sdf, SESSION_DETAILS_FRAGMENT_TAG).commit();
+                    getFragmentManager().beginTransaction().replace(R.id.fallListLayout, ff, FALLS_LIST_FRAGMENT_TAG).commit();
+                    getFragmentManager().beginTransaction().replace(R.id.sessionGraphLayout, asf, ACTIVE_SESSION_FRAGMENT_TAG).commit();
+                    getFragmentManager().beginTransaction().replace(R.id.commandLayout, scf, SESSION_COMMANDS_FRAGMENT_TAG).commit();
+                }
 
+            }else{finish();}
         }
     }
 
