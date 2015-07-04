@@ -1,14 +1,11 @@
 package org.tbw.FemurShield.Controller;
 
-import android.animation.Animator;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.AsyncTask;
 import android.util.Log;
-import android.view.View;
-import android.view.ViewAnimationUtils;
 import android.widget.ImageView;
 
 import org.tbw.FemurShield.Model.Fall;
@@ -17,7 +14,11 @@ import java.lang.ref.WeakReference;
 import java.util.Arrays;
 
 /**
- * Created by Marco on 14/06/2015.
+ * Classe che si occupa di creare il grafico di una caduta partendo dai suoi valori.
+ * Vista la quantità ridotta di dati, viene ricalcolata sempre e mai salvata.
+ * Sfrutto un task asincrono in modo da non bloccare la ui col disegno.
+ *
+ * @author Marco Biasin
  */
 public class FallBitmapCreator extends AsyncTask<Integer, Void, Bitmap> {
 
@@ -44,7 +45,14 @@ public class FallBitmapCreator extends AsyncTask<Integer, Void, Bitmap> {
     Paint paintZ = new Paint(Paint.ANTI_ALIAS_FLAG);
     private String[] color_palette;
 
-
+    /**
+     * Costruttore pubblico
+     * @param ivFall l'ImageView su cui mostrare il grafico
+     * @param fall il fall da mostrare
+     * @param height l'altezza dello schermo
+     * @param width la larghezza dello schermo
+     * @param palette i 3 colori da utilizzare
+     */
     public FallBitmapCreator(ImageView ivFall, Fall fall, int height, int width, String[] palette) {
 
 
@@ -60,12 +68,13 @@ public class FallBitmapCreator extends AsyncTask<Integer, Void, Bitmap> {
         dataDuring=fall.getFallValues();
         dataAfter=fall.getValuesAfterFall();
 
-        //questo regola la scala in base
-        //all'altezza del grafico z
+        //questo regola la scala in base al massimo valore disegnabile
+        //troppo time-consuming ;(
         //scale=(signHeight/2)/(getMax(dataBefore,dataDuring,dataAfter)*1.5f);
 
+        //di quanto avanzo ad ogni passo
         xStep=((float)signWidth)/(dataBefore[0].length+dataDuring[0].length+dataAfter[0].length);
-        
+        //colori
         paintX.setColor(Color.parseColor(color_palette[0]));
         paintX.setStrokeWidth(2.0f);
 
@@ -74,16 +83,18 @@ public class FallBitmapCreator extends AsyncTask<Integer, Void, Bitmap> {
 
         paintZ.setColor(Color.parseColor(color_palette[2]));
         paintZ.setStrokeWidth(2.0f);
-
+        //bitmap su cio disegnare
         bitmapGraficoAcc = Bitmap.createBitmap(signWidth,signHeight, Bitmap.Config.ARGB_8888);
         canvasGraficoAcc = new Canvas(bitmapGraficoAcc);
-
+        //indice di avanzamento sull'asse x
         xPointer=0.0f;
+        //float che conserve i valori delle y precedenti per colegarle a quelle nuove calcolate
         oldPointsY=new float[]{signHeight/2,signHeight/2,signHeight/2};
 
 
     }
 
+    // ritorna il massimo tra tre array bidimensionali di float
     private float getMax(float[][] x,float[][] y,float[][] z)
     {
         float[] xmax=new float[x.length];
@@ -98,6 +109,7 @@ public class FallBitmapCreator extends AsyncTask<Integer, Void, Bitmap> {
         return getMax(xmax,ymax,zmax);
     }
 
+    // ritorna il massimo tra tre array monodimensionali di float
     private float getMax(float[] x,float [] y,float[] z)
     {
         float massimoX=getMax(x);
@@ -111,6 +123,7 @@ public class FallBitmapCreator extends AsyncTask<Integer, Void, Bitmap> {
 
     }
 
+    //ritorna il massimo di un array di float
     private float getMax(float[] f)
     {
         float max=-1;
@@ -126,7 +139,7 @@ public class FallBitmapCreator extends AsyncTask<Integer, Void, Bitmap> {
         return max;
     }
 
-    // Decode image in background.
+    // Crea l'immagine in background
     @Override
     protected Bitmap doInBackground(Integer... params) {
 
@@ -146,9 +159,14 @@ public class FallBitmapCreator extends AsyncTask<Integer, Void, Bitmap> {
     }
 
 
-
-
-    public void drawValues(float newX, float newY, float newZ){
+    /**
+     * Disegna i tre valori sulla BItmap
+     * @param newX il valore da disegnare dall'asse x dell'accelerometro
+     * @param newY il valore da disegnare dall'asse y dell'accelerometro
+     * @param newZ il valore da disegnare dall'asse z dell'accelerometro
+     */
+    private void drawValues(float newX, float newY, float newZ){
+        //se non sono arrivato in fondo disegno
         if(xPointer<=signWidth) {
             float X = checkValue(newX+signHeight/2);
             float Y= checkValue(newY+signHeight/2);
@@ -162,9 +180,16 @@ public class FallBitmapCreator extends AsyncTask<Integer, Void, Bitmap> {
             xPointer=xPointerPlus;
             oldPointsY= Arrays.copyOf(newPointsY,newPointsY.length);
 
-        }else{Log.d("FallBitmapCreator","Troppi Dati!");}
+        }else{
+            //in teoria non succede mai perchè i passi sono calcolati in base alla quantità di dati presente
+            Log.d("FallBitmapCreator","Troppi Dati!");}
     }
 
+    /**
+     * Controlla che i valori non siano al di fuori dei bordi dell'immagine
+     * @param i il float da controllare
+     * @return il float originale o modificato se aveva valori troppo grandi o piccoli
+     */
     private float checkValue(float i)
     {
         float temp=i;
@@ -183,6 +208,7 @@ public class FallBitmapCreator extends AsyncTask<Integer, Void, Bitmap> {
     @Override
     protected void onPostExecute(Bitmap bitmap) {
 
+        //se l'imageview è ancora presente sullo schermo disegno la bitmap
         if (ivFallReference != null && bitmap != null) {
             final ImageView fallImage = ivFallReference.get();
             if (fallImage != null) {
