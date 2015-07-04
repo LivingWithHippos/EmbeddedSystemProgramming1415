@@ -27,7 +27,7 @@ public class SessionReminderReceiver extends BroadcastReceiver {
         context.startActivity(sesRemIntent);
 
     }
-    
+
     public static void enableReceiver(Context context)
     {
         //attiva il receiver

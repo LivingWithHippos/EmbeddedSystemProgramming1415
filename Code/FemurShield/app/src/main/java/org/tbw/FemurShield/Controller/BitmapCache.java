@@ -4,15 +4,15 @@ import android.graphics.Bitmap;
 import android.util.LruCache;
 
 /**
- * Created by Marco on 30/06/2015.
+ * Classe che gestisce una cache di immagini
+ *
+ * @author Marco Biasin
  */
 public class BitmapCache extends LruCache<String,Bitmap>
 {
     private static BitmapCache instance;
     /**
-     * @param maxSize for caches that do not override {@link #sizeOf}, this is
-     *                the maximum number of entries in the cache. For all other caches,
-     *                this is the maximum sum of the sizes of the entries in this cache.
+     * @param maxSize la massima dimensione utilizzabile
      */
     private BitmapCache(int maxSize) {
         super(maxSize);
@@ -37,15 +37,25 @@ public class BitmapCache extends LruCache<String,Bitmap>
         return bitmap.getByteCount() / 1024;
     }
 
+    /**
+     * Aggiungo una immagine alla cache se non presente
+     * @param key il nome dell'immagine
+     * @param bitmap l'immagine
+     */
     public void addBitmapToMemoryCache(String key, Bitmap bitmap) {
         if (getBitmapFromMemCache(key) == null) {
             put(key, bitmap);
         }
     }
 
+    /**
+     *Recupera l'immagine se presente nella cache
+     * @param key il nome dell'immagine
+     * @return l'immagine o null se non presente
+     */
     public Bitmap getBitmapFromMemCache(String key) {
         String temp=key.replaceAll("/", "_");
-        return get(key);
+        return get(temp);
     }
 
 }

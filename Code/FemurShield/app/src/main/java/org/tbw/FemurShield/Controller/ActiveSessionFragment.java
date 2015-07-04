@@ -7,7 +7,6 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,7 +19,9 @@ import org.tbw.FemurShield.Observer.Observable;
 import org.tbw.FemurShield.R;
 
 /**
- * Created by Moro on 26/06/2015.
+ * Fragment che gestisce il cronometro della sessione e mostra i dati dell0accelerometro in forma grafica.
+ *
+ * @author Moro on 26/06/2015.
  */
 public class ActiveSessionFragment extends Fragment implements org.tbw.FemurShield.Observer.Observer{
 
@@ -130,7 +131,9 @@ public class ActiveSessionFragment extends Fragment implements org.tbw.FemurShie
         Controller.getNotification().addObserver(this);
     }
 
-
+    /**
+     * Metodo per far partire il cronometro
+     */
     public void startChrono()
     {
         Chronometer chrono=(Chronometer) getView().findViewById(R.id.chronometerui3);
@@ -138,6 +141,9 @@ public class ActiveSessionFragment extends Fragment implements org.tbw.FemurShie
         chrono.start();
     }
 
+    /**
+     * Metodo per bloccare il cronometro
+     */
     public void stopChrono()
     {
         Chronometer chrono=(Chronometer) getView().findViewById(R.id.chronometerui3);
@@ -149,18 +155,19 @@ public class ActiveSessionFragment extends Fragment implements org.tbw.FemurShie
     {
         if(o instanceof float[])
         {
+            //ho ricevuto dati dall'accelerometro: li disegno
             if(bitmapGraficoAcc!=null) {
                 float[] arg = (float[]) o;
                 DrawGraphSliceAcc(arg[0] * sizeCoefficient, arg[1] * sizeCoefficient, arg[2] * sizeCoefficient);
             }
         }
-        else
+        else//ho ricevuto una caduta: segnalo all'activity
             if(o instanceof Fall)
             {
                 if(isAdded())
                  fallCallback.onFallDetect();
              }
-            else
+            else//l'email per un fall è stata inviata, lo segnalo all'activity
                 if(o instanceof EmailSentSegnalation){
                     if(isAdded())
                         emailCallback.onEmailSent();
@@ -229,10 +236,16 @@ public class ActiveSessionFragment extends Fragment implements org.tbw.FemurShie
 
     public interface OnEmailSentListener
     {
+        /**
+         * Segnalo all'activity che ho l'email per un fall è stata inviata
+         */
         public void onEmailSent();
     }
     public interface OnFallDetectedListener
     {
+        /**
+         * Segnalo all'activity che c'è stato un fall
+         */
         public void onFallDetect();
     }
 }

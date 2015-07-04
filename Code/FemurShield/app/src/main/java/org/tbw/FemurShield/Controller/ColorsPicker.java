@@ -1,14 +1,16 @@
 package org.tbw.FemurShield.Controller;
 
-import java.util.ArrayList;
+
 import java.util.Random;
 
 /**
- * Created by Marco on 14/06/2015.
+ * Questa classe carica i colori dal file values/arrays.xml e li mette a disposizione tramite metodi statici.
+ * @author Marco Biasin
  */
 public class ColorsPicker {
     private static ColorsPicker instance = null;
     private static String[][] palettes;
+
     private ColorsPicker(String[][] palettes) {
         this.palettes=palettes;
 
@@ -21,7 +23,10 @@ public class ColorsPicker {
         return instance;
     }
 
-
+    /**
+     * Ritorna 3 colori da una paletta in ordine casuale
+     * @return i tre colori scelti
+     */
     public static String[] pickRandomColors()
     {
         if(palettes!=null)
