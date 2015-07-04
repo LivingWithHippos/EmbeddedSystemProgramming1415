@@ -13,9 +13,13 @@ class ActiveSessionImpl extends SessionImpl implements ActiveSession{
 
     @Override
     public boolean AddFall(Fall fall) {
-        cadute.add(fall);
-        super.notifyObservers();
-        return false;
+        if(fall!=null){
+            //aggiungo la caduta alla sessione
+            cadute.add(fall);
+            return true;
+        }
+        else
+            return false;
     }
 
 }
