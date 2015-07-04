@@ -97,7 +97,7 @@ public class FallListAdapter extends ArrayAdapter
             this.date = date;
             this.sent = sent;
         }
-        
+
         public void setSent(boolean report)
         {
             sent = report;

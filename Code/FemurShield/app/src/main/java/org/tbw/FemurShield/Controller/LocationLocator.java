@@ -1,8 +1,5 @@
 package org.tbw.FemurShield.Controller;
 
-/**
- * Created by Vianello on 20/05/15.
- */
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -12,7 +9,12 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 
-// classe di supporto per ricavare la posizione
+/**
+ * Classe di support per recuperare la posizione geografica
+ *
+ * @author Luca Vianello
+ */
+
 public class LocationLocator
 {
     Timer timer1;
@@ -21,6 +23,12 @@ public class LocationLocator
     boolean gps_on = false;
     boolean network_on = false;
 
+    /**
+     * Ritorna true se è stato possibile recuperare la posizione
+     * @param context il context dell'applicazione
+     * @param result la variabile su cui salvare le posizione
+     * @return true se si è riusciti a recuperare la posizione, false altrimenti
+     */
     public boolean getLocation(Context context, LocationResult result)
     {
         locationResult = result;
@@ -29,7 +37,7 @@ public class LocationLocator
         if(lm==null)
             lm = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
 
-        // lancio exeption se gps o network non disponibili
+        // lancio exception se gps o network non disponibili
         try
         {
             gps_on=lm.isProviderEnabled(LocationManager.GPS_PROVIDER);
@@ -61,6 +69,10 @@ public class LocationLocator
     // Inizializzazione Listener GPS. quando rileva un cambiamento, prende il risultato fermando il timer e rilascia il listener
     LocationListener locationListenerGPS = new LocationListener()
     {
+        /**
+         * Metodo lanciato alla rilevazione della posizione
+         * @param location la variabile su cui salvare la posizione
+         */
         @Override
         public void onLocationChanged(Location location)
         {
@@ -102,7 +114,9 @@ public class LocationLocator
         public void onStatusChanged(String provider, int status, Bundle extras) {}
     };
 
-    // semplice Task che si attiva dopo un timer temporale
+    /**
+     * Classe che si attiva dopo un tempo deciso da un timer
+     */
     class GetLastLocation extends TimerTask
     {
         @Override
