@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 
 import org.tbw.FemurShield.Model.SessionManager;
@@ -30,6 +31,10 @@ public class UI3 extends Activity implements ActiveSessionFragment.OnFallDetecte
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ui3);
+        PreferencesEditor pe=new PreferencesEditor(this);
+        if(pe.getEmailContactsNumber()<1)
+            Toast.makeText(this,getString(R.string.no_contacts_warning),Toast.LENGTH_SHORT).show();
+
         if (findViewById(R.id.ui3rootLayout) != null) {
 
             int orientation = this.getResources().getConfiguration().orientation;
