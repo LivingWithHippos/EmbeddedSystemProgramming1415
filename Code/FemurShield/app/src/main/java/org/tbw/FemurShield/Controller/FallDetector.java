@@ -289,7 +289,6 @@ public class FallDetector extends IntentService implements SensorEventListener {
                         Log.d("Lat", "" + position[0]);
                         Log.d("Long", "" + position[1]);
                         f.setPosition(position[0], position[1]);
-                        Controller.getInstance().sendEmail(f);
                     }
                 };
                 LocationLocator myLocation = new LocationLocator();

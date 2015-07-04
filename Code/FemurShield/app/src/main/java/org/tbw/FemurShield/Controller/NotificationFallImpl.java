@@ -1,9 +1,6 @@
 package org.tbw.FemurShield.Controller;
 
-import android.util.Log;
-
 import org.tbw.FemurShield.Model.Fall;
-import org.tbw.FemurShield.Observer.Observer;
 
 /**
  * Created by Moro on 19/05/15.
@@ -41,5 +38,10 @@ class NotificationFallImpl extends org.tbw.FemurShield.Observer.Observable imple
 
     public void NotifyFall(Fall f) {
         this.notifyObserver(f);
+    }
+
+    @Override
+    public void NotifyEmailSent() {
+        this.notifyObserver(new EmailSentSegnalation());
     }
 }

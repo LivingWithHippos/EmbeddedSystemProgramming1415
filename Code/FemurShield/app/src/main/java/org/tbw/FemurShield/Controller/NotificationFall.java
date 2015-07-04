@@ -12,4 +12,5 @@ public interface NotificationFall {
     void deattach(Observer o );
     void NotifyAccData(float x, float y, float z);
     void NotifyFall(Fall f);
+    void NotifyEmailSent();
 }

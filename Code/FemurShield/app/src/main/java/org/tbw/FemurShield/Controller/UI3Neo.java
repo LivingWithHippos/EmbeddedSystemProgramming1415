@@ -1,17 +1,12 @@
 package org.tbw.FemurShield.Controller;
 
 
-import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 
 import org.tbw.FemurShield.Model.Fall;
 import org.tbw.FemurShield.Model.SessionManager;
@@ -131,6 +126,9 @@ public class UI3Neo extends Activity implements EditSessionNameFragment.OnSessio
             FallFragment ff=((FallFragment) getFragmentManager().findFragmentByTag("fallsList_ui3"));
                     if(ff!=null)
                         ff.startlist();
+        }
+        else if(o instanceof EmailSentSegnalation){
+            //TODO aggiorna view lista cadute
         }
     }
 

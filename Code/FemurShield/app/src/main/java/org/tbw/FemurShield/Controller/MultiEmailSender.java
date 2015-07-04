@@ -10,14 +10,11 @@ import android.os.IBinder;
 import android.util.Log;
 
 import org.tbw.FemurShield.Model.Fall;
-import org.tbw.FemurShield.Model.Session;
 import org.tbw.FemurShield.Model.SessionManager;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.ObjectInputStream;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -75,14 +72,10 @@ public class MultiEmailSender extends Service {
         }
     }
 
-    public void sendEmail(double la, double lo, int id, String da) {
+    public void sendEmail(double lat, double lon, int num, String data) {
 
         // recupera i dati da inserire nella mail
 
-        double lat = la;
-        double lon = lo;
-        int num = id;
-        String data = da;
         String nome = "nomeUtente"; // è il nome di chi cade, magari inserire una opzione nelle settings per impostarlo
         String link = "https://www.google.it/maps/?z=18&q=";
 
@@ -114,43 +107,11 @@ public class MultiEmailSender extends Service {
     }
 
     // metodo per ricercare la fall che stiamo di cui stiamo mandando la mail
-    private boolean riporta()
+    private void riporta()
     {
-        SimpleDateFormat sdf = new SimpleDateFormat(Session.datePattern);
-        try
-        {
-            long thisfalltime = sdf.parse(da).getTime();
-            ArrayList <Session> sess = SessionManager.getInstance().getAllSessions();
-            if(sess != null)
-            {
-                for(Session s: sess)
-                {
-                    long sessiontime =  sdf.parse(s.getDataTime()).getTime();
-                    if(sessiontime>thisfalltime)
-                    {
-                        continue;
-                    }
-                    else
-                    {
-                        ArrayList<Fall> falls = s.getFalls();
-                        for(Fall f:falls)
-                        {
-                            if(da.equalsIgnoreCase(f.getData()))
-                            {
-                                f.setReported();
-                                return true;
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        catch (ParseException e)
-        {
-            e.printStackTrace();
-            return false;
-        }
-        return false;
+        ArrayList<Fall> falls=SessionManager.getInstance().getActiveSession().getFalls();
+        falls.get(falls.size()-1).setReported();
+        Controller.getNotification().NotifyEmailSent();
     }
 
 }
