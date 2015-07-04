@@ -2,6 +2,8 @@ package org.tbw.FemurShield.Controller.Settings;
 
 import android.app.Activity;
 import android.app.ListFragment;
+import android.content.ComponentName;
+import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -10,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 
 import org.tbw.FemurShield.Controller.PreferencesEditor;
+import org.tbw.FemurShield.Controller.Reminder.BootReceiver;
 import org.tbw.FemurShield.R;
 
 import java.text.DecimalFormat;
@@ -63,14 +66,19 @@ public class SettingsFragment extends ListFragment {
                 getString(R.string.title_email_recipient),
                 temp+" "+(temp==1?"contatto presente":"contatti presenti")));
 
+        String alarmMessage;
+        if(isAlarmEnabled()) {
+            //per stampare i numeri nel formato 05:07 invece di 5:7
+            DecimalFormat formatter = new DecimalFormat("00");
+            String hour = formatter.format(prefs.getAlarmHour());
+            String minute = formatter.format(prefs.getAlarmMinute());
+            alarmMessage=getString(R.string.description_alarm_set_to) + " " + hour + ":" + minute;
+        }else
+            alarmMessage=getString(R.string.alarm_disabled_message);
 
-        //per stampare i numeri nel formato 05:07 invece di 5:7
-        DecimalFormat formatter = new DecimalFormat("00");
-        String hour=formatter.format(prefs.getAlarmHour());
-        String minute=formatter.format(prefs.getAlarmMinute());
         mItems.add(new SettingListItem(resources.getDrawable(R.drawable.alarm),
-                getString(R.string.title_alarm),
-                getString(R.string.description_alarm_set_to) + " " + hour + ":" + minute));
+                getString(R.string.title_alarm),alarmMessage));
+
         //TODO da togliere alla fine
         mItems.add(new SettingListItem(resources.getDrawable(R.drawable.fall),
                 "Simula Caduta", "Simula caduta per motivi di debug"));
@@ -78,6 +86,20 @@ public class SettingsFragment extends ListFragment {
         //imposto l'adapter
         mAdapter=new SettingListAdapter(getActivity(), mItems);
         setListAdapter(mAdapter);
+    }
+
+    private boolean isAlarmEnabled()
+    {
+        ComponentName receiver = new ComponentName(getActivity(), BootReceiver.class);
+        PackageManager pm = getActivity().getPackageManager();
+        int result=pm.getComponentEnabledSetting(receiver);
+        switch(result)
+        {
+            case PackageManager.COMPONENT_ENABLED_STATE_ENABLED: return true;
+            case PackageManager.COMPONENT_ENABLED_STATE_DISABLED: return false;
+            case PackageManager.COMPONENT_ENABLED_STATE_DEFAULT: return false;
+            default: return false;
+        }
     }
 
     @Override
