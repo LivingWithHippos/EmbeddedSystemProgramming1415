@@ -1,7 +1,5 @@
 package org.tbw.FemurShield.Model;
 
-import android.util.Log;
-
 import org.tbw.FemurShield.Controller.Controller;
 
 import java.util.ArrayList;
@@ -19,7 +17,6 @@ public class SessionManager {
 
     /**
      * costruttore o getter di sessionManager essendo esso un singleton
-     * @return
      */
     public static SessionManager getInstance(){
         if(instance==null)
@@ -120,7 +117,7 @@ public class SessionManager {
 
     /**
      * metodo che ritorna tutte le sessioni, vecchie e attiva
-     * @return array di interfacce a tutte le sessioni (potrebbe esser vuoto)
+     * @return hashmap di interfacce a tutte le sessioni (potrebbe esser vuoto)
      * */
     public HashMap<String, Session> getAllSessionsById()
     {
@@ -152,7 +149,6 @@ public class SessionManager {
         return ret;
     }
 
-    //TODO: eccezioni se non sono state create le sessioni o se non possono esser eseguite tali metodi
     /**
      * avvia la sessione attiva
      * @return true se è stata avviata con successo, false se non esiste ancora una sessione
@@ -195,6 +191,9 @@ public class SessionManager {
         return running;
     }
 
+    /*
+    creo un hashmap coni valori da salvare delle sessioni in modo da poterle ripristinare
+     */
     public HashMap<String,String> createBackup(){
         HashMap<String,String> backup= new HashMap<>();
         SessionManager sm=SessionManager.getInstance();
@@ -323,12 +322,15 @@ public class SessionManager {
     public void applyBackup(HashMap<String, String> backup) {
         int numsess=Integer.parseInt(backup.get("numsess"));
         for(int i=0;i<numsess;i++){
+            //ottengo i valori salvati della sessione i
             String nome=backup.get("nome"+i);
             String data = backup.get("data" +i);
             long durata = Long.parseLong(backup.get("durata" + i));
             ArrayList<Fall> falls=new ArrayList<>();
             int numfall=Integer.parseInt(backup.get("numfall" + i));
+            //ottengo i valori di tutte le cadute della sessione i
             for(int j=0;j<numfall;j++){
+                //ottengo i vari valori della caduta j della sessione i
                 double lat=Double.parseDouble(backup.get("latitude" + i + "/" + j));
                 double longi=Double.parseDouble(backup.get("longitude" + i + "/" + j));
                 String datafall= backup.get("data" + i + "/" + j);
