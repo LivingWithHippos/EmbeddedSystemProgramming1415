@@ -11,13 +11,18 @@ import org.tbw.FemurShield.Model.Session;
 import org.tbw.FemurShield.Model.SessionManager;
 import org.tbw.FemurShield.R;
 
-
+/**
+ * UI2 e' l'activity che mostra i dettagli di una sessione gia' conclusa ed una lista delle sue cadute
+ * tramite i fragment {@link SessionDetailsFragment} e {@link FallFragment}.
+ *
+ * @author Luca Vianello
+ */
 public class UI2 extends Activity implements FallFragment.OnFallClickListener, EditSessionNameFragment.OnSessionNameInsertedListener{
 
-    private Session thisSession;
     public final static String SESSION_DATA_STAMP = "sessiondatastamp";
     public final static String SESSION_DETAILS_FRAGMENT_TAG = "sessionDetails";
     private String thisData;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,7 +44,6 @@ public class UI2 extends Activity implements FallFragment.OnFallClickListener, E
             getFragmentManager().beginTransaction().replace(R.id.fallsListUI2, ff, "FallDetails").commit();
         }
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -84,6 +88,12 @@ public class UI2 extends Activity implements FallFragment.OnFallClickListener, E
         finish(); // chiude la UI2 quando premi il tasto back e ritorna alla chiamante (UI1)
     }
 
+    /**
+     * Metodo di implementazione dell'interfaccia {@link org.tbw.FemurShield.Controller.FallFragment.OnFallClickListener}, solo nel caso della UI per tablet
+     * Mostra i dettagli della caduta su cui si e' premuto tramite interfaccia {@link UI4}
+     * @param sessionID l'ID della sessione a cui appartiene la caduta
+     * @param fallID l'ID della caduta da mostrare
+     */
     @Override
     public void onFallClick(String sessionID, String fallID) {
         Intent fallDetails=new Intent(this,UI4.class);
@@ -92,9 +102,15 @@ public class UI2 extends Activity implements FallFragment.OnFallClickListener, E
         startActivity(fallDetails);
     }
 
+    /**
+     * Metodo di implementazione dell'interfaccia {@link org.tbw.FemurShield.Controller.EditSessionNameFragment.OnSessionNameInsertedListener}
+     * modifica il nome della sessione e aggiorna la view
+     * @param nome il nome da salvare
+     * @param sessionID l'ID della sessione da rinominare
+     */
     @Override
-    public void onSessionNameInserted(String nome,String data) {
-        Controller.getInstance().renameEvent(data, nome);
+    public void onSessionNameInserted(String nome,String sessionID) {
+        Controller.getInstance().renameEvent(sessionID, nome);
         SessionDetailsFragment sdf=(SessionDetailsFragment)getFragmentManager().findFragmentByTag(SESSION_DETAILS_FRAGMENT_TAG);
         sdf.updateNameView(nome);
     }
