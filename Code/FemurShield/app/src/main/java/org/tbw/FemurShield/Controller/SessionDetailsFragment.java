@@ -20,13 +20,9 @@ import java.util.ArrayList;
 import java.util.Date;
 
 /**
- * Created by Vianello on 21/05/15.
- * mostra detagli:
- * nome sessione - data e ora
- * durata
- * e sotto la signature della sessione
+ * Fragment che mostra i dettagli: nome sessione, data e ora, durata e la signature della sessione, usata nella {@link UI2}
  *
- * usata nella UI2
+ * @author Luca Vianello
  */
 
 public class SessionDetailsFragment extends Fragment
@@ -56,6 +52,12 @@ public class SessionDetailsFragment extends Fragment
     {
     }
 
+    /**
+     * Metodo per ottenere una nuova istanza del Fragment
+     * @param datatime il timestamp della sessione
+     * @param ui_mode se il fragment deve essere mostrato nella UI 2 o 3
+     * @return una nuova istanza del Fragment
+     */
     public static SessionDetailsFragment newIstance(String datatime,boolean ui_mode)
     {
         SessionDetailsFragment fragment = new SessionDetailsFragment();
@@ -86,7 +88,10 @@ public class SessionDetailsFragment extends Fragment
         }
     }
 
-
+    /**
+     * Imposta la sessione da rappresentare
+     * @param date l'ID della sessione da recuperare
+     */
     public void setSession(String date)
     {
         ArrayList<Session> s = SessionManager.getInstance().getAllSessions();
@@ -101,9 +106,14 @@ public class SessionDetailsFragment extends Fragment
                     break;
                 }
             }
-        }
+            Log.e("FallFragment",getString(R.string.no_session_found));
+        }else{
+            Log.e("FallFragment",getString(R.string.no_session_found));}
     }
 
+    /**
+     * Inizializza il testo e le immagini del fragment
+     */
     public void startDetails()
     {
         if(session!=null)
@@ -152,11 +162,18 @@ public class SessionDetailsFragment extends Fragment
         }
     }
 
+    /**
+     * Carica dalla cache o dal disco l'immagine della sessione
+     */
     public void loadSessionBitmap(int resId) {
         SignatureLoaderTask slt = new SignatureLoaderTask(ivGrafico,thisData);
         slt.execute(resId);
     }
 
+    /**
+     * Metodo che aggiorna il nome della sessione da mostrare
+     * @param nome il nuovo nome
+     */
     public void updateNameView(String nome)
     {
         if(tvNome!=null) {
