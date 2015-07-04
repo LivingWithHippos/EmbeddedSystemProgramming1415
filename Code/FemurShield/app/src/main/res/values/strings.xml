@@ -49,5 +49,7 @@
     <string name="rename_session_title">Rinomina sessione</string>
     <string name="session_name_too_short">Nome inserito troppo corto!</string>
     <string name="alarm_disabled_message">Allarme non impostato</string>
+    <string name="low_memory_warning">Memoria bassa, libera spazio sul tuo dispositivo!</string>
+    <string name="no_contacts_warning">Attenzione! Nessun Contatto Inserito</string>
 
 </resources>

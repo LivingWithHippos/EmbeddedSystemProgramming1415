@@ -5,6 +5,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.Environment;
+import android.os.StatFs;
 import android.util.Log;
 
 import org.tbw.FemurShield.Controller.BitmapCache;
@@ -277,6 +278,13 @@ public class SignatureImpl implements Signature, org.tbw.FemurShield.Observer.Ob
             Log.e(TAG, "Memoria non accessibile");
         }
         return result;
+    }
+
+    public static float spaceAvailable() {
+        StatFs stat = new StatFs(Environment.getExternalStorageDirectory().getPath());
+        long bytesAvailable = (long)stat.getBlockSizeLong() * (long)stat.getAvailableBlocksLong();
+        //ritorna in megabyte
+        return bytesAvailable / (1024.f * 1024.f);
     }
 
     @Override

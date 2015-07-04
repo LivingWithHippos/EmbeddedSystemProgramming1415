@@ -8,8 +8,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import org.tbw.FemurShield.Model.SessionManager;
+import org.tbw.FemurShield.Model.SignatureImpl;
 import org.tbw.FemurShield.R;
 
 
@@ -72,7 +74,8 @@ public class UI1 extends Activity implements FallFragment.OnFallClickListener,Se
         }
 
         instantiateColors();
-
+        if(SignatureImpl.spaceAvailable()<3)
+            Toast.makeText(this,getString(R.string.low_memory_warning),Toast.LENGTH_SHORT).show();
     }
 
 
@@ -195,8 +198,6 @@ public class UI1 extends Activity implements FallFragment.OnFallClickListener,Se
 
 
     }
-
-
 
     @Override
     public void onSessionLongClick(String data) {
