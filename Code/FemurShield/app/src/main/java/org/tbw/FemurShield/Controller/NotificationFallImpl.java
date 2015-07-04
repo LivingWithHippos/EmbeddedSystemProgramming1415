@@ -3,7 +3,10 @@ package org.tbw.FemurShield.Controller;
 import org.tbw.FemurShield.Model.Fall;
 
 /**
- * Created by Moro on 19/05/15.
+ * Classe che estende {@link org.tbw.FemurShield.Observer.Observable} per poter notificare tutti gli
+ * osservatori della modifica dei dati dell'accelerometro
+ *
+ * @author Alessandro Moro
  */
 class NotificationFallImpl extends org.tbw.FemurShield.Observer.Observable implements NotificationFall {
     private static NotificationFallImpl instance;
@@ -28,6 +31,12 @@ class NotificationFallImpl extends org.tbw.FemurShield.Observer.Observable imple
         super.deattach(o);
     }
 
+    /**
+     * Metodo per segnalare i valori dell'accelerometro agli osservatori
+     * @param x valore asse x
+     * @param y valore asse y
+     * @param z valore asse z
+     */
     public void NotifyAccData(float x, float y, float z){ //emetto la notifica agli osservatori riguardo i dati dell'accelerometro
         float[] args= new float[3];
         args[0]=x;
