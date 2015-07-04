@@ -223,6 +223,7 @@ public class ActiveSessionFragment extends Fragment implements org.tbw.FemurShie
     public void onDetach() {
         super.onDetach();
         emailCallback = null;
+        fallCallback=null;
     }
 
     public interface OnEmailSentListener
