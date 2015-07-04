@@ -1,12 +1,12 @@
 package org.tbw.FemurShield.Controller;
 
+import android.app.Activity;
 import android.app.Fragment;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +14,7 @@ import android.view.ViewTreeObserver;
 import android.widget.Chronometer;
 import android.widget.ImageView;
 
+import org.tbw.FemurShield.Model.Fall;
 import org.tbw.FemurShield.Observer.Observable;
 import org.tbw.FemurShield.R;
 
@@ -22,7 +23,10 @@ import org.tbw.FemurShield.R;
  */
 public class ActiveSessionFragment extends Fragment implements org.tbw.FemurShield.Observer.Observer{
 
-    //float distCentro=400.0f;
+    private OnFallDetectedListener fallCallback;
+
+    private static final String TAG="ActiveSessionFragment";
+
     int finalWidth;
     int finalHeight;
     int sizeCoefficient=2;
@@ -95,7 +99,6 @@ public class ActiveSessionFragment extends Fragment implements org.tbw.FemurShie
                 imageViewGraficoAcc.getViewTreeObserver().removeOnPreDrawListener(this);
                 finalHeight = imageViewGraficoAcc.getMeasuredHeight();
                 finalWidth = imageViewGraficoAcc.getMeasuredWidth();
-                Log.d("UI3", "Height: " + finalHeight + " Width: " + finalWidth);
                 yOldXAcc =finalHeight/2;
                 yOldYAcc =finalHeight/2;
                 yOldZAcc =finalHeight/2;
@@ -147,6 +150,12 @@ public class ActiveSessionFragment extends Fragment implements org.tbw.FemurShie
                 float[] arg = (float[]) o;
                 DrawGraphSliceAcc(arg[0] * sizeCoefficient, arg[1] * sizeCoefficient, arg[2] * sizeCoefficient);
             }
+        }else{if(o instanceof Fall)
+            {
+                fallCallback.onFallDetected();
+            }else if(o instanceof EmailSentSegnalation){
+            //TODO aggiorna view lista cadute
+        }
         }
     }
 
@@ -184,5 +193,27 @@ public class ActiveSessionFragment extends Fragment implements org.tbw.FemurShie
 
     private void DrawSegmentZAcc(float xStart, float yStart, float xStop, float yStop){
         canvasGraficoAcc.drawLine(xStart, yStart, xStop, yStop, paintZ);
+    }
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        try {
+            fallCallback = (OnFallDetectedListener) activity;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(activity.toString()
+                    + " must implement OnFallDetectedListener");
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        fallCallback = null;
+    }
+
+    public interface OnFallDetectedListener
+    {
+        public void onFallDetected();
     }
 }

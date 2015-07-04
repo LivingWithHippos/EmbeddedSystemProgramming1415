@@ -2,12 +2,9 @@ package org.tbw.FemurShield.Controller;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import org.tbw.FemurShield.Model.Session;

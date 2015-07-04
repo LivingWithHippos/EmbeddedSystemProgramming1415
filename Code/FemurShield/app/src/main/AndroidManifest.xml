@@ -31,11 +31,6 @@
         <activity
             android:name=".Controller.UI3"
             android:label="@string/app_name"
-            android:windowSoftInputMode="adjustNothing">
-        </activity>
-        <activity
-            android:name=".Controller.UI3Neo"
-            android:label="@string/app_name"
             android:windowSoftInputMode="adjustNothing" >
         </activity>
         <activity

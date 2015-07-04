@@ -6,7 +6,6 @@ import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -135,7 +134,7 @@ public class UI1 extends Activity implements FallFragment.OnFallClickListener,Se
     @Override
     public void onSessionClick(String sessionID) {
         if(SessionManager.getInstance().getActiveSession()!=null && SessionManager.getInstance().getActiveSession().getId().equals(sessionID)){
-            Intent i = new Intent(getBaseContext(), UI3Neo.class);
+            Intent i = new Intent(getBaseContext(), UI3.class);
             startActivity(i);
         }
         else {
