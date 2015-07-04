@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by Marco on 19/06/2015.
+ * Classe che gestisce la lista delle sessioni mostrata nella {@link UI1}
  */
 public class SessionsListFragment extends ListFragment {
 
@@ -27,11 +27,11 @@ public class SessionsListFragment extends ListFragment {
     private SessionsListAdapter sAdapter;
     private OnSessionClickListener mListener;
 
-    public SessionsListFragment(){}
+    public SessionsListFragment() {
+    }
 
-    public static SessionsListFragment newInstance()
-    {
-        SessionsListFragment slf=new SessionsListFragment();
+    public static SessionsListFragment newInstance() {
+        SessionsListFragment slf = new SessionsListFragment();
         return slf;
     }
 
@@ -41,30 +41,33 @@ public class SessionsListFragment extends ListFragment {
         aggiornaLista();
     }
 
-    public void aggiornaLista(){
+    /**
+     * inizializza tutta la lista
+     */
+    public void aggiornaLista() {
 
-        sItems=new ArrayList<>();
+        sItems = new ArrayList<>();
         //aggiungo la sessone attiva
-        ActiveSession a =SessionManager.getInstance().getActiveSession();
-        if(a!=null) {
-            SessionsListItem sli=new SessionsListItem(a.getName(),a.getDataTime(),a.getFallsNumber(),"",true);
+        ActiveSession a = SessionManager.getInstance().getActiveSession();
+        if (a != null) {
+            SessionsListItem sli = new SessionsListItem(a.getName(), a.getDataTime(), a.getFallsNumber(), "", true);
             sItems.add(sli);
 
         }
         //aggiungo le sessioni vecchie
-        ArrayList<OldSession> old= SessionManager.getInstance().getOldSessions();
-        if(old!=null) {
+        ArrayList<OldSession> old = SessionManager.getInstance().getOldSessions();
+        if (old != null) {
             for (int i = 0; i < old.size(); i++) {
                 Session s = old.get(i);
-                long timeElapsed=s.getDuration();
+                long timeElapsed = s.getDuration();
                 int hours = (int) (timeElapsed / 3600000);
-                String h=((""+hours).length()==1)?"0"+hours: ""+hours;
+                String h = (("" + hours).length() == 1) ? "0" + hours : "" + hours;
                 int minutes = (int) (timeElapsed - hours * 3600000) / 60000;
-                String m=((""+minutes).length()==1)?"0"+minutes: ""+minutes;
+                String m = (("" + minutes).length() == 1) ? "0" + minutes : "" + minutes;
                 int seconds = (int) (timeElapsed - hours * 3600000 - minutes * 60000) / 1000;
-                String se=((""+seconds).length()==1)?"0"+seconds: ""+seconds;
-                String durata=""+h+":"+m+":"+se;
-                SessionsListItem sli = new SessionsListItem(s.getName(), s.getDataTime(), s.getFallsNumber(),durata, false);
+                String se = (("" + seconds).length() == 1) ? "0" + seconds : "" + seconds;
+                String durata = "" + h + ":" + m + ":" + se;
+                SessionsListItem sli = new SessionsListItem(s.getName(), s.getDataTime(), s.getFallsNumber(), durata, false);
                 sItems.add(sli);
             }
         }
@@ -85,39 +88,50 @@ public class SessionsListFragment extends ListFragment {
     }
 
     @Override
-     public void onDetach() {
+    public void onDetach() {
         super.onDetach();
         mListener = null;
     }
 
+
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
         super.onListItemClick(l, v, position, id);
-        SessionsListItem session=(SessionsListItem)l.getItemAtPosition(position);
-        if(isAdded())
+        //recupera l'elemento cliccato della lista
+        SessionsListItem session = (SessionsListItem) l.getItemAtPosition(position);
+        if (isAdded())
             mListener.onSessionClick(session.getDataTime());
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
-    {
-        View rootView = inflater.inflate(R.layout.fragment_sessions_list, container,false);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View rootView = inflater.inflate(R.layout.fragment_sessions_list, container, false);
         return rootView;
     }
 
-    public interface OnSessionClickListener
-    {
+    public interface OnSessionClickListener {
+        /**
+         * Metodo per notificare la pressione corta su una sessione
+         *
+         * @param sessionID l'ID della sessione premuta
+         */
         void onSessionClick(String sessionID);
-        void onSessionLongClick(String data);
+
+        /**
+         * Metodo per notificare la pressione prolungata su una sessione
+         *
+         * @param sessionID l'ID della sessione premuta
+         */
+        void onSessionLongClick(String sessionID);
     }
 
-    public class OnSessionLongClickListener implements ListView.OnItemLongClickListener
-    {
+    //clicklistener per la pressione lunga sulla lista
+    public class OnSessionLongClickListener implements ListView.OnItemLongClickListener {
         @Override
         public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
 
             SessionsListItem sli = (SessionsListItem) parent.getItemAtPosition(position);
-            if(isAdded())
+            if (isAdded())
                 mListener.onSessionLongClick(sli.getDataTime());
 
             return true;
@@ -127,7 +141,7 @@ public class SessionsListFragment extends ListFragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        ListView list=getListView();
+        ListView list = getListView();
         list.setOnItemLongClickListener(new OnSessionLongClickListener());
     }
 
