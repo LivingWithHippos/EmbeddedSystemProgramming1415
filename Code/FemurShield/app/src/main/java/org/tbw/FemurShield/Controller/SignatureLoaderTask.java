@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Environment;
+import android.os.StatFs;
 import android.util.Log;
 import android.widget.ImageView;
 
@@ -34,6 +35,17 @@ public class SignatureLoaderTask extends AsyncTask<Integer, Void, Bitmap> {
     public SignatureLoaderTask(ImageView ivFall, String sessionTimeStamp) {
         ivFallReference = new WeakReference<ImageView>(ivFall);
         this.sessionTimeStamp = sessionTimeStamp.replaceAll("/", "_");
+    }
+
+    /**
+     * Ritorna lo spazio disponibile in megabyte sul dispositivo
+     * @return
+     */
+    public static float spaceAvailable() {
+        StatFs stat = new StatFs(Environment.getExternalStorageDirectory().getPath());
+        long bytesAvailable = (long) stat.getBlockSizeLong() * (long) stat.getAvailableBlocksLong();
+        //ritorna in megabyte
+        return bytesAvailable / (1024.f * 1024.f);
     }
 
     // carica l'immagine in background
@@ -95,7 +107,7 @@ public class SignatureLoaderTask extends AsyncTask<Integer, Void, Bitmap> {
      * Controlla se sia possibile scrivere sulla memoria
      * @return true se scrivibile, false altrimenti
      */
-    public boolean isExternalStorageWritable() {
+    public static boolean isExternalStorageWritable() {
         String state = Environment.getExternalStorageState();
         if (Environment.MEDIA_MOUNTED.equals(state)) {
             return true;
@@ -107,7 +119,7 @@ public class SignatureLoaderTask extends AsyncTask<Integer, Void, Bitmap> {
      * Controlla se la memoria è leggibile
      * @return true se è leggibile, false altrimenti
      */
-    public boolean isExternalStorageReadable() {
+    public static boolean isExternalStorageReadable() {
         String state = Environment.getExternalStorageState();
         if (Environment.MEDIA_MOUNTED.equals(state) ||
                 Environment.MEDIA_MOUNTED_READ_ONLY.equals(state)) {

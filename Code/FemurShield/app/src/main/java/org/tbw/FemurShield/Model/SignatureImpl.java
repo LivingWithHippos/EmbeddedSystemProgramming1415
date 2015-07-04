@@ -11,6 +11,7 @@ import android.util.Log;
 import org.tbw.FemurShield.Controller.BitmapCache;
 import org.tbw.FemurShield.Controller.ColorsPicker;
 import org.tbw.FemurShield.Controller.Controller;
+import org.tbw.FemurShield.Controller.SignatureLoaderTask;
 import org.tbw.FemurShield.Observer.Observable;
 
 import java.io.File;
@@ -21,12 +22,14 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 
 /**
- * Created by Moro on 30/04/15.
+ * Classe che crea la signature di una sessione a partire dai primi secondi
+ *
+ * @author Marco Biasin
  */
 public class SignatureImpl implements Signature, org.tbw.FemurShield.Observer.Observer {
 
     private static SignatureImpl instance;
-    private static String lastSavedSession="";
+    private static String lastSavedSession = "";
     public static final String TAG = "SignatureImpl";
     private String sessionID;
     //variabili bitmap
@@ -44,28 +47,30 @@ public class SignatureImpl implements Signature, org.tbw.FemurShield.Observer.Ob
     private int sign = 1;
     private boolean invertSign = true;
 
-
-    public static SignatureImpl getInstance(String sessionID)
-    {
-        if(instance!=null)
-        {
+    /**
+     * Ritorna l'instanza singleton, applicandovi l'ID della sessione da trasformare in immagine
+     *
+     * @param sessionID l'ID della sessione di cui fare la signature
+     * @return l'istanza singleton della classe
+     */
+    public static SignatureImpl getInstance(String sessionID) {
+        if (instance != null) {
             instance.setSession(sessionID);
             return instance;
         }
 
-        instance=new SignatureImpl(sessionID);
+        instance = new SignatureImpl(sessionID);
         return instance;
     }
 
     private SignatureImpl(String sessionID) {
-
-
         this.sessionID = sessionID.replaceAll("/", "_");
-
         startDrawing();
     }
 
-
+    /**
+     * Imposta i colori per la signature
+     */
     private void setCirclesPaints() {
 
         palette = ColorsPicker.pickRandomColors();
@@ -87,7 +92,10 @@ public class SignatureImpl implements Signature, org.tbw.FemurShield.Observer.Ob
         circlePaint[2] = paint;
     }
 
-
+    /**
+     * Disegna un nuovo punto dei cerchi che rappresentano i dati dell'accelerometro
+     * @param arg i dati dell'accelerometro
+     */
     private void drawCircle(float[] arg) {
         beta += (2 * Math.PI) / 300;
         if (beta < (2 * Math.PI)) {
@@ -121,16 +129,21 @@ public class SignatureImpl implements Signature, org.tbw.FemurShield.Observer.Ob
             }
         } else {
 
-            //unisco l'ulitmo e il primo punto
+            //unisco l'ultimo e il primo punto
             for (int i = 0; i < 3; i++)
                 canvas.drawLine(finishPoint[i].x, finishPoint[i].y, firstPoint[i].x, firstPoint[i].y, circlePaint[i]);
-            lastSavedSession=sessionID;
+            lastSavedSession = sessionID;
             Controller.getNotification().deattach(this);
             saveSignature();
         }
 
     }
 
+    /**
+     * Controlla che i valori non siano al di fuori dei bordi dell'immagine
+     * @param i il float da controllare
+     * @return il float originale o modificato se aveva valori troppo grandi o piccoli
+     */
     private float checkValue(float i) {
         float temp = i;
         if (i < 0)
@@ -141,21 +154,29 @@ public class SignatureImpl implements Signature, org.tbw.FemurShield.Observer.Ob
     }
 
 
+    /**
+     *
+     * @return la Bitmap creata
+     */
     @Override
     public Bitmap toBitmap() {
         return signature;
     }
 
-    public void stopDrawing()
-    {
-        if(!lastSavedSession.equalsIgnoreCase(sessionID)) {
+    /**
+     * Metodo che indica al disegnatore che deve smettere e salvare la sessione
+     */
+    public void stopDrawing() {
+        if (!lastSavedSession.equalsIgnoreCase(sessionID)) {
             Controller.getNotification().deattach(this);
             saveSignature();
         }
     }
 
-    public void startDrawing()
-    {
+    /**
+     * Metodo che inizializza le variabili e si collega come observer per ricevere i dati dell'accelerometro
+     */
+    public void startDrawing() {
         signature = Bitmap.createBitmap(resolution, resolution, Bitmap.Config.ARGB_8888);
         canvas = new Canvas(signature);
         radius = resolution / 5;
@@ -172,10 +193,14 @@ public class SignatureImpl implements Signature, org.tbw.FemurShield.Observer.Ob
         Controller.getNotification().addObserver(this);
     }
 
+    /**
+     * Metodo che salva su disco la signature
+     * @return true se è stata salvata, false altrimenti
+     */
     private boolean saveSignature() {
 
         boolean result = false;
-        if (isExternalStorageWritable()) {
+        if (SignatureLoaderTask.isExternalStorageWritable()) {
             File appPath = new File(Environment.getExternalStorageDirectory(), "FemurShield");
             appPath.mkdirs();
             //nasconde i file immagine dalla galleria
@@ -192,12 +217,12 @@ public class SignatureImpl implements Signature, org.tbw.FemurShield.Observer.Ob
             }
             //salvo la signature
             File picture = new File(appPath, "signature_" + sessionID + ".png");
-            if(!picture.exists())
+            if (!picture.exists())
                 try {
                     FileOutputStream fos = new FileOutputStream(picture);
                     toBitmap().compress(Bitmap.CompressFormat.PNG, 90, fos);
                     fos.close();
-                    BitmapCache.getInstance().addBitmapToMemoryCache(sessionID,toBitmap());
+                    BitmapCache.getInstance().addBitmapToMemoryCache(sessionID, toBitmap());
                     Log.d(TAG, "immagine scritta");
                     result = true;
                 } catch (FileNotFoundException e) {
@@ -205,17 +230,23 @@ public class SignatureImpl implements Signature, org.tbw.FemurShield.Observer.Ob
                 } catch (IOException e) {
                     Log.d(TAG, "Error accessing file: " + e.getMessage());
                 }
-            else{result=true;}
+            else {
+                result = true;
+            }
         }
 
         return result;
     }
 
+    /**
+     * Carica la signature su Bitmap
+     * @return true se è stata trovata e caricata correttamente
+     */
     private boolean loadSignature() {
 
         boolean result = false;
         File appPath = new File(Environment.getExternalStorageDirectory(), "FemurShield");
-        if (isExternalStorageReadable()) {
+        if (SignatureLoaderTask.isExternalStorageReadable()) {
 
             File picture = new File(appPath, "signature_" + sessionID + ".png");
             if (picture.exists()) {
@@ -241,6 +272,10 @@ public class SignatureImpl implements Signature, org.tbw.FemurShield.Observer.Ob
         return result;
     }
 
+    /**
+     * Controlla se esiste il file signature
+     * @return true se esiste, false altrimenti
+     */
     private boolean signatureExists() {
         boolean exists = false;
         File appPath = new File(Environment.getExternalStorageDirectory(), "FemurShield");
@@ -248,28 +283,14 @@ public class SignatureImpl implements Signature, org.tbw.FemurShield.Observer.Ob
         return picture.exists();
     }
 
-    /* Checks if external storage is available for read and write */
-    public static boolean isExternalStorageWritable() {
-        String state = Environment.getExternalStorageState();
-        if (Environment.MEDIA_MOUNTED.equals(state)) {
-            return true;
-        }
-        return false;
-    }
-
-    /* Checks if external storage is available to at least read */
-    public static boolean isExternalStorageReadable() {
-        String state = Environment.getExternalStorageState();
-        if (Environment.MEDIA_MOUNTED.equals(state) ||
-                Environment.MEDIA_MOUNTED_READ_ONLY.equals(state)) {
-            return true;
-        }
-        return false;
-    }
-
+    /**
+     * Metodo statico per cancellare un file signature
+     * @param sessionDeleteDate il timestamp della signature da cancellare
+     * @return true se è stata cancellata, flase altrimenti
+     */
     public static boolean deleteSignature(String sessionDeleteDate) {
         boolean result = false;
-        if (isExternalStorageWritable()) {
+        if (SignatureLoaderTask.isExternalStorageWritable()) {
             String filename = sessionDeleteDate.replaceAll("/", "_");
             File appPath = new File(Environment.getExternalStorageDirectory(), "FemurShield");
             File picture = new File(appPath, "signature_" + filename + ".png");
@@ -278,13 +299,6 @@ public class SignatureImpl implements Signature, org.tbw.FemurShield.Observer.Ob
             Log.e(TAG, "Memoria non accessibile");
         }
         return result;
-    }
-
-    public static float spaceAvailable() {
-        StatFs stat = new StatFs(Environment.getExternalStorageDirectory().getPath());
-        long bytesAvailable = (long)stat.getBlockSizeLong() * (long)stat.getAvailableBlocksLong();
-        //ritorna in megabyte
-        return bytesAvailable / (1024.f * 1024.f);
     }
 
     @Override
