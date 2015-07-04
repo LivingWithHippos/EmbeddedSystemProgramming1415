@@ -14,7 +14,9 @@ import org.tbw.FemurShield.R;
 import java.util.List;
 
 /**
- * Created by Vianello on 21/05/15.
+ * Classe che estende l'adapter per creare lista di cadute
+ *
+ * @author Luca Vianello
  */
 public class FallListAdapter extends ArrayAdapter
 {
@@ -63,7 +65,6 @@ public class FallListAdapter extends ArrayAdapter
 
         /**
          * Implementa il pattern View-Holder
-         * poco utile visto che abbiamo poche voci ma in futuro non si sa mai
          *
          * vedi http://developer.android.com/training/improving-layouts/smooth-scrolling.html#ViewHolder
          */
@@ -75,19 +76,28 @@ public class FallListAdapter extends ArrayAdapter
         }
 }
 
+/**
+ * Classe che rappresenta un elemento nella lista cadute
+ */
     class FallListItem
     {
         public final String name;
         public final String date;
         public boolean sent;
 
+        /**
+         * Costruttore della classe
+         * @param name il nome (indice) della caduta
+         * @param date il timestamp della caduta
+         * @param sent se è stata segnalata o no
+         */
         public FallListItem(String name, String date, boolean sent)
         {
             this.name = name;
             this.date = date;
             this.sent = sent;
         }
-
+        
         public void setSent(boolean report)
         {
             sent = report;
