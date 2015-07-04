@@ -31,7 +31,6 @@ public class Controller implements Observer {
     private static final String TAG="Controller";
     Chronometer crono;
     Activity ac=null;
-    StopperTimer stopper;
 
     private Controller(){
         instance = this;
@@ -62,10 +61,12 @@ public class Controller implements Observer {
         }
         crono.setBase(SystemClock.elapsedRealtime() + durata);
         crono.start();
-        stopper=new StopperTimer();
-        stopper.start();
-        Intent i = new Intent(a,FallDetector.class);
-        a.startService(i);
+
+        Intent i1 = new Intent(a,SessionStopper.class);
+        a.startService(i1);
+
+        Intent i2 = new Intent(a,FallDetector.class);
+        a.startService(i2);
     }
 
     public void PauseSession(Activity a){
@@ -73,9 +74,12 @@ public class Controller implements Observer {
         durata=crono.getBase()-SystemClock.elapsedRealtime();
         SessionManager.getInstance().getActiveSession().setDuration(-durata);
         crono.stop();
-        stopper.interrupt();Log.d("INTERRUPt","segnato");
-        Intent i=new Intent(a, FallDetector.class);
-        a.stopService(i);
+        Log.d("INTERRUPt", "segnato");
+        Intent i1 = new Intent(a,SessionStopper.class);
+        a.stopService(i1);
+
+        Intent i2 = new Intent(a,FallDetector.class);
+        a.stopService(i2);
     }
 
     public long getDurate(){
@@ -90,9 +94,11 @@ public class Controller implements Observer {
         durata=0;
         crono.stop();
         crono =null;
-        stopper.interrupt();
-        Intent i=new Intent(a, FallDetector.class);
-        a.stopService(i);
+        Intent i1 = new Intent(a,SessionStopper.class);
+        a.stopService(i1);
+
+        Intent i2 = new Intent(a,FallDetector.class);
+        a.stopService(i2);
         SaveAll();
     }
 
@@ -184,23 +190,7 @@ public class Controller implements Observer {
         SessionManager.getInstance().renameSession(data,newname);
     }
 
-    private class StopperTimer extends Thread{
-        @Override
-        public void run(){
-            //ricavo il numero di ore di scadenza
-            PreferencesEditor pref=new PreferencesEditor(ac.getBaseContext());
-            int scadenza=pref.getSessionDuration();
-            while((!interrupted())&&getDurate()<3600000*scadenza) {//se scade è vinene interrotto esce
-                try {
-                    Thread.sleep(36000000);//ricontrollo tra un'ora
-                } catch (InterruptedException e) {}
-            }
-            if (interrupted()) return;
-            Controller.getInstance().InterruptSession();//se non è stato interroto ma è scaduto il tempo interrompe la sessione
-        }
-    }
-
-    private void InterruptSession() {
+    void InterruptSession() {
         Controller.getInstance().StopSession(ac);
         Intent i = new Intent(ac.getBaseContext(),UI1.class);
         ac.startActivity(i);
