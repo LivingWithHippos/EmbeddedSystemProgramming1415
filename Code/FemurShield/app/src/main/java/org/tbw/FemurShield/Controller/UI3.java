@@ -15,9 +15,9 @@ import org.tbw.FemurShield.Model.SessionManager;
 import org.tbw.FemurShield.R;
 
 /**
- * Created by Marco on 27/06/2015.
+ * La UI3 e' l'acivity che gestisce la sessione attiva attraverso i comandi di {@link SessionCommandsFragment},
+ * mostra l'andamento dell'accelerometro su grafico tramite {@link ActiveSessionFragment} ed i dettagli della sessione con {@link SessionDetailsFragment}
  */
-
 public class UI3 extends Activity implements ActiveSessionFragment.OnFallDetectedListener,ActiveSessionFragment.OnEmailSentListener,EditSessionNameFragment.OnSessionNameInsertedListener,FallFragment.OnFallClickListener,SessionCommandsFragment.OnCommandUpdatedListener{
 
 
@@ -27,6 +27,7 @@ public class UI3 extends Activity implements ActiveSessionFragment.OnFallDetecte
     public final static String SESSION_COMMANDS_FRAGMENT_TAG = "mSessionCommandsFragment";
 
     private String thisData;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -91,7 +92,12 @@ public class UI3 extends Activity implements ActiveSessionFragment.OnFallDetecte
         return super.onOptionsItemSelected(item);
     }
 
-
+    /**
+     * Metodo di implementazione dell'interfaccia {@link org.tbw.FemurShield.Controller.FallFragment.OnFallClickListener}
+     * Mostra i dettagli della caduta su cui si e' premuto tramite interfaccia {@link UI4}
+     * @param sessionID l'ID della sessione a cui appartiene la caduta
+     * @param fallID l'ID della caduta da mostrare
+     */
     @Override
     public void onFallClick(String sessionID, String fallID) {
         Intent fallDetails=new Intent(this,UI4.class);
@@ -100,6 +106,11 @@ public class UI3 extends Activity implements ActiveSessionFragment.OnFallDetecte
         startActivity(fallDetails);
     }
 
+    /**
+     * Forza un aggiornamento della lista delle sessioni
+     * @param buttonPressed il bottone che ha causato l'aggiornamento,
+     *                      vedi {@value SessionCommandsFragment#BUTTON_STOP}, {@value SessionCommandsFragment#BUTTON_PLAY}, {@value SessionCommandsFragment#BUTTON_PAUSE}, {@value SessionCommandsFragment#BUTTON_REC}
+     */
     @Override
     public void aggiornaLista(int buttonPressed) {
         switch (buttonPressed) {
@@ -119,11 +130,21 @@ public class UI3 extends Activity implements ActiveSessionFragment.OnFallDetecte
         }
     }
 
+    /**
+     * Metodo di implementazione dell'interfaccia {@link org.tbw.FemurShield.Controller.EditSessionNameFragment.OnSessionNameInsertedListener}
+     * modifica il nome della sessione e aggiorna la lista
+     * @param nome il nome da salvare
+     * @param sessionID l'ID della sessione da rinominare
+     */
     @Override
-    public void onSessionNameInserted(String nuovonome, String data) {
-        Controller.getInstance().renameEvent(data, nuovonome);
+    public void onSessionNameInserted(String nome, String sessionID) {
+        Controller.getInstance().renameEvent(sessionID, nome);
     }
 
+    /**
+     * Metodo di implementazione dell'interfaccia {@link org.tbw.FemurShield.Controller.ActiveSessionFragment.OnEmailSentListener}
+     * Aggiorna la conferma visuale che una caduta e' stata notificata dopo la sua notifica
+     */
     @Override
     public void onEmailSent() {
         FallFragment ff=(FallFragment)getFragmentManager().findFragmentByTag(FALLS_LIST_FRAGMENT_TAG);
@@ -131,6 +152,9 @@ public class UI3 extends Activity implements ActiveSessionFragment.OnFallDetecte
             ff.startlist();
     }
 
+    /**
+     * Aggiorna la lista cadute dopo la rilevazione di una caduta
+     */
     @Override
     public void onFallDetect() {
         FallFragment ff=(FallFragment)getFragmentManager().findFragmentByTag(FALLS_LIST_FRAGMENT_TAG);
