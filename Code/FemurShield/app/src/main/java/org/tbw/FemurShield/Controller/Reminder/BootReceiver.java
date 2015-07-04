@@ -7,15 +7,13 @@ import android.content.Intent;
 import org.tbw.FemurShield.Controller.PreferencesEditor;
 
 /**
- * Created by Marco on 07/06/2015.
+ * @author Marco Biasin
  * Classe che reimposta l'allarme
  * ad ogni riavvio del dispositivo
  * (gli allarmi vengono cancellati
  * ad ogni riavvio)
  */
 public class BootReceiver extends BroadcastReceiver {
-
-    private static PreferencesEditor prefs;
 
     @Override
     public void onReceive(Context context, Intent intent) {

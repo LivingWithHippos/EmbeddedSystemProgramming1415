@@ -7,7 +7,10 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 
 /**
- * Created by Marco on 07/06/2015.
+ * BroadcastReceiver che riceve dall'AlarmManager il fatto che è ora di lancaire il reminder della sessione.
+ * Lancia {@link SessionReminderActivity}.
+ *
+ * @author Marco Biasin
  */
 public class SessionReminderReceiver extends BroadcastReceiver {
 
@@ -24,7 +27,7 @@ public class SessionReminderReceiver extends BroadcastReceiver {
         context.startActivity(sesRemIntent);
 
     }
-
+    
     public static void enableReceiver(Context context)
     {
         //attiva il receiver

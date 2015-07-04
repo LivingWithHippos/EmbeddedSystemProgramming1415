@@ -13,7 +13,8 @@ import java.util.Calendar;
 import java.util.Date;
 
 /**
- * Created by Marco on 07/06/2015.
+ * @author Marco Biasin
+ * Servizio che si occupa di far partire all'ora impostata il reminder per iniziare la sessione
  */
 public class ReminderService extends IntentService {
 
@@ -45,18 +46,16 @@ public class ReminderService extends IntentService {
         AlarmManager am = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         Intent intent = new Intent(this, SessionReminderReceiver.class);
         PendingIntent pi = PendingIntent.getBroadcast(this, SessionReminderReceiver.ID, intent,PendingIntent.FLAG_UPDATE_CURRENT);
-
+        //prendo l'ora ed il minuto per l'allarme
         PreferencesEditor prefs = new PreferencesEditor(this.getBaseContext());
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(System.currentTimeMillis());
         calendar.set(Calendar.HOUR_OF_DAY, prefs.getAlarmHour());
         calendar.set(Calendar.MINUTE, prefs.getAlarmMinute());
-
+        long triggerAtMillis=calendar.getTimeInMillis();
+        /*controllo che oggi non sia già passato altrimenti Android lo lancia subito*/
         Calendar nowCalendar = Calendar.getInstance();
         nowCalendar.setTime(new Date());
-        long triggerAtMillis=calendar.getTimeInMillis();
-        //se l'ora dell'allarme è già passata non lo lancio da oggi ma da domani
-        //altrimenti parte appena impostato
         if(calendar.get(Calendar.DAY_OF_WEEK)==nowCalendar.get(Calendar.DAY_OF_WEEK)&&
                 calendar.get(Calendar.HOUR_OF_DAY)<=nowCalendar.get(Calendar.HOUR_OF_DAY)&&
                 calendar.get(Calendar.MINUTE)<=nowCalendar.get(Calendar.MINUTE))

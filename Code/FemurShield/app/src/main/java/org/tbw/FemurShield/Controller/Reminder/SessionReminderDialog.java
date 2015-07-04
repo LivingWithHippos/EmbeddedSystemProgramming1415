@@ -13,7 +13,8 @@ import android.view.View;
 import org.tbw.FemurShield.R;
 
 /**
- * Created by Marco on 07/06/2015.
+ * Dialog che ricorda all'utente la necessità di cominciare una nuova sessione
+ * @author Marco Biasin
  */
 public class SessionReminderDialog extends DialogFragment implements DialogInterface.OnClickListener{
     private OnSessionStartingListener mCallback;
@@ -77,10 +78,17 @@ public class SessionReminderDialog extends DialogFragment implements DialogInter
     }
 
     public interface OnSessionStartingListener {
+        /**
+         * metodo di callback per indicare all'activity cosa ha premuto l'utente
+         * @param wantToStart
+         */
         void onSessionStarted(boolean wantToStart);
     }
 
     public interface OnDialogClosedListener {
+        /**
+         * callback per indicare all'activity che il dialog è stato chiuso senza scelte
+         */
         void onDialogClosed();
     }
 }

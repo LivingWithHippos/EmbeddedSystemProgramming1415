@@ -12,7 +12,10 @@ import org.tbw.FemurShield.Controller.UI1;
 import org.tbw.FemurShield.R;
 
 /**
- * Created by Marco on 07/06/2015.
+ * Activity vuota che si occupa di fornire un background a {@link SessionReminderDialog}
+ * e ad illuminare lo schermo se spento per attirare l'attenzione.
+ *
+ * @author Marco Biasin
  */
 public class SessionReminderActivity extends Activity implements SessionReminderDialog.OnSessionStartingListener,SessionReminderDialog.OnDialogClosedListener {
 
@@ -24,12 +27,11 @@ public class SessionReminderActivity extends Activity implements SessionReminder
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //activity non visibile
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_session_reminder);
 
         if (findViewById(R.id.fragment_container_settings) != null) {
-
-
             if (savedInstanceState != null) {
                 return;
             }
@@ -38,12 +40,12 @@ public class SessionReminderActivity extends Activity implements SessionReminder
             srFragment.show(getFragmentManager(), "SessionReminderDialog");
         }
 
-        // Set the window to keep screen on
+        // Flag per tenere lo schermo acceso
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD);
 
-        // Acquire wakelock
+        // Acquisisco wakelock
         PowerManager pm = (PowerManager) getApplicationContext().getSystemService(Context.POWER_SERVICE);
         if (mWakeLock == null) {
             mWakeLock = pm.newWakeLock((PowerManager.SCREEN_BRIGHT_WAKE_LOCK | PowerManager.ACQUIRE_CAUSES_WAKEUP), TAG);
@@ -56,6 +58,7 @@ public class SessionReminderActivity extends Activity implements SessionReminder
 
     }
 
+    //chiudo l'activity se l'utente preme indietro
     @Override
     public void onBackPressed() {
         finish();
@@ -76,6 +79,10 @@ public class SessionReminderActivity extends Activity implements SessionReminder
         }
     }
 
+    /**
+     * Gestisco il caso in cui l'utente prema su inizia sessione o annulla
+     * @param wantToStart se l'utente ha premuto inizia o annulla
+     */
     @Override
     public void onSessionStarted(boolean wantToStart) {
         if(wantToStart) {
@@ -87,6 +94,7 @@ public class SessionReminderActivity extends Activity implements SessionReminder
         }else{finish();}
     }
 
+    // se l'utente preme al di fuori del dialog chiudo l'activity
     @Override
     public void onDialogClosed() {
         finish();
