@@ -64,7 +64,7 @@ public class UI3 extends Activity implements ActiveSessionFragment.OnFallDetecte
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_ui4, menu);
+        getMenuInflater().inflate(R.menu.menu_ui3, menu);
         return true;
     }
 
@@ -79,8 +79,6 @@ public class UI3 extends Activity implements ActiveSessionFragment.OnFallDetecte
             case R.id.action_all_sessions:
                 Intent ui1 = new Intent(this, UI1.class);
                 startActivity(ui1);
-                return true;
-            case R.id.action_active_session:
                 return true;
             case R.id.rename_session:
                 EditSessionNameFragment sessionRenameFragment = new EditSessionNameFragment();
