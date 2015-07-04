@@ -125,11 +125,10 @@ public class Controller implements Observer {
         if(o instanceof Fall){
             //aggiungo la faduta alla sessione
             SessionManager.getInstance().getActiveSession().AddFall((Fall) o);
-            sendEmail((Fall) o);
         }
     }
 
-    private void sendEmail(Fall fall) {
+    public void sendEmail(Fall fall) {
     //invio le mail sfruttando MultiEmailSender
         Intent sender = new Intent(ac.getApplicationContext(),MultiEmailSender.class);
         sender.putExtra("appdirectory", ac.getFilesDir().toString()); // passo la cartella in cui c'è il file con gli indirizzi salvati

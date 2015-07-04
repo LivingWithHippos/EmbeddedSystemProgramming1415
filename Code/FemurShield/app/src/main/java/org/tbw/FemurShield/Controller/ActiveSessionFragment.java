@@ -7,6 +7,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,7 +25,7 @@ import org.tbw.FemurShield.R;
 public class ActiveSessionFragment extends Fragment implements org.tbw.FemurShield.Observer.Observer{
 
     private OnEmailSentListener emailCallback;
-
+    private OnFallDetectedListener fallCallback;
     private static final String TAG="ActiveSessionFragment";
 
     int finalWidth;
@@ -144,17 +145,24 @@ public class ActiveSessionFragment extends Fragment implements org.tbw.FemurShie
     }
 
     @Override
-    public void update(Observable oggettoosservato, Object o) {
-        if(o instanceof float[]){
+    public void update(Observable oggettoosservato, Object o)
+    {
+        if(o instanceof float[])
+        {
             if(bitmapGraficoAcc!=null) {
                 float[] arg = (float[]) o;
                 DrawGraphSliceAcc(arg[0] * sizeCoefficient, arg[1] * sizeCoefficient, arg[2] * sizeCoefficient);
             }
-        }else
-           if(o instanceof EmailSentSegnalation){
-                emailCallback.onEmailSent();
+        }
+        else
+            if(o instanceof Fall)
+            {
+                 fallCallback.onFallDetect();
+             }
+            else
+                if(o instanceof EmailSentSegnalation){
+                    emailCallback.onEmailSent();
             }
-        
     }
 
     public void DrawGraphSliceAcc(float newX, float newY, float newZ){
@@ -202,6 +210,13 @@ public class ActiveSessionFragment extends Fragment implements org.tbw.FemurShie
             throw new ClassCastException(activity.toString()
                     + " must implement OnEmailSentListener");
         }
+        try {
+            fallCallback = (OnFallDetectedListener) activity;
+            Log.d(TAG,"onAttach partto");
+        } catch (ClassCastException e) {
+            throw new ClassCastException(activity.toString()
+                    + " must implement OnFallDetectedListener");
+        }
     }
 
     @Override
@@ -213,5 +228,9 @@ public class ActiveSessionFragment extends Fragment implements org.tbw.FemurShie
     public interface OnEmailSentListener
     {
         public void onEmailSent();
+    }
+    public interface OnFallDetectedListener
+    {
+        public void onFallDetect();
     }
 }

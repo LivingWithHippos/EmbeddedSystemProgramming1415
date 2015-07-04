@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -16,7 +17,7 @@ import org.tbw.FemurShield.R;
  * Created by Marco on 27/06/2015.
  */
 
-public class UI3 extends Activity implements ActiveSessionFragment.OnEmailSentListener,EditSessionNameFragment.OnSessionNameInsertedListener,FallFragment.OnFallClickListener,SessionCommandsFragment.OnCommandUpdatedListener{
+public class UI3 extends Activity implements ActiveSessionFragment.OnFallDetectedListener,ActiveSessionFragment.OnEmailSentListener,EditSessionNameFragment.OnSessionNameInsertedListener,FallFragment.OnFallClickListener,SessionCommandsFragment.OnCommandUpdatedListener{
 
 
     public final static String ACTIVE_SESSION_FRAGMENT_TAG = "mActiveSessionFragment";
@@ -124,6 +125,14 @@ public class UI3 extends Activity implements ActiveSessionFragment.OnEmailSentLi
     @Override
     public void onEmailSent() {
         FallFragment ff=(FallFragment)getFragmentManager().findFragmentByTag(FALLS_LIST_FRAGMENT_TAG);
+        if(ff!=null)
+            ff.startlist();
+    }
+
+    @Override
+    public void onFallDetect() {
+        FallFragment ff=(FallFragment)getFragmentManager().findFragmentByTag(FALLS_LIST_FRAGMENT_TAG);
+        Log.d("UI3","aggiorno fall");
         if(ff!=null)
             ff.startlist();
     }
