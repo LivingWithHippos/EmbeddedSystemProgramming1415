@@ -2,7 +2,7 @@
     <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
-    <dimen name="button_image">60dp</dimen> <!-- bottoni ui1 stop start rec pause. -->
+    <dimen name="button_image">80dp</dimen> <!-- bottoni ui1 stop start rec pause. -->
     <dimen name="height_state_image_list">30dp</dimen> <!-- immagine lell'elemento della lista che identifica lo stato della sessione attiva. -->
     <dimen name="width_state_image_list">16dp</dimen> <!-- immagine lell'elemento della lista che identifica lo stato della sessione attiva. -->
     <dimen name="signature_list">70dp</dimen> <!-- immagine Signature lista ui1 . -->
