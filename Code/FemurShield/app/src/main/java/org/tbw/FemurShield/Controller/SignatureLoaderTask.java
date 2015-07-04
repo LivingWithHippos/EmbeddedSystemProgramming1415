@@ -2,83 +2,88 @@ package org.tbw.FemurShield.Controller;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
 import android.os.AsyncTask;
 import android.os.Environment;
 import android.util.Log;
 import android.widget.ImageView;
 
 
-import org.tbw.FemurShield.R;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.ObjectInputStream;
 import java.lang.ref.WeakReference;
 
 /**
- * Created by Marco on 29/06/2015.
+ * Classe per il caricamento dal disco della signature di una sessione tramite asynctask per non bloccare il disco
+ *
+ * @author Marco Biasin
  */
-public class SignatureLoaderTask  extends AsyncTask<Integer, Void, Bitmap> {
+public class SignatureLoaderTask extends AsyncTask<Integer, Void, Bitmap> {
 
-        public final String TAG = this.getClass().getSimpleName();
-        private String sessionTimeStamp;
-        private final WeakReference<ImageView> ivFallReference;
-        private Bitmap signature;
+    public final String TAG = this.getClass().getSimpleName();
+    private String sessionTimeStamp;
+    private final WeakReference<ImageView> ivFallReference;
+    private Bitmap signature;
 
+    /**
+     * Costruttore della classe
+     * @param ivFall l'imageview da riempire con la signature
+     * @param sessionTimeStamp il timestamp della sessione da rappresentare
+     */
+    public SignatureLoaderTask(ImageView ivFall, String sessionTimeStamp) {
+        ivFallReference = new WeakReference<ImageView>(ivFall);
+        this.sessionTimeStamp = sessionTimeStamp.replaceAll("/", "_");
+    }
 
+    // carica l'immagine in background
+    @Override
+    protected Bitmap doInBackground(Integer... params) {
 
-        public SignatureLoaderTask(ImageView ivFall, String sessionTimeStamp) {
-            ivFallReference = new WeakReference<ImageView>(ivFall);
-            this.sessionTimeStamp=sessionTimeStamp.replaceAll("/", "_");
-        }
+        File appPath = new File(Environment.getExternalStorageDirectory(), "FemurShield");
+        if (isExternalStorageReadable()) {
 
-        // Load image in background.
-        @Override
-        protected Bitmap doInBackground(Integer... params) {
-
-            File appPath = new File(Environment.getExternalStorageDirectory(), "FemurShield");
-            if (isExternalStorageReadable()) {
-
-                File picture = new File(appPath, "signature_" + sessionTimeStamp + ".png");
-                if (picture.exists()) {
-                    try {
-                        FileInputStream fis = new FileInputStream(picture);
-                        signature=BitmapFactory.decodeStream(fis);
-                        fis.close();
-                    } catch (FileNotFoundException e) {
-                        Log.e(TAG, "Bitmap not found: " + e.getMessage());
-                    } catch (IOException e) {
-                        Log.e(TAG, "Error accessing Bitmap: " + e.getMessage());
-                    }
-                } else {
-                    Log.e(TAG, "Bitmap non presente sul disco");
+            File picture = new File(appPath, "signature_" + sessionTimeStamp + ".png");
+            if (picture.exists()) {
+                try {
+                    FileInputStream fis = new FileInputStream(picture);
+                    signature = BitmapFactory.decodeStream(fis);
+                    fis.close();
+                } catch (FileNotFoundException e) {
+                    Log.e(TAG, "Bitmap not found: " + e.getMessage());
+                } catch (IOException e) {
+                    Log.e(TAG, "Error accessing Bitmap: " + e.getMessage());
                 }
             } else {
-                Log.e(TAG, "Memoria non accessibile");
+                Log.e(TAG, "Bitmap non presente sul disco");
             }
-
-            if(signature!=null)
-                BitmapCache.getInstance().addBitmapToMemoryCache(sessionTimeStamp,signature);
-            return signature;
+        } else {
+            Log.e(TAG, "Memoria non accessibile");
         }
 
-        @Override
-        protected void onPostExecute(Bitmap bitmap) {
+        if (signature != null)
+            BitmapCache.getInstance().addBitmapToMemoryCache(sessionTimeStamp, signature);
+        return signature;
+    }
 
-            if (ivFallReference != null && bitmap != null) {
-                final ImageView fallImage = ivFallReference.get();
-                if (fallImage != null) {
-                    fallImage.setImageBitmap(bitmap);
-                }
-                else{Log.d(TAG,"Problema caricamento riferimento imageView");}
+    //mostra l'immagine sulla imageview se è ancora presente sullo schermo
+    @Override
+    protected void onPostExecute(Bitmap bitmap) {
+
+        if (ivFallReference != null && bitmap != null) {
+            final ImageView fallImage = ivFallReference.get();
+            if (fallImage != null) {
+                fallImage.setImageBitmap(bitmap);
+            } else {
+                Log.d(TAG, "Problema caricamento riferimento imageView");
             }
         }
+    }
 
+    /**
+     * Controlla se è presente sul disco il file
+     * @return true se presente, false altrimenti
+     */
     private boolean signatureExists() {
         boolean exists = false;
         File appPath = new File(Environment.getExternalStorageDirectory(), "FemurShield");
@@ -86,7 +91,10 @@ public class SignatureLoaderTask  extends AsyncTask<Integer, Void, Bitmap> {
         return picture.exists();
     }
 
-    /* Checks if external storage is available for read and write */
+    /**
+     * Controlla se sia possibile scrivere sulla memoria
+     * @return true se scrivibile, false altrimenti
+     */
     public boolean isExternalStorageWritable() {
         String state = Environment.getExternalStorageState();
         if (Environment.MEDIA_MOUNTED.equals(state)) {
@@ -95,7 +103,10 @@ public class SignatureLoaderTask  extends AsyncTask<Integer, Void, Bitmap> {
         return false;
     }
 
-    /* Checks if external storage is available to at least read */
+    /**
+     * Controlla se la memoria è leggibile
+     * @return true se è leggibile, false altrimenti
+     */
     public boolean isExternalStorageReadable() {
         String state = Environment.getExternalStorageState();
         if (Environment.MEDIA_MOUNTED.equals(state) ||
@@ -104,8 +115,6 @@ public class SignatureLoaderTask  extends AsyncTask<Integer, Void, Bitmap> {
         }
         return false;
     }
-
-
 
 
 }
