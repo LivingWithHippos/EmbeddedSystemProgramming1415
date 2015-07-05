@@ -106,9 +106,9 @@ public class SessionDetailsFragment extends Fragment
                     break;
                 }
             }
-            Log.e("FallFragment",getString(R.string.no_session_found));
-        }else{
-            Log.e("FallFragment",getString(R.string.no_session_found));}
+        }
+        if(session==null)
+            Log.e(TAG,getString(R.string.no_session_found));
     }
 
     /**
