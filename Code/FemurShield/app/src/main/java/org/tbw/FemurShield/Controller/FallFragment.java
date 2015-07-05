@@ -3,7 +3,6 @@ package org.tbw.FemurShield.Controller;
 import android.app.Activity;
 import android.app.ListFragment;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -81,10 +80,7 @@ public class FallFragment extends ListFragment {
                     return;
                 }
             }
-            Log.e("FallFragment",getString(R.string.no_session_found));
-        }else{
-            Log.e("FallFragment",getString(R.string.no_session_found));}
-
+        }
     }
 
     /**
