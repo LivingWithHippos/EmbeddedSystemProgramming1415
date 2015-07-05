@@ -4,14 +4,15 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 
-import org.tbw.FemurShield.Controller.PreferencesEditor;
 
 /**
- * @author Marco Biasin
+ *
  * Classe che reimposta l'allarme
  * ad ogni riavvio del dispositivo
  * (gli allarmi vengono cancellati
  * ad ogni riavvio)
+ *
+ * @author Marco Biasin
  */
 public class BootReceiver extends BroadcastReceiver {
 
@@ -22,8 +23,11 @@ public class BootReceiver extends BroadcastReceiver {
         }
     }
 
+    /**
+     * Lancia il servizio che si occupa di far partire il reminder all'orario prestabilito
+     * @param context il context dell'applicazione
+     */
     public static void setAlarm(Context context) {
-        //imposto l'ora del nuovo allarme
         Intent alarmService = new Intent(context, ReminderService.class);
         alarmService.setAction(ReminderService.CREATE);
         context.startService(alarmService);

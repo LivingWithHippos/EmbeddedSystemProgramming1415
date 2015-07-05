@@ -1,7 +1,9 @@
 package org.tbw.FemurShield.Observer;
 
 /**
- * Created by Moro on 20/05/15.
+ *Interfaccia per l'implementazione del pattern Observer
+ *
+ * @author Alessandro Moro
  */
 public interface Observer {
     void update(Observable oggettoosservato, Object o);

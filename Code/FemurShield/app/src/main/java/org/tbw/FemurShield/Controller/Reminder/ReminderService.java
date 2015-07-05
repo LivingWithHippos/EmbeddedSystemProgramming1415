@@ -13,8 +13,9 @@ import java.util.Calendar;
 import java.util.Date;
 
 /**
- * @author Marco Biasin
+ *
  * Servizio che si occupa di far partire all'ora impostata il reminder per iniziare la sessione
+ * @author Marco Biasin
  */
 public class ReminderService extends IntentService {
 

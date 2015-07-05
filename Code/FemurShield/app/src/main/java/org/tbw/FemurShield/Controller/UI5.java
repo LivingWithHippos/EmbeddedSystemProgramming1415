@@ -232,7 +232,7 @@ public class UI5 extends Activity implements SettingsFragment.OnOptionSelectedLi
 
     /**
      * Metodo chiamato alla pressione del tasto "Elimina Contatti"
-     * nel menu {@link UI5#onOptionsItemSelected(MenuItem)}.
+     * nel menu della {@link UI5}.
      * Elimina tutti i contatti e aggiorna la lista contatti svuotandola.
      */
     @Override

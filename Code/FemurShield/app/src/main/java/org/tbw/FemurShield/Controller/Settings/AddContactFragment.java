@@ -60,7 +60,7 @@ public class AddContactFragment extends DialogFragment implements DialogInterfac
 
     /**
      * Gestisce la pressione sul tasto OK o ANNULLA del Dialog, salva il contatto se tutto e' corretto
-     * riferendolo alla UI5 tramite metodo di callback {@link org.tbw.FemurShield.Controller.Settings.AddContactFragment.OnUserInsertedListener#onUserInserted(EditText, EditText)}
+     * riferendolo alla UI5 tramite metodo di callback
      * @param dialog il dialog mostrato
      * @param which il bottone premuto
      */
