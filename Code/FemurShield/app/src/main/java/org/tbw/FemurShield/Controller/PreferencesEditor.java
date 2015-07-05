@@ -245,7 +245,7 @@ public class PreferencesEditor {
                 outputStream.flush();
                 outputStream.close();
                 setEmailContactsNumber(emails.size());
-                Log.d("FemurShield", "File email Scritto correttamente");
+                //Log.d("FemurShield", "File email Scritto correttamente");
             } catch (Exception e) {
                 Log.e("FemurShield", "Errore aggiunta contatto email : " + e.getMessage());
                 result = false;

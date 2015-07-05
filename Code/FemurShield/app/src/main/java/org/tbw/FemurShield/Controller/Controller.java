@@ -176,7 +176,7 @@ public class Controller implements Observer {
             outputStream.writeObject(SessionManager.getInstance().createBackup());
             outputStream.flush();
             outputStream.close();
-            Log.d(TAG, "Salvataggio sessioni avvenuto con successo!");
+            //Log.d(TAG, "Salvataggio sessioni avvenuto con successo!");
         } catch (Exception e) {
             Log.e(TAG, "Errore salvataggio file sessioni: " + e.getMessage());
         }
@@ -195,7 +195,7 @@ public class Controller implements Observer {
             backup = (HashMap) objectInputStream.readObject();
             objectInputStream.close();
             SessionManager.getInstance().applyBackup(backup);
-            Log.d(TAG, "Backup:" + backup.toString());
+            //Log.d(TAG, "Backup:" + backup.toString());
         } catch (IOException e) {
             Log.e(TAG, "Backup non trovato: " + e.getMessage());
         } catch (ClassNotFoundException e) {

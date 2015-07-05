@@ -182,7 +182,7 @@ public class FallBitmapCreator extends AsyncTask<Integer, Void, Bitmap> {
 
         }else{
             //in teoria non succede mai perchè i passi sono calcolati in base alla quantità di dati presente
-            Log.d("FallBitmapCreator","Troppi Dati!");}
+            Log.e("FallBitmapCreator","Troppi Dati!");}
     }
 
     /**
@@ -214,7 +214,7 @@ public class FallBitmapCreator extends AsyncTask<Integer, Void, Bitmap> {
             if (fallImage != null) {
                 fallImage.setImageBitmap(bitmap);
             }
-            else{Log.d(TAG,"Problema caricamento riferimento imageView");}
+            else{/*Log.d(TAG,"Problema caricamento riferimento imageView");*/}
         }
     }
 

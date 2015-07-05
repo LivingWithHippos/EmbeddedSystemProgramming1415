@@ -192,7 +192,7 @@ public class SessionCommandsFragment extends Fragment {
 
         @Override
         public void onClick(View v) {
-           Log.d("SessionCommandsFragment","view id :"+v.getId());
+
             switch (v.getId())
             {
                 case R.id.recbtnun1: onRecClick(); break;

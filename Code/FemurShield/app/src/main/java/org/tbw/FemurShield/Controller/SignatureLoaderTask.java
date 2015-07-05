@@ -67,7 +67,7 @@ public class SignatureLoaderTask extends AsyncTask<Integer, Void, Bitmap> {
                     Log.e(TAG, "Error accessing Bitmap: " + e.getMessage());
                 }
             } else {
-                Log.e(TAG, "Bitmap non presente sul disco");
+                //Log.e(TAG, "Bitmap non presente sul disco");
             }
         } else {
             Log.e(TAG, "Memoria non accessibile");
@@ -87,7 +87,7 @@ public class SignatureLoaderTask extends AsyncTask<Integer, Void, Bitmap> {
             if (fallImage != null) {
                 fallImage.setImageBitmap(bitmap);
             } else {
-                Log.d(TAG, "Problema caricamento riferimento imageView");
+                //Log.d(TAG, "Problema caricamento riferimento imageView");
             }
         }
     }

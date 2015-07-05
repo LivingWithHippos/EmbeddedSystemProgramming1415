@@ -210,9 +210,9 @@ public class SignatureImpl implements Signature, org.tbw.FemurShield.Observer.Ob
                     FileOutputStream fos = new FileOutputStream(nomedia);
                     fos.close();
                 } catch (FileNotFoundException e) {
-                    Log.d(TAG, "File not found: " + e.getMessage());
+                    //Log.d(TAG, "File not found: " + e.getMessage());
                 } catch (IOException e) {
-                    Log.d(TAG, "Error accessing file: " + e.getMessage());
+                    //Log.d(TAG, "Error accessing file: " + e.getMessage());
                 }
             }
             //salvo la signature
@@ -223,12 +223,12 @@ public class SignatureImpl implements Signature, org.tbw.FemurShield.Observer.Ob
                     toBitmap().compress(Bitmap.CompressFormat.PNG, 90, fos);
                     fos.close();
                     BitmapCache.getInstance().addBitmapToMemoryCache(sessionID, toBitmap());
-                    Log.d(TAG, "immagine scritta");
+                    //Log.d(TAG, "immagine scritta");
                     result = true;
                 } catch (FileNotFoundException e) {
-                    Log.d(TAG, "File not found: " + e.getMessage());
+                    //Log.d(TAG, "File non trovato: " + e.getMessage());
                 } catch (IOException e) {
-                    Log.d(TAG, "Error accessing file: " + e.getMessage());
+                    Log.e(TAG, "Errore accesso file: " + e.getMessage());
                 }
             else {
                 result = true;
