@@ -6,39 +6,40 @@
     tools:context="org.tbw.FemurShield.Controller.UI3">
 
     <FrameLayout
-        android:id="@+id/sessionDetailLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true">
-        </FrameLayout>
-
-    <LinearLayout
-        android:id="@+id/sessiongGraphContainer"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/altezza_grafico"
-        android:layout_below="@+id/sessionDetailLayout">
-    <FrameLayout
-        android:id="@+id/sessionGraphLayout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
+        android:layout_alignParentTop="true"
+        android:id="@+id/sessionDetailLayout">
     </FrameLayout>
-    </LinearLayout>
 
     <FrameLayout
-        android:id="@+id/fallListLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/sessionDetailLayout"
+        android:layout_above="@+id/separatorView"
+        android:id="@+id/sessionGraphLayout">
+    </FrameLayout>
+
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_centerVertical="true"
+        android:id="@+id/separatorView"/>
+
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/separatorView"
         android:layout_above="@+id/commandLayout"
-        android:layout_below="@+id/sessiongGraphContainer">
-
+        android:id="@+id/fallListLayout">
     </FrameLayout>
 
     <FrameLayout
-        android:id="@+id/commandLayout"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true">
+        android:layout_alignParentBottom="true"
+        android:id="@+id/commandLayout">
     </FrameLayout>
 
 </RelativeLayout>

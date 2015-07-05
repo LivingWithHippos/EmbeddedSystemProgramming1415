@@ -3,7 +3,6 @@ package org.tbw.FemurShield.Controller;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.content.res.Configuration;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -18,7 +17,7 @@ import org.tbw.FemurShield.R;
  * La UI3 e' l'acivity che gestisce la sessione attiva attraverso i comandi di {@link SessionCommandsFragment},
  * mostra l'andamento dell'accelerometro su grafico tramite {@link ActiveSessionFragment} ed i dettagli della sessione con {@link SessionDetailsFragment}
  */
-public class UI3 extends Activity implements ActiveSessionFragment.OnFallDetectedListener,ActiveSessionFragment.OnEmailSentListener,EditSessionNameFragment.OnSessionNameInsertedListener,FallFragment.OnFallClickListener,SessionCommandsFragment.OnCommandUpdatedListener{
+public class UI3 extends Activity implements ActiveSessionFragment.OnFallDetectedListener, ActiveSessionFragment.OnEmailSentListener, EditSessionNameFragment.OnSessionNameInsertedListener, FallFragment.OnFallClickListener, SessionCommandsFragment.OnCommandUpdatedListener {
 
 
     public final static String ACTIVE_SESSION_FRAGMENT_TAG = "mActiveSessionFragment";
@@ -32,13 +31,12 @@ public class UI3 extends Activity implements ActiveSessionFragment.OnFallDetecte
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ui3);
-        PreferencesEditor pe=new PreferencesEditor(this);
-        if(pe.getEmailContactsNumber()<1)
-            Toast.makeText(this,getString(R.string.no_contacts_warning),Toast.LENGTH_SHORT).show();
+        PreferencesEditor pe = new PreferencesEditor(this);
+        if (pe.getEmailContactsNumber() < 1)
+            Toast.makeText(this, getString(R.string.no_contacts_warning), Toast.LENGTH_SHORT).show();
 
         if (findViewById(R.id.ui3rootLayout) != null) {
 
-            int orientation = this.getResources().getConfiguration().orientation;
             if (SessionManager.getInstance().getActiveSession() != null) {
                 thisData = SessionManager.getInstance().getActiveSession().getDataTime();
 
@@ -47,20 +45,15 @@ public class UI3 extends Activity implements ActiveSessionFragment.OnFallDetecte
                 SessionCommandsFragment scf = SessionCommandsFragment.newInstance(SessionCommandsFragment.MODE_SMALL);
                 FallFragment ff = FallFragment.newInstance(thisData);
 
+                getFragmentManager().beginTransaction().replace(R.id.sessionDetailLayout, sdf, SESSION_DETAILS_FRAGMENT_TAG).commit();
+                getFragmentManager().beginTransaction().replace(R.id.sessionGraphLayout, asf, ACTIVE_SESSION_FRAGMENT_TAG).commit();
+                getFragmentManager().beginTransaction().replace(R.id.fallListLayout, ff, FALLS_LIST_FRAGMENT_TAG).commit();
+                getFragmentManager().beginTransaction().replace(R.id.commandLayout, scf, SESSION_COMMANDS_FRAGMENT_TAG).commit();
 
-                if (orientation == Configuration.ORIENTATION_PORTRAIT) {
-                    getFragmentManager().beginTransaction().replace(R.id.sessionDetailLayout, sdf, SESSION_DETAILS_FRAGMENT_TAG).commit();
-                    getFragmentManager().beginTransaction().replace(R.id.sessionGraphLayout, asf, ACTIVE_SESSION_FRAGMENT_TAG).commit();
-                    getFragmentManager().beginTransaction().replace(R.id.fallListLayout, ff, FALLS_LIST_FRAGMENT_TAG).commit();
-                    getFragmentManager().beginTransaction().replace(R.id.commandLayout, scf, SESSION_COMMANDS_FRAGMENT_TAG).commit();
-                } else {
-                    getFragmentManager().beginTransaction().replace(R.id.sessionDetailLayout, sdf, SESSION_DETAILS_FRAGMENT_TAG).commit();
-                    getFragmentManager().beginTransaction().replace(R.id.fallListLayout, ff, FALLS_LIST_FRAGMENT_TAG).commit();
-                    getFragmentManager().beginTransaction().replace(R.id.sessionGraphLayout, asf, ACTIVE_SESSION_FRAGMENT_TAG).commit();
-                    getFragmentManager().beginTransaction().replace(R.id.commandLayout, scf, SESSION_COMMANDS_FRAGMENT_TAG).commit();
-                }
 
-            }else{finish();}
+            } else {
+                finish();
+            }
         }
     }
 
@@ -97,12 +90,13 @@ public class UI3 extends Activity implements ActiveSessionFragment.OnFallDetecte
     /**
      * Metodo di implementazione dell'interfaccia {@link org.tbw.FemurShield.Controller.FallFragment.OnFallClickListener}
      * Mostra i dettagli della caduta su cui si e' premuto tramite interfaccia {@link UI4}
+     *
      * @param sessionID l'ID della sessione a cui appartiene la caduta
-     * @param fallID l'ID della caduta da mostrare
+     * @param fallID    l'ID della caduta da mostrare
      */
     @Override
     public void onFallClick(String sessionID, String fallID) {
-        Intent fallDetails=new Intent(this,UI4.class);
+        Intent fallDetails = new Intent(this, UI4.class);
         fallDetails.putExtra(UI4.ID_SESSION, sessionID);
         fallDetails.putExtra(UI4.ID_FALL, fallID);
         startActivity(fallDetails);
@@ -110,6 +104,7 @@ public class UI3 extends Activity implements ActiveSessionFragment.OnFallDetecte
 
     /**
      * Chiamato quando un bottone di comando viene premuto
+     *
      * @param buttonPressed il bottone che ha causato l'aggiornamento,
      *                      vedi {@value SessionCommandsFragment#BUTTON_STOP}, {@value SessionCommandsFragment#BUTTON_PLAY}, {@value SessionCommandsFragment#BUTTON_PAUSE}, {@value SessionCommandsFragment#BUTTON_REC}
      */
@@ -117,13 +112,13 @@ public class UI3 extends Activity implements ActiveSessionFragment.OnFallDetecte
     public void aggiornaLista(int buttonPressed) {
         switch (buttonPressed) {
             case SessionCommandsFragment.BUTTON_PAUSE:
-                ((ActiveSessionFragment)getFragmentManager().findFragmentByTag(ACTIVE_SESSION_FRAGMENT_TAG)).stopChrono();
+                ((ActiveSessionFragment) getFragmentManager().findFragmentByTag(ACTIVE_SESSION_FRAGMENT_TAG)).stopChrono();
                 break;
             case SessionCommandsFragment.BUTTON_PLAY:
-                ((ActiveSessionFragment)getFragmentManager().findFragmentByTag(ACTIVE_SESSION_FRAGMENT_TAG)).startChrono();
+                ((ActiveSessionFragment) getFragmentManager().findFragmentByTag(ACTIVE_SESSION_FRAGMENT_TAG)).startChrono();
                 break;
             case SessionCommandsFragment.BUTTON_STOP:
-                ((ActiveSessionFragment)getFragmentManager().findFragmentByTag(ACTIVE_SESSION_FRAGMENT_TAG)).stopChrono();
+                ((ActiveSessionFragment) getFragmentManager().findFragmentByTag(ACTIVE_SESSION_FRAGMENT_TAG)).stopChrono();
                 Intent i = new Intent(this, UI2.class);
                 i.putExtra(UI2.SESSION_DATA_STAMP, thisData);
                 startActivity(i);
@@ -135,13 +130,14 @@ public class UI3 extends Activity implements ActiveSessionFragment.OnFallDetecte
     /**
      * Metodo di implementazione dell'interfaccia {@link org.tbw.FemurShield.Controller.EditSessionNameFragment.OnSessionNameInsertedListener}
      * modifica il nome della sessione e aggiorna la lista
-     * @param nome il nome da salvare
+     *
+     * @param nome      il nome da salvare
      * @param sessionID l'ID della sessione da rinominare
      */
     @Override
     public void onSessionNameInserted(String nome, String sessionID) {
         Controller.getInstance().renameEvent(sessionID, nome);
-        SessionDetailsFragment sdf=(SessionDetailsFragment )getFragmentManager().findFragmentByTag(SESSION_DETAILS_FRAGMENT_TAG);
+        SessionDetailsFragment sdf = (SessionDetailsFragment) getFragmentManager().findFragmentByTag(SESSION_DETAILS_FRAGMENT_TAG);
         sdf.updateNameView(nome);
     }
 
@@ -151,8 +147,8 @@ public class UI3 extends Activity implements ActiveSessionFragment.OnFallDetecte
      */
     @Override
     public void onEmailSent() {
-        FallFragment ff=(FallFragment)getFragmentManager().findFragmentByTag(FALLS_LIST_FRAGMENT_TAG);
-        if(ff!=null)
+        FallFragment ff = (FallFragment) getFragmentManager().findFragmentByTag(FALLS_LIST_FRAGMENT_TAG);
+        if (ff != null)
             ff.startlist();
     }
 
@@ -161,9 +157,9 @@ public class UI3 extends Activity implements ActiveSessionFragment.OnFallDetecte
      */
     @Override
     public void onFallDetect() {
-        FallFragment ff=(FallFragment)getFragmentManager().findFragmentByTag(FALLS_LIST_FRAGMENT_TAG);
-        Log.d("UI3","aggiorno fall");
-        if(ff!=null)
+        FallFragment ff = (FallFragment) getFragmentManager().findFragmentByTag(FALLS_LIST_FRAGMENT_TAG);
+        Log.d("UI3", "aggiorno fall");
+        if (ff != null)
             ff.startlist();
     }
 }
