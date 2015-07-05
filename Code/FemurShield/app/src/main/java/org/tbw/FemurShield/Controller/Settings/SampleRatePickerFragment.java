@@ -29,7 +29,6 @@ public class SampleRatePickerFragment extends DialogFragment implements DialogIn
         // inizializzo l'oggetto per salvare e leggere i valori dell'orologio
         prefs=new PreferencesEditor(getActivity());
         //carico i valori precedenti o imposto a meta
-        //TODO vedere quale e un valore di default adatto
         int progress=prefs.getSamplingRate();
         AlertDialog.Builder alert = new AlertDialog.Builder(getActivity(), R.style.AppDialogTheme);
         final Context themeContext = getActivity();

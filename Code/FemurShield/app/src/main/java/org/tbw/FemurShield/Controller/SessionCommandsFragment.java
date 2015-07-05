@@ -112,7 +112,6 @@ public class SessionCommandsFragment extends Fragment {
     }
 
     public void onRecClick(){
-        //TODO: business logic
         Controller.getInstance().CreateSession();
 
         onPlayClick();
@@ -126,7 +125,6 @@ public class SessionCommandsFragment extends Fragment {
     }
 
     public void onPauseClick(){
-        //TODO: business logic
         Controller.getInstance().PauseSession(getActivity());
 
         //modifico le visibilita' dei bottoni di controllo
@@ -140,7 +138,6 @@ public class SessionCommandsFragment extends Fragment {
     }
 
     public void onPlayClick(){
-        //TODO: business logic
         Controller.getInstance().StartSession(getActivity());
 
         //modifico le visibilita' dei bottoni di controllo
@@ -153,7 +150,6 @@ public class SessionCommandsFragment extends Fragment {
     }
 
     public void onStopClick(){
-        //TODO: business logic
         SignatureImpl si=SignatureImpl.getInstance(SessionManager.getInstance().getActiveSession().getDataTime());
         si.stopDrawing();
         Controller.getInstance().StopSession(getActivity());
