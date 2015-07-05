@@ -75,9 +75,6 @@ public class SettingsFragment extends ListFragment {
         mItems.add(new SettingListItem(resources.getDrawable(R.drawable.alarm),
                 getString(R.string.title_alarm),alarmMessage));
 
-        //TODO da togliere alla fine
-        mItems.add(new SettingListItem(resources.getDrawable(R.drawable.fall),
-                "Simula Caduta", "Simula caduta per motivi di debug"));
 
         //imposto l'adapter
         mAdapter=new SettingListAdapter(getActivity(), mItems);

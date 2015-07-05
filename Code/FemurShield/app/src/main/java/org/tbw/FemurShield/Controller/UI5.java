@@ -310,12 +310,6 @@ public class UI5 extends Activity implements SettingsFragment.OnOptionSelectedLi
             DurationFragment duration = new DurationFragment();
             duration.show(getFragmentManager(), "DurationPicker");
         }
-        if (s.title.equalsIgnoreCase("Simula Caduta"))//TODO RIMUOVERE
-        {
-            final double[] position=new double[2];
-            final Fall f = new Fall(null, null, null);
-            Controller.getNotification().NotifyFall(f);
-        }
         if (s.title.equalsIgnoreCase(getString(R.string.title_email_recipient))) {
             EmailFragment emailFragment = EmailFragment.newInstance();
             FragmentTransaction transaction = getFragmentManager().beginTransaction();
