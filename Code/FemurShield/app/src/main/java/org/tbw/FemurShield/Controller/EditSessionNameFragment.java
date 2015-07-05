@@ -14,7 +14,10 @@ import android.widget.Toast;
 
 import org.tbw.FemurShield.R;
 
-
+/**
+ * Fragment che gestisce l'inserimento di un nuovo nome per una sessione
+ * @author Alessandro Moro
+ */
 public class EditSessionNameFragment extends DialogFragment implements DialogInterface.OnClickListener{
 
     private OnSessionNameInsertedListener mCallback;
