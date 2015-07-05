@@ -26,6 +26,7 @@ public class UI3 extends Activity implements ActiveSessionFragment.OnFallDetecte
     public final static String FALLS_LIST_FRAGMENT_TAG = "mFallsListFragment";
     public final static String SESSION_DETAILS_FRAGMENT_TAG = "mSessionDetailsFragment";
     public final static String SESSION_COMMANDS_FRAGMENT_TAG = "mSessionCommandsFragment";
+    private boolean shownToast=false;
 
     private String thisData;
 
@@ -34,9 +35,12 @@ public class UI3 extends Activity implements ActiveSessionFragment.OnFallDetecte
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ui3);
         PreferencesEditor pe = new PreferencesEditor(this);
-        if (pe.getEmailContactsNumber() < 1)
-            Toast.makeText(this, getString(R.string.no_contacts_warning), Toast.LENGTH_SHORT).show();
-        checkGPS();
+        if(!shownToast) {
+            if (pe.getEmailContactsNumber() < 1)
+                Toast.makeText(this, getString(R.string.no_contacts_warning), Toast.LENGTH_SHORT).show();
+            checkGPS();
+            shownToast=true;
+        }
 
         if (findViewById(R.id.ui3rootLayout) != null) {
 

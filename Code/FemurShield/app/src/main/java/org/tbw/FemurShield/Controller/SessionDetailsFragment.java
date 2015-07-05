@@ -123,40 +123,52 @@ public class SessionDetailsFragment extends Fragment
             tvOra=(TextView) getView().findViewById(R.id.tvSessionTime);
             tvDurata = (TextView) getView().findViewById(R.id.tvSessionDuration);
             ivGrafico = (ImageView) getView().findViewById(R.id.ivGraficoSessione);
+            if(!thisData.equalsIgnoreCase(UI1.SESSION_EMPTY)) {
 
-            tvNome.setText(session.getName());
+                tvNome.setVisibility(View.VISIBLE);
+                tvData.setVisibility(View.VISIBLE);
+                tvOra.setVisibility(View.VISIBLE);
+                tvDurata.setVisibility(View.VISIBLE);
+                ivGrafico.setVisibility(View.VISIBLE);
 
+                tvNome.setText(session.getName());
 
-            try {
-                sdf = new SimpleDateFormat(Session.datePattern);
-                Date timestamp = sdf.parse(session.getDataTime());
-                tvData.setText("Iniziata il "+dateFormat.format(timestamp)+" ");
-                tvOra.setText("alle ore "+hourFormat.format(timestamp));
-            } catch (ParseException e) {
-                Log.e(TAG, "Errore recupero data sessione ");
-            }
+                try {
+                    sdf = new SimpleDateFormat(Session.datePattern);
+                    Date timestamp = sdf.parse(session.getDataTime());
+                    tvData.setText("Iniziata il " + dateFormat.format(timestamp) + " ");
+                    tvOra.setText("alle ore " + hourFormat.format(timestamp));
+                } catch (ParseException e) {
+                    Log.e(TAG, "Errore recupero data sessione ");
+                }
 
-            if(ui_mode==UI_2_MODE)
+                if (ui_mode == UI_2_MODE) {
+                    long timeElapsed = session.getDuration();
+                    int hours = (int) (timeElapsed / 3600000);
+                    String h = (("" + hours).length() == 1) ? "0" + hours : "" + hours;
+                    int minutes = (int) (timeElapsed - hours * 3600000) / 60000;
+                    String m = (("" + minutes).length() == 1) ? "0" + minutes : "" + minutes;
+                    int seconds = (int) (timeElapsed - hours * 3600000 - minutes * 60000) / 1000;
+                    String se = (("" + seconds).length() == 1) ? "0" + seconds : "" + seconds;
+                    String durata = "" + h + ":" + m + ":" + se;
+                    tvDurata.setText("Durata Sessione: " + durata);
+
+                    Bitmap temp;
+                    if ((temp = BitmapCache.getInstance().getBitmapFromMemCache(thisData)) != null)
+                        ivGrafico.setImageBitmap(temp);
+                    else
+                        loadSessionBitmap(R.id.ivGraficoSessione);
+                } else {
+                    tvDurata.setVisibility(View.GONE);
+                    ivGrafico.setVisibility(View.GONE);
+                }
+            }else
             {
-                long timeElapsed=session.getDuration();
-                int hours = (int) (timeElapsed / 3600000);
-                String h=((""+hours).length()==1)?"0"+hours: ""+hours;
-                int minutes = (int) (timeElapsed - hours * 3600000) / 60000;
-                String m=((""+minutes).length()==1)?"0"+minutes: ""+minutes;
-                int seconds = (int) (timeElapsed - hours * 3600000 - minutes * 60000) / 1000;
-                String se=((""+seconds).length()==1)?"0"+seconds: ""+seconds;
-                String durata=""+h+":"+m+":"+se;
-                tvDurata.setText("Durata Sessione: "+durata);
-
-                Bitmap temp;
-                if((temp=BitmapCache.getInstance().getBitmapFromMemCache(thisData))!=null)
-                    ivGrafico.setImageBitmap(temp);
-                else
-                    loadSessionBitmap(R.id.ivGraficoSessione);
-            }
-            else {
-                tvDurata.setVisibility(View.GONE);
-                ivGrafico.setVisibility(View.GONE);
+                tvNome.setVisibility(View.INVISIBLE);
+                tvData.setVisibility(View.INVISIBLE);
+                tvOra.setVisibility(View.INVISIBLE);
+                tvDurata.setVisibility(View.INVISIBLE);
+                ivGrafico.setVisibility(View.INVISIBLE);
             }
             getView().invalidate();
         }
