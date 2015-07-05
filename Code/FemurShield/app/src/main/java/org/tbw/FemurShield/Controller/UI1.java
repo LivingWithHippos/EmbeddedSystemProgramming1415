@@ -199,12 +199,20 @@ public class UI1 extends Activity implements FallFragment.OnFallClickListener,Se
             SessionDetailsFragment sdf = (SessionDetailsFragment) getFragmentManager().findFragmentByTag(SESSION_DETAILS_FRAGMENT_TAG);
             FallFragment ff = (FallFragment) getFragmentManager().findFragmentByTag(FALLS_LIST_FRAGMENT_TAG);
             lastChosenSession = sessionID;
-            sdf.setSession(sessionID);
-            sdf.startDetails();
-            ff.setSession(sessionID);
-            ff.startlist();
-            showHideFragment(sdf, SHOW_FRAGMENT);
-            showHideFragment(ff, SHOW_FRAGMENT);
+            if (sessionID.equalsIgnoreCase(SESSION_EMPTY))
+            {
+                showHideFragment(sdf, HIDE_FRAGMENT);
+                showHideFragment(ff, HIDE_FRAGMENT);
+            }
+            else
+            {
+                sdf.setSession(sessionID);
+                sdf.startDetails();
+                ff.setSession(sessionID);
+                ff.startlist();
+                showHideFragment(sdf, SHOW_FRAGMENT);
+                showHideFragment(ff, SHOW_FRAGMENT);
+            }
         }
     }
 
@@ -238,7 +246,6 @@ public class UI1 extends Activity implements FallFragment.OnFallClickListener,Se
                 }
             }
 
-            //ft.setCustomAnimations(android.R.animator.fade_in,android.R.animator.fade_out);
         }
 
 
@@ -278,6 +285,8 @@ public class UI1 extends Activity implements FallFragment.OnFallClickListener,Se
             Controller.getInstance().deleteEvent(sessionID);
             SessionsListFragment slf=(SessionsListFragment)getFragmentManager().findFragmentByTag(SESSIONS_FRAGMENT_TAG);
             slf.aggiornaLista();
+            if (lastChosenSession.equalsIgnoreCase(sessionID))
+                loadUI2fragments(SESSION_EMPTY);
         }
         else {
             if (type == SessionOptionDialog.RENAME_SESSION) {
