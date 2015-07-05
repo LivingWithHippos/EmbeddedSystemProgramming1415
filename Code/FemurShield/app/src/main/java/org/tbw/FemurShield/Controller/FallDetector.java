@@ -176,7 +176,6 @@ public class FallDetector extends IntentService implements SensorEventListener {
             //fermo il listener
             sensorManager.unregisterListener(this, accelerometro);
             sensorManager.unregisterListener(this, giroscopio);
-            //TODO azzero tutti i valori
         }
     }
 
@@ -433,7 +432,6 @@ public class FallDetector extends IntentService implements SensorEventListener {
                     a quel punto passo ad IDENTIFIED atrimenti a NONE ed i valori nel buffer di caduta
                     vengono spostati sul buffer di beforefall.*/
                     if (bufferValueFallAcc.get(X_VALUE).size() * tempocampionamento > DURATA_IMPATTO_ACC) {
-                        //TODO controllare anche se ho avuto un tot di valori (vedi commento sopra)
                         impactstate = IDENTIFIED;
                         Log.println(Log.INFO, "impatto identified", "");
                     }
@@ -448,7 +446,6 @@ public class FallDetector extends IntentService implements SensorEventListener {
                     //stato, altrimenti la imposto nuovamente a NONE e i valori del buffer dopo la
                     // caduta li sposto su quello dei valori prima della caduta (eliminando quelli troppo vecchi)
                     if (countlifeacc * tempocampionamento > DISTANZA_CADUTA_GYRO_IMPATTO_CADUTA_ACC) {
-                        //TODO continuare a registrare i valori
                         impactstate = NONE;
                         countlifeacc = 0;
                         Log.println(Log.INFO, "impatto terminata", "");
