@@ -1,0 +1,46 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    tools:context="org.tbw.FemurShield.Controller.SessionCommandsFragment"
+    android:padding="16dp"
+    >
+
+    <ImageView
+        android:layout_width="@dimen/button_image"
+        android:layout_height="@dimen/button_image"
+        android:id="@+id/recbtnun1"
+        android:background="@mipmap/rec"
+        android:layout_centerHorizontal="true"
+        android:clickable="true"
+        android:visibility="visible" />
+
+    <ImageView
+        android:layout_width="@dimen/button_image"
+        android:layout_height="@dimen/button_image"
+        android:id="@+id/pausebtnui1"
+        android:background="@mipmap/pause"
+        android:layout_centerHorizontal="true"
+        android:clickable="true"
+        android:visibility="invisible" />
+
+    <ImageView
+        android:layout_width="@dimen/button_image"
+        android:layout_height="@dimen/button_image"
+        android:id="@+id/startbtnui1"
+        android:background="@mipmap/play"
+        android:layout_centerHorizontal="true"
+        android:clickable="true"
+        android:visibility="invisible" />
+
+    <ImageView
+        android:layout_width="@dimen/button_image"
+        android:layout_height="@dimen/button_image"
+        android:layout_marginRight="40dp"
+        android:id="@+id/stopbntui1"
+        android:background="@mipmap/stop"
+        android:clickable="true"
+        android:visibility="invisible"
+        android:layout_alignTop="@+id/recbtnun1"
+        android:layout_toLeftOf="@+id/pausebtnui1" />
+</RelativeLayout>
