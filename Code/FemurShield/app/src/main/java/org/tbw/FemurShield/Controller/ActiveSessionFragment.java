@@ -167,7 +167,7 @@ public class ActiveSessionFragment extends Fragment implements org.tbw.FemurShie
                 if(isAdded())
                  fallCallback.onFallDetect();
              }
-            else//l'email per un fall è stata inviata, lo segnalo all'activity
+            else//l'email per un fall e' stata inviata, lo segnalo all'activity
                 if(o instanceof EmailSentSegnalation){
                     if(isAdded())
                         emailCallback.onEmailSent();
@@ -237,14 +237,14 @@ public class ActiveSessionFragment extends Fragment implements org.tbw.FemurShie
     public interface OnEmailSentListener
     {
         /**
-         * Segnalo all'activity che ho l'email per un fall è stata inviata
+         * Segnalo all'activity che ho l'email per un fall ï¿½ stata inviata
          */
         public void onEmailSent();
     }
     public interface OnFallDetectedListener
     {
         /**
-         * Segnalo all'activity che c'è stato un fall
+         * Segnalo all'activity che c'ï¿½ stato un fall
          */
         public void onFallDetect();
     }

@@ -208,7 +208,7 @@ public class FallDetector extends IntentService implements SensorEventListener {
 
         if(fall){ //attendo che i valori di rumore della caduta si stabilizzino (qualche millisecondo)
             cycleAfterFall++;
-            if(cycleAfterFall>70) {
+            if(cycleAfterFall>50000/tempocampionamento) {
                 fall = false;
                 cycleAfterFall=0;
             }
