@@ -1,18 +1,4 @@
 <resources>
-    <!-- Default screen margins, per the Android Design guidelines. -->
-    <dimen name="activity_horizontal_margin">16dp</dimen>
-    <dimen name="activity_vertical_margin">16dp</dimen>
+    <!-- Large screen margins, per the Android Design guidelines. -->
     <dimen name="button_image">80dp</dimen> <!-- bottoni ui1 stop start rec pause. -->
-    <dimen name="height_state_image_list">30dp</dimen> <!-- immagine lell'elemento della lista che identifica lo stato della sessione attiva. -->
-    <dimen name="width_state_image_list">16dp</dimen> <!-- immagine lell'elemento della lista che identifica lo stato della sessione attiva. -->
-    <dimen name="signature_list">70dp</dimen> <!-- immagine Signature lista ui1 . -->
-    <dimen name="nome_sessione_lista">22dp</dimen>
-    <dimen name="testo_lista">17dp</dimen>
-    <dimen name="round_button_diameter">56dp</dimen>
-    <dimen name="button_email_margin">16dp</dimen>
-    <dimen name="email_button_text_size">30dp</dimen>
-    <dimen name="email_button_height_normal">2dp</dimen>
-    <dimen name="email_button_height_pressed">5dp</dimen>
-    <dimen name="altezza_grafico">190dp</dimen>
-    <dimen name="small_button_padding">10dp</dimen>
 </resources>
