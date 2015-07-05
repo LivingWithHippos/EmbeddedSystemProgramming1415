@@ -139,7 +139,8 @@ public class PreferencesEditor {
             mails = (HashMap) objectInputStream.readObject();
             objectInputStream.close();
         } catch (Exception e) {
-            Log.e("FemurShield", "Errore Di lettura email: " + e.getMessage());
+            // può essere che non sia stato inserito ancora nessun contatto
+            // Log.e("FemurShield", "Errore Di lettura email: " + e.getMessage());
         }
 
         return mails;
