@@ -37,7 +37,7 @@ public class LocationLocator
         if(lm==null)
             lm = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
 
-        // lancio exception se gps o network non disponibili
+        // Controllo se gps o network non disponibili
         try
         {
             gps_on=lm.isProviderEnabled(LocationManager.GPS_PROVIDER);

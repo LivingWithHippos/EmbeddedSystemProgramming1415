@@ -2,7 +2,9 @@ package org.tbw.FemurShield.Controller;
 
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -34,6 +36,7 @@ public class UI3 extends Activity implements ActiveSessionFragment.OnFallDetecte
         PreferencesEditor pe = new PreferencesEditor(this);
         if (pe.getEmailContactsNumber() < 1)
             Toast.makeText(this, getString(R.string.no_contacts_warning), Toast.LENGTH_SHORT).show();
+        checkGPS();
 
         if (findViewById(R.id.ui3rootLayout) != null) {
 
@@ -55,6 +58,23 @@ public class UI3 extends Activity implements ActiveSessionFragment.OnFallDetecte
                 finish();
             }
         }
+    }
+
+    /**
+     * Controlla che sia acceso il GPS e manda messaggio d'errore in caso contrario
+     */
+    private void checkGPS()
+    {
+        try
+        {
+            LocationManager lm;
+            lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+            boolean gps_on=lm.isProviderEnabled(LocationManager.GPS_PROVIDER);
+            if(!gps_on)
+                Toast.makeText(this,getString(R.string.gps_off),Toast.LENGTH_SHORT).show();
+        }
+        catch(Exception ex){}
+
     }
 
     @Override
