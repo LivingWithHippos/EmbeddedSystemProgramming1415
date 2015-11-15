@@ -8,9 +8,9 @@ import android.util.LruCache;
  *
  * @author Marco Biasin
  */
-public class BitmapCache extends LruCache<String,Bitmap>
-{
+public class BitmapCache extends LruCache<String, Bitmap> {
     private static BitmapCache instance;
+
     /**
      * @param maxSize la massima dimensione utilizzabile
      */
@@ -18,9 +18,8 @@ public class BitmapCache extends LruCache<String,Bitmap>
         super(maxSize);
     }
 
-    public static BitmapCache getInstance()
-    {
-        if(instance!=null)
+    public static BitmapCache getInstance() {
+        if (instance != null)
             return instance;
 
         //Kb di memoria disponibili
@@ -28,7 +27,7 @@ public class BitmapCache extends LruCache<String,Bitmap>
         //ne uso 1/8
         final int cacheSize = maxMemory / 8;
 
-        return instance=new BitmapCache(cacheSize);
+        return instance = new BitmapCache(cacheSize);
     }
 
     @Override
@@ -39,7 +38,8 @@ public class BitmapCache extends LruCache<String,Bitmap>
 
     /**
      * Aggiungo una immagine alla cache se non presente
-     * @param key il nome dell'immagine
+     *
+     * @param key    il nome dell'immagine
      * @param bitmap l'immagine
      */
     public void addBitmapToMemoryCache(String key, Bitmap bitmap) {
@@ -49,12 +49,13 @@ public class BitmapCache extends LruCache<String,Bitmap>
     }
 
     /**
-     *Recupera l'immagine se presente nella cache
+     * Recupera l'immagine se presente nella cache
+     *
      * @param key il nome dell'immagine
      * @return l'immagine o null se non presente
      */
     public Bitmap getBitmapFromMemCache(String key) {
-        String temp=key.replaceAll("/", "_");
+        String temp = key.replaceAll("/", "_");
         return get(temp);
     }
 

@@ -1,7 +1,6 @@
 package org.tbw.FemurShield.Controller.Settings;
 
 import android.content.Context;
-import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,8 +14,8 @@ import java.util.List;
 
 /**
  * @author Marco Biasin
- *
- * Adapter per gestire gli elementi della lista impostazioni sfruttando il pattern View Holder
+ *         <p>
+ *         Adapter per gestire gli elementi della lista impostazioni sfruttando il pattern View Holder
  */
 public class SettingListAdapter extends ArrayAdapter {
 
@@ -29,7 +28,7 @@ public class SettingListAdapter extends ArrayAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder viewHolder;
 
-        if(convertView == null) {
+        if (convertView == null) {
             // inflate the GridView item layout
             LayoutInflater inflater = LayoutInflater.from(getContext());
             convertView = inflater.inflate(R.layout.settings_list_item, parent, false);
@@ -46,7 +45,7 @@ public class SettingListAdapter extends ArrayAdapter {
         }
 
         // update the item view
-        SettingListItem item =(SettingListItem) getItem(position);
+        SettingListItem item = (SettingListItem) getItem(position);
         viewHolder.ivIcon.setImageDrawable(item.icon);
         viewHolder.tvTitle.setText(item.title);
         viewHolder.tvDescription.setText(item.description);
@@ -56,7 +55,7 @@ public class SettingListAdapter extends ArrayAdapter {
 
     /**
      * Implementa il pattern View-Holder
-     *
+     * <p>
      * vedi http://developer.android.com/training/improving-layouts/smooth-scrolling.html#ViewHolder
      */
     private static class ViewHolder {

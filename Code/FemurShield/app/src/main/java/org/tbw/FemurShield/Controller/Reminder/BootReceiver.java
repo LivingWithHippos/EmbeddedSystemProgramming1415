@@ -6,7 +6,6 @@ import android.content.Intent;
 
 
 /**
- *
  * Classe che reimposta l'allarme
  * ad ogni riavvio del dispositivo
  * (gli allarmi vengono cancellati
@@ -25,11 +24,12 @@ public class BootReceiver extends BroadcastReceiver {
 
     /**
      * Lancia il servizio che si occupa di far partire il reminder all'orario prestabilito
+     *
      * @param context il context dell'applicazione
      */
     public static void setAlarm(Context context) {
         Intent alarmService = new Intent(context, ReminderService.class);
         alarmService.setAction(ReminderService.CREATE);
         context.startService(alarmService);
-     }
+    }
 }

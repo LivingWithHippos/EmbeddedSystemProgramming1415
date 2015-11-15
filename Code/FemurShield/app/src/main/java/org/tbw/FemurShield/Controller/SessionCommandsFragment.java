@@ -5,7 +5,6 @@ import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,12 +21,12 @@ import org.tbw.FemurShield.R;
 public class SessionCommandsFragment extends Fragment {
 
 
-    private ImageView rec,pause,play,stop;
+    private ImageView rec, pause, play, stop;
     private ImageView[] buttons;
 
-    public final static int BUTTON_REC=0,BUTTON_PAUSE=1,BUTTON_PLAY=2,BUTTON_STOP=3;
-    public static final String UI_MODE="ui_mode";
-    public static final boolean MODE_BIG=true,MODE_SMALL=false;
+    public final static int BUTTON_REC = 0, BUTTON_PAUSE = 1, BUTTON_PLAY = 2, BUTTON_STOP = 3;
+    public static final String UI_MODE = "ui_mode";
+    public static final boolean MODE_BIG = true, MODE_SMALL = false;
 
     private boolean uiMode;
 
@@ -43,24 +42,22 @@ public class SessionCommandsFragment extends Fragment {
     }
 
     @Override
-    public void onResume(){
+    public void onResume() {
         super.onResume();
 
-        if(Controller.getInstance().isRecording()) {
+        if (Controller.getInstance().isRecording()) {
             if (Controller.getInstance().isRunning()) {
                 rec.setVisibility(ImageView.INVISIBLE);
                 pause.setVisibility(ImageView.VISIBLE);
                 stop.setVisibility(ImageView.VISIBLE);
                 play.setVisibility(ImageView.INVISIBLE);
-            }
-            else{
+            } else {
                 rec.setVisibility(ImageView.INVISIBLE);
                 pause.setVisibility(ImageView.INVISIBLE);
                 stop.setVisibility(ImageView.VISIBLE);
                 play.setVisibility(ImageView.VISIBLE);
             }
-        }
-        else{
+        } else {
             rec.setVisibility(ImageView.VISIBLE);
             pause.setVisibility(ImageView.INVISIBLE);
             stop.setVisibility(ImageView.INVISIBLE);
@@ -72,26 +69,24 @@ public class SessionCommandsFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        uiMode=getArguments().getBoolean(UI_MODE);
+        uiMode = getArguments().getBoolean(UI_MODE);
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View rootView = inflater.inflate(R.layout.fragment_session_commands, container, false);
 
-        rec= (ImageView) rootView.findViewById(R.id.recbtnun1);
-        play= (ImageView) rootView.findViewById(R.id.startbtnui1);
-        pause= (ImageView) rootView.findViewById(R.id.pausebtnui1);
-        stop= (ImageView) rootView.findViewById(R.id.stopbntui1);
-        buttons=new ImageView[]{rec,play,pause,stop};
-        if(uiMode==MODE_SMALL)
-        {
-            for(ImageView iv:buttons)
-            {
-                ViewGroup.LayoutParams params=iv.getLayoutParams();
-                params.width = convertDpToPx(47,iv);
-                params.height = convertDpToPx(47,iv);
+        rec = (ImageView) rootView.findViewById(R.id.recbtnun1);
+        play = (ImageView) rootView.findViewById(R.id.startbtnui1);
+        pause = (ImageView) rootView.findViewById(R.id.pausebtnui1);
+        stop = (ImageView) rootView.findViewById(R.id.stopbntui1);
+        buttons = new ImageView[]{rec, play, pause, stop};
+        if (uiMode == MODE_SMALL) {
+            for (ImageView iv : buttons) {
+                ViewGroup.LayoutParams params = iv.getLayoutParams();
+                params.width = convertDpToPx(47, iv);
+                params.height = convertDpToPx(47, iv);
                 iv.setLayoutParams(params);
             }
 
@@ -111,20 +106,20 @@ public class SessionCommandsFragment extends Fragment {
         return Math.round(pixels);
     }
 
-    public void onRecClick(){
+    public void onRecClick() {
         Controller.getInstance().CreateSession();
 
         onPlayClick();
 
         //aggiorno la listView
-        if(isAdded())
+        if (isAdded())
             mCallback.aggiornaLista(BUTTON_REC);
-        Intent intent=new Intent(getActivity(),UI3.class);
+        Intent intent = new Intent(getActivity(), UI3.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT | Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
     }
 
-    public void onPauseClick(){
+    public void onPauseClick() {
         Controller.getInstance().PauseSession(getActivity());
 
         //modifico le visibilita' dei bottoni di controllo
@@ -132,12 +127,12 @@ public class SessionCommandsFragment extends Fragment {
         pause.setVisibility(ImageView.INVISIBLE);
         stop.setVisibility(ImageView.VISIBLE);
         play.setVisibility(ImageView.VISIBLE);
-        if(isAdded())
+        if (isAdded())
             mCallback.aggiornaLista(BUTTON_PAUSE);
 
     }
 
-    public void onPlayClick(){
+    public void onPlayClick() {
         Controller.getInstance().StartSession(getActivity());
 
         //modifico le visibilita' dei bottoni di controllo
@@ -145,12 +140,12 @@ public class SessionCommandsFragment extends Fragment {
         pause.setVisibility(ImageView.VISIBLE);
         stop.setVisibility(ImageView.VISIBLE);
         play.setVisibility(ImageView.INVISIBLE);
-        if(isAdded())
+        if (isAdded())
             mCallback.aggiornaLista(BUTTON_PLAY);
     }
 
-    public void onStopClick(){
-        SignatureImpl si=SignatureImpl.getInstance(SessionManager.getInstance().getActiveSession().getDataTime());
+    public void onStopClick() {
+        SignatureImpl si = SignatureImpl.getInstance(SessionManager.getInstance().getActiveSession().getDataTime());
         si.stopDrawing();
         Controller.getInstance().StopSession(getActivity());
 
@@ -161,7 +156,7 @@ public class SessionCommandsFragment extends Fragment {
         play.setVisibility(ImageView.INVISIBLE);
 
         //aggiorno la listView
-        if(isAdded())
+        if (isAdded())
             mCallback.aggiornaLista(BUTTON_STOP);
     }
 
@@ -183,24 +178,29 @@ public class SessionCommandsFragment extends Fragment {
         mCallback = null;
     }
 
-    class CommandClickListener implements ImageView.OnClickListener
-    {
+    class CommandClickListener implements ImageView.OnClickListener {
 
         @Override
         public void onClick(View v) {
 
-            switch (v.getId())
-            {
-                case R.id.recbtnun1: onRecClick(); break;
-                case R.id.startbtnui1: onPlayClick(); break;
-                case R.id.pausebtnui1: onPauseClick(); break;
-                case R.id.stopbntui1: onStopClick(); break;
+            switch (v.getId()) {
+                case R.id.recbtnun1:
+                    onRecClick();
+                    break;
+                case R.id.startbtnui1:
+                    onPlayClick();
+                    break;
+                case R.id.pausebtnui1:
+                    onPauseClick();
+                    break;
+                case R.id.stopbntui1:
+                    onStopClick();
+                    break;
             }
         }
     }
 
-    public interface OnCommandUpdatedListener
-    {
+    public interface OnCommandUpdatedListener {
         public void aggiornaLista(int buttonPressed);
     }
 }

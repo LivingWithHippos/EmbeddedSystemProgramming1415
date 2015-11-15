@@ -23,7 +23,7 @@ import org.tbw.FemurShield.R;
  *
  * @author Marco Biasin
  */
-public class DurationFragment extends DialogFragment implements DialogInterface.OnClickListener{
+public class DurationFragment extends DialogFragment implements DialogInterface.OnClickListener {
 
     //per salvare e caricare i dati
     private PreferencesEditor prefs;
@@ -35,7 +35,7 @@ public class DurationFragment extends DialogFragment implements DialogInterface.
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 
-        prefs=new PreferencesEditor(getActivity());
+        prefs = new PreferencesEditor(getActivity());
         //classe per creare ALert Dialog, ci applico il tema di sistema
         AlertDialog.Builder alert = new AlertDialog.Builder(getActivity(), R.style.AppDialogTheme);
         final Context themeContext = getActivity();
@@ -51,32 +51,31 @@ public class DurationFragment extends DialogFragment implements DialogInterface.
      * con onClick comunico tramite callback all'attivita' che l'utente ha premuto ok e che durata ha scelto
      *
      * @param which il tasto premuto (ok o cancella)
-     * */
+     */
     @Override
     public void onClick(DialogInterface dialog, int which) {
         switch (which) {
             case DialogInterface.BUTTON_POSITIVE:
                 if (mCallback != null) {
-                    mEditText=(EditText)getDialog().findViewById(R.id.etDuration);
-                    String temp=mEditText.getText().toString();
-                    if(temp!=null)
-                    {
-                        int duration=prefs.getSessionDuration();
+                    mEditText = (EditText) getDialog().findViewById(R.id.etDuration);
+                    String temp = mEditText.getText().toString();
+                    if (temp != null) {
+                        int duration = prefs.getSessionDuration();
                         try {
                             duration = Integer.parseInt(temp.trim());
-                            if(duration<1) {
+                            if (duration < 1) {
                                 duration = 1;
-                                Toast.makeText(getActivity(),getString(R.string.duration_too_low),Toast.LENGTH_LONG).show();
+                                Toast.makeText(getActivity(), getString(R.string.duration_too_low), Toast.LENGTH_LONG).show();
                             }
-                            if(duration>24) {
+                            if (duration > 24) {
                                 duration = 24;
-                                Toast.makeText(getActivity(),getString(R.string.duration_too_high),Toast.LENGTH_LONG).show();
+                                Toast.makeText(getActivity(), getString(R.string.duration_too_high), Toast.LENGTH_LONG).show();
                             }
                             mCallback.onDurationChanged(duration);
 
-                        }catch(NumberFormatException nfe){
-                                Log.e("FemurShield","Errore di conversione string a int");
-                            }
+                        } catch (NumberFormatException nfe) {
+                            Log.e("FemurShield", "Errore di conversione string a int");
+                        }
 
 
                     }
@@ -85,7 +84,9 @@ public class DurationFragment extends DialogFragment implements DialogInterface.
         }
     }
 
-    /** Questo metodo controlla che l'attivita' abbia implementato l'interfaccia per il callback*/
+    /**
+     * Questo metodo controlla che l'attivita' abbia implementato l'interfaccia per il callback
+     */
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
@@ -106,7 +107,8 @@ public class DurationFragment extends DialogFragment implements DialogInterface.
 
     /**
      * Metodo per convertire i dp in pixel
-     * @param dp i dp da convertire
+     *
+     * @param dp   i dp da convertire
      * @param view una view qualunque per ottenere un riferimento alle proprietà dello schermo
      * @return i pixel corispondenti
      */

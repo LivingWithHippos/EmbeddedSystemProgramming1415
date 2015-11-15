@@ -25,19 +25,18 @@ import java.util.Date;
  * @author Luca Vianello
  */
 
-public class SessionDetailsFragment extends Fragment
-{
+public class SessionDetailsFragment extends Fragment {
     private static final String TAG = "SessionDetailsFragment";
     private Session session;
     private boolean ui_mode;
     private String thisData;
 
-    public final static String UI_MODE="signature";
-    public final static boolean UI_2_MODE=true;
-    public final static boolean UI_3_MODE=false;
+    public final static String UI_MODE = "signature";
+    public final static boolean UI_2_MODE = true;
+    public final static boolean UI_3_MODE = false;
 
-    private String datePattern="dd/MM/yyyy";
-    private String hourPattern="HH:mm:ss";
+    private String datePattern = "dd/MM/yyyy";
+    private String hourPattern = "HH:mm:ss";
     private SimpleDateFormat dateFormat;
     private SimpleDateFormat hourFormat;
     private SimpleDateFormat sdf;
@@ -48,18 +47,17 @@ public class SessionDetailsFragment extends Fragment
     private TextView tvOra;
     private TextView tvDurata;
 
-    public SessionDetailsFragment()
-    {
+    public SessionDetailsFragment() {
     }
 
     /**
      * Metodo per ottenere una nuova istanza del Fragment
+     *
      * @param datatime il timestamp della sessione
-     * @param ui_mode se il fragment deve essere mostrato nella UI 2 o 3
+     * @param ui_mode  se il fragment deve essere mostrato nella UI 2 o 3
      * @return una nuova istanza del Fragment
      */
-    public static SessionDetailsFragment newIstance(String datatime,boolean ui_mode)
-    {
+    public static SessionDetailsFragment newIstance(String datatime, boolean ui_mode) {
         SessionDetailsFragment fragment = new SessionDetailsFragment();
         Bundle b = new Bundle();
         b.putString(UI2.SESSION_DATA_STAMP, datatime);
@@ -70,8 +68,7 @@ public class SessionDetailsFragment extends Fragment
 
 
     @Override
-    public void onCreate(Bundle savedInstanceState)
-    {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         dateFormat = new SimpleDateFormat(datePattern);
         hourFormat = new SimpleDateFormat(hourPattern);
@@ -81,8 +78,8 @@ public class SessionDetailsFragment extends Fragment
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         thisData = getArguments().getString(UI2.SESSION_DATA_STAMP);
-        ui_mode=getArguments().getBoolean(UI_MODE);
-        if(!thisData.equalsIgnoreCase(UI1.SESSION_EMPTY)) {
+        ui_mode = getArguments().getBoolean(UI_MODE);
+        if (!thisData.equalsIgnoreCase(UI1.SESSION_EMPTY)) {
             setSession(thisData);
             startDetails();
         }
@@ -90,40 +87,35 @@ public class SessionDetailsFragment extends Fragment
 
     /**
      * Imposta la sessione da rappresentare
+     *
      * @param date l'ID della sessione da recuperare
      */
-    public void setSession(String date)
-    {
+    public void setSession(String date) {
         ArrayList<Session> s = SessionManager.getInstance().getAllSessions();
-        if(s!= null)
-        {
-            for(Session sex : s)
-            {
-                if(sex.getDataTime().equalsIgnoreCase(date))
-                {
+        if (s != null) {
+            for (Session sex : s) {
+                if (sex.getDataTime().equalsIgnoreCase(date)) {
                     session = sex;
-                    thisData=date;
+                    thisData = date;
                     break;
                 }
             }
         }
-        if(session==null)
-            Log.e(TAG,getString(R.string.no_session_found));
+        if (session == null)
+            Log.e(TAG, getString(R.string.no_session_found));
     }
 
     /**
      * Inizializza il testo e le immagini del fragment
      */
-    public void startDetails()
-    {
-        if(session!=null)
-        {
+    public void startDetails() {
+        if (session != null) {
             tvNome = (TextView) getView().findViewById(R.id.tvSessionName);
-            tvData=(TextView) getView().findViewById(R.id.tvSessionDate);
-            tvOra=(TextView) getView().findViewById(R.id.tvSessionTime);
+            tvData = (TextView) getView().findViewById(R.id.tvSessionDate);
+            tvOra = (TextView) getView().findViewById(R.id.tvSessionTime);
             tvDurata = (TextView) getView().findViewById(R.id.tvSessionDuration);
             ivGrafico = (ImageView) getView().findViewById(R.id.ivGraficoSessione);
-            if(!thisData.equalsIgnoreCase(UI1.SESSION_EMPTY)) {
+            if (!thisData.equalsIgnoreCase(UI1.SESSION_EMPTY)) {
 
                 tvNome.setVisibility(View.VISIBLE);
                 tvData.setVisibility(View.VISIBLE);
@@ -162,8 +154,7 @@ public class SessionDetailsFragment extends Fragment
                     tvDurata.setVisibility(View.GONE);
                     ivGrafico.setVisibility(View.GONE);
                 }
-            }else
-            {
+            } else {
                 tvNome.setVisibility(View.INVISIBLE);
                 tvData.setVisibility(View.INVISIBLE);
                 tvOra.setVisibility(View.INVISIBLE);
@@ -178,25 +169,24 @@ public class SessionDetailsFragment extends Fragment
      * Carica dalla cache o dal disco l'immagine della sessione
      */
     public void loadSessionBitmap(int resId) {
-        SignatureLoaderTask slt = new SignatureLoaderTask(ivGrafico,thisData);
+        SignatureLoaderTask slt = new SignatureLoaderTask(ivGrafico, thisData);
         slt.execute(resId);
     }
 
     /**
      * Metodo che aggiorna il nome della sessione da mostrare
+     *
      * @param nome il nuovo nome
      */
-    public void updateNameView(String nome)
-    {
-        if(tvNome!=null) {
+    public void updateNameView(String nome) {
+        if (tvNome != null) {
             tvNome.setText(nome);
         }
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
-    {
-        View rootView = inflater.inflate(R.layout.fragment_session_details, container,false);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View rootView = inflater.inflate(R.layout.fragment_session_details, container, false);
         return rootView;
     }
 }

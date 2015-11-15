@@ -43,72 +43,73 @@ public class SettingsFragment extends ListFragment {
         Resources resources = getResources();
 
         // prefs serve a caricare le impostazioni salvate
-        prefs=new PreferencesEditor(getActivity());
+        prefs = new PreferencesEditor(getActivity());
 
         //aggiungo le voci alla lista
-        int newRate=prefs.getSamplingRate();
+        int newRate = prefs.getSamplingRate();
         mItems.add(new SettingListItem(resources.getDrawable(R.drawable.frequency),
                 getString(R.string.title_sample_rate),
-                getString(R.string.description_sample_rate_set_to)+" "+newRate+"%"));
+                getString(R.string.description_sample_rate_set_to) + " " + newRate + "%"));
 
-        int newDuration=prefs.getSessionDuration();
+        int newDuration = prefs.getSessionDuration();
         mItems.add(new SettingListItem(resources.getDrawable(R.drawable.duration),
                 getString(R.string.title_session_duration),
-                newDuration+(newDuration==1?" ora":" ore")));
+                newDuration + (newDuration == 1 ? " ora" : " ore")));
 
 
-        int temp=prefs.getEmailContactsNumber();
+        int temp = prefs.getEmailContactsNumber();
         mItems.add(new SettingListItem(resources.getDrawable(R.drawable.email),
                 getString(R.string.title_email_recipient),
-                temp+" "+(temp==1?"contatto presente":"contatti presenti")));
+                temp + " " + (temp == 1 ? "contatto presente" : "contatti presenti")));
 
         String alarmMessage;
-        if(isAlarmEnabled()) {
+        if (isAlarmEnabled()) {
             //per stampare i numeri nel formato 05:07 invece di 5:7
             DecimalFormat formatter = new DecimalFormat("00");
             String hour = formatter.format(prefs.getAlarmHour());
             String minute = formatter.format(prefs.getAlarmMinute());
-            alarmMessage=getString(R.string.description_alarm_set_to) + " " + hour + ":" + minute;
-        }else
-            alarmMessage=getString(R.string.alarm_disabled_message);
+            alarmMessage = getString(R.string.description_alarm_set_to) + " " + hour + ":" + minute;
+        } else
+            alarmMessage = getString(R.string.alarm_disabled_message);
 
         mItems.add(new SettingListItem(resources.getDrawable(R.drawable.alarm),
-                getString(R.string.title_alarm),alarmMessage));
+                getString(R.string.title_alarm), alarmMessage));
 
 
         //imposto l'adapter
-        mAdapter=new SettingListAdapter(getActivity(), mItems);
+        mAdapter = new SettingListAdapter(getActivity(), mItems);
         setListAdapter(mAdapter);
     }
 
     /**
      * Controlla che il servizio di allarme sia attivo.
+     *
      * @return true se e' attivo, false altrimenti
      */
-    private boolean isAlarmEnabled()
-    {
+    private boolean isAlarmEnabled() {
         ComponentName receiver = new ComponentName(getActivity(), BootReceiver.class);
         PackageManager pm = getActivity().getPackageManager();
-        int result=pm.getComponentEnabledSetting(receiver);
-        switch(result)
-        {
-            case PackageManager.COMPONENT_ENABLED_STATE_ENABLED: return true;
-            case PackageManager.COMPONENT_ENABLED_STATE_DISABLED: return false;
-            case PackageManager.COMPONENT_ENABLED_STATE_DEFAULT: return false;
-            default: return false;
+        int result = pm.getComponentEnabledSetting(receiver);
+        switch (result) {
+            case PackageManager.COMPONENT_ENABLED_STATE_ENABLED:
+                return true;
+            case PackageManager.COMPONENT_ENABLED_STATE_DISABLED:
+                return false;
+            case PackageManager.COMPONENT_ENABLED_STATE_DEFAULT:
+                return false;
+            default:
+                return false;
         }
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        for(SettingListItem s:mItems)
-        {
-            if(s.title.equalsIgnoreCase(getString(R.string.title_email_recipient)))
-            {
+        for (SettingListItem s : mItems) {
+            if (s.title.equalsIgnoreCase(getString(R.string.title_email_recipient))) {
                 //aggiorna la descrizione email
-                int temp=prefs.getEmailContactsNumber();
-                s.setDescription(temp+" "+(temp==1?"contatto presente":"contatti presenti"));
+                int temp = prefs.getEmailContactsNumber();
+                s.setDescription(temp + " " + (temp == 1 ? "contatto presente" : "contatti presenti"));
                 // dice alla lista di aggiornarsi dopo il cambiamento
                 mAdapter.notifyDataSetChanged();
                 break;
@@ -149,6 +150,7 @@ public class SettingsFragment extends ListFragment {
 
     /**
      * Rileva il click su un opzione e lo gestisce tramite callback
+     *
      * @param l
      * @param v
      * @param position
@@ -159,24 +161,22 @@ public class SettingsFragment extends ListFragment {
         // recupera l'elemento cliccato
         SettingListItem item = mItems.get(position);
 
-        if(mListener!=null&item!=null)
+        if (mListener != null & item != null)
             mListener.onOptionSelected(item);
     }
 
     /**
      * Aggiorna la descrizione dell'allarme dopo una sua modifica
-     * @param hour l'ora dell'allarme impostato
+     *
+     * @param hour   l'ora dell'allarme impostato
      * @param minute i minuti dell'allarme impostato
      */
-    public void updateAlarmTime(int hour,int minute)
-    {
-        for(SettingListItem s:mItems)
-        {
-            if(s.title.equalsIgnoreCase(getString(R.string.title_alarm)))
-            {
+    public void updateAlarmTime(int hour, int minute) {
+        for (SettingListItem s : mItems) {
+            if (s.title.equalsIgnoreCase(getString(R.string.title_alarm))) {
 
                 //per stampare i numeri nel formato 05:07 invece di 5:7
-                DecimalFormat formatter=new DecimalFormat("00");
+                DecimalFormat formatter = new DecimalFormat("00");
                 // aggiorna l'ora dell'allarme da mostrare nella descrizione
                 s.setDescription(getString(R.string.description_alarm_set_to) + " " + formatter.format(hour) + ":" + formatter.format(minute));
                 // dice alla lista di aggiornarsi dopo il cambiamento
@@ -188,16 +188,14 @@ public class SettingsFragment extends ListFragment {
 
     /**
      * Aggiorna la descrizione della durata sessione
+     *
      * @param newDuration la nuova durata massima delle sessioni
      */
-    public void updateSessionDuration(int newDuration)
-    {
-        for(SettingListItem s:mItems)
-        {
-            if(s.title.equalsIgnoreCase(getString(R.string.title_session_duration)))
-            {
+    public void updateSessionDuration(int newDuration) {
+        for (SettingListItem s : mItems) {
+            if (s.title.equalsIgnoreCase(getString(R.string.title_session_duration))) {
                 // aggiorna il sampling rate nella descrizione
-                s.setDescription(newDuration+(newDuration==1?" ora":" ore"));
+                s.setDescription(newDuration + (newDuration == 1 ? " ora" : " ore"));
                 // dice alla lista di aggiornarsi dopo il cambiamento
                 mAdapter.notifyDataSetChanged();
                 break;
@@ -207,16 +205,14 @@ public class SettingsFragment extends ListFragment {
 
     /**
      * Aggiorna la descrizione del sampling rate
+     *
      * @param newRate la nouva frequenza di campionamento
      */
-    public void updateSamplingRate(int newRate)
-    {
-        for(SettingListItem s:mItems)
-        {
-            if(s.title.equalsIgnoreCase(getString(R.string.title_sample_rate)))
-            {
+    public void updateSamplingRate(int newRate) {
+        for (SettingListItem s : mItems) {
+            if (s.title.equalsIgnoreCase(getString(R.string.title_sample_rate))) {
                 // aggiorna il sampling rate nella descrizione
-                s.setDescription(getString(R.string.description_sample_rate_set_to)+" "+newRate+"%");
+                s.setDescription(getString(R.string.description_sample_rate_set_to) + " " + newRate + "%");
                 // dice alla lista di aggiornarsi dopo il cambiamento
                 mAdapter.notifyDataSetChanged();
                 break;
@@ -227,6 +223,7 @@ public class SettingsFragment extends ListFragment {
     public interface OnOptionSelectedListener {
         /**
          * Gestisce la voce premuta
+         *
          * @param s la voce premuta
          */
         public void onOptionSelected(SettingListItem s);

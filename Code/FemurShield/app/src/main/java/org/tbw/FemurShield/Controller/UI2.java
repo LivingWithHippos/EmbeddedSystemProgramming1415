@@ -7,7 +7,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-import org.tbw.FemurShield.Model.Session;
 import org.tbw.FemurShield.Model.SessionManager;
 import org.tbw.FemurShield.R;
 
@@ -17,7 +16,7 @@ import org.tbw.FemurShield.R;
  *
  * @author Luca Vianello
  */
-public class UI2 extends Activity implements FallFragment.OnFallClickListener, EditSessionNameFragment.OnSessionNameInsertedListener{
+public class UI2 extends Activity implements FallFragment.OnFallClickListener, EditSessionNameFragment.OnSessionNameInsertedListener {
 
     public final static String SESSION_DATA_STAMP = "sessiondatastamp";
     public final static String SESSION_DETAILS_FRAGMENT_TAG = "sessionDetails";
@@ -29,7 +28,7 @@ public class UI2 extends Activity implements FallFragment.OnFallClickListener, E
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ui2);
 
-        if(findViewById(R.id.ui2rootLayout)!=null) {
+        if (findViewById(R.id.ui2rootLayout) != null) {
             /*Se stiamo tornando indietro non abbiamo bisogno di ricaricarlo
             * rischiamo di ritrovarci con un secondo fragment sovrapposto*/
             if (savedInstanceState != null) {
@@ -40,7 +39,7 @@ public class UI2 extends Activity implements FallFragment.OnFallClickListener, E
             SessionDetailsFragment sdf = SessionDetailsFragment.newIstance(thisData, SessionDetailsFragment.UI_2_MODE);
             FallFragment ff = FallFragment.newInstance(thisData);
 
-            getFragmentManager().beginTransaction().replace(R.id.sessionDetailsUI2, sdf,SESSION_DETAILS_FRAGMENT_TAG ).commit();
+            getFragmentManager().beginTransaction().replace(R.id.sessionDetailsUI2, sdf, SESSION_DETAILS_FRAGMENT_TAG).commit();
             getFragmentManager().beginTransaction().replace(R.id.fallsListUI2, ff, "FallDetails").commit();
         }
     }
@@ -83,20 +82,20 @@ public class UI2 extends Activity implements FallFragment.OnFallClickListener, E
     }
 
     @Override
-    public void onBackPressed()
-    {
+    public void onBackPressed() {
         finish(); // chiude la UI2 quando premi il tasto back e ritorna alla chiamante (UI1)
     }
 
     /**
      * Metodo di implementazione dell'interfaccia {@link org.tbw.FemurShield.Controller.FallFragment.OnFallClickListener}, solo nel caso della UI per tablet
      * Mostra i dettagli della caduta su cui si e' premuto tramite interfaccia {@link UI4}
+     *
      * @param sessionID l'ID della sessione a cui appartiene la caduta
-     * @param fallID l'ID della caduta da mostrare
+     * @param fallID    l'ID della caduta da mostrare
      */
     @Override
     public void onFallClick(String sessionID, String fallID) {
-        Intent fallDetails=new Intent(this,UI4.class);
+        Intent fallDetails = new Intent(this, UI4.class);
         fallDetails.putExtra(UI4.ID_SESSION, sessionID);
         fallDetails.putExtra(UI4.ID_FALL, fallID);
         startActivity(fallDetails);
@@ -105,13 +104,14 @@ public class UI2 extends Activity implements FallFragment.OnFallClickListener, E
     /**
      * Metodo di implementazione dell'interfaccia {@link org.tbw.FemurShield.Controller.EditSessionNameFragment.OnSessionNameInsertedListener}
      * modifica il nome della sessione e aggiorna la view
-     * @param nome il nome da salvare
+     *
+     * @param nome      il nome da salvare
      * @param sessionID l'ID della sessione da rinominare
      */
     @Override
-    public void onSessionNameInserted(String nome,String sessionID) {
+    public void onSessionNameInserted(String nome, String sessionID) {
         Controller.getInstance().renameEvent(sessionID, nome);
-        SessionDetailsFragment sdf=(SessionDetailsFragment)getFragmentManager().findFragmentByTag(SESSION_DETAILS_FRAGMENT_TAG);
+        SessionDetailsFragment sdf = (SessionDetailsFragment) getFragmentManager().findFragmentByTag(SESSION_DETAILS_FRAGMENT_TAG);
         sdf.updateNameView(nome);
     }
 }

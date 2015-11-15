@@ -11,7 +11,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-
 import org.tbw.FemurShield.Model.SessionManager;
 import org.tbw.FemurShield.R;
 
@@ -26,8 +25,8 @@ public class UI3 extends Activity implements ActiveSessionFragment.OnFallDetecte
     public final static String FALLS_LIST_FRAGMENT_TAG = "mFallsListFragment";
     public final static String SESSION_DETAILS_FRAGMENT_TAG = "mSessionDetailsFragment";
     public final static String SESSION_COMMANDS_FRAGMENT_TAG = "mSessionCommandsFragment";
-    private static boolean shownGPSToast=false;
-    private static boolean shownEmailToast=false;
+    private static boolean shownGPSToast = false;
+    private static boolean shownEmailToast = false;
 
     private String thisData;
 
@@ -36,14 +35,14 @@ public class UI3 extends Activity implements ActiveSessionFragment.OnFallDetecte
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ui3);
         PreferencesEditor pe = new PreferencesEditor(this);
-        if(!shownEmailToast) {
+        if (!shownEmailToast) {
             if (pe.getEmailContactsNumber() < 1)
                 Toast.makeText(this, getString(R.string.no_contacts_warning), Toast.LENGTH_SHORT).show();
-            shownEmailToast=true;
+            shownEmailToast = true;
         }
-        if(!shownGPSToast) {
+        if (!shownGPSToast) {
             checkGPS();
-            shownGPSToast=true;
+            shownGPSToast = true;
         }
 
 
@@ -72,17 +71,15 @@ public class UI3 extends Activity implements ActiveSessionFragment.OnFallDetecte
     /**
      * Controlla che sia acceso il GPS e manda messaggio d'errore in caso contrario
      */
-    private void checkGPS()
-    {
-        try
-        {
+    private void checkGPS() {
+        try {
             LocationManager lm;
             lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-            boolean gps_on=lm.isProviderEnabled(LocationManager.GPS_PROVIDER);
-            if(!gps_on)
-                Toast.makeText(this,getString(R.string.gps_off),Toast.LENGTH_SHORT).show();
+            boolean gps_on = lm.isProviderEnabled(LocationManager.GPS_PROVIDER);
+            if (!gps_on)
+                Toast.makeText(this, getString(R.string.gps_off), Toast.LENGTH_SHORT).show();
+        } catch (Exception ex) {
         }
-        catch(Exception ex){}
 
     }
 

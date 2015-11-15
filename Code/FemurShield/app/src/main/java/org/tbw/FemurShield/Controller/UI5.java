@@ -22,7 +22,6 @@ import org.tbw.FemurShield.Controller.Settings.SampleRatePickerFragment;
 import org.tbw.FemurShield.Controller.Settings.SettingListItem;
 import org.tbw.FemurShield.Controller.Settings.SettingsFragment;
 import org.tbw.FemurShield.Controller.Settings.TimePickerFragment;
-import org.tbw.FemurShield.Model.Fall;
 import org.tbw.FemurShield.Model.SessionManager;
 import org.tbw.FemurShield.R;
 

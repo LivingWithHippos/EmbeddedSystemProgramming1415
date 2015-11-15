@@ -30,10 +30,8 @@ public class MultiEmailSender extends Service {
     }
 
     @Override
-    public int onStartCommand(Intent intent, int flags, int startId)
-    {
-        if(intent!=null)
-        {
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        if (intent != null) {
             // prende i dati dall'intent far partire il service e avvia metodo sendEmail, sennò blocca il service
             double la = intent.getDoubleExtra("latCaduta", 0.0);
             double lo = intent.getDoubleExtra("lonCaduta", 0.0);
@@ -44,9 +42,7 @@ public class MultiEmailSender extends Service {
 
             sendEmail(la, lo, i, da);
             return Service.START_STICKY;
-        }
-        else
-        {
+        } else {
             stopSelf();
             return Service.START_NOT_STICKY;
         }
@@ -58,35 +54,29 @@ public class MultiEmailSender extends Service {
     }
 
     // metodo per recuperare gli indirizzi mail per la mail
-    private void getAdresses(String path)
-    {
+    private void getAdresses(String path) {
         HashMap<String, String> mails = null;
-        try
-        {
+        try {
             File file = new File(path, "emails.dat");
             FileInputStream fileInputStream = new FileInputStream(file);
 
             ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
             mails = (HashMap) objectInputStream.readObject();
             objectInputStream.close();
-            if (mails != null)
-            {
+            if (mails != null) {
                 addresses = new String[mails.size()];
                 int i = 0;
                 for (HashMap.Entry<String, String> entry : mails.entrySet())
                     addresses[i++] = entry.getKey();
 
             }
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             Log.e("FemurShield", "Errore Di lettura email: " + e.getMessage());
         }
     }
 
     // metodo che compone la mail e richiede l'invio di una mail ad una applicazione che mandi mail
-    public void sendEmail(double lat, double lon, int num, String data)
-    {
+    public void sendEmail(double lat, double lon, int num, String data) {
 
         // altre stringhe della mail
         String link = "https://www.google.it/maps/?z=18&q=";
@@ -95,8 +85,7 @@ public class MultiEmailSender extends Service {
         String testo = "Avvenuta caduta di un tuo amico in data: " + data + "\n\nnumero caduta: " + num + "\nlatiudine: " + lat + "\nlongitudine: " + lon + "\nLink Google Maps: " + link + lat + "," + lon;
 
         // se ci sono destinatari
-        if (addresses != null)
-        {
+        if (addresses != null) {
             //compone la mail con oggetto, destinatari in CCn e testo
             Intent email = new Intent(Intent.ACTION_SEND_MULTIPLE);
             email.putExtra(Intent.EXTRA_SUBJECT, "(noreply) - FemurShield Notification");
@@ -111,21 +100,18 @@ public class MultiEmailSender extends Service {
 
             // imposta come segnalata la caduta
             riporta();
-        }
-        else
-        {
+        } else {
             Log.e("MultiMailSender", "indirizzi mancanti");
         }
 
     }
 
     /**
-     *Metodo per ricercare la fall di cui stiamo mandando la mail e segnarla come riportata
+     * Metodo per ricercare la fall di cui stiamo mandando la mail e segnarla come riportata
      */
-    private void riporta()
-    {
-        ArrayList<Fall> falls=SessionManager.getInstance().getActiveSession().getFalls();
-        falls.get(falls.size()-1).setReported();
+    private void riporta() {
+        ArrayList<Fall> falls = SessionManager.getInstance().getActiveSession().getFalls();
+        falls.get(falls.size() - 1).setReported();
         Controller.getNotification().NotifyEmailSent();
     }
 

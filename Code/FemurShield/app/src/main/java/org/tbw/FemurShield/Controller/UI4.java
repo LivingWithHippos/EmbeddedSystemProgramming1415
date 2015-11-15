@@ -24,7 +24,7 @@ public class UI4 extends Activity {
 
     public static final String ID_FALL = "ID_CADUTA";
     public static final String ID_SESSION = "ID_SESSIONE";
-    public static final String COLOR_PALETTE ="COLOR_PALETTE" ;
+    public static final String COLOR_PALETTE = "COLOR_PALETTE";
     private String fallID, sessionID;
     private Fall fall;
     private Random rand;
@@ -33,12 +33,12 @@ public class UI4 extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ui4);
-        rand=new Random();
+        rand = new Random();
         //reupero l'ID della sessione e dell caduta
         sessionID = getIntent().getExtras().getString(ID_SESSION);
         fallID = getIntent().getExtras().getString(ID_FALL);
         //creo il fragment
-        FallDetailsFragment fdf = FallDetailsFragment.newInstance(sessionID, fallID,ColorsPicker.pickRandomColors());
+        FallDetailsFragment fdf = FallDetailsFragment.newInstance(sessionID, fallID, ColorsPicker.pickRandomColors());
 
         FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();

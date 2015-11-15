@@ -5,7 +5,7 @@ package org.tbw.FemurShield.Model;
  */
 class OldSessionImpl extends SessionImpl implements OldSession {
     //costruttore di una vecchia sessione (una vecchia sessione è una ex sessione attiva con tipo OldSessionImpl)
-    public OldSessionImpl(SessionImpl o){
-        super(o.name,o.datetime,o.cadute,o.secondduration);
+    public OldSessionImpl(SessionImpl o) {
+        super(o.name, o.datetime, o.cadute, o.secondduration);
     }
 }

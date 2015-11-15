@@ -1,7 +1,7 @@
 package org.tbw.FemurShield.Observer;
 
 /**
- *Interfaccia per l'implementazione del pattern Observer
+ * Interfaccia per l'implementazione del pattern Observer
  *
  * @author Alessandro Moro
  */

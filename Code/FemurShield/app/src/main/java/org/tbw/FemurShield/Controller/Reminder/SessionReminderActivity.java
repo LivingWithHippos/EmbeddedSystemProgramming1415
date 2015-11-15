@@ -17,7 +17,7 @@ import org.tbw.FemurShield.R;
  *
  * @author Marco Biasin
  */
-public class SessionReminderActivity extends Activity implements SessionReminderDialog.OnSessionStartingListener,SessionReminderDialog.OnDialogClosedListener {
+public class SessionReminderActivity extends Activity implements SessionReminderDialog.OnSessionStartingListener, SessionReminderDialog.OnDialogClosedListener {
 
     public final String TAG = this.getClass().getSimpleName();
     private PowerManager.WakeLock mWakeLock;
@@ -36,7 +36,7 @@ public class SessionReminderActivity extends Activity implements SessionReminder
                 return;
             }
 
-            SessionReminderDialog srFragment= new SessionReminderDialog ();
+            SessionReminderDialog srFragment = new SessionReminderDialog();
             srFragment.show(getFragmentManager(), "SessionReminderDialog");
         }
 
@@ -65,7 +65,6 @@ public class SessionReminderActivity extends Activity implements SessionReminder
     }
 
 
-
     @Override
     protected void onPause() {
         super.onPause();
@@ -81,17 +80,20 @@ public class SessionReminderActivity extends Activity implements SessionReminder
 
     /**
      * Gestisco il caso in cui l'utente prema su inizia sessione o annulla
+     *
      * @param wantToStart se l'utente ha premuto inizia o annulla
      */
     @Override
     public void onSessionStarted(boolean wantToStart) {
-        if(wantToStart) {
+        if (wantToStart) {
             Intent intent = new Intent(this, UI1.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
             intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
             startActivity(intent);
-        }else{finish();}
+        } else {
+            finish();
+        }
     }
 
     // se l'utente preme al di fuori del dialog chiudo l'activity

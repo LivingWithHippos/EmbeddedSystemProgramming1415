@@ -17,18 +17,17 @@ import org.tbw.FemurShield.R;
  * UI5 e' l'activity che gestisce tutte le sessioni, attive e non, mostrandole in una lista {@link FallFragment}
  * e permettendone la modifica e la visualizzazione, oltre a permettere la gestione della
  * registrazione di una nuova sessione tramite comandi {@link SessionCommandsFragment}
- *
  */
-public class UI1 extends Activity implements FallFragment.OnFallClickListener,SessionsListFragment.OnSessionClickListener,SessionCommandsFragment.OnCommandUpdatedListener,SessionOptionDialog.OnSessionOptionsClickListener, EditSessionNameFragment.OnSessionNameInsertedListener {
+public class UI1 extends Activity implements FallFragment.OnFallClickListener, SessionsListFragment.OnSessionClickListener, SessionCommandsFragment.OnCommandUpdatedListener, SessionOptionDialog.OnSessionOptionsClickListener, EditSessionNameFragment.OnSessionNameInsertedListener {
 
-    private static int i=0;
-    private final static String COMMAND_FRAGMENT_TAG="mSessionCommandsFragment";
-    private final static String SESSIONS_FRAGMENT_TAG="mSessionListFragment";
+    private static int i = 0;
+    private final static String COMMAND_FRAGMENT_TAG = "mSessionCommandsFragment";
+    private final static String SESSIONS_FRAGMENT_TAG = "mSessionListFragment";
     public final static String SESSION_EMPTY = "empty_session";
     public final static String SESSION_DETAILS_FRAGMENT_TAG = "sessionDetailsUI1";
     public final static String FALLS_LIST_FRAGMENT_TAG = "fallsListUI1";
-    private static String lastChosenSession=SESSION_EMPTY;
-    private static final boolean SHOW_FRAGMENT=true,HIDE_FRAGMENT=false;
+    private static String lastChosenSession = SESSION_EMPTY;
+    private static final boolean SHOW_FRAGMENT = true, HIDE_FRAGMENT = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,7 +35,7 @@ public class UI1 extends Activity implements FallFragment.OnFallClickListener,Se
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ui1);
         //avverto il controller che è avvenuta la prima appertura dell'activity e dovrà quindi fare il restore dei dati
-        if(i++==0){
+        if (i++ == 0) {
             Controller.getInstance().firstOpenEvent(this);
         }
 
@@ -53,23 +52,21 @@ public class UI1 extends Activity implements FallFragment.OnFallClickListener,Se
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
             //se siamo nel caso display grande aggiungo altri fragment
-            if(findViewById(R.id.fallsListUI1)!=null&findViewById(R.id.sessionDetailsUI1)!=null)
-            {
+            if (findViewById(R.id.fallsListUI1) != null & findViewById(R.id.sessionDetailsUI1) != null) {
                 SessionDetailsFragment sdf = SessionDetailsFragment.newIstance(lastChosenSession, SessionDetailsFragment.UI_2_MODE);
                 FallFragment ff = FallFragment.newInstance(lastChosenSession);
 
                 fragmentTransaction.replace(R.id.sessionDetailsUI1, sdf, SESSION_DETAILS_FRAGMENT_TAG);
                 fragmentTransaction.replace(R.id.fallsListUI1, ff, FALLS_LIST_FRAGMENT_TAG);
-                if(lastChosenSession.equalsIgnoreCase(SESSION_EMPTY))
-                {
+                if (lastChosenSession.equalsIgnoreCase(SESSION_EMPTY)) {
                     fragmentTransaction.hide(sdf);
                     fragmentTransaction.hide(ff);
                 }
 
             }
 
-            SessionsListFragment sFragment=SessionsListFragment.newInstance();
-            SessionCommandsFragment cFragment=SessionCommandsFragment.newInstance(SessionCommandsFragment.MODE_BIG);
+            SessionsListFragment sFragment = SessionsListFragment.newInstance();
+            SessionCommandsFragment cFragment = SessionCommandsFragment.newInstance(SessionCommandsFragment.MODE_BIG);
 
             fragmentTransaction.replace(R.id.listaSessioniUI1, sFragment, SESSIONS_FRAGMENT_TAG);
             fragmentTransaction.replace(R.id.comandiSessioniUI1, cFragment, COMMAND_FRAGMENT_TAG);
@@ -78,8 +75,8 @@ public class UI1 extends Activity implements FallFragment.OnFallClickListener,Se
         }
 
         instantiateColors();
-        if(SignatureLoaderTask.spaceAvailable()<3)
-            Toast.makeText(this,getString(R.string.low_memory_warning),Toast.LENGTH_SHORT).show();
+        if (SignatureLoaderTask.spaceAvailable() < 3)
+            Toast.makeText(this, getString(R.string.low_memory_warning), Toast.LENGTH_SHORT).show();
     }
 
 
@@ -118,9 +115,9 @@ public class UI1 extends Activity implements FallFragment.OnFallClickListener,Se
     @Override
     protected void onResume() {
         super.onResume();
-        SessionsListFragment slf=(SessionsListFragment)getFragmentManager().findFragmentByTag(SESSIONS_FRAGMENT_TAG);
+        SessionsListFragment slf = (SessionsListFragment) getFragmentManager().findFragmentByTag(SESSIONS_FRAGMENT_TAG);
         //se siamo in modalita' tablet carico l'ultima sessione su cui si era premuto
-        if(!lastChosenSession.equalsIgnoreCase(SESSION_EMPTY))
+        if (!lastChosenSession.equalsIgnoreCase(SESSION_EMPTY))
             loadUI2fragments(lastChosenSession);
         //aggiorno la lista sessioni
         slf.aggiornaLista();
@@ -128,9 +125,10 @@ public class UI1 extends Activity implements FallFragment.OnFallClickListener,Se
 
     /**
      * Forza un aggiornamento della lista delle sessioni
+     *
      * @param buttonPressed il bottone che ha causato l'aggiornamento, ma nella UI1 il suo unico effetto e' l'aggiornamento della lista, quindi rimane inutilizzato
-     *  */
-    public void aggiornaLista(int buttonPressed){
+     */
+    public void aggiornaLista(int buttonPressed) {
         SessionsListFragment fragment = (SessionsListFragment) getFragmentManager().findFragmentById(R.id.listaSessioniUI1);
         fragment.aggiornaLista();
     }
@@ -138,19 +136,17 @@ public class UI1 extends Activity implements FallFragment.OnFallClickListener,Se
     /**
      * apre la finestra delle impostazioni {@link UI5}
      */
-    public void openSettings()
-    {
-        Intent intent=new Intent(this,UI5.class);
+    public void openSettings() {
+        Intent intent = new Intent(this, UI5.class);
         startActivity(intent);
     }
 
     /**
      * Inizializza i colori per il grafico create da {@link FallBitmapCreator} associando alla classe {@link ColorsPicker} il file arrays.xml
      */
-    private void instantiateColors()
-    {
+    private void instantiateColors() {
 
-        ColorsPicker colorsPicker=ColorsPicker.getInstance(new String[][]{
+        ColorsPicker colorsPicker = ColorsPicker.getInstance(new String[][]{
                 getResources().getStringArray(R.array.random_palette_1),
                 getResources().getStringArray(R.array.random_palette_2),
                 getResources().getStringArray(R.array.random_palette_3),
@@ -166,21 +162,20 @@ public class UI1 extends Activity implements FallFragment.OnFallClickListener,Se
      * Metodo di implementazione dell'interfaccia {@link org.tbw.FemurShield.Controller.SessionsListFragment.OnSessionClickListener}
      * richiamato dal callback nella classe {@link SessionsListFragment} in seguito alla pressione breve su di una sessione.
      * Lancia la {@link UI3} o la {@link UI2} a seconda che venga premuto su una sessione non attiva  o no
+     *
      * @param sessionID l'ID della sessione su cui si e' premuto
      */
     @Override
     public void onSessionClick(String sessionID) {
-        if(SessionManager.getInstance().getActiveSession()!=null && SessionManager.getInstance().getActiveSession().getId().equals(sessionID)){
+        if (SessionManager.getInstance().getActiveSession() != null && SessionManager.getInstance().getActiveSession().getId().equals(sessionID)) {
             //lancio la UI che gestisce le sessioni attive
             Intent i = new Intent(getBaseContext(), UI3.class);
             startActivity(i);
-        }
-        else {
+        } else {
             //modalita' schermo grande, carico i fragment sulla destra invece di una nuova UI
-            if(findViewById(R.id.fallsListUI1)!=null&findViewById(R.id.sessionDetailsUI1)!=null) {
+            if (findViewById(R.id.fallsListUI1) != null & findViewById(R.id.sessionDetailsUI1) != null) {
                 loadUI2fragments(sessionID);
-            }else
-            {
+            } else {
                 //modalta' schermo piccolo, lancio una nuova activity
                 Intent i = new Intent(getBaseContext(), UI2.class);
                 i.putExtra(UI2.SESSION_DATA_STAMP, sessionID);
@@ -191,21 +186,18 @@ public class UI1 extends Activity implements FallFragment.OnFallClickListener,Se
 
     /**
      * Inizializza i fragment (gia' presenti ma invisibili) {@link SessionDetailsFragment} e {@link FallFragment} che contengono i dettagli di una sessione e le sue cadute. Usato solo in caso di schermo grande.
+     *
      * @param sessionID l'ID della sessione da rappresentare
      */
-    private void loadUI2fragments(String sessionID)
-    {
-        if(findViewById(R.id.fallsListUI1)!=null&findViewById(R.id.sessionDetailsUI1)!=null) {
+    private void loadUI2fragments(String sessionID) {
+        if (findViewById(R.id.fallsListUI1) != null & findViewById(R.id.sessionDetailsUI1) != null) {
             SessionDetailsFragment sdf = (SessionDetailsFragment) getFragmentManager().findFragmentByTag(SESSION_DETAILS_FRAGMENT_TAG);
             FallFragment ff = (FallFragment) getFragmentManager().findFragmentByTag(FALLS_LIST_FRAGMENT_TAG);
             lastChosenSession = sessionID;
-            if (sessionID.equalsIgnoreCase(SESSION_EMPTY))
-            {
+            if (sessionID.equalsIgnoreCase(SESSION_EMPTY)) {
                 showHideFragment(sdf, HIDE_FRAGMENT);
                 showHideFragment(ff, HIDE_FRAGMENT);
-            }
-            else
-            {
+            } else {
                 sdf.setSession(sessionID);
                 sdf.startDetails();
                 ff.setSession(sessionID);
@@ -218,27 +210,22 @@ public class UI1 extends Activity implements FallFragment.OnFallClickListener,Se
 
     /**
      * Metodo per nascondere o mostrare un fragment
-     * @param fragment il frammento da nascondere
+     *
+     * @param fragment   il frammento da nascondere
      * @param hideOrShow true se il fragment e' da mostrare, false altrimenti, vedi {@value #SHOW_FRAGMENT} e {@value #HIDE_FRAGMENT}
      */
-    private void showHideFragment(Fragment fragment,boolean hideOrShow){
+    private void showHideFragment(Fragment fragment, boolean hideOrShow) {
 
-        if(fragment!=null)
-        {
-            if(hideOrShow==SHOW_FRAGMENT)
-            {
-                if(fragment.isHidden())
-                {
+        if (fragment != null) {
+            if (hideOrShow == SHOW_FRAGMENT) {
+                if (fragment.isHidden()) {
                     FragmentManager fragmentManager = getFragmentManager();
                     FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                     fragmentTransaction.show(fragment);
                     fragmentTransaction.commit();
                 }
-            }
-            else
-            {
-                if(!fragment.isHidden())
-                {
+            } else {
+                if (!fragment.isHidden()) {
                     FragmentManager fragmentManager = getFragmentManager();
                     FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                     fragmentTransaction.hide(fragment);
@@ -255,6 +242,7 @@ public class UI1 extends Activity implements FallFragment.OnFallClickListener,Se
      * Metodo di implementazione di dell'interfaccia {@link org.tbw.FemurShield.Controller.SessionsListFragment.OnSessionClickListener}
      * richiamato dal callback nella classe {@link SessionsListFragment} in seguito alla pressione lunga su di una sessione.
      * Permette la scelta tra l'eliminazione o la modifica di una sessione tramite {@link SessionOptionDialog}
+     *
      * @param sessionID l'ID della sessione da mostrare
      */
     @Override
@@ -269,13 +257,14 @@ public class UI1 extends Activity implements FallFragment.OnFallClickListener,Se
     /**
      * Metodo di implementazione dell'interfaccia {@link org.tbw.FemurShield.Controller.SessionOptionDialog.OnSessionOptionsClickListener}
      * Richiamato dalla pressione di modifica o elimina nelle opzioni di una sessione
+     *
      * @param sessionID l'ID della sessione da modificare
-     * @param type indica se la sessione e' da modificare o eliminare, vedi {@value SessionOptionDialog#DELETE_SESSION} e {@value SessionOptionDialog#RENAME_SESSION}
+     * @param type      indica se la sessione e' da modificare o eliminare, vedi {@value SessionOptionDialog#DELETE_SESSION} e {@value SessionOptionDialog#RENAME_SESSION}
      */
     @Override
     public void onSessionOptionClick(String sessionID, int type) {
-        if(type==SessionOptionDialog.DELETE_SESSION){
-            if(SessionManager.getInstance().isRunning()&&
+        if (type == SessionOptionDialog.DELETE_SESSION) {
+            if (SessionManager.getInstance().isRunning() &&
                     SessionManager.getInstance().getActiveSession().getDataTime().equalsIgnoreCase(sessionID)) {
                 //se la sessione da eliminare e' quella attiva simulo il click sul tasto stop
                 SessionCommandsFragment scf = (SessionCommandsFragment) getFragmentManager().findFragmentByTag(COMMAND_FRAGMENT_TAG);
@@ -283,12 +272,11 @@ public class UI1 extends Activity implements FallFragment.OnFallClickListener,Se
             }
             //procedo in ogni caso ad eliminarla ed aggiornare la lista sessioni
             Controller.getInstance().deleteEvent(sessionID);
-            SessionsListFragment slf=(SessionsListFragment)getFragmentManager().findFragmentByTag(SESSIONS_FRAGMENT_TAG);
+            SessionsListFragment slf = (SessionsListFragment) getFragmentManager().findFragmentByTag(SESSIONS_FRAGMENT_TAG);
             slf.aggiornaLista();
             if (lastChosenSession.equalsIgnoreCase(sessionID))
                 loadUI2fragments(SESSION_EMPTY);
-        }
-        else {
+        } else {
             if (type == SessionOptionDialog.RENAME_SESSION) {
                 //mostro il dialog di rinomina della sessione
                 EditSessionNameFragment sessionRenameFragment = new EditSessionNameFragment();
@@ -303,11 +291,12 @@ public class UI1 extends Activity implements FallFragment.OnFallClickListener,Se
     /**
      * Metodo di implementazione dell'interfaccia {@link org.tbw.FemurShield.Controller.EditSessionNameFragment.OnSessionNameInsertedListener}
      * modifica il nome della sessione e aggiorna la lista
-     * @param nome il nome da salvare
+     *
+     * @param nome      il nome da salvare
      * @param sessionID l'ID della sessione da rinominare
      */
     @Override
-    public void onSessionNameInserted(String nome,String sessionID) {
+    public void onSessionNameInserted(String nome, String sessionID) {
         Controller.getInstance().renameEvent(sessionID, nome);
         SessionsListFragment slf = (SessionsListFragment) getFragmentManager().findFragmentByTag(SESSIONS_FRAGMENT_TAG);
         slf.aggiornaLista();
@@ -316,12 +305,13 @@ public class UI1 extends Activity implements FallFragment.OnFallClickListener,Se
     /**
      * Metodo di implementazione dell'interfaccia {@link org.tbw.FemurShield.Controller.FallFragment.OnFallClickListener}, solo nel caso della UI per tablet
      * Mostra i dettagli della caduta su cui si e' premuto tramite interfaccia {@link UI4}
+     *
      * @param sessionID l'ID della sessione a cui appartiene la caduta
-     * @param fallID l'ID della caduta da mostrare
+     * @param fallID    l'ID della caduta da mostrare
      */
     @Override
     public void onFallClick(String sessionID, String fallID) {
-        Intent fallDetails=new Intent(this,UI4.class);
+        Intent fallDetails = new Intent(this, UI4.class);
         fallDetails.putExtra(UI4.ID_SESSION, sessionID);
         fallDetails.putExtra(UI4.ID_FALL, fallID);
         startActivity(fallDetails);

@@ -5,7 +5,6 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.Environment;
-import android.os.StatFs;
 import android.util.Log;
 
 import org.tbw.FemurShield.Controller.BitmapCache;
@@ -94,6 +93,7 @@ public class SignatureImpl implements Signature, org.tbw.FemurShield.Observer.Ob
 
     /**
      * Disegna un nuovo punto dei cerchi che rappresentano i dati dell'accelerometro
+     *
      * @param arg i dati dell'accelerometro
      */
     private void drawCircle(float[] arg) {
@@ -141,6 +141,7 @@ public class SignatureImpl implements Signature, org.tbw.FemurShield.Observer.Ob
 
     /**
      * Controlla che i valori non siano al di fuori dei bordi dell'immagine
+     *
      * @param i il float da controllare
      * @return il float originale o modificato se aveva valori troppo grandi o piccoli
      */
@@ -155,7 +156,6 @@ public class SignatureImpl implements Signature, org.tbw.FemurShield.Observer.Ob
 
 
     /**
-     *
      * @return la Bitmap creata
      */
     @Override
@@ -195,6 +195,7 @@ public class SignatureImpl implements Signature, org.tbw.FemurShield.Observer.Ob
 
     /**
      * Metodo che salva su disco la signature
+     *
      * @return true se è stata salvata, false altrimenti
      */
     private boolean saveSignature() {
@@ -240,6 +241,7 @@ public class SignatureImpl implements Signature, org.tbw.FemurShield.Observer.Ob
 
     /**
      * Carica la signature su Bitmap
+     *
      * @return true se è stata trovata e caricata correttamente
      */
     private boolean loadSignature() {
@@ -274,6 +276,7 @@ public class SignatureImpl implements Signature, org.tbw.FemurShield.Observer.Ob
 
     /**
      * Controlla se esiste il file signature
+     *
      * @return true se esiste, false altrimenti
      */
     private boolean signatureExists() {
@@ -285,6 +288,7 @@ public class SignatureImpl implements Signature, org.tbw.FemurShield.Observer.Ob
 
     /**
      * Metodo statico per cancellare un file signature
+     *
      * @param sessionDeleteDate il timestamp della signature da cancellare
      * @return true se è stata cancellata, flase altrimenti
      */
@@ -313,6 +317,7 @@ public class SignatureImpl implements Signature, org.tbw.FemurShield.Observer.Ob
 
     /**
      * Imposta la sessione da disegnare
+     *
      * @param session l'ID della sessione
      */
     public void setSession(String session) {

@@ -14,9 +14,10 @@ import org.tbw.FemurShield.R;
 
 /**
  * Dialog che ricorda all'utente la necessità di cominciare una nuova sessione
+ *
  * @author Marco Biasin
  */
-public class SessionReminderDialog extends DialogFragment implements DialogInterface.OnClickListener{
+public class SessionReminderDialog extends DialogFragment implements DialogInterface.OnClickListener {
     private OnSessionStartingListener mCallback;
     private OnDialogClosedListener cDialogCallback;
 
@@ -36,13 +37,13 @@ public class SessionReminderDialog extends DialogFragment implements DialogInter
     @Override
     public void onClick(DialogInterface dialog, int which) {
         switch (which) {
-         case AlertDialog.BUTTON_POSITIVE:
+            case AlertDialog.BUTTON_POSITIVE:
                 mCallback.onSessionStarted(true);
                 break;
             case AlertDialog.BUTTON_NEGATIVE:
                 mCallback.onSessionStarted(false);
                 break;
-         }
+        }
 
     }
 
@@ -65,7 +66,7 @@ public class SessionReminderDialog extends DialogFragment implements DialogInter
     }
 
     @Override
-     public void onDetach() {
+    public void onDetach() {
         super.onDetach();
         mCallback = null;
         cDialogCallback = null;
@@ -80,6 +81,7 @@ public class SessionReminderDialog extends DialogFragment implements DialogInter
     public interface OnSessionStartingListener {
         /**
          * metodo di callback per indicare all'activity cosa ha premuto l'utente
+         *
          * @param wantToStart
          */
         void onSessionStarted(boolean wantToStart);

@@ -16,10 +16,10 @@ import org.tbw.FemurShield.R;
 
 /**
  * @author Marco Biasin
- *
- * Fragment che contiene lo slider per decidere la frequenza di campionamento del sensore.
+ *         <p>
+ *         Fragment che contiene lo slider per decidere la frequenza di campionamento del sensore.
  */
-public class SampleRatePickerFragment extends DialogFragment implements DialogInterface.OnClickListener{
+public class SampleRatePickerFragment extends DialogFragment implements DialogInterface.OnClickListener {
 
     private PreferencesEditor prefs;
     private OnSamplingRateChangedListener mCallback;
@@ -27,15 +27,15 @@ public class SampleRatePickerFragment extends DialogFragment implements DialogIn
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         // inizializzo l'oggetto per salvare e leggere i valori dell'orologio
-        prefs=new PreferencesEditor(getActivity());
+        prefs = new PreferencesEditor(getActivity());
         //carico i valori precedenti o imposto a meta
-        int progress=prefs.getSamplingRate();
+        int progress = prefs.getSamplingRate();
         AlertDialog.Builder alert = new AlertDialog.Builder(getActivity(), R.style.AppDialogTheme);
         final Context themeContext = getActivity();
         final LayoutInflater inflater = LayoutInflater.from(themeContext);
         final View view = inflater.inflate(R.layout.seekbar_picker_dialog, null);
         //reimposta la seekbar alla posizione dell ultima volta
-        SeekBar seekBar=(SeekBar)view.findViewById(R.id.seekBar);
+        SeekBar seekBar = (SeekBar) view.findViewById(R.id.seekBar);
         if (seekBar != null) {
             seekBar.setProgress(prefs.getSamplingRate());
         }
@@ -60,22 +60,23 @@ public class SampleRatePickerFragment extends DialogFragment implements DialogIn
     @Override
     public void onDetach() {
         super.onDetach();
-        mCallback=null;
+        mCallback = null;
     }
 
     /**
      * Gestisce il click sul bottone OK o ANNULLA
+     *
      * @param dialog
-     * @param which il bottone premuto
+     * @param which  il bottone premuto
      */
     @Override
     public void onClick(DialogInterface dialog, int which) {
         switch (which) {
             case AlertDialog.BUTTON_POSITIVE:
 
-                SeekBar seekBar=(SeekBar)getDialog().findViewById(R.id.seekBar);
+                SeekBar seekBar = (SeekBar) getDialog().findViewById(R.id.seekBar);
                 if (seekBar != null) {
-                    int progress=seekBar.getProgress();
+                    int progress = seekBar.getProgress();
                     prefs.setSamplingRate(progress);
                     mCallback.onSamplingRateChanged(progress);
                 }
@@ -86,6 +87,7 @@ public class SampleRatePickerFragment extends DialogFragment implements DialogIn
     public interface OnSamplingRateChangedListener {
         /**
          * notifica l'activity che e' stata impostata una nuova frequenza di campionamento
+         *
          * @param newRate la nuova frequenza di campionamento
          */
         void onSamplingRateChanged(int newRate);

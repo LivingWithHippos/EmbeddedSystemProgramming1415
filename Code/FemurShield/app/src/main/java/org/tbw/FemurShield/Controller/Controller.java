@@ -28,87 +28,88 @@ import java.util.HashMap;
 public class Controller implements Observer {
 
     private static Controller instance;
-    private static final String TAG="Controller";
+    private static final String TAG = "Controller";
     Chronometer crono;
-    Activity ac=null;
+    Activity ac = null;
 
-    private Controller(){
+    private Controller() {
         instance = this;
     }
 
-    public static Controller getInstance(){
+    public static Controller getInstance() {
         //permette l'implementazione del design pattern singleton
-        if(instance!=null)
+        if (instance != null)
             return instance;
         new Controller();
         getNotification().addObserver(instance);//si mette in osservazione della notifica della caduta (Design Pattern Observer)
         return instance;
     }
 
-    public Session CreateSession(){
+    public Session CreateSession() {
         //creo la sessione attiva nel caso in cui non esiste già altrimenti ritorno quella esistente
-        ActiveSession active=SessionManager.getInstance().getActiveSession();
-        if(active==null)
+        ActiveSession active = SessionManager.getInstance().getActiveSession();
+        if (active == null)
             return SessionManager.getInstance().createNewActiveSession();
         else
             return active;
 
     }
 
-    long durata=0;
-    public void StartSession(Activity a){
-        ac=a;
+    long durata = 0;
+
+    public void StartSession(Activity a) {
+        ac = a;
         //chiede al session manager di avviare la sessione
         SessionManager.getInstance().StartSession();
         //avvio il cronometro per il calcolo della durata
-        if(crono==null) {
+        if (crono == null) {
             crono = new Chronometer(a.getBaseContext());
         }
         crono.setBase(SystemClock.elapsedRealtime() + durata);
         crono.start();
         //avvio il servizio che permette di stoppare la sessione se la durata di questa supera la durata impostata
-        Intent i1 = new Intent(a,SessionStopper.class);
+        Intent i1 = new Intent(a, SessionStopper.class);
         a.startService(i1);
         //avvio il servizio che controlla se si sta verificando una caduta
-        Intent i2 = new Intent(a,FallDetector.class);
+        Intent i2 = new Intent(a, FallDetector.class);
         a.startService(i2);
     }
 
-    public void PauseSession(Activity a){
+    public void PauseSession(Activity a) {
         //chiede al session manager di mettere in pausa la sessione
         SessionManager.getInstance().PauseSession();
         //metto in pausa il cronometro perchè la sessione è in pausa
-        durata=crono.getBase()-SystemClock.elapsedRealtime();
+        durata = crono.getBase() - SystemClock.elapsedRealtime();
         SessionManager.getInstance().getActiveSession().setDuration(-durata);
         crono.stop();
         //interrompo il servizio che permette di stoppare la sessione se la durata di questa supera la durata impostata
-        Intent i1 = new Intent(a,SessionStopper.class);
+        Intent i1 = new Intent(a, SessionStopper.class);
         a.stopService(i1);
         //interrompo il servizio che controlla se si sta verificando una caduta
-        Intent i2 = new Intent(a,FallDetector.class);
+        Intent i2 = new Intent(a, FallDetector.class);
         a.stopService(i2);
     }
 
-    public long getDurate(){
-        if(crono!=null)
-            return -crono.getBase()+SystemClock.elapsedRealtime();
+    public long getDurate() {
+        if (crono != null)
+            return -crono.getBase() + SystemClock.elapsedRealtime();
         return 0;
     }
 
-    public void StopSession(Activity a){
+    public void StopSession(Activity a) {
         //fermo il cronometro
-        durata=crono.getBase()-SystemClock.elapsedRealtime();
+        durata = crono.getBase() - SystemClock.elapsedRealtime();
         //chiedo al session manager di mettere terminare la sessione attiva e ne imposto la durata nel modello
         SessionManager.getInstance().StopSession((-durata));
         //azzero la durata e fermo il cronometro
-        durata=0;
+        durata = 0;
         crono.stop();
-        crono =null;
+        crono = null;
         //interrompo il servizio che permette di stoppare la sessione se la durata di questa supera la durata impostata
-        Intent i1 = new Intent(a,SessionStopper.class);
+        Intent i1 = new Intent(a, SessionStopper.class);
         a.stopService(i1);
         //interrompo il servizio che controlla se si sta verificando una caduta
-        Intent i2 = new Intent(a,FallDetector.class);
+        Intent i2 = new Intent(a, FallDetector.class);
         a.stopService(i2);
         //salvo nel backup i dati della nuova sessione
         SaveAll();
@@ -117,37 +118,37 @@ public class Controller implements Observer {
     /**
      * Mi dice in real time la durata della sessione attiva
      */
-    public long getActualChronoBase(){
-        if(isRunning())
+    public long getActualChronoBase() {
+        if (isRunning())
             return crono.getBase();
-        return SystemClock.elapsedRealtime()+Controller.getInstance().durata;
+        return SystemClock.elapsedRealtime() + Controller.getInstance().durata;
     }
 
     /**
      * Dice se la sessione attiva non è in pausa
      */
-    public boolean isRunning(){
+    public boolean isRunning() {
         return SessionManager.getInstance().isRunning();
     }
 
     /**
      * Dice se esiste una sessione attiva
      */
-    public boolean isRecording(){
-        return SessionManager.getInstance().getActiveSession()!=null;
+    public boolean isRecording() {
+        return SessionManager.getInstance().getActiveSession() != null;
     }
 
     /**
      * ritorna l'oggetto osservabile che notifica i dati dell'accelerometro, quando avviene una caduta e quando la caduta viene segnalata
      */
-    public static NotificationFall getNotification(){
+    public static NotificationFall getNotification() {
         return NotificationFallImpl.getInstance();
     }
 
     @Override
     public void update(Observable oggettoosservato, Object o) {
         //se mi arriva un aggiornamento di tipo caduta la aggiungo alla sessione attiva
-        if(o instanceof Fall){
+        if (o instanceof Fall) {
             //aggiungo la faduta alla sessione
             SessionManager.getInstance().getActiveSession().AddFall((Fall) o);
         }
@@ -155,8 +156,8 @@ public class Controller implements Observer {
 
     // creato da Vianello
     public void sendEmail(Fall fall) {
-    //invio le mail sfruttando MultiEmailSender
-        Intent sender = new Intent(ac.getApplicationContext(),MultiEmailSender.class);
+        //invio le mail sfruttando MultiEmailSender
+        Intent sender = new Intent(ac.getApplicationContext(), MultiEmailSender.class);
         sender.putExtra("appdirectory", ac.getFilesDir().toString()); // passo la cartella in cui c'è il file con gli indirizzi salvati
         sender.putExtra("latCaduta", fall.getPosition(Fall.FALL_LATITUDE));
         sender.putExtra("lonCaduta", fall.getPosition(Fall.FALL_LONGITUDE));
@@ -169,7 +170,7 @@ public class Controller implements Observer {
     /**
      * Tale metodo permette il salvataggio del modello in un file di backup
      */
-    public void SaveAll(){
+    public void SaveAll() {
         File file = new File(ac.getFilesDir().toString(), "backup.dat");
         try {
             ObjectOutputStream outputStream = new ObjectOutputStream(new FileOutputStream(file));
@@ -185,7 +186,7 @@ public class Controller implements Observer {
     /**
      * Tale metodo permette il ripristino del modello backup salvato
      */
-    public void RestoreAll(){
+    public void RestoreAll() {
         HashMap<String, String> backup = null;
         try {
             File file = new File(ac.getFilesDir().toString(), "backup.dat");
@@ -206,7 +207,7 @@ public class Controller implements Observer {
     tale metodo viene invocato alla prima appertura dell'app  e permette il ripristino dei dati del backup
      */
     public void firstOpenEvent(Activity mainUI) {
-        ac=mainUI;
+        ac = mainUI;
         RestoreAll();
     }
 
@@ -222,7 +223,7 @@ public class Controller implements Observer {
         tale metodo rinomina una sessione quando una activity scatena/richiede di campiare il nome di questa
      */
     public void renameEvent(String data, String newname) {
-        SessionManager.getInstance().renameSession(data,newname);
+        SessionManager.getInstance().renameSession(data, newname);
     }
 
     /*
@@ -232,13 +233,13 @@ public class Controller implements Observer {
         //termino la sessione e i servizi
         Controller.getInstance().StopSession(ac);
         //avvio la nuova ui
-        Intent i = new Intent(ac.getBaseContext(),UI1.class);
+        Intent i = new Intent(ac.getBaseContext(), UI1.class);
         ac.startActivity(i);
         //avverto l'utetne che la sessione è scaduta
         ac.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                Toast.makeText(ac.getBaseContext(),"La sessione è stata stoppata come impostato.",Toast.LENGTH_LONG).show();
+                Toast.makeText(ac.getBaseContext(), "La sessione è stata stoppata come impostato.", Toast.LENGTH_LONG).show();
             }
         });
     }

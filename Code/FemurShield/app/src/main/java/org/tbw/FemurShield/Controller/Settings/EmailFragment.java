@@ -3,9 +3,6 @@ package org.tbw.FemurShield.Controller.Settings;
 import android.app.Activity;
 import android.app.ListFragment;
 import android.os.Bundle;
-import android.app.Fragment;
-import android.util.Log;
-import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -30,7 +27,7 @@ import java.util.List;
  *
  * @author Marco Biasin
  */
-public class EmailFragment extends ListFragment implements Button.OnClickListener{
+public class EmailFragment extends ListFragment implements Button.OnClickListener {
 
     private List<EmailListItem> mItems;
     private OnAddEmailButtonClickListener aEmailCallback;
@@ -38,7 +35,7 @@ public class EmailFragment extends ListFragment implements Button.OnClickListene
     private OnContactClickListener mContactClickCallback;
     private EmailListAdapter mAdapter;
     private Button addEmail;
-    private HashMap<String,String> emailContacts;
+    private HashMap<String, String> emailContacts;
 
     public static EmailFragment newInstance() {
         EmailFragment fragment = new EmailFragment();
@@ -58,20 +55,17 @@ public class EmailFragment extends ListFragment implements Button.OnClickListene
     /**
      * Metodo interno per la creazione della lista contatti
      */
-    private void initializeList()
-    {
-        mItems=new ArrayList<>();
-        emailContacts=new PreferencesEditor(getActivity()).getEmail();
-        if (emailContacts!=null)
-        {
-            for(HashMap.Entry<String,String> pair:emailContacts.entrySet())
-                mItems.add(new EmailListItem(pair.getKey(),pair.getValue()));
-        }
-        else
-            Toast.makeText(getActivity(),getString(R.string.add_contact_tip),Toast.LENGTH_SHORT).show();
+    private void initializeList() {
+        mItems = new ArrayList<>();
+        emailContacts = new PreferencesEditor(getActivity()).getEmail();
+        if (emailContacts != null) {
+            for (HashMap.Entry<String, String> pair : emailContacts.entrySet())
+                mItems.add(new EmailListItem(pair.getKey(), pair.getValue()));
+        } else
+            Toast.makeText(getActivity(), getString(R.string.add_contact_tip), Toast.LENGTH_SHORT).show();
 
         //imposto l'adapter
-        mAdapter=new EmailListAdapter(getActivity(), mItems);
+        mAdapter = new EmailListAdapter(getActivity(), mItems);
         setListAdapter(mAdapter);
     }
 
@@ -80,7 +74,7 @@ public class EmailFragment extends ListFragment implements Button.OnClickListene
                              Bundle savedInstanceState) {
         // Mi serve per il findViewByID
         View rootView = inflater.inflate(R.layout.fragment_email, container, false);
-        addEmail=(Button)rootView.findViewById(R.id.add_email_button);
+        addEmail = (Button) rootView.findViewById(R.id.add_email_button);
         addEmail.setOnClickListener(this);
 
         return rootView;
@@ -89,7 +83,7 @@ public class EmailFragment extends ListFragment implements Button.OnClickListene
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        ListView list=getListView();
+        ListView list = getListView();
         list.setOnItemLongClickListener(new OnContactLongClickListener());
     }
 
@@ -121,32 +115,30 @@ public class EmailFragment extends ListFragment implements Button.OnClickListene
     @Override
     public void onDetach() {
         super.onDetach();
-        aEmailCallback=null;
-        mClearCallback=null;
-        mContactClickCallback=null;
+        aEmailCallback = null;
+        mClearCallback = null;
+        mContactClickCallback = null;
     }
 
 
-
-    public void addAndUpdateContact(String indirizzo,String nome)
-    {
-        if(mAdapter!=null){
+    public void addAndUpdateContact(String indirizzo, String nome) {
+        if (mAdapter != null) {
             mAdapter.add(new EmailListItem(indirizzo, nome));
-            mAdapter.notifyDataSetChanged();}
+            mAdapter.notifyDataSetChanged();
+        }
 
     }
 
     /**
      * svuota la lista in caso di eliminazione totale contatti
      */
-    public void clearList()
-    {
-        if(mAdapter!=null) {
+    public void clearList() {
+        if (mAdapter != null) {
             if (mAdapter.getCount() > 0) {
                 mAdapter.clear();
                 mAdapter.notifyDataSetChanged();
             } else {
-                Toast.makeText(getActivity(),getString(R.string.empty_contact_list),Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity(), getString(R.string.empty_contact_list), Toast.LENGTH_LONG).show();
             }
         }
 
@@ -159,8 +151,7 @@ public class EmailFragment extends ListFragment implements Button.OnClickListene
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId())
-        {
+        switch (item.getItemId()) {
             case R.id.action_clear_all_contacts:
                 mClearCallback.onClearEmail();
         }
@@ -172,7 +163,7 @@ public class EmailFragment extends ListFragment implements Button.OnClickListene
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        MenuItem clearContacts=menu.findItem(R.id.action_clear_all_contacts);
+        MenuItem clearContacts = menu.findItem(R.id.action_clear_all_contacts);
         clearContacts.setVisible(true);
         super.onCreateOptionsMenu(menu, inflater);
     }
@@ -187,10 +178,11 @@ public class EmailFragment extends ListFragment implements Button.OnClickListene
     public interface OnAddEmailButtonClickListener {
 
         /**
-         *callback dopo pressione tasto "+"
+         * callback dopo pressione tasto "+"
          */
         public void onAddEmailButtonClick();
     }
+
     public interface OnClearEmailClickListener {
 
         /**
@@ -198,27 +190,28 @@ public class EmailFragment extends ListFragment implements Button.OnClickListene
          */
         public void onClearEmail();
     }
+
     public interface OnContactClickListener {
 
         /**
          * callback pressione prolungata su di un contatto
+         *
          * @param emailAddress l'indirizzo del contatto selezionato
-         * @param name il nome del contatto selezionato
+         * @param name         il nome del contatto selezionato
          */
-        public void onContactLongClick(String emailAddress,String name);
+        public void onContactLongClick(String emailAddress, String name);
     }
 
 
     /**
      * Listener per la pressione lunga su di un contatto
      */
-    public class OnContactLongClickListener implements ListView.OnItemLongClickListener
-    {
+    public class OnContactLongClickListener implements ListView.OnItemLongClickListener {
         @Override
         public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
 
-            EmailListItem eli=(EmailListItem)parent.getItemAtPosition(position);
-            mContactClickCallback.onContactLongClick(eli.address,eli.name);
+            EmailListItem eli = (EmailListItem) parent.getItemAtPosition(position);
+            mContactClickCallback.onContactLongClick(eli.address, eli.name);
             return true;
         }
     }

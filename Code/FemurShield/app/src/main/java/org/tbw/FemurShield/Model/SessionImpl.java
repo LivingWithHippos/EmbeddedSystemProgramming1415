@@ -7,34 +7,34 @@ import java.util.Date;
 /**
  * Created by Moro on 30/04/15.
  */
-public class SessionImpl implements Session{
+public class SessionImpl implements Session {
     protected ArrayList<Fall> cadute;
-    protected long secondduration=0;
+    protected long secondduration = 0;
     protected String name;
     protected String datetime;
     private String ID;
 
-    public SessionImpl(){
+    public SessionImpl() {
         //iniszializzo l' array delle cadute
-        cadute=new ArrayList<>();
+        cadute = new ArrayList<>();
         //salvo la data attuale (di creazione)
         SimpleDateFormat sdf = new SimpleDateFormat(Session.datePattern);
         datetime = sdf.format(new Date());
         // assegno un nome di default
-        name="Sessione "+datetime;
+        name = "Sessione " + datetime;
         //assegno l'id univoco
-        ID=datetime;
+        ID = datetime;
     }
 
     /*
     tale costruttore serve per il ripristino della sessione
      */
-    public SessionImpl(String nome,String datetime, ArrayList<Fall> falls,long duration){
-        this.name=nome;
-        this.datetime=datetime;
-        this.cadute=falls;
-        this.secondduration=duration;
-        this.ID=datetime;
+    public SessionImpl(String nome, String datetime, ArrayList<Fall> falls, long duration) {
+        this.name = nome;
+        this.datetime = datetime;
+        this.cadute = falls;
+        this.secondduration = duration;
+        this.ID = datetime;
     }
 
     /*
@@ -44,11 +44,14 @@ public class SessionImpl implements Session{
     public String getName() {
         return name;
     }
+
     /*
     imposta il nome della sessione
      */
     @Override
-    public void setName(String sessionname) { name=sessionname;}
+    public void setName(String sessionname) {
+        name = sessionname;
+    }
 
     /*
     permette l'ottenimento della durata della sessione
@@ -62,7 +65,9 @@ public class SessionImpl implements Session{
     imposta la durata della sessione
      */
     @Override
-    public void setDuration(long duration) { secondduration=duration;}
+    public void setDuration(long duration) {
+        secondduration = duration;
+    }
 
     /*
     permette l'ottenimento dell'id della sessione
@@ -84,7 +89,7 @@ public class SessionImpl implements Session{
     permette l'ottenimento della cadute della sessione
      */
     @Override
-    public ArrayList<Fall> getFalls(){
+    public ArrayList<Fall> getFalls() {
         return cadute;
     }
 
@@ -93,7 +98,7 @@ public class SessionImpl implements Session{
      */
     @Override
     public int getFallsNumber() {
-        if(cadute!=null)
+        if (cadute != null)
             return cadute.size();
         return 0;
     }

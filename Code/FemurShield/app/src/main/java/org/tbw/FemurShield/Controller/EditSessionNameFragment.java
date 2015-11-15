@@ -16,16 +16,18 @@ import org.tbw.FemurShield.R;
 
 /**
  * Fragment che gestisce l'inserimento di un nuovo nome per una sessione
+ *
  * @author Alessandro Moro
  */
-public class EditSessionNameFragment extends DialogFragment implements DialogInterface.OnClickListener{
+public class EditSessionNameFragment extends DialogFragment implements DialogInterface.OnClickListener {
 
     private OnSessionNameInsertedListener mCallback;
-    public final static String SESSION_DATA="session_data";
-    private String sessiondata="";
+    public final static String SESSION_DATA = "session_data";
+    private String sessiondata = "";
+
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        mCallback=(OnSessionNameInsertedListener)getActivity();
+        mCallback = (OnSessionNameInsertedListener) getActivity();
 
         AlertDialog.Builder alert = new AlertDialog.Builder(getActivity(), R.style.AppDialogTheme);
         final Context themeContext = getActivity();
@@ -35,8 +37,8 @@ public class EditSessionNameFragment extends DialogFragment implements DialogInt
         alert.setPositiveButton(getString(R.string.ok), this);
         alert.setNegativeButton(getString(R.string.cancel), this);
 
-        Bundle bundle=getArguments();
-        sessiondata=bundle.getString(SESSION_DATA);
+        Bundle bundle = getArguments();
+        sessiondata = bundle.getString(SESSION_DATA);
         return alert.create();
     }
 
@@ -46,13 +48,12 @@ public class EditSessionNameFragment extends DialogFragment implements DialogInt
             case AlertDialog.BUTTON_POSITIVE:
                 if (mCallback != null) {
                     EditText nome = (EditText) getDialog().findViewById(R.id.etSessionName);
-                    String temp=nome.getText().toString();
-                    if(temp.length()>0) {
-                        if(isAdded())
+                    String temp = nome.getText().toString();
+                    if (temp.length() > 0) {
+                        if (isAdded())
                             mCallback.onSessionNameInserted(nome.getText().toString(), sessiondata);
-                    }
-                    else
-                        Toast.makeText(getActivity(),getString(R.string.session_name_too_short),Toast.LENGTH_LONG).show();
+                    } else
+                        Toast.makeText(getActivity(), getString(R.string.session_name_too_short), Toast.LENGTH_LONG).show();
                 }
                 break;
         }

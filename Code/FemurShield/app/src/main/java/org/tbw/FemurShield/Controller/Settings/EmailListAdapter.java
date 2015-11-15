@@ -14,7 +14,7 @@ import java.util.List;
 /**
  * Estensione della classe adapter per poter utilizzare il pattern View-Holder sulla lista contatti
  *
- *@author Marco Biasin
+ * @author Marco Biasin
  */
 public class EmailListAdapter extends ArrayAdapter {
 
@@ -27,7 +27,7 @@ public class EmailListAdapter extends ArrayAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder viewHolder;
 
-        if(convertView == null) {
+        if (convertView == null) {
             // inflate del layout degli oggetti della lista
             LayoutInflater inflater = LayoutInflater.from(getContext());
             convertView = inflater.inflate(R.layout.email_list_item, parent, false);
@@ -43,7 +43,7 @@ public class EmailListAdapter extends ArrayAdapter {
         }
 
         // aggiorno la item view
-        EmailListItem item =(EmailListItem) getItem(position);
+        EmailListItem item = (EmailListItem) getItem(position);
         viewHolder.tvName.setText(item.name);
         viewHolder.tvAddress.setText(item.address);
 
@@ -52,7 +52,7 @@ public class EmailListAdapter extends ArrayAdapter {
 
     /**
      * Implementa il pattern View-Holder per la lista di contatti
-     *
+     * <p>
      * vedi {@see http://developer.android.com/training/improving-layouts/smooth-scrolling.html#ViewHolder}
      */
     private static class ViewHolder {

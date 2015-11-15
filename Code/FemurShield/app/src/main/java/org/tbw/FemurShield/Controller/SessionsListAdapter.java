@@ -83,7 +83,7 @@ public class SessionsListAdapter extends ArrayAdapter {
 
     /**
      * Implementa il pattern View-Holder
-     * <p/>
+     * <p>
      * vedi http://developer.android.com/training/improving-layouts/smooth-scrolling.html#ViewHolder
      */
     private static class ViewHolder {
@@ -115,11 +115,12 @@ class SessionsListItem {
 
     /**
      * Costruttore della classe
-     * @param name nome della sessione
-     * @param date timestamp della sessione
+     *
+     * @param name        nome della sessione
+     * @param date        timestamp della sessione
      * @param fallsNumber numero di cadute della sessione
-     * @param duration durata della sessione
-     * @param state stato della sessione (attiva  o no)
+     * @param duration    durata della sessione
+     * @param state       stato della sessione (attiva  o no)
      */
     public SessionsListItem(String name, String date, int fallsNumber, String duration, boolean state) {
 
@@ -151,6 +152,7 @@ class SessionsListItem {
 
     /**
      * Metodo per ottenere il timestamp
+     *
      * @return il timestamp della sessione
      */
     public String getDataTime() {

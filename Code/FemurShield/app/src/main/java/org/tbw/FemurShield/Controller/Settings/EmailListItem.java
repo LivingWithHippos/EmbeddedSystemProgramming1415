@@ -9,14 +9,12 @@ public class EmailListItem {
     public final String name;
     public String address;
 
-    public EmailListItem(String address,String name)
-    {
-        this.name=name;
-        this.address=address;
+    public EmailListItem(String address, String name) {
+        this.name = name;
+        this.address = address;
     }
 
-    public void setAddress(String newAddress)
-    {
-        address=newAddress;
+    public void setAddress(String newAddress) {
+        address = newAddress;
     }
 }

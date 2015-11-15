@@ -14,8 +14,9 @@ public class SettingListItem {
 
     /**
      * Costruttore della classe
-     * @param icon l'icona dell'opzione
-     * @param title il nome dell'opzione
+     *
+     * @param icon        l'icona dell'opzione
+     * @param title       il nome dell'opzione
      * @param description la descrizione dell'opzione
      */
     public SettingListItem(Drawable icon, String title, String description) {
@@ -26,11 +27,11 @@ public class SettingListItem {
 
     /**
      * Modifica la descrizione dell'oggetto
+     *
      * @param newDescription la nuova descrizione
      */
-    public void setDescription(String newDescription)
-    {
-        description=newDescription;
+    public void setDescription(String newDescription) {
+        description = newDescription;
     }
 
 }

@@ -8,7 +8,6 @@ import android.os.StatFs;
 import android.util.Log;
 import android.widget.ImageView;
 
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -29,7 +28,8 @@ public class SignatureLoaderTask extends AsyncTask<Integer, Void, Bitmap> {
 
     /**
      * Costruttore della classe
-     * @param ivFall l'imageview da riempire con la signature
+     *
+     * @param ivFall           l'imageview da riempire con la signature
      * @param sessionTimeStamp il timestamp della sessione da rappresentare
      */
     public SignatureLoaderTask(ImageView ivFall, String sessionTimeStamp) {
@@ -39,6 +39,7 @@ public class SignatureLoaderTask extends AsyncTask<Integer, Void, Bitmap> {
 
     /**
      * Ritorna lo spazio disponibile in megabyte sul dispositivo
+     *
      * @return
      */
     public static float spaceAvailable() {
@@ -94,6 +95,7 @@ public class SignatureLoaderTask extends AsyncTask<Integer, Void, Bitmap> {
 
     /**
      * Controlla se è presente sul disco il file
+     *
      * @return true se presente, false altrimenti
      */
     private boolean signatureExists() {
@@ -105,6 +107,7 @@ public class SignatureLoaderTask extends AsyncTask<Integer, Void, Bitmap> {
 
     /**
      * Controlla se sia possibile scrivere sulla memoria
+     *
      * @return true se scrivibile, false altrimenti
      */
     public static boolean isExternalStorageWritable() {
@@ -117,6 +120,7 @@ public class SignatureLoaderTask extends AsyncTask<Integer, Void, Bitmap> {
 
     /**
      * Controlla se la memoria è leggibile
+     *
      * @return true se è leggibile, false altrimenti
      */
     public static boolean isExternalStorageReadable() {

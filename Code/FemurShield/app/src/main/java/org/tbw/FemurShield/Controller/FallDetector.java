@@ -20,7 +20,6 @@ import java.util.ArrayList;
 
 /**
  * Created by Moro on 02/05/15.
- * 
  */
 public class FallDetector extends IntentService implements SensorEventListener {
 
@@ -30,46 +29,46 @@ public class FallDetector extends IntentService implements SensorEventListener {
     private boolean isRunning = false;
 
     //costanti per l'algoritmo
-    private final int DURATA_IMPATTO_ACC=250; //identifica la durata in ms di un impatto con altri corpi (accelerometro)
-    private final int DISTANZA_CADUTA_GYRO_IMPATTO_CADUTA_ACC = 30+DURATA_IMPATTO_ACC;//identifica la distanza in ms tra la fine della caduta e la fine dell'impatto con il terreno
-    private final int DURATA_CADUTA_GYRO=300; //identifica la durata in ms della caduta (giroscopio)
-    private final int LIMITE_MINIMO_IMPATTO_ACC=28; //identifica il valore minimo che idedntifica un impatto (accelerometro)
-    private final int LIMITE_MINIMO_CADUTA_GYRO=7; //identifica il valore minimo che idedntifica una caduta (giroscopio)
+    private final int DURATA_IMPATTO_ACC = 250; //identifica la durata in ms di un impatto con altri corpi (accelerometro)
+    private final int DISTANZA_CADUTA_GYRO_IMPATTO_CADUTA_ACC = 30 + DURATA_IMPATTO_ACC;//identifica la distanza in ms tra la fine della caduta e la fine dell'impatto con il terreno
+    private final int DURATA_CADUTA_GYRO = 300; //identifica la durata in ms della caduta (giroscopio)
+    private final int LIMITE_MINIMO_IMPATTO_ACC = 28; //identifica il valore minimo che idedntifica un impatto (accelerometro)
+    private final int LIMITE_MINIMO_CADUTA_GYRO = 7; //identifica il valore minimo che idedntifica una caduta (giroscopio)
 
     //tempo di campionamento dati
-    private int tempocampionamento= 20 ;
-    
+    private int tempocampionamento = 20;
+
     //durata che identifica per quanto tempo mi interessano i valori in ms
-    private int tempovalori=500;
+    private int tempovalori = 500;
 
 
     //costanti per la posizione dell'array dei dati
-    public static final int X_VALUE=0;//rappresenta la posizione dei valori delle x nell'array dei valori di una caduta
-    public static final int Y_VALUE=1;//rappresenta la posizione dei valori delle y nell'array dei valori di una caduta
-    public static final int Z_VALUE=2;//rappresenta la posizione dei valori delle z nell'array dei valori di una caduta
+    public static final int X_VALUE = 0;//rappresenta la posizione dei valori delle x nell'array dei valori di una caduta
+    public static final int Y_VALUE = 1;//rappresenta la posizione dei valori delle y nell'array dei valori di una caduta
+    public static final int Z_VALUE = 2;//rappresenta la posizione dei valori delle z nell'array dei valori di una caduta
 
     /* costanti che identificano lo stato di un rilevamento di caduta o impatto
     "IN_PROGRESS" per dire che sta cercando di capire se è un impatto o una caduta.
     "IDENTIFIED" per dire che è stato identificato un impatto o una caduta.
     "NONE" per dire che non sono stati rilevati impatti o cadute e nemmeno ne stanno avvenendo
      */
-    private static final int NONE=0;
-    private static final int IN_PROGRESS=1;
-    private static final int IDENTIFIED=2;
+    private static final int NONE = 0;
+    private static final int IN_PROGRESS = 1;
+    private static final int IDENTIFIED = 2;
 
     //variabili per lo stato attuale di caduta o impatto
-    private int fallstate=NONE;
-    private int impactstate=NONE;
+    private int fallstate = NONE;
+    private int impactstate = NONE;
 
     //elenco buffer di dati dell'accelerometro
-    private ArrayList<ArrayList<Float>> bufferValueBeforeAcc =new ArrayList<>(3);
-    private ArrayList<ArrayList<Float>> bufferValueFallAcc =new ArrayList<>(3);
-    private ArrayList<ArrayList<Float>> bufferValueAfterAcc =new ArrayList<>(3);
+    private ArrayList<ArrayList<Float>> bufferValueBeforeAcc = new ArrayList<>(3);
+    private ArrayList<ArrayList<Float>> bufferValueFallAcc = new ArrayList<>(3);
+    private ArrayList<ArrayList<Float>> bufferValueAfterAcc = new ArrayList<>(3);
 
     //elenco buffer di dati del giroscopio
-    private ArrayList<ArrayList<Float>> bufferValueBeforeGyro =new ArrayList<>(3);
-    private ArrayList<ArrayList<Float>> bufferValueFallGyro =new ArrayList<>(3);
-    private ArrayList<ArrayList<Float>> bufferValueAfterGyro =new ArrayList<>(3);
+    private ArrayList<ArrayList<Float>> bufferValueBeforeGyro = new ArrayList<>(3);
+    private ArrayList<ArrayList<Float>> bufferValueFallGyro = new ArrayList<>(3);
+    private ArrayList<ArrayList<Float>> bufferValueAfterGyro = new ArrayList<>(3);
 
     {//blocco di inizializzazione del buffer
         //buffer per l'accelerometro
@@ -120,7 +119,7 @@ public class FallDetector extends IntentService implements SensorEventListener {
     }
 
     @Override
-    public IBinder onBind(Intent arg0){
+    public IBinder onBind(Intent arg0) {
         return null;
     }
 
@@ -133,7 +132,7 @@ public class FallDetector extends IntentService implements SensorEventListener {
     @Override
     public void onSensorChanged(SensorEvent event) {
         //se è un sato dell'accelerometro notifico gli osservatori (la ui3 in particolare per la rappresentazione in RT del grafico)
-        if(event.sensor.getType() == Sensor.TYPE_ACCELEROMETER)
+        if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER)
             Controller.getNotification().NotifyAccData(event.values[0], event.values[1], event.values[2]);
         fallAlgorithm(event);
     }
@@ -143,12 +142,12 @@ public class FallDetector extends IntentService implements SensorEventListener {
 
     }
 
-    private void startDetector(){
-        if(!isRunning) {
+    private void startDetector() {
+        if (!isRunning) {
             //ottengo il tempo di campionamento salvato nelle impostazioni
-            PreferencesEditor pref=new PreferencesEditor(getBaseContext());
-            tempocampionamento=205-(200*pref.getSamplingRate()/100);
-            isRunning=true;
+            PreferencesEditor pref = new PreferencesEditor(getBaseContext());
+            tempocampionamento = 205 - (200 * pref.getSamplingRate() / 100);
+            isRunning = true;
             //costruisco la notifica da visualizzare
             Notification notification = new Notification.Builder(getApplicationContext())
                     .setContentTitle("Fall detector:")
@@ -167,8 +166,7 @@ public class FallDetector extends IntentService implements SensorEventListener {
         }
     }
 
-    private void stopDetector()
-    {
+    private void stopDetector() {
         if (isRunning) {
             isRunning = false;
             //fermo il servizio
@@ -179,10 +177,10 @@ public class FallDetector extends IntentService implements SensorEventListener {
         }
     }
 
-    boolean fall=false;
-    int cycleAfterFall=0;
+    boolean fall = false;
+    int cycleAfterFall = 0;
 
-    public void fallAlgorithm(SensorEvent event){
+    public void fallAlgorithm(SensorEvent event) {
         /*
         L'algoritmo consiste nel salvare i dati provenienti da giroscopio e accelerometro in un buffer e localizzare
         quando è avvenuta una caduta.
@@ -194,25 +192,24 @@ public class FallDetector extends IntentService implements SensorEventListener {
         non stia avvenendo o verrà localizzata al secondo impatto se l'impatto rilevato era un urto pre caduta.
          */
 
-        float x=event.values[0];
-        float y=event.values[1];
-        float z=event.values[2];
+        float x = event.values[0];
+        float y = event.values[1];
+        float z = event.values[2];
 
         //se i dati dell'evento riguardano il giroscopio allora cerco di localizzare l'inclinazione dell'utente
-        if(event.sensor.getType() == Sensor.TYPE_GYROSCOPE)
-            falldetect(x,y,z);
+        if (event.sensor.getType() == Sensor.TYPE_GYROSCOPE)
+            falldetect(x, y, z);
         else //se i dati dell'evento riguardano l'accelerometro allora cerco di localizzare l'impatto
-            if(event.sensor.getType() == Sensor.TYPE_ACCELEROMETER)
-                impactdetect(x,y,z);
+            if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER)
+                impactdetect(x, y, z);
 
-        if(fall){ //attendo che i valori di rumore della caduta si stabilizzino (qualche millisecondo)
+        if (fall) { //attendo che i valori di rumore della caduta si stabilizzino (qualche millisecondo)
             cycleAfterFall++;
-            if(cycleAfterFall>50000/tempocampionamento) {
+            if (cycleAfterFall > 50000 / tempocampionamento) {
                 fall = false;
-                cycleAfterFall=0;
+                cycleAfterFall = 0;
             }
-        }
-        else {
+        } else {
             //se ho identificato sia un impatto che una caduta ho localizzato una Fall
             if (fallstate == IDENTIFIED && impactstate == IDENTIFIED) {
                 fall = true;
@@ -249,8 +246,7 @@ public class FallDetector extends IntentService implements SensorEventListener {
                 final Fall f = new Fall(beforevalue, fallvalue, aftervalue);
                 LocationLocator.LocationResult locationResult = new LocationLocator.LocationResult() {
                     @Override
-                    public void gotLocation(Location location)
-                    {
+                    public void gotLocation(Location location) {
                         position[0] = location.getLatitude(); // leggo la latuditine e la metto in position
                         position[1] = location.getLongitude(); // idem con la longitudine
                         //Log.d("Lat", "" + position[0]);
@@ -262,7 +258,6 @@ public class FallDetector extends IntentService implements SensorEventListener {
                 LocationLocator myLocation = new LocationLocator();
                 myLocation.getLocation(getApplicationContext(), locationResult);
                 Controller.getNotification().NotifyFall(f);
-
 
 
                 //svuoto i buffer e i campi...e metto i valori di after in before
@@ -311,30 +306,29 @@ public class FallDetector extends IntentService implements SensorEventListener {
         }
     }
 
-    int countlifegyro=0;
+    int countlifegyro = 0;
 
-    public void falldetect(float x, float y, float z){
-        try{
-            if(fallstate==NONE){//se non ho ancora rilevato possibili cadute, analizzo i dati per capire se potrebbe esserci un inizio.
+    public void falldetect(float x, float y, float z) {
+        try {
+            if (fallstate == NONE) {//se non ho ancora rilevato possibili cadute, analizzo i dati per capire se potrebbe esserci un inizio.
                 /*
                 controllo se ho la risultante delle accellerazioni sia un valore di una potenziale caduta.
                 in quel caso mi metto in osservazione/studio dei prossimi valori impostando fallstate=IN_PROGRESS;
                  */
-                if(Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2) + Math.pow(z, 2))>LIMITE_MINIMO_CADUTA_GYRO){
-                    fallstate=IN_PROGRESS;
+                if (Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2) + Math.pow(z, 2)) > LIMITE_MINIMO_CADUTA_GYRO) {
+                    fallstate = IN_PROGRESS;
 
-                    Log.println(Log.INFO,"caduta in progress", "");
+                    Log.println(Log.INFO, "caduta in progress", "");
                     //aggiungo il valore nell'array con i valori di caduta (nell'array dei dati precedenti alla caduta)
                     bufferValueFallGyro.get(X_VALUE).add(x);
                     bufferValueFallGyro.get(Y_VALUE).add(y);
                     bufferValueFallGyro.get(Z_VALUE).add(z);
-                }
-                else{
+                } else {
                     /*controllo che il buffer non inizi ad avere valori che non ci interessano più
                     (voglio mostrare valori solo per tempovalori millisecondi)...
                     In quel caso rimuovo il primo elemento (piu vecchio)
                      */
-                    if(bufferValueBeforeGyro.get(X_VALUE).size() * tempocampionamento > tempovalori){
+                    if (bufferValueBeforeGyro.get(X_VALUE).size() * tempocampionamento > tempovalori) {
                         bufferValueBeforeGyro.get(X_VALUE).remove(0);
                         bufferValueBeforeGyro.get(Y_VALUE).remove(0);
                         bufferValueBeforeGyro.get(Z_VALUE).remove(0);
@@ -344,35 +338,33 @@ public class FallDetector extends IntentService implements SensorEventListener {
                     bufferValueBeforeGyro.get(Y_VALUE).add(y);
                     bufferValueBeforeGyro.get(Z_VALUE).add(z);
                 }
-            }
-            else{
-                if(fallstate==IN_PROGRESS){
+            } else {
+                if (fallstate == IN_PROGRESS) {
                     /* controllo il numero di valori alti per dire se è effettivamente un urto se al
                     raggiungimento del tempo standard di impatto ho raggiunto un tot di valori sufficienti
                     a quel punto passo ad IDENTIFIED atrimenti a NONE ed i valori nel buffer di caduta
                     vengono spostati sul buffer di beforefall.*/
-                    if(bufferValueFallGyro.get(X_VALUE).size()*tempocampionamento>DURATA_CADUTA_GYRO) {
+                    if (bufferValueFallGyro.get(X_VALUE).size() * tempocampionamento > DURATA_CADUTA_GYRO) {
                         fallstate = IDENTIFIED;
 
-                        Log.println(Log.INFO,"caduta identified", "");
+                        Log.println(Log.INFO, "caduta identified", "");
                     }
                     //aggiungo il valore nell'array con i valori di caduta
                     bufferValueFallGyro.get(X_VALUE).add(x);
                     bufferValueFallGyro.get(Y_VALUE).add(y);
                     bufferValueFallGyro.get(Z_VALUE).add(z);
-                }
-                else{ //fallstate==IDENTIFIED
+                } else { //fallstate==IDENTIFIED
                     countlifegyro++;
                     //attendo il tempo massimo in attesa dell'impatto...
                     //se potrebbe ancora verificarsi l'impatto mantengo su IDENTIFIED la variabile di
                     //stato, altrimenti la imposto nuovamente a NONE e i valori del buffer dopo la
                     // caduta li sposto su quello dei valori prima della caduta (eliminando quelli troppo vecchi)
-                    if(countlifegyro*tempocampionamento> DISTANZA_CADUTA_GYRO_IMPATTO_CADUTA_ACC){
-                        fallstate=NONE;
-                        countlifegyro=0;
-                        Log.println(Log.INFO,"caduta terminata", "");
+                    if (countlifegyro * tempocampionamento > DISTANZA_CADUTA_GYRO_IMPATTO_CADUTA_ACC) {
+                        fallstate = NONE;
+                        countlifegyro = 0;
+                        Log.println(Log.INFO, "caduta terminata", "");
 
-                        for (int i =0;i<bufferValueAfterGyro.get(X_VALUE).size();i++) {
+                        for (int i = 0; i < bufferValueAfterGyro.get(X_VALUE).size(); i++) {
                             bufferValueBeforeGyro.get(X_VALUE).add(bufferValueAfterGyro.get(X_VALUE).get(i));
                             bufferValueBeforeGyro.get(Y_VALUE).add(bufferValueAfterGyro.get(Y_VALUE).get(i));
                             bufferValueBeforeGyro.get(Z_VALUE).add(bufferValueAfterGyro.get(Z_VALUE).get(i));
@@ -382,20 +374,20 @@ public class FallDetector extends IntentService implements SensorEventListener {
                                 bufferValueBeforeGyro.get(Z_VALUE).remove(0);
                             }
                         }
-                    }
-                    else {
+                    } else {
                         bufferValueAfterGyro.get(X_VALUE).add(x);
                         bufferValueAfterGyro.get(Y_VALUE).add(y);
                         bufferValueAfterGyro.get(Z_VALUE).add(z);
                     }
                 }
             }
-        }catch (IndexOutOfBoundsException e ){}
+        } catch (IndexOutOfBoundsException e) {
+        }
     }
 
-    int countlifeacc=0;
+    int countlifeacc = 0;
 
-    public void impactdetect(float x, float y, float z){
+    public void impactdetect(float x, float y, float z) {
         try {
             if (impactstate == NONE) {
                 /*
@@ -465,6 +457,7 @@ public class FallDetector extends IntentService implements SensorEventListener {
                     bufferValueAfterAcc.get(Z_VALUE).add(z);
                 }
             }
-        }catch (IndexOutOfBoundsException e ){}
+        } catch (IndexOutOfBoundsException e) {
+        }
     }
 }

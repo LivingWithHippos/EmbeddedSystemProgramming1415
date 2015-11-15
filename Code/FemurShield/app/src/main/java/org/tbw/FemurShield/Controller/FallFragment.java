@@ -35,6 +35,7 @@ public class FallFragment extends ListFragment {
 
     /**
      * Metodo per creare una nuova istanza del Fragment
+     *
      * @param datatime la sessione da cui prendere le cadute
      * @return una nuova istanza della classe
      */
@@ -58,6 +59,7 @@ public class FallFragment extends ListFragment {
 
     /**
      * Gestisce il click su una caduta presente nella lista
+     *
      * @param position la posizione nella lista dell'elemento premuto
      */
     @Override
@@ -70,6 +72,7 @@ public class FallFragment extends ListFragment {
 
     /**
      * Imposta la sessione da rappresentare
+     *
      * @param date l'ID della sessione da recuperare
      */
     public void setSession(String date) {
@@ -82,7 +85,7 @@ public class FallFragment extends ListFragment {
                 }
             }
         }
-        if(session==null)
+        if (session == null)
             Log.e("FallFragment", getString(R.string.no_session_found));
     }
 
@@ -140,8 +143,9 @@ public class FallFragment extends ListFragment {
     public interface OnFallClickListener {
         /**
          * Metodo che indica all'activity che è stata premuta una caduta
+         *
          * @param sessionID l'ID della sessione
-         * @param fallID l'ID della caduta
+         * @param fallID    l'ID della caduta
          */
         public void onFallClick(String sessionID, String fallID);
     }

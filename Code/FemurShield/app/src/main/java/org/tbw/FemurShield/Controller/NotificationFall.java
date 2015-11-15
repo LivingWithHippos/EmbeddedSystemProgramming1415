@@ -8,9 +8,13 @@ import org.tbw.FemurShield.Observer.Observer;
  * Created by Moro on 19/05/15.
  */
 public interface NotificationFall {
-    void addObserver(Observer o );
-    void deattach(Observer o );
+    void addObserver(Observer o);
+
+    void deattach(Observer o);
+
     void NotifyAccData(float x, float y, float z);
+
     void NotifyFall(Fall f);
+
     void NotifyEmailSent();
 }
