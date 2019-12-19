@@ -56,4 +56,7 @@
     <string name="no_fall_found">Caduta non trovata!</string>
     <string name="gps_off">GPS spento, attivalo!</string>
 
+
+    <string name="gps_needed">L\'applicazione non funzionerà senza il gps</string>
+
 </resources>

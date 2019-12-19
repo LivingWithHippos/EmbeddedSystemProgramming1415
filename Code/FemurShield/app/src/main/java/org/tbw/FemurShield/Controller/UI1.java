@@ -1,14 +1,20 @@
 package org.tbw.FemurShield.Controller;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 
 import org.tbw.FemurShield.Model.SessionManager;
 import org.tbw.FemurShield.R;
@@ -20,6 +26,7 @@ import org.tbw.FemurShield.R;
  */
 public class UI1 extends Activity implements FallFragment.OnFallClickListener, SessionsListFragment.OnSessionClickListener, SessionCommandsFragment.OnCommandUpdatedListener, SessionOptionDialog.OnSessionOptionsClickListener, EditSessionNameFragment.OnSessionNameInsertedListener {
 
+    private static final int MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 13333337;
     private static int i = 0;
     private final static String COMMAND_FRAGMENT_TAG = "mSessionCommandsFragment";
     private final static String SESSIONS_FRAGMENT_TAG = "mSessionListFragment";
@@ -77,8 +84,32 @@ public class UI1 extends Activity implements FallFragment.OnFallClickListener, S
         instantiateColors();
         if (SignatureLoaderTask.spaceAvailable() < 3)
             Toast.makeText(this, getString(R.string.low_memory_warning), Toast.LENGTH_SHORT).show();
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                    != PackageManager.PERMISSION_GRANTED) {
+                requestPermissions(
+                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                        MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION
+                );
+            }
     }
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        switch (requestCode) {
+            case MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION: {
+                // Se la richiesta è cancellata l'array sarà vuoto
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    // permessi accordati
+                } else {
+                    Toast.makeText(this.getBaseContext(), getString(R.string.gps_needed), Toast.LENGTH_LONG).show();
+                }
+                return;
+            }
+        }
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
