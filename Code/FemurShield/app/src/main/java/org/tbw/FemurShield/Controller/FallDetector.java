@@ -2,21 +2,30 @@ package org.tbw.FemurShield.Controller;
 
 import android.app.IntentService;
 import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.location.Location;
+import android.os.Build;
 import android.os.IBinder;
 import android.util.Log;
+
+import androidx.annotation.RequiresApi;
+import androidx.core.app.NotificationCompat;
 
 import org.tbw.FemurShield.Model.Fall;
 import org.tbw.FemurShield.R;
 
 import java.util.ArrayList;
+
+import static androidx.core.app.NotificationCompat.PRIORITY_LOW;
 
 /**
  * Created by Moro on 02/05/15.
@@ -148,12 +157,25 @@ public class FallDetector extends IntentService implements SensorEventListener {
             PreferencesEditor pref = new PreferencesEditor(getBaseContext());
             tempocampionamento = 205 - (200 * pref.getSamplingRate() / 100);
             isRunning = true;
+            String channel;
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
+                channel = createChannel();
+            else {
+                channel = "";
+            }
+
             //costruisco la notifica da visualizzare
-            Notification notification = new Notification.Builder(getApplicationContext())
-                    .setContentTitle("Fall detector:")
-                    .setContentText("it's running...")
+            NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(getApplicationContext(), channel)
                     .setSmallIcon(R.drawable.notification)
+                    .setContentTitle("Fall detector:")
+                    .setContentText("it's running...");
+
+            Notification notification = mBuilder
+                    .setPriority(PRIORITY_LOW)
+                    .setCategory(Notification.CATEGORY_SERVICE)
                     .build();
+
+
             //setto L'ID per la notifica
             final int notificationID = 1234567;
             startForeground(notificationID, notification);
@@ -164,6 +186,25 @@ public class FallDetector extends IntentService implements SensorEventListener {
             giroscopio = sensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE);
             sensorManager.registerListener(this, giroscopio, tempocampionamento);
         }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    private synchronized String createChannel() {
+        NotificationManager mNotificationManager = (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
+
+        String name = "snap map fake location ";
+        int importance = NotificationManager.IMPORTANCE_LOW;
+
+        NotificationChannel mChannel = new NotificationChannel("snap map channel", name, importance);
+
+        mChannel.enableLights(true);
+        mChannel.setLightColor(Color.BLUE);
+        if (mNotificationManager != null) {
+            mNotificationManager.createNotificationChannel(mChannel);
+        } else {
+            stopSelf();
+        }
+        return "snap map channel";
     }
 
     private void stopDetector() {
